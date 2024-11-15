@@ -6,7 +6,8 @@ import "../src/AppPointFactory.sol";
 
 contract AppPointFactoryScript is Script {
     function run() external {
-        vm.startBroadcast();
+        uint256 privateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(privateKey);
 
         // Deploy AppPointFactory
         AppPointFactory factory = new AppPointFactory();
