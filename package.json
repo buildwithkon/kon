@@ -5,5 +5,8 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4"
+  }
 }
