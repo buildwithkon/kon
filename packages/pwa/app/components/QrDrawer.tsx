@@ -1,11 +1,9 @@
-import { useAtomValue } from 'jotai'
 import { QRCodeSVG } from 'qrcode.react'
-import { isDarkModeAtom } from '~/atoms'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
 
 export default function QrDrawer({ children }: { children: React.ReactNode }) {
-  const isDarkMode = useAtomValue(isDarkModeAtom)
+  const isDarkMode = false
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>

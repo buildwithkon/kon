@@ -17,9 +17,9 @@ export default function Loader() {
     if (pathname !== '/' && !isConnected) {
       navigate('/')
     }
-    if (isConnected && address) {
-      navigate('/home')
-    }
+    // if (isConnected && address) {
+    //   navigate('/home')
+    // }
     // if (isConnected && address && !user.subname) {
     //   getSubname(address).then((subname) => {
     //     setUser((prev) => ({ ...prev, subname }))
