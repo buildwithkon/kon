@@ -22,3 +22,8 @@ export type LoaderData = {
     }
   } | null
 }
+
+export type UserData = {
+  address: `0x${string}` | null
+  subname: string | null
+}

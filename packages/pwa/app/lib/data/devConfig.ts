@@ -23,7 +23,7 @@ const devConfig2 = {
   id: 'demo',
   version: '1.0',
   url: 'demo.kon.xyz',
-  name: 'KON DEMO',
+  name: 'DEMO',
   description: 'Demo community app for ETHBangkok 2024 - build with KON',
   icons: {
     favicon: 'https://euc.li/sepolia/demo.kululu.eth',

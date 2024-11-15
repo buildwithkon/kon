@@ -17,17 +17,20 @@ export default function Loader() {
     if (pathname !== '/' && !isConnected) {
       navigate('/')
     }
-    if (isConnected && address && !user.subname) {
-      getSubname(address).then((subname) => {
-        setUser((prev) => ({ ...prev, subname }))
-        if (subname) {
-          navigate('/home')
-        } else {
-          navigate('/start')
-        }
-      })
+    if (isConnected && address) {
+      navigate('/home')
     }
-  }, [isConnected, address, navigate, pathname, setUser, user.subname])
+    // if (isConnected && address && !user.subname) {
+    //   getSubname(address).then((subname) => {
+    //     setUser((prev) => ({ ...prev, subname }))
+    //     if (subname) {
+    //       navigate('/home')
+    //     } else {
+    //       navigate('/start')
+    //     }
+    //   })
+    // }
+  }, [isConnected, address, navigate, pathname])
 
   return isLoading || isConnecting ? (
     <div className="fixed top-0 right-0 bottom-0 left-0 z-50 grid place-items-center bg-gray-500/60 backdrop-blur">
