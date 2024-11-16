@@ -1,4 +1,4 @@
-import { getEnsAvatar, getEnsName, getEnsText } from '@wagmi/core'
+import { getEnsAddress, getEnsAvatar, getEnsName, getEnsText } from '@wagmi/core'
 import { normalize } from 'viem/ens'
 import { ENS_APPCONFIG_CHAINID, ENS_APPCONFIG_KEY, ENS_APPCONFIG_NAME } from '~/lib/const'
 import { config } from '~/lib/wagmi'
@@ -6,6 +6,12 @@ import { config } from '~/lib/wagmi'
 export const getSubname = async (address: `0x${string}`) =>
   await getEnsName(config, {
     address,
+    chainId: ENS_APPCONFIG_CHAINID
+  })
+
+export const getSubnameAddress = async (name: string) =>
+  await getEnsAddress(config, {
+    name: normalize(name),
     chainId: ENS_APPCONFIG_CHAINID
   })
 

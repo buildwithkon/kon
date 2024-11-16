@@ -1,11 +1,13 @@
 import { parseWithZod } from '@conform-to/zod'
 import type { ActionFunction, MetaFunction } from '@remix-run/cloudflare'
+import { useActionData } from '@remix-run/react'
 import { useAtomValue } from 'jotai'
 import { loaderDataAtom } from '~/atoms'
 import StartForm from '~/components/StartForm'
 import { schema } from '~/components/StartForm'
 import TopBar from '~/components/TopBar'
 import IconKon from '~/components/icon/kon'
+import { getSubnameAddress } from '~/lib/ens'
 
 export const meta: MetaFunction = () => {
   const ld = useAtomValue(loaderDataAtom)
@@ -20,12 +22,21 @@ export const action: ActionFunction = async ({ request }) => {
     return submission.reply()
   }
 
-  console.log(submission.value)
+  const checkName = await getSubnameAddress(`${submission?.value?.name ?? ''}.demo.kon.eth`)
+
+  if (checkName) {
+    return submission.reply({
+      formErrors: ['Subname already taken']
+    })
+  }
+
   return submission.value
 }
 
 export default function Start() {
   const ld = useAtomValue(loaderDataAtom)
+  const ad = useActionData()
+  console.log('ad:::', ad)
 
   return (
     <div className="wrapper-app">
