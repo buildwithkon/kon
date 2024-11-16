@@ -18,19 +18,19 @@ Users can log in effortlessly using their Passkey Wallets. Thanks to ENS subname
 
 ## How it's made
 
-- PWA app: remix on cloudflare workers, read app's config from ENS text record and launch app
+- [PWA app (Cloudflare Workers)](packages/pwa): remix on cloudflare workers, read app's config from ENS text record and launch app
 - [Smart Wallets](https://www.coinbase.com/wallet/smart-wallet): Using coinbase's smartwallet, wallet creation by passkey, tx signing, and user-operated Sponsored Transactions by [CDP](https://www.coinbase.com/developer-platform)
-- ENS text record: Managing app config (`app.kon` text record)
-- ENS Subnames: Managing app users
-- XMTP: Group creation for app users, fostering community through group chats, with bots managing app point tipping.
-- Owner dashboard: We are planning to create admin dashboard for owners later, including editing page for ENS, a list of users, and create a Safe multisig for owner management.
+- [ENS text record (sepolia testnet)](https://app.ens.domains/demo.kon.eth?tab=records): Managing app config (`app.kon` text record)
+- [ENS Subnames (sepolia testnet)](https://app.ens.domains/demo.kon.eth?tab=subnames): Managing app users
+- `XMTP`: Group creation for app users, fostering community through group chats, with bots managing app point tipping.
+- WIP
+  - `Owner dashboard`: We are planning to create admin dashboard for owners later, including editing page for ENS, a list of users, and create a Safe multisig for owner management.
 
 ## Architecture
 
 ![KON Architecture](resources/kon-architecture.png)
 
 ## Deployment
-
 - App Point Feature
   - [AppPointFactory](https://sepolia.basescan.org/address/0x85876aD496a12c6563A6A01fb41a89ff58CAEC71#code)
   - [AppPoint (for DEMO)](https://sepolia.basescan.org/address/0x6D884056B5aded7FC77B6d975b13E0210b490ad6#code)
