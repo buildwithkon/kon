@@ -1,4 +1,4 @@
-import { type LoaderFunction } from '@remix-run/cloudflare'
+import type { LoaderFunction } from '@remix-run/cloudflare'
 import { getAppConfig } from '~/lib/ens'
 
 export const loader: LoaderFunction = async ({ params }) => {

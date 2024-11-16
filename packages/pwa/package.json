@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^4.0.4",
+    "@conform-to/react": "^1.2.2",
+    "@conform-to/zod": "^1.2.2",
     "@dotmind/react-use-pwa": "^1.0.4",
     "@hookform/resolvers": "^3.9.1",
     "@phosphor-icons/react": "^2.1.7",
@@ -28,6 +30,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "@wagmi/connectors": "^5.3.10",
     "@wagmi/core": "^2.14.6",
+    "@xmtp/browser-sdk": "^0.0.4",
     "boring-avatars": "^1.11.2",
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",

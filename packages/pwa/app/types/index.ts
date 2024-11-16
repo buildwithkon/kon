@@ -10,15 +10,14 @@ export type LoaderData = {
       logo?: string
     }
     version: string
-    font?: string
+    font?: 'sans' | 'serif' | 'dot'
     colors?: {
       main: string
       sub?: string
     }
     plugins?: {
-      forum?: string
+      xmtp?: string
       points?: string
-      notifications?: string
     }
   } | null
 }

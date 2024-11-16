@@ -1,10 +1,9 @@
 import { SpinnerGap } from '@phosphor-icons/react'
 import { useLocation, useNavigate } from '@remix-run/react'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
-import { getSubname } from '~/lib/ens'
 
 export default function Loader() {
   const { isConnected, isConnecting, address } = useAccount()
@@ -17,9 +16,9 @@ export default function Loader() {
     if (pathname !== '/' && !isConnected) {
       navigate('/')
     }
-    // if (isConnected && address) {
-    //   navigate('/home')
-    // }
+    if (pathname === '/' && isConnected && address) {
+      navigate('/home')
+    }
     // if (isConnected && address && !user.subname) {
     //   getSubname(address).then((subname) => {
     //     setUser((prev) => ({ ...prev, subname }))

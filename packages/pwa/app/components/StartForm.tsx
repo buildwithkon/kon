@@ -1,32 +1,35 @@
-import { useForm } from 'react-hook-form'
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { getFormProps, getInputProps, useForm } from '@conform-to/react'
+import { parseWithZod } from '@conform-to/zod'
+import { Form } from '@remix-run/react'
+import { z } from 'zod'
 
-const NameFormSchema = z.object({
-  name: z.string().min(3).max(255),
-});
-type NameFormSchemaType = z.infer<typeof NameFormSchema>;
+export const schema = z.object({
+  name: z
+    .string()
+    .min(3, { message: 'username must be at least 3 characters long.' })
+    .max(255, { message: 'username cannot exceed 255 characters.' })
+    .regex(/^[a-z0-9-]+$/, { message: 'username can only contain lowercase letters, numbers, and hyphens.' })
+    .refine((name) => !name.startsWith('-') && !name.endsWith('-'), {
+      message: 'username cannot start or end with a hyphen.'
+    })
+})
 
-export default function StartForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<NameFormSchemaType>({ resolver: zodResolver(NameFormSchema) })
-
-  const onSubmit = async (data: NameFormSchemaType) => {
-    console.log('form:::', data)
-  }
+export default function SampleForm() {
+  const [form, { name }] = useForm({
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema })
+    }
+  })
 
   return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-4">
-          <input {...register('name')} className="w-full" placeholder="yourname" />
-          {errors.name && <span className="text-sm px-1.5 text-red-400">{errors.name.message}</span>}
-          <button type="submit" className="btn-main w-full">
-            Setup your name
-          </button>
-        </div>
-    </form>
+    <Form method="post" {...getFormProps(form)}>
+      <div>
+        <input {...getInputProps(name, { type: 'text' })} className="w-full" placeholder="yourname" />
+        {name.errors && <p className="mt-1 px-1 text-red-400 text-sm">{name.errors[0]}</p>}
+      </div>
+      <button type="submit" className="btn-main mt-4 w-full">
+        Setup username
+      </button>
+    </Form>
   )
 }

@@ -9,8 +9,6 @@ export async function handler(context: HandlerContext) {
     group
   } = context
 
-  console.log('****group', group)
-
   if (skill === 'help') {
     const intro = `Available experiences:\n${skills
       ?.flatMap((app) => app.skills)
