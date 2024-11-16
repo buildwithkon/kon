@@ -1,18 +1,18 @@
 import { ManifestLink } from '@remix-pwa/sw'
-import type { LoaderFunction, MetaFunction } from '@remix-run/cloudflare'
+import type { LoaderFunction } from '@remix-run/cloudflare'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useMatches } from '@remix-run/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import '~/assets/app.css'
+import { useAtom } from 'jotai'
+import { useEffect } from 'react'
+import DefaultFavicon from '~/assets/favicon.png'
+import { loaderDataAtom } from '~/atoms'
+import { setAppColor, setFontClass } from '~/lib/style'
+import { loadAppConfig } from '~/lib/utils'
 import { config } from '~/lib/wagmi'
 import type { LoaderData } from '~/types'
-import DefaultFavicon from '~/assets/favicon.png'
-import { loadAppConfig } from '~/lib/utils'
-import { useEffect } from 'react'
-import { setAppColor, setFontClass } from '~/lib/style'
-import { useAtom } from 'jotai'
 import Loader from './components/Loader'
-import { loaderDataAtom } from '~/atoms'
 
 export const loader: LoaderFunction = async ({ request }) => {
   const config = await loadAppConfig(request.url)
@@ -51,6 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <ManifestLink />
         <Links />
+        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
       </head>
       <body className={bodyClass}>
         {children}

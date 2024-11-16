@@ -6,16 +6,18 @@ import { z } from 'zod'
 export const schema = z.object({
   name: z
     .string()
-    .min(3, { message: 'username must be at least 3 characters long.' })
-    .max(255, { message: 'username cannot exceed 255 characters.' })
-    .regex(/^[a-z0-9-]+$/, { message: 'username can only contain lowercase letters, numbers, and hyphens.' })
+    .min(3, { message: 'Name must be at least 3 characters long.' })
+    .max(255, { message: 'Name cannot exceed 255 characters.' })
+    .regex(/^[a-z0-9-]+$/, { message: 'Name can only contain lowercase letters, numbers, and hyphens.' })
     .refine((name) => !name.startsWith('-') && !name.endsWith('-'), {
-      message: 'username cannot start or end with a hyphen.'
+      message: 'Name cannot start or end with a hyphen.'
     })
 })
 
-export default function SampleForm() {
-  const [form, { name }] = useForm({
+export default function StartForm() {
+  const [form, fields] = useForm({
+    shouldValidate: 'onBlur',
+    shouldRevalidate: 'onBlur',
     onValidate({ formData }) {
       return parseWithZod(formData, { schema })
     }
@@ -23,13 +25,13 @@ export default function SampleForm() {
 
   return (
     <Form method="post" {...getFormProps(form)}>
-      <div>
-        <input {...getInputProps(name, { type: 'text' })} className="w-full" placeholder="yourname" />
-        {name.errors && <p className="mt-1 px-1 text-red-400 text-sm">{name.errors[0]}</p>}
+      <div className="space-y-4">
+        <input {...getInputProps(fields.name, { type: 'text' })} className="w-full" placeholder="yourname" />
+        {fields.name.errors && <span className="px-1.5 text-red-400 text-sm">{fields.name.errors[0]}</span>}
+        <button type="submit" className="btn-main w-full">
+          Set yourname
+        </button>
       </div>
-      <button type="submit" className="btn-main mt-4 w-full">
-        Setup username
-      </button>
     </Form>
   )
 }

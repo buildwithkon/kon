@@ -12,11 +12,11 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
 
-  packages/group-message-bot:
+  packages/group-chat-bot:
     dependencies:
       '@xmtp/message-kit':
         specifier: latest
-        version: 1.1.8-beta.4(bufferutil@4.0.8)(terser@5.36.0)(utf-8-validate@5.0.10)(zod@3.23.8)
+        version: 1.1.8-beta.9(bufferutil@4.0.8)(terser@5.36.0)(utf-8-validate@5.0.10)(zod@3.23.8)
 
   packages/pwa:
     dependencies:
@@ -32,9 +32,6 @@ importers:
       '@dotmind/react-use-pwa':
         specifier: ^1.0.4
         version: 1.0.4
-      '@hookform/resolvers':
-        specifier: ^3.9.1
-        version: 3.9.1(react-hook-form@7.53.2(react@18.3.1))
       '@phosphor-icons/react':
         specifier: ^2.1.7
         version: 2.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -89,9 +86,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
-      react-hook-form:
-        specifier: ^7.53.2
-        version: 7.53.2(react@18.3.1)
       sonner:
         specifier: ^1.5.0
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1446,11 +1440,6 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  '@hookform/resolvers@3.9.1':
-    resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
-    peerDependencies:
-      react-hook-form: ^7.0.0
-
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -2698,8 +2687,8 @@ packages:
     resolution: {integrity: sha512-GZO4DGLaXSBeaD7BBMh09SKJRbuujOHupMiNc/lJlCFXpEAgvhprrlg00RpEkmrnjXOt7P4iuka4BCbD57OanA==}
     engines: {node: '>=18'}
 
-  '@xmtp/message-kit@1.1.8-beta.4':
-    resolution: {integrity: sha512-ePPHFHEu9TWiC8CUB9cMa6vm/vXOOiyUakVVKuejmOUqIxIde/4BGe2NcJ7AqCYpNELKOvCCaRhrEqE0MnxixQ==}
+  '@xmtp/message-kit@1.1.8-beta.9':
+    resolution: {integrity: sha512-GyN+W6k1wJ/DQUtm8Waus4MZWyM8RDI4T6bDyrF4FulXBRe/+JJtqNK8Wj1jWeyuaUsPF9L2aSHIvx/8VrCONg==}
     engines: {node: '>=20'}
 
   '@xmtp/node-bindings@0.0.18':
@@ -5282,12 +5271,6 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
-  react-hook-form@7.53.2:
-    resolution: {integrity: sha512-YVel6fW5sOeedd1524pltpHX+jgU2u3DSDtXEaBORNdqiNrsX/nUI/iGXONegttg0mJVnfrIkiV0cmTU6Oo2xw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
@@ -7761,10 +7744,6 @@ snapshots:
       protobufjs: 7.4.0
       yargs: 17.7.2
 
-  '@hookform/resolvers@3.9.1(react-hook-form@7.53.2(react@18.3.1))':
-    dependencies:
-      react-hook-form: 7.53.2(react@18.3.1)
-
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -9650,7 +9629,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@xmtp/message-kit@1.1.8-beta.4(bufferutil@4.0.8)(terser@5.36.0)(utf-8-validate@5.0.10)(zod@3.23.8)':
+  '@xmtp/message-kit@1.1.8-beta.9(bufferutil@4.0.8)(terser@5.36.0)(utf-8-validate@5.0.10)(zod@3.23.8)':
     dependencies:
       '@types/node': 20.17.6
       '@vitest/coverage-v8': 2.1.5(vitest@2.1.5(@types/node@20.17.6)(terser@5.36.0))
@@ -12741,10 +12720,6 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
-
-  react-hook-form@7.53.2(react@18.3.1):
-    dependencies:
-      react: 18.3.1
 
   react-is@18.3.1: {}
 
