@@ -34,9 +34,8 @@ const devConfig2 = {
     main: '#FFB147'
   },
   plugins: {
-    forum: true,
-    points: '0x6D884056B5aded7FC77B6d975b13E0210b490ad6',
-    notification: 'xmtp'
+    xmtp: 'xGqF3kCJXOfGLetv67hTh',
+    points: '0x6D884056B5aded7FC77B6d975b13E0210b490ad6'
   }
 }
 

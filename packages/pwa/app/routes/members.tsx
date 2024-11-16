@@ -13,9 +13,9 @@ export const meta: MetaFunction = () => {
 }
 
 const DummyList = [
-  { id: 'john', pt: 100 },
-  { id: 'alice', pt: 10 },
-  { id: 'yoda', pt: 9 }
+  { id: 'john', pt: 100, address: '0x1C4e3C31623F12d8f0C17b75e53C186B991FF33B' },
+  { id: 'alice', pt: 10, address: '0xcccc' },
+  { id: 'yoda', pt: 9, address: '0xcccc' }
 ]
 
 export default function Members() {
@@ -32,34 +32,40 @@ export default function Members() {
   )
 }
 
-const UserLists = () => (
-  <div className="-mx-6">
-    <ul className="w-full border-muted border-b">
-      {DummyList.map((user) => (
-        <li
-          key={user.id}
-          className="flex items-center justify-between overflow-hidden border-muted border-t px-6 py-4"
-        >
-          <div className="flex items-center overflow-hidden">
-            <Avatar name={user.id} size={48} />
-            <div>
-              <p className="px-4 font-bold text-xl">{user.id}</p>
-              <p className="px-4 font-mono text-sm">
-                {user.pt}
-                <span className="px-0.5">pts</span>
-              </p>
+const UserLists = () => {
+  const ld = useAtomValue(loaderDataAtom)
+
+  return (
+    <div className="-mx-6">
+      <ul className="w-full border-muted border-b">
+        {DummyList.map((user) => (
+          <li
+            key={user.id}
+            className="flex items-center justify-between overflow-hidden border-muted border-t px-6 py-4"
+          >
+            <div className="flex items-center overflow-hidden">
+              <Avatar name={user.id} size={48} />
+              <div>
+                <p className="px-4 font-bold text-xl">{user.id}</p>
+                <p className="px-4 font-mono text-sm">
+                  {user.pt}
+                  <span className="px-0.5">pts</span>
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center space-x-3 overflow-hidden">
-            <button type="button">
-              <HandCoins size={28} />
-            </button>
-            <button type="button">
-              <ChatCircle size={28} />
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-)
+            <div className="flex items-center space-x-3 overflow-hidden">
+              <a
+                href={`converse://group?groupId=${ld?.appConfig?.plugins?.xmtp}&text=@tip ${user.address} 10`}
+              >
+                <HandCoins size={28} />
+              </a>
+              <a href={`converse://dm?peer=${user.address}`}>
+                <ChatCircle size={28} />
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
