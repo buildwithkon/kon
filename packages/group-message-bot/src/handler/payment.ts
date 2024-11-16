@@ -1,29 +1,26 @@
-import { getUserInfo, HandlerContext } from "@xmtp/message-kit";
+import { type HandlerContext, getUserInfo } from '@xmtp/message-kit'
 
 export async function handler(context: HandlerContext) {
   const {
     message: {
-      content: { skill, params },
-    },
-  } = context;
-  const txpayUrl = "https://txpay.vercel.app";
+      content: { skill, params }
+    }
+  } = context
+  const txpayUrl = 'https://txpay.vercel.app'
 
-  if (skill === "pay") {
-    const { amount: amountSend, token: tokenSend, username } = params;
-    console.log("username", username);
-    let senderInfo = await getUserInfo(username);
+  if (skill === 'pay') {
+    const { amount: amountSend, token: tokenSend, username } = params
+    console.log('username', username)
+    const senderInfo = await getUserInfo(username)
     if (!amountSend || !tokenSend || !senderInfo) {
-      context.reply(
-        "Missing required parameters. Please provide amount, token, and username.",
-      );
+      context.reply('Missing required parameters. Please provide amount, token, and username.')
       return {
         code: 400,
-        message:
-          "Missing required parameters. Please provide amount, token, and username.",
-      };
+        message: 'Missing required parameters. Please provide amount, token, and username.'
+      }
     }
 
-    let sendUrl = `${txpayUrl}/?&amount=${amountSend}&token=${tokenSend}&receiver=${senderInfo.address}`;
-    await context.send(`${sendUrl}`);
+    const sendUrl = `${txpayUrl}/?&amount=${amountSend}&token=${tokenSend}&receiver=${senderInfo.address}`
+    await context.send(`${sendUrl}`)
   }
 }
