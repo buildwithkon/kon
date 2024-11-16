@@ -1,5 +1,5 @@
 {
-  "name": "group-message-bot",
+  "name": "group-chat-bot",
   "private": true,
   "type": "module",
   "scripts": {
