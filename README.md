@@ -27,6 +27,6 @@ Users can log in effortlessly using their Passkey Wallets. Thanks to ENS subname
 
 ## Architecture
 
-![KON Architecture](resources/kon-architectuer.png)
+![KON Architecture](resources/kon-architecture.png)
 
 ## Deployment
