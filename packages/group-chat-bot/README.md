@@ -1,6 +1,6 @@
 # group-message-bot
 
-This project is powered by [MessageKit](https://messagekit.ephemerahq.com/) 
+This project is powered by [MessageKit](https://messagekit.ephemerahq.com/)
 
 ## Setup
 
@@ -9,13 +9,13 @@ Follow these steps to set up and run the project:
 1. **Navigate to the project directory:**
 
 ```sh
-cd ./group-message-bot
+cd ./group-chat-bot
 ```
 
 2. **Set up your environment variables:**
 
 ```sh
-KEY= # the private key of the agent wallet 
+KEY= # the private key of the agent wallet
 OPEN_AI_API_KEY= # openai api key
 ```
 

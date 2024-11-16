@@ -9,16 +9,15 @@ export async function handler(context: HandlerContext) {
     group
   } = context
 
-  if (skill == 'help') {
-    const intro =
-      'Available experiences:\n' +
-      skills
-        ?.flatMap((app) => app.skills)
-        .map((skill) => `${skill.skill} - ${skill.description}`)
-        .join('\n') +
-      '\nUse these skills to interact with specific apps.'
+  console.log('****group', group)
+
+  if (skill === 'help') {
+    const intro = `Available experiences:\n${skills
+      ?.flatMap((app) => app.skills)
+      .map((skill) => `${skill.skill} - ${skill.description}`)
+      .join('\n')}\nUse these skills to interact with specific apps.`
     context.send(intro)
-  } else if (skill == 'id') {
+  } else if (skill === 'id') {
     if (!group?.id) {
       context.send('This skill only works in group chats.')
       return
