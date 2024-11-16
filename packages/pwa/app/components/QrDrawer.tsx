@@ -1,9 +1,12 @@
 import { QRCodeSVG } from 'qrcode.react'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
+import { useAccount } from 'wagmi'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
 
 export default function QrDrawer({ children }: { children: React.ReactNode }) {
+  const { address } = useAccount()
   const isDarkMode = false
+
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
@@ -12,7 +15,7 @@ export default function QrDrawer({ children }: { children: React.ReactNode }) {
         <DrawerDescription className="hidden text-center">Scan this QR for checkin!</DrawerDescription>
         <div className="mx-auto px-6 pt-6">
           <QRCodeSVG
-            value="https://test.kululu.xyz"
+            value={address ?? ''}
             fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
             size={168}
