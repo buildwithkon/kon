@@ -48,7 +48,6 @@ export default function Start() {
       <TopBar>
         <div className="flex w-full justify-center">{ld?.appConfig?.name}</div>
       </TopBar>
-      <div className="wrapper-app">
         <div className="flex items-center justify-center">
           {ld?.appConfig?.icons?.logo ? (
             <img
@@ -62,6 +61,5 @@ export default function Start() {
         </div>
         <StartForm />
       </div>
-    </div>
   )
 }
