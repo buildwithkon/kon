@@ -6,7 +6,7 @@
 
 `Build with KON` simplifies launching community PWA apps, leveraging composability of web3 with ENS, Passkey wallet, XMTP.
 
-## Conpept
+## Concept
 
 `Build with KON` is a template designed to facilitate the launch of a community PWA app. Think of it as a WordPress-like solution tailored for PWA apps.
 
