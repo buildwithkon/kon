@@ -1,8 +1,7 @@
 import { usePwa } from '@dotmind/react-use-pwa'
 import { HandTap } from '@phosphor-icons/react'
-import { useAtomValue } from 'jotai'
+import { useRouteLoaderData } from '@remix-run/react'
 import { useConnect } from 'wagmi'
-import { loaderDataAtom } from '~/atoms'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
 import IconKon from '~/components/icon/kon'
 import { SITE_URL } from '~/lib/const'
@@ -14,7 +13,7 @@ export const loader = async () => {
 export default function Home() {
   const { connectors, connectAsync } = useConnect()
   const { isStandalone } = usePwa()
-  const ld = useAtomValue(loaderDataAtom)
+  const ld = useRouteLoaderData('root')
 
   const login = async () => {
     await connectAsync({ connector: connectors[0] })

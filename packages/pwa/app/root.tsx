@@ -4,10 +4,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useMatc
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
 import '~/assets/app.css'
-import { useAtom } from 'jotai'
-import { useEffect } from 'react'
 import DefaultFavicon from '~/assets/favicon.png'
-import { loaderDataAtom } from '~/atoms'
 import Loader from '~/components/Loader'
 import { setAppColor, setFontClass } from '~/lib/style'
 import { loadAppConfig } from '~/lib/utils'
@@ -28,13 +25,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const ld = useLoaderData<LoaderData>()
   const matches = useMatches()
   const bodyClass = matches.find((match) => match.data?.bodyClass)?.data?.bodyClass || 'default'
-  const [loaderData, setLoaderData] = useAtom(loaderDataAtom)
-
-  useEffect(() => {
-    if (!!ld?.subdomain && !loaderData?.subdomain) {
-      setLoaderData(ld)
-    }
-  }, [ld, loaderData])
 
   return (
     <html

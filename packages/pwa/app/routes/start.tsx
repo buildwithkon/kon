@@ -1,17 +1,16 @@
 import type { MetaFunction } from '@remix-run/cloudflare'
-import { useAtomValue } from 'jotai'
-import { loaderDataAtom } from '~/atoms'
+import { useRouteLoaderData } from '@remix-run/react'
 import StartForm from '~/components/StartForm'
 import TopBar from '~/components/TopBar'
 import IconKon from '~/components/icon/kon'
 
 export const meta: MetaFunction = () => {
-  const ld = useAtomValue(loaderDataAtom)
+  const ld = useRouteLoaderData('root')
   return [{ title: `Sart | ${ld?.appConfig?.name ?? 'KON'}` }]
 }
 
 export default function Start() {
-  const ld = useAtomValue(loaderDataAtom)
+  const ld = useRouteLoaderData('root')
 
   return (
     <div className="wrapper-app">
