@@ -1,3 +1,9 @@
+export type Env = {
+  ORBIS_CERAMIC_GATEWAY: string
+  ORBIS_NODE_GATEWAY: string
+  ORBIS_NODE_ENV: string
+}
+
 export type LoaderData = {
   subdomain: string | null
   appConfig: {

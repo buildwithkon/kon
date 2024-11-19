@@ -1,9 +1,14 @@
-import { getFormProps, getInputProps, useForm } from '@conform-to/react'
-import { parseWithZod } from '@conform-to/zod'
-import { Form } from '@remix-run/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { baseSepolia } from 'viem/chains'
+import { normalize } from 'viem/ens'
+import { useAccount, useChainId, useSwitchChain, useWriteContract } from 'wagmi'
 import { z } from 'zod'
+import { abi } from '~/lib/abis/L2Registar'
+import { REGISTAR_ADDRESS } from '~/lib/const'
+import { getSubnameAddress } from '~/lib/ens'
 
-export const schema = z.object({
+const FormSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'Name must be at least 3 characters long.' })
@@ -13,25 +18,57 @@ export const schema = z.object({
       message: 'Name cannot start or end with a hyphen.'
     })
 })
+type FormSchemaType = z.infer<typeof FormSchema>
 
 export default function StartForm() {
-  const [form, fields] = useForm({
-    shouldValidate: 'onBlur',
-    shouldRevalidate: 'onBlur',
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormSchemaType>({ resolver: zodResolver(FormSchema) })
+
+  const { address } = useAccount()
+  const { writeContractAsync } = useWriteContract()
+  const chainId = useChainId()
+  const { switchChain } = useSwitchChain()
+
+  const onSubmit = async (data: FormSchemaType) => {
+    const checkName = await getSubnameAddress(`${data.name}.demo.kon.eth`)
+
+    console.log('form::', data.name)
+
+    // check alredy exists
+    if (checkName) {
+      alert('Subname already taken')
+      return
     }
-  })
+
+    if (chainId !== baseSepolia.id) {
+      await switchChain({ chainId: baseSepolia.id })
+    }
+
+    try {
+      const res = await writeContractAsync({
+        abi,
+        address: REGISTAR_ADDRESS,
+        functionName: 'register',
+        args: [normalize(data.name), address as `0x${string}`]
+      })
+      console.log('res:::', res)
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
 
   return (
-    <Form method="post" {...getFormProps(form)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
-        <input {...getInputProps(fields.name, { type: 'text' })} className="w-full" placeholder="yourname" />
-        {fields.name.errors && <span className="px-1.5 text-red-400 text-sm">{fields.name.errors[0]}</span>}
+        <input {...register('name')} className="w-full" placeholder="yourname" />
+        {errors.name && <span className="px-1.5 text-red-400 text-sm">{errors.name.message}</span>}
         <button type="submit" className="btn-main w-full">
-          Set yourname
+          Claim your name
         </button>
       </div>
-    </Form>
+    </form>
   )
 }

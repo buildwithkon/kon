@@ -16,16 +16,16 @@ export default function Loader() {
     if (pathname !== '/' && !isConnected) {
       navigate('/')
     }
-    if (pathname === '/' && isConnected && address) {
-      navigate('/home')
-    }
+    // if (pathname === '/' && isConnected && address) {
+    //   navigate('/home')
+    // }
     // if (isConnected && address && !user.subname) {
     //   getSubname(address).then((subname) => {
     //     setUser((prev) => ({ ...prev, subname }))
-    //     if (subname) {
-    //       navigate('/home')
-    //     } else {
+    //     if (!subname) {
     //       navigate('/start')
+    //     } else if (pathname === '/') {
+    //       navigate('/home')
     //     }
     //   })
     // }

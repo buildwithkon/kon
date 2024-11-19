@@ -35,6 +35,6 @@ Users can log in effortlessly using their Passkey Wallets. Thanks to ENS subname
   - [AppPointFactory](https://sepolia.basescan.org/address/0x85876aD496a12c6563A6A01fb41a89ff58CAEC71#code)
   - [AppPoint (for DEMO)](https://sepolia.basescan.org/address/0x6D884056B5aded7FC77B6d975b13E0210b490ad6#code)
 - ENS L2 Subnames (durin.dev)
-  - [ENS L2Registory](https://sepolia.basescan.org/address/0x5550a769d1f8f583fce3ed4f87ee1102ab99b764#code)
-  - [ENS L2Registory](https://sepolia.basescan.org/address/0x5550a769d1f8f583fce3ed4f87ee1102ab99b764#code)
+  - [ENS L2Registory](https://sepolia.basescan.org/address/0x028706eaf6a89671bfd4ce9329f10e276b400f95)
   - [ENS L1Resolver](https://sepolia.etherscan.io/address/0x00f9314C69c3e7C37b3C7aD36EF9FB40d94eDDe1#code)
+  - [ENS L2Registar](https://sepolia.basescan.org/address/0x39ab724cd0d37e66a3fe0bdf629d3a1a7013aee3)

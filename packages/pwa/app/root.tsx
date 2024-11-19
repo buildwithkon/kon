@@ -8,15 +8,20 @@ import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import DefaultFavicon from '~/assets/favicon.png'
 import { loaderDataAtom } from '~/atoms'
+import Loader from '~/components/Loader'
 import { setAppColor, setFontClass } from '~/lib/style'
 import { loadAppConfig } from '~/lib/utils'
 import { config } from '~/lib/wagmi'
 import type { LoaderData } from '~/types'
-import Loader from './components/Loader'
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   const config = await loadAppConfig(request.url)
-  return { ...config }
+  return {
+    ...config,
+    ENV: {
+      ...context.cloudflare.env
+    }
+  }
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
