@@ -1,6 +1,9 @@
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
 
-export const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
+export const hexToRgb = (
+  hex: string,
+  mode: 'obj' | 'str' = 'obj'
+): { r: number; g: number; b: number } | string => {
   // remove `#`
   const _hex = hex.replace('#', '')
 
@@ -9,7 +12,7 @@ export const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
   const g = Number.parseInt(shorthand ? _hex[1] + _hex[1] : _hex.slice(2, 4), 16)
   const b = Number.parseInt(shorthand ? _hex[2] + _hex[2] : _hex.slice(4, 6), 16)
 
-  return { r, g, b }
+  return mode === 'obj' ? { r, g, b } : `${r} ${g} ${b}`
 }
 
 export const getFgColorFromBgColor = (mainColor: string): string => {

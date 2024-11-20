@@ -16,7 +16,11 @@ export default function Home() {
   const ld = useRouteLoaderData('root')
 
   const login = async () => {
-    await connectAsync({ connector: connectors[0] })
+    try {
+      await connectAsync({ connector: connectors[0] })
+    } catch (error) {
+      console.log('login error:', error)
+    }
   }
 
   return (

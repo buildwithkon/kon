@@ -59,6 +59,9 @@
   .wrapper-app {
     @apply wrapper pt-20 pb-28;
   }
+  .wrapper-app-full {
+    @apply wrapper pt-8 pb-28;
+  }
 }
 
 @layer components {
@@ -100,11 +103,15 @@
   .shine-overlay {
     position: relative;
     overflow: hidden;
-
     &:hover .shine {
       display: block;
     }
   }
+
+  .shine-activve .shine {
+    display: block;
+  }
+
   .shine {
     display: none;
     position: absolute;

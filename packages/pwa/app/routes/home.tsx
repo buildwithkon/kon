@@ -2,7 +2,6 @@ import type { MetaFunction } from '@remix-run/cloudflare'
 import { useRouteLoaderData } from '@remix-run/react'
 import BottomBar from '~/components/BottomBar'
 import ProfileCard from '~/components/ProfileCard'
-import TopBar from '~/components/TopBar'
 
 export const meta: MetaFunction = () => {
   const ld = useRouteLoaderData('root')
@@ -14,10 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <TopBar>
-        <div className="flex w-full justify-center">{ld?.appConfig?.name}</div>
-      </TopBar>
-      <div className="wrapper-app">
+      <div className="wrapper-app-full">
         <ProfileCard />
         <Badges />
         <BottomBar />
