@@ -7,7 +7,9 @@
     "build": "remix vite:build",
     "deploy": "pnpm run build && wrangler deploy",
     "dev": "remix vite:dev",
+    "check": "biome check --write ./app",
     "lint": "biome lint ./app",
+    "lint:unsafe": "biome lint --write --unsafe ./app",
     "format": "biome format --write ./app",
     "start": "wrangler dev",
     "typecheck": "tsc",
@@ -16,6 +18,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.35.6",
     "@coinbase/wallet-sdk": "^4.0.4",
     "@conform-to/react": "^1.2.2",
     "@conform-to/zod": "^1.2.2",
@@ -43,6 +46,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.2",
+    "remix-utils": "^7.7.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "vaul": "^0.9.2",

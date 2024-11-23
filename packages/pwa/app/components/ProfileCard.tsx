@@ -1,5 +1,6 @@
 import { QrCode } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
+import { useOrientation } from '@uidotdev/usehooks'
 import {} from 'react'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
@@ -8,6 +9,7 @@ import QrDrawer from '~/components/QrDrawer'
 export default function ProfileCard() {
   const { address } = useAccount()
   const ld = useRouteLoaderData('root')
+  const { angle } = useOrientation()
 
   return (
     <div

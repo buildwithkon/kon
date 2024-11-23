@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
 
-export default function Loader() {
+export default function Loading() {
   const { isConnected, isConnecting, address } = useAccount()
   const navigate = useNavigate()
   const { pathname } = useLocation()

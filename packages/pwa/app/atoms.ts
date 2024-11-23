@@ -1,4 +1,6 @@
-import { atom } from 'jotai'
+import { atom, createStore } from 'jotai'
+
+export const store = createStore()
 
 export const isLoadingAtom = atom<boolean>(false)
 

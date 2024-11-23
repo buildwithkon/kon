@@ -38,7 +38,7 @@ export default function Home() {
         <h1 className="font-bold text-6xl">{ld?.appConfig?.name ?? 'Kon community'}</h1>
         {ld?.appConfig?.description && <p className="text-2xl">{ld?.appConfig?.description}</p>}
       </div>
-      <footer className="fixed right-0 bottom-0 left-0 mx-auto max-w-[420px] px-6 py-6">
+      <footer className="fixed right-0 bottom-0 left-0 mx-auto max-w-screen-xs px-6 py-6">
         {process.env.NODE_ENV === 'development' || isStandalone ? (
           <button type="button" onClick={login} className="btn-main w-full bg-main-fg text-main text-xl">
             <HandTap size={28} className="-ml-4 mr-3" />

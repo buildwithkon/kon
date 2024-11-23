@@ -28,7 +28,7 @@ export default {
         sub2: '#c7c7c7'
       },
       screens: {
-        xs: '420px'
+        xs: '430px'
       },
       animation: {
         'spin-slow': 'spin 1.8s linear infinite'

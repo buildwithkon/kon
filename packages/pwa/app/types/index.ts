@@ -2,6 +2,8 @@ export type Env = {
   ORBIS_CERAMIC_GATEWAY: string
   ORBIS_NODE_GATEWAY: string
   ORBIS_NODE_ENV: string
+  COINBASE_CLIENT_API_KEY: string
+  ALCHEMY_API_KEY: string
 }
 
 export type LoaderData = {
