@@ -3,10 +3,11 @@ import { useRouteLoaderData } from '@remix-run/react'
 import StartForm from '~/components/StartForm'
 import TopBar from '~/components/TopBar'
 import IconKon from '~/components/icon/kon'
+import type { RootLoaderData } from '~/types'
 
-export const meta: MetaFunction = () => {
-  const ld = useRouteLoaderData('root')
-  return [{ title: `Sart | ${ld?.appConfig?.name ?? 'KON'}` }]
+export const meta: MetaFunction = ({ matches }) => {
+  const ld = matches[0]?.data as RootLoaderData
+  return [{ title: `Start | ${ld?.appConfig?.name ?? ''}` }]
 }
 
 export default function Start() {

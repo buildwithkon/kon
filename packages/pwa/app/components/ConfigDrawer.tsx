@@ -79,12 +79,12 @@ export default function Config() {
               <AlertDialogTitle>Are you sure to Logout?</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="text-mute">
-                <X weight="bold" className="mr-1" />
+              <AlertDialogCancel className="text-muted">
+                <X weight="bold" className="mr-1.5" />
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction onClick={logout} className="text-blue-500">
-                <Check weight="bold" className="mr-1 text-blue-400" />
+              <AlertDialogAction onClick={logout} className="text-blue-600">
+                <Check weight="bold" className="mr-1.5 text-blue-400" />
                 OK
               </AlertDialogAction>
             </AlertDialogFooter>

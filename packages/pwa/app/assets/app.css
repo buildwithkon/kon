@@ -17,14 +17,14 @@
     --c-bg: #1e1e1e;
   }
 
-  html,
-  body {
-    @apply min-h-screen;
-  }
-
   .content {
     background: var(--c-bg);
     color: var(--c-text);
+  }
+
+  html,
+  body {
+    @apply min-h-screen;
   }
 
   .text-muted {
@@ -44,12 +44,7 @@
   }
 
   body {
-    @apply min-h-screen;
-
-    &.default {
-      color: var(--c-text);
-      background: var(--c-bg);
-    }
+    @apply min-h-screen content;
   }
 
   .wrapper {
@@ -87,7 +82,7 @@
   }
 
   .btn {
-    @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:bg-opacity-90;
+    @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90;
   }
 
   .btn-main {

@@ -3,10 +3,9 @@ import { useRouteLoaderData } from '@remix-run/react'
 import BottomBar from '~/components/BottomBar'
 import ProfileCard from '~/components/ProfileCard'
 
-export const meta: MetaFunction = () => {
-  const ld = useRouteLoaderData('root')
-  return [{ title: `Home | ${ld?.appConfig?.name ?? 'KON'}` }]
-}
+export const meta: MetaFunction = ({ matches }) => [
+  { title: `Home | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+]
 
 export default function Home() {
   const ld = useRouteLoaderData('root')

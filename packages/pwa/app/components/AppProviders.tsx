@@ -6,14 +6,14 @@ import { type ReactNode, useState } from 'react'
 import { type State, WagmiProvider } from 'wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
 import { store } from '~/atoms'
-import Loading from '~/components/Loading'
 import { getConfig } from '~/lib/wagmi'
+import type { RootLoaderData } from '~/types'
 
 export default function AppProviders(props: {
   children: ReactNode
   initialState?: State
 }) {
-  const ld = useRouteLoaderData('root')
+  const ld = useRouteLoaderData('root') as RootLoaderData
   const [config] = useState(() => getConfig(ld?.ENV))
   const [queryClient] = useState(() => new QueryClient())
 
@@ -21,11 +21,8 @@ export default function AppProviders(props: {
     <JotaiProvider store={store}>
       <WagmiProvider config={config} initialState={props.initialState}>
         <QueryClientProvider client={queryClient}>
-          <OnchainKitProvider apiKey={ld?.ENV?.COINBASE_CLIENT_API_KEY} chain={baseSepolia ?? base}>
-            <>
-              {props.children}
-              <Loading />
-            </>
+          <OnchainKitProvider apiKey={ld?.ENV?.CDP_CLIENT_API_KEY} chain={baseSepolia ?? base}>
+            {props.children}
           </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

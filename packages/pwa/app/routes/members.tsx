@@ -6,10 +6,9 @@ import Avatar from '~/components/Avatar'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
 
-export const meta: MetaFunction = () => {
-  const ld = useRouteLoaderData('root')
-  return [{ title: `Members | ${ld?.appConfig?.name ?? 'KON'}` }]
-}
+export const meta: MetaFunction = ({ matches }) => [
+  { title: `Members | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+]
 
 const DummyList = [
   { id: 'john', pt: 100, address: '0x1C4e3C31623F12d8f0C17b75e53C186B991FF33B' },

@@ -1,10 +1,12 @@
 import { ManifestLink } from '@remix-pwa/sw'
 import type { LinksFunction, LoaderFunction } from '@remix-run/cloudflare'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useMatches } from '@remix-run/react'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
 import DefaultFavicon from '~/assets/favicon.png'
+import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import { setAppColor, setFontClass } from '~/lib/style'
 import { loadAppConfig } from '~/lib/utils'
+
 import type { LoaderData } from '~/types'
 import '~/assets/app.css'
 
@@ -33,8 +35,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const ld = useLoaderData<LoaderData>()
-  const matches = useMatches()
-  const bodyClass = matches.find((match) => match.data?.bodyClass)?.data?.bodyClass || 'default'
 
   return (
     <html
@@ -51,7 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
       </head>
-      <body className={bodyClass} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -63,6 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AppProviders>
+      <AppHandler />
       <Outlet />
     </AppProviders>
   )

@@ -2,7 +2,7 @@ export type Env = {
   ORBIS_CERAMIC_GATEWAY: string
   ORBIS_NODE_GATEWAY: string
   ORBIS_NODE_ENV: string
-  COINBASE_CLIENT_API_KEY: string
+  CDP_CLIENT_API_KEY: string
   ALCHEMY_API_KEY: string
 }
 
@@ -28,6 +28,10 @@ export type LoaderData = {
       points?: string
     }
   } | null
+}
+
+export type RootLoaderData = LoaderData & {
+  ENV: Env
 }
 
 export type UserData = {
