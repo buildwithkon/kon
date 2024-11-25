@@ -1,10 +1,10 @@
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
 import { normalize } from 'viem/ens'
-import { client, clientSepolia } from './client'
+import { getClient } from './client'
 
-export const ENS_APPCONFIG_NAME = 'kon.eth'
-export const ENS_APPCONFIG_KEY = 'app.kon'
+const ENS_APPCONFIG_NAME = 'kon.eth'
+const ENS_APPCONFIG_KEY = 'app.kon'
 
 const app = new Hono()
 
@@ -18,8 +18,9 @@ app.get(
 
 app.get('/api/ens/:chain/getAppConfig/:id', async (c) => {
   const id = c.req.param('id')
-  const _client = c.req.param('chain') === 'sepolia' ? clientSepolia : client
-  const res = await _client.getEnsText({
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const res = await client.getEnsText({
     name: normalize(`${id}.${ENS_APPCONFIG_NAME}`),
     key: ENS_APPCONFIG_KEY
   })
@@ -28,8 +29,9 @@ app.get('/api/ens/:chain/getAppConfig/:id', async (c) => {
 
 app.get('/api/ens/:chain/getAppAvatar/:id', async (c) => {
   const id = c.req.param('id')
-  const _client = c.req.param('chain') === 'sepolia' ? clientSepolia : client
-  const res = await _client.getEnsAvatar({
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const res = await client.getEnsAvatar({
     name: normalize(`${id}.${ENS_APPCONFIG_NAME}`)
   })
   return c.json(res)
@@ -37,8 +39,9 @@ app.get('/api/ens/:chain/getAppAvatar/:id', async (c) => {
 
 app.get('/api/ens/:chain/getSubname/:address', async (c) => {
   const address = c.req.param('address') as `0x${string}`
-  const _client = c.req.param('chain') === 'sepolia' ? clientSepolia : client
-  const res = await _client.getEnsName({
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const res = await client.getEnsName({
     address
   })
   return c.json(res)
@@ -46,8 +49,9 @@ app.get('/api/ens/:chain/getSubname/:address', async (c) => {
 
 app.get('/api/ens/:chain/getSubnameAddress/:name', async (c) => {
   const name = c.req.param('name')
-  const _client = c.req.param('chain') === 'sepolia' ? clientSepolia : client
-  const res = await _client.getEnsAddress({
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const res = await client.getEnsAddress({
     name: normalize(name)
   })
   return c.json(res)

@@ -3,6 +3,9 @@ name = "kon-pwa"
 compatibility_date = "2024-11-12"
 main = "./server.ts"
 assets = { directory = "./build/client" }
+services = [
+  { binding = "API_ENS", service = "kon-api-ens" }
+]
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
