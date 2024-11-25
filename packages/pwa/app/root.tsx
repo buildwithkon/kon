@@ -24,6 +24,7 @@ export const links: LinksFunction = () => [
 ]
 
 export const loader: LoaderFunction = async ({ request, context }) => {
+  console.log('_________', request.url)
   const config = await loadAppConfig(request.url)
   return {
     ...config,

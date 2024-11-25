@@ -1,31 +1,34 @@
 import { getEnsAddress, getEnsAvatar, getEnsName, getEnsText } from '@wagmi/core'
 import { normalize } from 'viem/ens'
 import { ENS_APPCONFIG_CHAINID, ENS_APPCONFIG_KEY, ENS_APPCONFIG_NAME } from '~/lib/const'
-import { config } from '~/lib/wagmi'
+import { getConfig } from '~/lib/wagmi'
+import type { Env } from '~/types'
 
-export const getSubname = async (address: `0x${string}`) =>
-  await getEnsName(config, {
+export const getSubname = async (env: Env, address: `0x${string}`) =>
+  await getEnsName(getConfig(env), {
     address,
     chainId: ENS_APPCONFIG_CHAINID
   })
 
-export const getSubnameAddress = async (name: string) =>
-  await getEnsAddress(config, {
+export const getSubnameAddress = async (env: Env, name: string) =>
+  await getEnsAddress(getConfig(env), {
     name: normalize(name),
     chainId: ENS_APPCONFIG_CHAINID
   })
 
-export const getAppConfig = async (subdomain: string) => {
-  const configText = await getEnsText(config, {
+export const getAppConfig = async (env: Env, subdomain: string) => {
+  console.log('10', subdomain)
+  const configText = await getEnsText(getConfig(env), {
     name: normalize(`${subdomain}.${ENS_APPCONFIG_NAME}`),
     key: ENS_APPCONFIG_KEY,
     chainId: ENS_APPCONFIG_CHAINID
   })
+  console.log('11', configText)
   return configText ? JSON.parse(configText) : null
 }
 
-export const getAppAvatar = async (subdomain: string) =>
-  await getEnsAvatar(config, {
+export const getAppAvatar = async (env: Env, subdomain: string) =>
+  await getEnsAvatar(getConfig(env), {
     name: normalize(`${subdomain}.${ENS_APPCONFIG_NAME}`),
     chainId: ENS_APPCONFIG_CHAINID
   })
