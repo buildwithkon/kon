@@ -4,6 +4,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '
 import DefaultFavicon from '~/assets/favicon.png'
 import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
+import NotFound from '~/components/NotFound'
 import { setAppColor, setFontClass } from '~/lib/style'
 import { loadAppConfig } from '~/lib/utils'
 
@@ -24,8 +25,8 @@ export const links: LinksFunction = () => [
 ]
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  console.log('_________', request.url)
   const config = await loadAppConfig(request.url)
+
   return {
     ...config,
     ENV: {
@@ -62,6 +63,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const ld = useLoaderData<LoaderData>()
+
+  if (!ld.appConfig) {
+    return <NotFound />
+  }
+
   return (
     <AppProviders>
       <AppHandler />

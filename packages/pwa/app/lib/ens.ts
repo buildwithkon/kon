@@ -17,13 +17,11 @@ export const getSubnameAddress = async (env: Env, name: string) =>
   })
 
 export const getAppConfig = async (env: Env, subdomain: string) => {
-  console.log('10', subdomain)
   const configText = await getEnsText(getConfig(env), {
     name: normalize(`${subdomain}.${ENS_APPCONFIG_NAME}`),
     key: ENS_APPCONFIG_KEY,
     chainId: ENS_APPCONFIG_CHAINID
   })
-  console.log('11', configText)
   return configText ? JSON.parse(configText) : null
 }
 
