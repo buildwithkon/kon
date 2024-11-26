@@ -1,13 +1,14 @@
-import { ManifestLink } from '@remix-pwa/sw'
+import { useSWEffect } from '@remix-pwa/sw'
 import type { LinksFunction, LoaderFunction } from '@remix-run/cloudflare'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
 import DefaultFavicon from '~/assets/favicon.png'
+import { setAppColor, setFontClass } from '~/lib/style'
+import { loadAppConfig } from '~/lib/utils'
+import '~/assets/app.css'
 import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
-import { setAppColor, setFontClass } from '~/lib/style'
-import { loadAppConfig } from '~/lib/utils'
-
+import type { Env } from '~/types'
 import type { LoaderData } from '~/types'
 import '~/assets/app.css'
 
@@ -25,7 +26,7 @@ export const links: LinksFunction = () => [
 ]
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  const config = await loadAppConfig(request.url, context.cloudflare.env)
+  const config = await loadAppConfig(request.url, context.cloudflare.env as Env)
 
   return {
     ...config,
@@ -36,24 +37,26 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const ld = useLoaderData<LoaderData>()
+  useSWEffect()
+  const ld = useLoaderData<typeof loader>()
 
   return (
     <html
       lang="en"
       style={setAppColor(ld?.appConfig?.colors?.main)}
       className={setFontClass(ld?.appConfig?.font)}
+      suppressHydrationWarning
     >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
         <Meta />
-        <ManifestLink />
+        <link rel="manifest" id="manifest" />
         <Links />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
       </head>
-      <body suppressHydrationWarning>
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />

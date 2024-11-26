@@ -1,10 +1,11 @@
-import { SpinnerGap } from '@phosphor-icons/react'
-import { useSWEffect } from '@remix-pwa/sw'
-import { useLocation, useNavigate } from '@remix-run/react'
+import { useLocation, useNavigate, useRouteLoaderData } from '@remix-run/react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
+import Loading from '~/components/Loading'
+import { generateManifest } from '~/lib/utils'
+import type { RootLoaderData } from '~/types'
 
 export default function AppHandler() {
   const { isConnected, isConnecting, address } = useAccount()
@@ -12,7 +13,6 @@ export default function AppHandler() {
   const { pathname } = useLocation()
   const isLoading = useAtomValue(isLoadingAtom)
   const [user, setUser] = useAtom(userAtom)
-  useSWEffect()
 
   useEffect(() => {
     if (pathname !== '/' && !isConnected) {
@@ -33,9 +33,19 @@ export default function AppHandler() {
     // }
   }, [isConnected, address, navigate, pathname])
 
-  return isLoading || isConnecting ? (
-    <div className="fixed top-0 right-0 bottom-0 left-0 z-50 grid place-items-center bg-gray-500/60 backdrop-blur">
-      <SpinnerGap weight="bold" size={80} className="animate-spin-slow" />
-    </div>
-  ) : null
+  const ld = useRouteLoaderData('root') as RootLoaderData
+
+  useEffect(() => {
+    const manifestElement = document.getElementById('manifest')
+    const manifestString = JSON.stringify({
+      ...generateManifest(ld),
+      start_url: `${window.location.origin}/home`
+    })
+    manifestElement?.setAttribute(
+      'href',
+      `data:application/json;charset=utf-8,${encodeURIComponent(manifestString)}`
+    )
+  }, [ld])
+
+  return isLoading || isConnecting ? <Loading /> : null
 }

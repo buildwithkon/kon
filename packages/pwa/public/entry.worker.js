@@ -141,8 +141,7 @@ const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   default: worker_runtime_default
 }, Symbol.toStringTag, { value: "Module" }));
 const assets = [
-  "/entry.worker.js",
-  "/favicon.ico"
+  "/entry.worker.js"
 ];
 const routes = {
   "root": {
@@ -1060,7 +1059,7 @@ const joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/");
 const normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/");
 const normalizeSearch = (search) => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search;
 const normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash;
-const json$2 = function json(data2, init) {
+const json$1 = function json(data2, init) {
   if (init === void 0) {
     init = {};
   }
@@ -1203,11 +1202,11 @@ class DeferredData {
     return Array.from(this.pendingKeysSet);
   }
 }
-function isTrackedPromise$2(value) {
+function isTrackedPromise$1(value) {
   return value instanceof Promise && value._tracked === true;
 }
 function unwrapTrackedPromise(value) {
-  if (!isTrackedPromise$2(value)) {
+  if (!isTrackedPromise$1(value)) {
     return value;
   }
   if (value._error) {
@@ -1224,7 +1223,7 @@ const defer$1 = function defer(data2, init) {
   } : init;
   return new DeferredData(data2, responseInit);
 };
-const redirect$2 = function redirect(url, init) {
+const redirect$1 = function redirect(url, init) {
   if (init === void 0) {
     init = 302;
   }
@@ -1243,12 +1242,12 @@ const redirect$2 = function redirect(url, init) {
   }));
 };
 const redirectDocument$1 = (url, init) => {
-  let response = redirect$2(url, init);
+  let response = redirect$1(url, init);
   response.headers.set("X-Remix-Reload-Document", "true");
   return response;
 };
 const replace$1 = (url, init) => {
-  let response = redirect$2(url, init);
+  let response = redirect$1(url, init);
   response.headers.set("X-Remix-Replace", "true");
   return response;
 };
@@ -1275,7 +1274,7 @@ const validMutationMethodsArr = ["post", "put", "patch", "delete"];
 const validMutationMethods = new Set(validMutationMethodsArr);
 const validRequestMethodsArr = ["get", ...validMutationMethodsArr];
 const validRequestMethods = new Set(validRequestMethodsArr);
-const redirectStatusCodes$2 = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
+const redirectStatusCodes$1 = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
 const redirectPreserveMethodStatusCodes = /* @__PURE__ */ new Set([307, 308]);
 const IDLE_NAVIGATION = {
   state: "idle",
@@ -2904,7 +2903,7 @@ function createStaticHandler(routes2, opts) {
       };
     }
     let result = await queryImpl(request, location, matches, requestContext, dataStrategy || null, skipLoaderErrorBubbling === true, null);
-    if (isResponse$2(result)) {
+    if (isResponse$1(result)) {
       return result;
     }
     return _extends({
@@ -2943,7 +2942,7 @@ function createStaticHandler(routes2, opts) {
       });
     }
     let result = await queryImpl(request, location, matches, requestContext, dataStrategy || null, false, match);
-    if (isResponse$2(result)) {
+    if (isResponse$1(result)) {
       return result;
     }
     let error = result.errors ? Object.values(result.errors)[0] : void 0;
@@ -2971,18 +2970,18 @@ function createStaticHandler(routes2, opts) {
         return result2;
       }
       let result = await loadRouteData(request, matches, requestContext, dataStrategy, skipLoaderErrorBubbling, routeMatch);
-      return isResponse$2(result) ? result : _extends({}, result, {
+      return isResponse$1(result) ? result : _extends({}, result, {
         actionData: null,
         actionHeaders: {}
       });
     } catch (e) {
-      if (isDataStrategyResult(e) && isResponse$2(e.result)) {
+      if (isDataStrategyResult(e) && isResponse$1(e.result)) {
         if (e.type === ResultType.error) {
           throw e.result;
         }
         return e.result;
       }
-      if (isRedirectResponse$2(e)) {
+      if (isRedirectResponse$1(e)) {
         return e;
       }
       throw e;
@@ -3133,7 +3132,7 @@ function createStaticHandler(routes2, opts) {
         let response = result.result;
         throw normalizeRelativeRoutingRedirectResponse(response, request, match.route.id, matches, basename, future.v7_relativeSplatPath);
       }
-      if (isResponse$2(result.result) && isRouteRequest) {
+      if (isResponse$1(result.result) && isRouteRequest) {
         throw result;
       }
       dataResults[match.route.id] = await convertDataStrategyResultToDataResult(result);
@@ -3669,7 +3668,7 @@ async function convertDataStrategyResultToDataResult(dataStrategyResult) {
     result,
     type
   } = dataStrategyResult;
-  if (isResponse$2(result)) {
+  if (isResponse$1(result)) {
     let data2;
     try {
       let contentType = result.headers.get("Content-Type");
@@ -3722,7 +3721,7 @@ async function convertDataStrategyResultToDataResult(dataStrategyResult) {
       statusCode: isRouteErrorResponse(result) ? result.status : void 0
     };
   }
-  if (isDeferredData$2(result)) {
+  if (isDeferredData$1(result)) {
     var _result$init3, _result$init4;
     return {
       type: ResultType.deferred,
@@ -4039,7 +4038,7 @@ function isDataStrategyResult(result) {
   return result != null && typeof result === "object" && "type" in result && "result" in result && (result.type === ResultType.data || result.type === ResultType.error);
 }
 function isRedirectDataStrategyResultResult(result) {
-  return isResponse$2(result.result) && redirectStatusCodes$2.has(result.result.status);
+  return isResponse$1(result.result) && redirectStatusCodes$1.has(result.result.status);
 }
 function isDeferredResult(result) {
   return result.type === ResultType.deferred;
@@ -4053,15 +4052,15 @@ function isRedirectResult(result) {
 function isDataWithResponseInit(value) {
   return typeof value === "object" && value != null && "type" in value && "data" in value && "init" in value && value.type === "DataWithResponseInit";
 }
-function isDeferredData$2(value) {
+function isDeferredData$1(value) {
   let deferred = value;
   return deferred && typeof deferred === "object" && typeof deferred.data === "object" && typeof deferred.subscribe === "function" && typeof deferred.cancel === "function" && typeof deferred.resolveData === "function";
 }
-function isResponse$2(value) {
+function isResponse$1(value) {
   return value != null && typeof value.status === "number" && typeof value.statusText === "string" && typeof value.headers === "object" && typeof value.body !== "undefined";
 }
-function isRedirectResponse$2(result) {
-  if (!isResponse$2(result)) {
+function isRedirectResponse$1(result) {
+  if (!isResponse$1(result)) {
     return false;
   }
   let status = result.status;
@@ -4343,152 +4342,21 @@ const router$2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProp
   getStaticContextFromError,
   getToPathname,
   isDataWithResponseInit,
-  isDeferredData: isDeferredData$2,
+  isDeferredData: isDeferredData$1,
   isRouteErrorResponse,
   joinPaths,
-  json: json$2,
+  json: json$1,
   matchPath,
   matchRoutes,
   normalizePathname,
   parsePath,
-  redirect: redirect$2,
+  redirect: redirect$1,
   redirectDocument: redirectDocument$1,
   replace: replace$1,
   resolvePath,
   resolveTo,
   stripBasename
 }, Symbol.toStringTag, { value: "Module" }));
-var ServerMode$1;
-(function(ServerMode2) {
-  ServerMode2["Development"] = "development";
-  ServerMode2["Production"] = "production";
-  ServerMode2["Test"] = "test";
-})(ServerMode$1 || (ServerMode$1 = {}));
-function isDeferredData$1(value) {
-  const deferred = value;
-  return deferred && typeof deferred === "object" && typeof deferred.data === "object" && typeof deferred.subscribe === "function" && typeof deferred.cancel === "function" && typeof deferred.resolveData === "function";
-}
-function isResponse$1(value) {
-  return value != null && typeof value.status === "number" && typeof value.statusText === "string" && typeof value.headers === "object" && typeof value.body !== "undefined";
-}
-const redirectStatusCodes$1 = /* @__PURE__ */ new Set([301, 302, 303, 307, 308]);
-function isRedirectStatusCode$1(statusCode) {
-  return redirectStatusCodes$1.has(statusCode);
-}
-function isRedirectResponse$1(response) {
-  return isRedirectStatusCode$1(response.status);
-}
-function isTrackedPromise$1(value) {
-  return value != null && typeof value.then === "function" && value._tracked === true;
-}
-const redirect$1 = (url, init = 302) => {
-  let responseInit = init;
-  if (typeof responseInit === "number") {
-    responseInit = { status: responseInit };
-  } else if (typeof responseInit.status === "undefined") {
-    responseInit.status = 302;
-  }
-  const headers = new Headers(responseInit.headers);
-  headers.set("Location", url);
-  return new Response(null, {
-    ...responseInit,
-    headers
-  });
-};
-const json$1 = (data2, init = {}) => {
-  const responseInit = typeof init === "number" ? {} : init;
-  const headers = new Headers(responseInit.headers);
-  if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json; charset=utf-8");
-  }
-  return new Response(JSON.stringify(data2), {
-    ...responseInit,
-    headers
-  });
-};
-function sanitizeError$1(error, serverMode) {
-  if (error instanceof Error && serverMode !== ServerMode$1.Development) {
-    const sanitized = new Error("Unexpected Server Error");
-    sanitized.stack = void 0;
-    return sanitized;
-  }
-  return error;
-}
-function serializeError$1(error, serverMode) {
-  const sanitized = sanitizeError$1(error, serverMode);
-  return {
-    message: sanitized.message,
-    stack: sanitized.stack
-  };
-}
-function clone(_object) {
-  const init = {};
-  for (const property in _object) {
-    init[property] = _object[property];
-  }
-  return init;
-}
-function getURLParameters(request, path = "") {
-  const url = new URL(request.url);
-  const match = matchPath(path, url.pathname);
-  return {
-    ...Object.fromEntries(new URL(request.url).searchParams.entries()),
-    ...match == null ? void 0 : match.params
-  };
-}
-function stripIndexParameter(request) {
-  const url = new URL(request.url);
-  const indexValues = url.searchParams.getAll("index");
-  const indexValuesToKeep = [];
-  url.searchParams.delete("index");
-  for (const indexValue of indexValues) {
-    if (indexValue) {
-      indexValuesToKeep.push(indexValue);
-    }
-  }
-  for (const toKeep of indexValuesToKeep) {
-    url.searchParams.append("index", toKeep);
-  }
-  return new Request(url.href, { ...clone(request), duplex: "half" });
-}
-function stripDataParameter(request) {
-  const url = new URL(request.url);
-  url.searchParams.delete("_data");
-  return new Request(url.href, { ...clone(request), duplex: "half" });
-}
-function stripRouteParameter(request) {
-  const url = new URL(request.url);
-  url.searchParams.delete("_route");
-  return new Request(url.href, { ...clone(request), duplex: "half" });
-}
-function createArgumentsFrom({ event, loadContext, path }) {
-  const request = stripRouteParameter(stripDataParameter(stripIndexParameter(event.request.clone())));
-  const parameters = getURLParameters(request, path);
-  return {
-    request,
-    params: parameters,
-    context: loadContext
-  };
-}
-function isMethod(request, methods) {
-  return methods.includes(request.method.toLowerCase());
-}
-function isLoaderMethod(request) {
-  return isMethod(request, ["get"]);
-}
-function isActionMethod(request) {
-  return isMethod(request, ["post", "delete", "put", "patch", "head"]);
-}
-function isActionRequest(request, spaMode = false) {
-  const url = new URL(request.url);
-  const qualifies = spaMode ? url.searchParams.get("_route") : url.searchParams.get("_data");
-  return isActionMethod(request) && qualifies;
-}
-function isLoaderRequest(request, spaMode = false) {
-  const url = new URL(request.url);
-  const qualifies = spaMode ? url.searchParams.get("_route") : url.searchParams.get("_data");
-  return isLoaderMethod(request) && qualifies;
-}
 function getAugmentedNamespace(n) {
   if (n.__esModule) return n;
   var f = n.default;
@@ -4513,9 +4381,6 @@ function getAugmentedNamespace(n) {
   });
   return a;
 }
-var responses = {};
-const require$$0 = /* @__PURE__ */ getAugmentedNamespace(router$2);
-var errors$2 = {};
 var mode$2 = {};
 /**
  * @remix-run/server-runtime v2.15.0
@@ -4545,6 +4410,9 @@ const mode$1 = /* @__PURE__ */ _mergeNamespaces({
   default: mode$2,
   isServerMode: isServerMode_1
 }, [mode$2]);
+var responses = {};
+const require$$0 = /* @__PURE__ */ getAugmentedNamespace(router$2);
+var errors$2 = {};
 const require$$1$1 = /* @__PURE__ */ getAugmentedNamespace(mode$1);
 /**
  * @remix-run/server-runtime v2.15.0
@@ -4669,8 +4537,8 @@ function isRedirectResponse(response) {
 function isTrackedPromise(value) {
   return value != null && typeof value.then === "function" && value._tracked === true;
 }
-const DEFERRED_VALUE_PLACEHOLDER_PREFIX$1 = "__deferred_promise:";
-function createDeferredReadableStream$1(deferredData, signal, serverMode) {
+const DEFERRED_VALUE_PLACEHOLDER_PREFIX = "__deferred_promise:";
+function createDeferredReadableStream(deferredData, signal, serverMode) {
   let encoder = new TextEncoder();
   let stream = new ReadableStream({
     async start(controller) {
@@ -4678,72 +4546,6 @@ function createDeferredReadableStream$1(deferredData, signal, serverMode) {
       let preresolvedKeys = [];
       for (let [key, value] of Object.entries(deferredData.data)) {
         if (isTrackedPromise(value)) {
-          criticalData[key] = `${DEFERRED_VALUE_PLACEHOLDER_PREFIX$1}${key}`;
-          if (typeof value._data !== "undefined" || typeof value._error !== "undefined") {
-            preresolvedKeys.push(key);
-          }
-        } else {
-          criticalData[key] = value;
-        }
-      }
-      controller.enqueue(encoder.encode(JSON.stringify(criticalData) + "\n\n"));
-      for (let preresolvedKey of preresolvedKeys) {
-        enqueueTrackedPromise$1(controller, encoder, preresolvedKey, deferredData.data[preresolvedKey], serverMode);
-      }
-      let unsubscribe = deferredData.subscribe((aborted, settledKey) => {
-        if (settledKey) {
-          enqueueTrackedPromise$1(controller, encoder, settledKey, deferredData.data[settledKey], serverMode);
-        }
-      });
-      await deferredData.resolveData(signal);
-      unsubscribe();
-      controller.close();
-    }
-  });
-  return stream;
-}
-function enqueueTrackedPromise$1(controller, encoder, settledKey, promise, serverMode) {
-  if ("_error" in promise) {
-    controller.enqueue(encoder.encode("error:" + JSON.stringify({
-      [settledKey]: promise._error instanceof Error ? errors.serializeError(promise._error, serverMode) : promise._error
-    }) + "\n\n"));
-  } else {
-    controller.enqueue(encoder.encode("data:" + JSON.stringify({
-      [settledKey]: promise._data ?? null
-    }) + "\n\n"));
-  }
-}
-responses.createDeferredReadableStream = createDeferredReadableStream$1;
-responses.defer = defer2;
-responses.isDeferredData = isDeferredData;
-responses.isRedirectResponse = isRedirectResponse;
-responses.isRedirectStatusCode = isRedirectStatusCode;
-responses.isResponse = isResponse;
-var json_1 = responses.json = json2;
-responses.redirect = redirect2;
-responses.redirectDocument = redirectDocument;
-responses.replace = replace;
-function errorResponseToJson(errorResponse) {
-  return json_1(errorResponse.error || { message: "Unexpected Server Error" }, {
-    status: errorResponse.status,
-    statusText: errorResponse.statusText,
-    headers: {
-      "X-Remix-Error": "yes"
-    }
-  });
-}
-function isRemixResponse(response) {
-  return Array.from(response.headers.keys()).some((key) => key.toLowerCase().startsWith("x-remix-"));
-}
-const DEFERRED_VALUE_PLACEHOLDER_PREFIX = "__deferred_promise:";
-function createDeferredReadableStream(deferredData, signal, serverMode) {
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const criticalData = {};
-      const preresolvedKeys = [];
-      for (const [key, value] of Object.entries(deferredData.data)) {
-        if (isTrackedPromise$1(value)) {
           criticalData[key] = `${DEFERRED_VALUE_PLACEHOLDER_PREFIX}${key}`;
           if (typeof value._data !== "undefined" || typeof value._error !== "undefined") {
             preresolvedKeys.push(key);
@@ -4753,10 +4555,10 @@ function createDeferredReadableStream(deferredData, signal, serverMode) {
         }
       }
       controller.enqueue(encoder.encode(JSON.stringify(criticalData) + "\n\n"));
-      for (const preresolvedKey of preresolvedKeys) {
+      for (let preresolvedKey of preresolvedKeys) {
         enqueueTrackedPromise(controller, encoder, preresolvedKey, deferredData.data[preresolvedKey], serverMode);
       }
-      const unsubscribe = deferredData.subscribe((aborted, settledKey) => {
+      let unsubscribe = deferredData.subscribe((aborted, settledKey) => {
         if (settledKey) {
           enqueueTrackedPromise(controller, encoder, settledKey, deferredData.data[settledKey], serverMode);
         }
@@ -4771,26 +4573,104 @@ function createDeferredReadableStream(deferredData, signal, serverMode) {
 function enqueueTrackedPromise(controller, encoder, settledKey, promise, serverMode) {
   if ("_error" in promise) {
     controller.enqueue(encoder.encode("error:" + JSON.stringify({
-      [settledKey]: promise._error instanceof Error ? serializeError$1(promise._error, serverMode) : promise._error
+      [settledKey]: promise._error instanceof Error ? errors.serializeError(promise._error, serverMode) : promise._error
     }) + "\n\n"));
   } else {
-    controller.enqueue(encoder.encode("data:" + JSON.stringify({ [settledKey]: promise._data ?? null }) + "\n\n"));
+    controller.enqueue(encoder.encode("data:" + JSON.stringify({
+      [settledKey]: promise._data ?? null
+    }) + "\n\n"));
   }
 }
-var define_process_env_default = {};
-async function handleRequest({ defaultHandler: defaultHandler2, errorHandler, event, loadContext, routes: routes2 }) {
-  var _a, _b;
-  const isSPAMode = String("false") === "true";
-  const isSingleFetchMode = String(define_process_env_default.__REMIX_SINGLE_FETCH) === "true";
-  const url = new URL(event.request.url);
-  let routeId;
-  if (!isSPAMode) {
-    routeId = url.searchParams.get("_data");
-  } else {
-    routeId = url.searchParams.get("_route");
+var createDeferredReadableStream_1 = responses.createDeferredReadableStream = createDeferredReadableStream;
+responses.defer = defer2;
+var isDeferredData_1 = responses.isDeferredData = isDeferredData;
+var isRedirectResponse_1 = responses.isRedirectResponse = isRedirectResponse;
+var isRedirectStatusCode_1 = responses.isRedirectStatusCode = isRedirectStatusCode;
+var isResponse_1 = responses.isResponse = isResponse;
+var json_1 = responses.json = json2;
+var redirect_1 = responses.redirect = redirect2;
+responses.redirectDocument = redirectDocument;
+responses.replace = replace;
+function clone(_object) {
+  const init = {};
+  for (const property in _object) {
+    init[property] = _object[property];
   }
-  if (isSingleFetchMode)
-    routeId = null;
+  return init;
+}
+function getURLParameters(request, path = "") {
+  const url = new URL(request.url);
+  const match = matchPath(path, url.pathname);
+  return {
+    ...Object.fromEntries(new URL(request.url).searchParams.entries()),
+    ...match == null ? void 0 : match.params
+  };
+}
+function stripIndexParameter(request) {
+  const url = new URL(request.url);
+  const indexValues = url.searchParams.getAll("index");
+  const indexValuesToKeep = [];
+  url.searchParams.delete("index");
+  for (const indexValue of indexValues) {
+    if (indexValue) {
+      indexValuesToKeep.push(indexValue);
+    }
+  }
+  for (const toKeep of indexValuesToKeep) {
+    url.searchParams.append("index", toKeep);
+  }
+  return new Request(url.href, { ...clone(request), duplex: "half" });
+}
+function stripDataParameter(request) {
+  const url = new URL(request.url);
+  url.searchParams.delete("_data");
+  return new Request(url.href, { ...clone(request), duplex: "half" });
+}
+function createArgumentsFrom({ event, loadContext, path }) {
+  const request = stripDataParameter(stripIndexParameter(event.request.clone()));
+  const parameters = getURLParameters(request, path);
+  return {
+    request,
+    params: parameters,
+    context: loadContext
+  };
+}
+function isMethod(request, methods) {
+  return methods.includes(request.method.toLowerCase());
+}
+function isLoaderMethod(request) {
+  return isMethod(request, ["get"]);
+}
+function isActionMethod(request) {
+  return isMethod(request, ["post", "delete", "put", "patch", "head"]);
+}
+function isActionRequest(request, spaMode = false) {
+  const url = new URL(request.url);
+  const qualifies = spaMode ? true : url.searchParams.get("_data");
+  return isActionMethod(request) && qualifies;
+}
+function isLoaderRequest(request, spaMode = false) {
+  const url = new URL(request.url);
+  const qualifies = spaMode ? true : url.searchParams.get("_data");
+  return isLoaderMethod(request) && qualifies;
+}
+function errorResponseToJson(errorResponse) {
+  return json_1(errorResponse.error || { message: "Unexpected Server Error" }, {
+    status: errorResponse.status,
+    statusText: errorResponse.statusText,
+    headers: {
+      "X-Remix-Error": "yes"
+    }
+  });
+}
+function isRemixResponse(response) {
+  return Array.from(response.headers.keys()).some((key) => key.toLowerCase().startsWith("x-remix-"));
+}
+async function handleRequest({ defaultHandler: defaultHandler2, errorHandler, event, loadContext, routes: routes2 }) {
+  var _a;
+  const isSPAMode = false;
+  const url = new URL(event.request.url);
+  const routeId = url.searchParams.get("_data");
   const route = routeId ? routes2[routeId] : void 0;
   const _arguments = {
     request: event.request,
@@ -4798,7 +4678,7 @@ async function handleRequest({ defaultHandler: defaultHandler2, errorHandler, ev
     context: loadContext
   };
   try {
-    if (isLoaderRequest(event.request, isSPAMode) && (route == null ? void 0 : route.hasWorkerLoader) && ((_a = route == null ? void 0 : route.module) == null ? void 0 : _a.workerLoader)) {
+    if (isLoaderRequest(event.request, isSPAMode) && (route == null ? void 0 : route.module.workerLoader)) {
       return await handleLoader({
         event,
         loader: route.module.workerLoader,
@@ -4807,7 +4687,7 @@ async function handleRequest({ defaultHandler: defaultHandler2, errorHandler, ev
         loadContext
       }).then(responseHandler);
     }
-    if (isActionRequest(event.request, isSPAMode) && (route == null ? void 0 : route.hasWorkerAction) && ((_b = route == null ? void 0 : route.module) == null ? void 0 : _b.workerAction)) {
+    if (isActionRequest(event.request, isSPAMode) && ((_a = route == null ? void 0 : route.module) == null ? void 0 : _a.workerAction)) {
       return await handleAction({
         event,
         action: route.module.workerAction,
@@ -4828,18 +4708,18 @@ async function handleLoader({ event, loadContext, loader, routeId, routePath }) 
   if (result === void 0) {
     throw new Error(`You defined a loader for route "${routeId}" but didn't return anything from your \`worker loader\` function. Please return a value or \`null\`.`);
   }
-  if (isDeferredData$1(result)) {
-    if (result.init && isRedirectStatusCode$1(result.init.status || 200)) {
-      return redirect$1(new Headers(result.init.headers).get("Location"), result.init);
+  if (isDeferredData_1(result)) {
+    if (result.init && isRedirectStatusCode_1(result.init.status || 200)) {
+      return redirect_1(new Headers(result.init.headers).get("Location"), result.init);
     }
-    const body = createDeferredReadableStream(result, event.request.signal, ServerMode$1.Production);
+    const body = createDeferredReadableStream_1(result, event.request.signal, ServerMode_1.Production);
     const init = result.init || {};
     const headers = new Headers(init.headers);
     headers.set("Content-Type", "text/remix-deferred");
     init.headers = headers;
     return new Response(body, init);
   }
-  return isResponse$1(result) ? result : json$1(result);
+  return isResponse_1(result) ? result : json_1(result);
 }
 async function handleAction({ action, event, loadContext, routeId, routePath }) {
   const _arguments = createArgumentsFrom({ event, loadContext, path: routePath });
@@ -4847,10 +4727,10 @@ async function handleAction({ action, event, loadContext, routeId, routePath }) 
   if (result === void 0) {
     throw new Error(`You defined an action for route "${routeId}" but didn't return anything from your \`worker action\` function. Please return a value or \`null\`.`);
   }
-  return isResponse$1(result) ? result : json$1(result);
+  return isResponse_1(result) ? result : json_1(result);
 }
 function _errorHandler({ error, handler: handleError }) {
-  if (isResponse$1(error)) {
+  if (isResponse_1(error)) {
     error.headers.set("X-Remix-Catch", "yes");
     return error;
   }
@@ -4860,7 +4740,7 @@ function _errorHandler({ error, handler: handleError }) {
   }
   const errorInstance = error instanceof Error ? error : new Error("Unexpected Server Error");
   handleError(errorInstance);
-  return json$1({ message: errorInstance.message }, {
+  return json_1({ message: errorInstance.message }, {
     status: 500,
     headers: {
       "X-Remix-Error": "yes"
@@ -4868,7 +4748,7 @@ function _errorHandler({ error, handler: handleError }) {
   });
 }
 function responseHandler(response) {
-  if (isRedirectResponse$1(response)) {
+  if (isRedirectResponse_1(response)) {
     const headers2 = new Headers(response.headers);
     headers2.set("X-Remix-Redirect", headers2.get("Location"));
     headers2.set("X-Remix-Status", String(response.status));
