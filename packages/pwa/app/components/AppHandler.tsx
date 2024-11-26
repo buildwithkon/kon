@@ -1,4 +1,5 @@
 import { SpinnerGap } from '@phosphor-icons/react'
+import { useSWEffect } from '@remix-pwa/sw'
 import { useLocation, useNavigate } from '@remix-run/react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -11,6 +12,7 @@ export default function AppHandler() {
   const { pathname } = useLocation()
   const isLoading = useAtomValue(isLoadingAtom)
   const [user, setUser] = useAtom(userAtom)
+  useSWEffect()
 
   useEffect(() => {
     if (pathname !== '/' && !isConnected) {

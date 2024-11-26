@@ -43,7 +43,7 @@ export default function Home() {
               Start
             </button>
           ) : (
-            <PWAInstallPrompt className="btn-main w-full" />
+            <PWAInstallPrompt className="btn-main w-full bg-main-fg text-main text-xl" />
           )}
           <BuildWith />
         </footer>

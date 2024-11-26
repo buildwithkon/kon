@@ -9,34 +9,27 @@ export const shortAddr = (address: string, prefix = 8, suffix = 4) => {
   return `${address.substring(1, prefix + 1)}...${address.substring(address.length - suffix)}`
 }
 
-export const loadAppConfig = async (_url: string) => {
-  const urlArr = new URL(_url).hostname.split('.')
+export const loadAppConfig = async (_url: string, env: Env) => {
+  const url = new URL(_url)
+  const urlArr = url.hostname.split('.')
   const subdomain = urlArr.length > 1 ? urlArr[0] : null
 
-  if (!subdomain) {
-    return process.env.NODE_ENV === 'development'
-      ? {
-          subdomain: devConfig.id,
-          appConfig: devConfig
-        }
-      : {
-          subdomain: null,
-          appConfig: null
-        }
+  if (process.env.NODE_ENV === 'development') {
+    return {
+      subdomain: devConfig.id,
+      appConfig: devConfig
+    }
   }
 
-  const apiUrl = `${new URL(_url).origin}/api/ens/getAppConfig/${subdomain}`
   let appConfig = null
   if (subdomain) {
     try {
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`)
-      }
-      appConfig = await response.json()
+      const res = await env.API_ENS.fetch(`${url.origin}/api/ens/sepolia/getAppConfig/${subdomain}`).then(
+        (res) => res.json()
+      )
+      appConfig = JSON.parse(res)
     } catch (error) {
       console.error('Error fetching appConfig:', error)
-      appConfig = null
     }
   }
 

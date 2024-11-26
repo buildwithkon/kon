@@ -25,7 +25,7 @@ export const links: LinksFunction = () => [
 ]
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  const config = await loadAppConfig(request.url)
+  const config = await loadAppConfig(request.url, context.cloudflare.env)
 
   return {
     ...config,

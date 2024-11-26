@@ -4,6 +4,7 @@ export type Env = {
   ORBIS_NODE_ENV: string
   CDP_CLIENT_API_KEY: string
   ALCHEMY_API_KEY: string
+  API_ENS: Fetcher
 }
 
 export type LoaderData = {
