@@ -16,7 +16,7 @@ app.get(
   })
 )
 
-app.get('/api/ens/:chain/getAppConfig/:id', async (c) => {
+app.get('/ens/:chain/getAppConfig/:id', async (c) => {
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
@@ -27,7 +27,7 @@ app.get('/api/ens/:chain/getAppConfig/:id', async (c) => {
   return c.json(res)
 })
 
-app.get('/api/ens/:chain/getAppAvatar/:id', async (c) => {
+app.get('/ens/:chain/getAppAvatar/:id', async (c) => {
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
@@ -37,7 +37,7 @@ app.get('/api/ens/:chain/getAppAvatar/:id', async (c) => {
   return c.json(res)
 })
 
-app.get('/api/ens/:chain/getSubname/:address', async (c) => {
+app.get('/ens/:chain/getSubname/:address', async (c) => {
   const address = c.req.param('address') as `0x${string}`
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
@@ -47,7 +47,7 @@ app.get('/api/ens/:chain/getSubname/:address', async (c) => {
   return c.json(res)
 })
 
-app.get('/api/ens/:chain/getSubnameAddress/:name', async (c) => {
+app.get('/ens/:chain/getSubnameAddress/:name', async (c) => {
   const name = c.req.param('name')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)

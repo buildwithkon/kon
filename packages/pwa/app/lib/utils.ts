@@ -27,8 +27,8 @@ export const loadAppConfig = async (_url: string, env: Env) => {
   let appConfig = null
   if (subdomain) {
     try {
-      const res = await env.API_ENS.fetch(`${url.origin}/api/ens/sepolia/getAppConfig/${subdomain}`).then(
-        (res) => res.json()
+      const res = await env.API_ENS.fetch(`${url.origin}/ens/sepolia/getAppConfig/${subdomain}`).then((res) =>
+        res.json()
       )
       appConfig = JSON.parse(res)
     } catch (error) {
