@@ -7,28 +7,30 @@ export type Env = {
   API_ENS: Fetcher
 }
 
+export type AppConfig = {
+  id: string
+  name: string
+  description?: string
+  url: string
+  icons: {
+    favicon: string
+    logo?: string
+  }
+  version: string
+  font?: 'sans' | 'serif' | 'dot'
+  colors?: {
+    main: string
+    sub?: string
+  }
+  plugins?: {
+    xmtp?: string
+    points?: string
+  }
+}
+
 export type LoaderData = {
   subdomain: string | null
-  appConfig: {
-    id: string
-    name: string
-    description?: string
-    url: string
-    icons: {
-      favicon: string
-      logo?: string
-    }
-    version: string
-    font?: 'sans' | 'serif' | 'dot'
-    colors?: {
-      main: string
-      sub?: string
-    }
-    plugins?: {
-      xmtp?: string
-      points?: string
-    }
-  } | null
+  appConfig: AppConfig | null
 }
 
 export type RootLoaderData = LoaderData & {

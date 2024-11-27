@@ -5,10 +5,12 @@ import { useRouteLoaderData } from '@remix-run/react'
 import Avatar from '~/components/Avatar'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
+import type { RootLoaderData } from '~/types'
 
-export const meta: MetaFunction = ({ matches }) => [
-  { title: `Members | ${matches[0]?.data?.appConfig?.name ?? ''}` }
-]
+export const meta: MetaFunction = ({ matches }) => {
+  const ld = matches[0]?.data as RootLoaderData
+  return [{ title: `Members | ${ld?.appConfig?.name ?? ''}` }]
+}
 
 const DummyList = [
   { id: 'john', pt: 100, address: '0x1C4e3C31623F12d8f0C17b75e53C186B991FF33B' },

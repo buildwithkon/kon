@@ -36,16 +36,18 @@ export default function AppHandler() {
   const ld = useRouteLoaderData('root') as RootLoaderData
 
   useEffect(() => {
-    const manifestElement = document.getElementById('manifest')
-    const manifestString = JSON.stringify({
-      ...generateManifest(ld),
-      start_url: `${window.location.origin}/home`
-    })
-    manifestElement?.setAttribute(
-      'href',
-      `data:application/json;charset=utf-8,${encodeURIComponent(manifestString)}`
-    )
-  }, [ld])
+    if (typeof window !== 'undefined') {
+      const manifestElement = document.getElementById('manifest')
+      const manifestString = JSON.stringify({
+        ...generateManifest(ld.appConfig),
+        start_url: `${window.location.origin}/home`
+      })
+      manifestElement?.setAttribute(
+        'href',
+        `data:application/json;charset=utf-8,${encodeURIComponent(manifestString)}`
+      )
+    }
+  }, [ld.appConfig])
 
-  return isLoading || isConnecting ? <Loading /> : null
+  return !ld || isLoading || isConnecting ? <Loading /> : null
 }

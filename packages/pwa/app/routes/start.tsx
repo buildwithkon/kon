@@ -11,7 +11,7 @@ export const meta: MetaFunction = ({ matches }) => {
 }
 
 export default function Start() {
-  const ld = useRouteLoaderData('root')
+  const ld = useRouteLoaderData('root') as RootLoaderData
 
   return (
     <div className="wrapper-app">

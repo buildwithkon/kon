@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import Favicon from '~/assets/favicon.png'
 import { devConfig } from '~/lib/data/devConfig'
-import type { Env, LoaderData } from '~/types'
+import type { AppConfig, Env } from '~/types'
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
@@ -41,16 +41,16 @@ export const loadAppConfig = async (_url: string, env: Env) => {
   }
 }
 
-export const generateManifest = (ld: LoaderData) => ({
-  short_name: ld?.appConfig?.name ?? 'kon',
-  name: ld?.appConfig?.name ?? 'kon',
+export const generateManifest = (appConfig: AppConfig) => ({
+  short_name: appConfig?.name ?? 'kon',
+  name: appConfig?.name ?? 'kon',
   start_url: '/',
   display: 'standalone',
-  background_color: ld?.appConfig?.colors?.main ?? '#ffe614',
-  theme_color: ld?.appConfig?.colors?.main ?? '#ffe614',
+  background_color: appConfig?.colors?.main ?? '#ffe614',
+  theme_color: appConfig?.colors?.main ?? '#ffe614',
   icons: [
     {
-      src: ld?.appConfig?.icons?.favicon ?? Favicon,
+      src: appConfig?.icons?.favicon ?? Favicon,
       sizes: '512x512',
       type: 'image/png'
     }
