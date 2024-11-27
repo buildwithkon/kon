@@ -1,12 +1,15 @@
+import { TransactionDefault } from '@coinbase/onchainkit/transaction'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouteLoaderData } from '@remix-run/react'
 import { useForm } from 'react-hook-form'
 import { baseSepolia } from 'viem/chains'
 import { normalize } from 'viem/ens'
 import { useAccount, useChainId, useSwitchChain, useWriteContract } from 'wagmi'
 import { z } from 'zod'
 import { abi } from '~/lib/abis/L2Registar'
-import { REGISTAR_ADDRESS } from '~/lib/const'
+import { ENS_APPCONFIG_NAME, REGISTAR_ADDRESS } from '~/lib/const'
 import { getSubnameAddress } from '~/lib/ens'
+import type { RootLoaderData } from '~/types'
 
 const FormSchema = z.object({
   name: z
@@ -27,13 +30,15 @@ export default function StartForm() {
     formState: { errors }
   } = useForm<FormSchemaType>({ resolver: zodResolver(FormSchema) })
 
+  const ld = useRouteLoaderData('root') as RootLoaderData
+
   const { address } = useAccount()
   const { writeContractAsync } = useWriteContract()
   const chainId = useChainId()
   const { switchChain } = useSwitchChain()
 
   const onSubmit = async (data: FormSchemaType) => {
-    const checkName = await getSubnameAddress(`${data.name}.demo.kon.eth`)
+    const checkName = await getSubnameAddress(ld.ENV, `${data.name}.${ld.subdomain}.${ENS_APPCONFIG_NAME}`)
 
     console.log('form::', data.name)
 
@@ -65,6 +70,7 @@ export default function StartForm() {
       <div className="space-y-4">
         <input {...register('name')} className="w-full" placeholder="yourname" />
         {errors.name && <span className="px-1.5 text-red-400 text-sm">{errors.name.message}</span>}
+        <TransactionDefault />
         <button type="submit" className="btn-main w-full">
           Claim your name
         </button>
