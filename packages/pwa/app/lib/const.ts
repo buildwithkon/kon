@@ -8,6 +8,7 @@ export const ENS_APPCONFIG_KEY = 'app.kon'
 
 export const COLOR_HEX_DARK = '#1e1e1e'
 export const COLOR_HEX_LIGHT = '#f7f7f7'
+export const COLOR_HEX_MAIN_DEFAULT = '#ffe614'
 
 export const REGISTAR_ADDRESS = '0x39ab724cd0d37e66a3fe0bdf629d3a1a7013aee3'
 

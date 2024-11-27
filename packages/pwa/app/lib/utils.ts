@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import Favicon from '~/assets/favicon.png'
+import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '~/lib/const'
 import { devConfig } from '~/lib/data/devConfig'
 import type { AppConfig, Env } from '~/types'
 
@@ -42,12 +43,12 @@ export const loadAppConfig = async (_url: string, env: Env) => {
 }
 
 export const generateManifest = (appConfig: AppConfig) => ({
-  short_name: appConfig?.name ?? 'kon',
-  name: appConfig?.name ?? 'kon',
+  short_name: appConfig?.name ?? APP_NAME,
+  name: appConfig?.name ?? APP_NAME,
   start_url: '/',
   display: 'standalone',
-  background_color: appConfig?.colors?.main ?? '#ffe614',
-  theme_color: appConfig?.colors?.main ?? '#ffe614',
+  background_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
+  theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
       src: appConfig?.icons?.favicon ?? Favicon,

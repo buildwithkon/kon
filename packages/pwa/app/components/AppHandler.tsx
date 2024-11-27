@@ -14,6 +14,7 @@ export default function AppHandler() {
   const isLoading = useAtomValue(isLoadingAtom)
   const [user, setUser] = useAtom(userAtom)
 
+  // redirect
   useEffect(() => {
     if (pathname !== '/' && !isConnected) {
       navigate('/')
@@ -35,8 +36,9 @@ export default function AppHandler() {
 
   const ld = useRouteLoaderData('root') as RootLoaderData
 
+  // manifest
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && ld.appConfig) {
       const manifestElement = document.getElementById('manifest')
       const manifestString = JSON.stringify({
         ...generateManifest(ld.appConfig),
