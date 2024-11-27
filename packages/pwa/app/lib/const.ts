@@ -1,5 +1,6 @@
 import { baseSepolia, mainnet, sepolia } from 'viem/chains'
 
+export const APP_NAME = 'KON'
 export const SITE_URL = 'https://kon.xyz'
 
 export const ENS_APPCONFIG_CHAINID = sepolia.id
