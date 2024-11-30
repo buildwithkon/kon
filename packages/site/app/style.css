@@ -22,3 +22,7 @@ body {
 i {
   @apply not-italic px-0.5;
 }
+
+a svg {
+  @apply hover:text-black/70;
+}
