@@ -2,7 +2,8 @@
   "name": "api-ens",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
+    "deploy": "wrangler deploy --minify",
+    "test": "vitest run"
   },
   "dependencies": {
     "hono": "^4.6.12",
@@ -10,6 +11,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241112.0",
+    "vitest": "^2.1.6",
     "wrangler": "^3.91.0"
   }
 }
