@@ -1,42 +1,17 @@
-import { parseWithZod } from '@conform-to/zod'
-import type { ActionFunction, MetaFunction } from '@remix-run/cloudflare'
-import { useActionData } from '@remix-run/react'
-import { useAtomValue } from 'jotai'
-import { loaderDataAtom } from '~/atoms'
+import type { MetaFunction } from '@remix-run/cloudflare'
+import { useRouteLoaderData } from '@remix-run/react'
 import StartForm from '~/components/StartForm'
-import { schema } from '~/components/StartForm'
 import TopBar from '~/components/TopBar'
 import IconKon from '~/components/icon/kon'
-import { getSubnameAddress } from '~/lib/ens'
+import type { RootLoaderData } from '~/types'
 
-export const meta: MetaFunction = () => {
-  const ld = useAtomValue(loaderDataAtom)
-  return [{ title: `Sart | ${ld?.appConfig?.name ?? 'KON'}` }]
-}
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData()
-  const submission = parseWithZod(formData, { schema })
-
-  if (submission.status !== 'success') {
-    return submission.reply()
-  }
-
-  const checkName = await getSubnameAddress(`${submission?.value?.name ?? ''}.demo.kon.eth`)
-
-  if (checkName) {
-    return submission.reply({
-      formErrors: ['Subname already taken']
-    })
-  }
-
-  return submission.value
+export const meta: MetaFunction = ({ matches }) => {
+  const ld = matches[0]?.data as RootLoaderData
+  return [{ title: `Start | ${ld?.appConfig?.name ?? ''}` }]
 }
 
 export default function Start() {
-  const ld = useAtomValue(loaderDataAtom)
-  const ad = useActionData()
-  console.log('ad:::', ad)
+  const ld = useRouteLoaderData('root') as RootLoaderData
 
   return (
     <div className="wrapper-app">

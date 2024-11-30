@@ -1,3 +1,4 @@
+import { remixPWA } from '@remix-pwa/dev'
 import { cloudflareDevProxyVitePlugin, vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -23,7 +24,8 @@ export default defineConfig({
         v3_lazyRouteDiscovery: true
       }
     }),
-    tsconfigPaths()
+    tsconfigPaths(),
+    remixPWA()
   ],
   ssr: {
     resolve: {
@@ -35,8 +37,5 @@ export default defineConfig({
   },
   build: {
     minify: true
-  },
-  optimizeDeps: {
-    exclude: ['@xmtp/wasm-bindings']
   }
 })

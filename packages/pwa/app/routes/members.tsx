@@ -1,15 +1,15 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
 import { ChatCircle, HandCoins } from '@phosphor-icons/react'
 import type { MetaFunction } from '@remix-run/cloudflare'
-import { useAtomValue } from 'jotai'
-import { loaderDataAtom } from '~/atoms'
+import { useRouteLoaderData } from '@remix-run/react'
 import Avatar from '~/components/Avatar'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
+import type { RootLoaderData } from '~/types'
 
-export const meta: MetaFunction = () => {
-  const ld = useAtomValue(loaderDataAtom)
-  return [{ title: `Members | ${ld?.appConfig?.name ?? 'KON'}` }]
+export const meta: MetaFunction = ({ matches }) => {
+  const ld = matches[0]?.data as RootLoaderData
+  return [{ title: `Members | ${ld?.appConfig?.name ?? ''}` }]
 }
 
 const DummyList = [
@@ -33,7 +33,7 @@ export default function Members() {
 }
 
 const UserLists = () => {
-  const ld = useAtomValue(loaderDataAtom)
+  const ld = useRouteLoaderData('root')
 
   return (
     <div className="-mx-6">

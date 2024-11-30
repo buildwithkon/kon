@@ -1,13 +1,12 @@
 import { PlusCircle } from '@phosphor-icons/react'
 import type { MetaFunction } from '@remix-run/cloudflare'
-import { useAtomValue } from 'jotai'
-import { loaderDataAtom } from '~/atoms'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
+import type { RootLoaderData } from '~/types'
 
-export const meta: MetaFunction = () => {
-  const ld = useAtomValue(loaderDataAtom)
-  return [{ title: `Forum | ${ld?.appConfig?.name ?? 'KON'}` }]
+export const meta: MetaFunction = ({ matches }) => {
+  const ld = matches[0]?.data as RootLoaderData
+  return [{ title: `Forum | ${ld?.appConfig?.name ?? ''}` }]
 }
 
 export default function Forum() {

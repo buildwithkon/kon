@@ -1,10 +1,12 @@
+import { useRouteLoaderData } from '@remix-run/react'
 import { QRCodeSVG } from 'qrcode.react'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
 import { useAccount } from 'wagmi'
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
 
 export default function QrDrawer({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
+  const ld = useRouteLoaderData('root')
   const isDarkMode = false
 
   return (
@@ -19,6 +21,15 @@ export default function QrDrawer({ children }: { children: React.ReactNode }) {
             fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
             size={168}
+            imageSettings={{
+              src: ld?.appConfig?.icons?.favicon,
+              x: undefined,
+              y: undefined,
+              height: 36,
+              width: 36,
+              opacity: 1,
+              excavate: true
+            }}
           />
         </div>
       </DrawerContent>
