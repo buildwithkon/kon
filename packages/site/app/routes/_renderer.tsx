@@ -1,5 +1,5 @@
 import { jsxRenderer } from 'hono/jsx-renderer'
-import { Link } from 'honox/server'
+import { HasIslands, Link } from 'honox/server'
 
 export default jsxRenderer(({ children }) => {
   return (
@@ -17,6 +17,13 @@ export default jsxRenderer(({ children }) => {
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400,700,800&display=swap"
           rel="stylesheet"
         />
+        {import.meta.env.PROD ? (
+          <HasIslands>
+            <script type="module" src="/static/client.js" />
+          </HasIslands>
+        ) : (
+          <script type="module" src="/app/client.ts" />
+        )}
       </head>
       <body>{children}</body>
     </html>

@@ -6,7 +6,6 @@
   --c-main: #C5F900;
 }
 
-
 body {
   @apply min-h-screen text-black font-mono;
   background: var(--c-main);
@@ -18,4 +17,8 @@ body {
   > main {
     @apply flex-1;
   }
+}
+
+i {
+  @apply not-italic px-0.5;
 }
