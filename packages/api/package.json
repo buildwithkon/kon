@@ -1,8 +1,9 @@
 {
-  "name": "api-ens",
+  "name": "kon-api",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "gen-type": "wrangler type",
     "test": "vitest run"
   },
   "dependencies": {

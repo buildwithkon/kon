@@ -6,7 +6,7 @@ import { getClient } from './lib/client'
 const ENS_APPCONFIG_NAME = 'kon.eth'
 const ENS_APPCONFIG_KEY = 'app.kon'
 
-const ens = new Hono()
+const ens = new Hono<{ Bindings: Env }>()
 
 ens.get(
   '*',
