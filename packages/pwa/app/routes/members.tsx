@@ -5,7 +5,6 @@ import { useRouteLoaderData } from '@remix-run/react'
 import Avatar from '~/components/Avatar'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
-import type { RootLoaderData } from '~/types'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as RootLoaderData

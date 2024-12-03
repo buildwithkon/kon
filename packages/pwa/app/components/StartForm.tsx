@@ -9,7 +9,6 @@ import { z } from 'zod'
 import { abi } from '~/lib/abis/L2Registar'
 import { ENS_APPCONFIG_NAME, REGISTAR_ADDRESS } from '~/lib/const'
 import { getSubnameAddress } from '~/lib/ens'
-import type { RootLoaderData } from '~/types'
 
 const FormSchema = z.object({
   name: z
@@ -30,7 +29,7 @@ export default function StartForm() {
     formState: { errors }
   } = useForm<FormSchemaType>({ resolver: zodResolver(FormSchema) })
 
-  const ld = useRouteLoaderData('root') as RootLoaderData
+  const ld = useRouteLoaderData<RootLoader>('root')
 
   const { address } = useAccount()
   const { writeContractAsync } = useWriteContract()

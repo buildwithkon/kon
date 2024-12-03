@@ -2,7 +2,6 @@ import type { MetaFunction } from '@remix-run/cloudflare'
 import { useRouteLoaderData } from '@remix-run/react'
 import BottomBar from '~/components/BottomBar'
 import ProfileCard from '~/components/ProfileCard'
-import type { RootLoaderData } from '~/types'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as RootLoaderData

@@ -5,7 +5,7 @@ import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
 import Loading from '~/components/Loading'
 import { generateManifest } from '~/lib/utils'
-import type { RootLoaderData } from '~/types'
+import type { RootLoader } from '~/root'
 
 export default function AppHandler() {
   const { isConnected, isConnecting, address } = useAccount()
@@ -34,7 +34,7 @@ export default function AppHandler() {
     // }
   }, [isConnected, address, navigate, pathname])
 
-  const ld = useRouteLoaderData('root') as RootLoaderData
+  const ld = useRouteLoaderData<RootLoader>('root')
 
   // manifest
   useEffect(() => {

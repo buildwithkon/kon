@@ -5,12 +5,12 @@ import { useConnect } from 'wagmi'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
 import IconKon from '~/components/icon/kon'
 import { SITE_URL } from '~/lib/const'
-import type { RootLoaderData } from '~/types'
+import type { RootLoader } from '~/root'
 
 export default function Home() {
   const { connectors, connectAsync } = useConnect()
   const { isStandalone } = usePwa()
-  const ld = useRouteLoaderData<RootLoaderData>('root')
+  const ld = useRouteLoaderData<RootLoader>('root')
 
   const login = async () => {
     try {

@@ -3,7 +3,7 @@ import { useRouteLoaderData } from '@remix-run/react'
 import StartForm from '~/components/StartForm'
 import TopBar from '~/components/TopBar'
 import IconKon from '~/components/icon/kon'
-import type { RootLoaderData } from '~/types'
+import type { RootLoader } from '~/root'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as RootLoaderData
@@ -11,7 +11,7 @@ export const meta: MetaFunction = ({ matches }) => {
 }
 
 export default function Start() {
-  const ld = useRouteLoaderData('root') as RootLoaderData
+  const ld = useRouteLoaderData<RootLoader>('root')
 
   return (
     <div className="wrapper-app">

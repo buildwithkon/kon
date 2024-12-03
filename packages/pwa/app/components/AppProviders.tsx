@@ -7,13 +7,13 @@ import { type State, WagmiProvider } from 'wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
 import { store } from '~/atoms'
 import { getConfig } from '~/lib/wagmi'
-import type { RootLoaderData } from '~/types'
+import type { RootLoader } from '~/root'
 
 export default function AppProviders(props: {
   children: ReactNode
   initialState?: State
 }) {
-  const ld = useRouteLoaderData('root') as RootLoaderData
+  const ld = useRouteLoaderData<RootLoader>('root')
   const [config] = useState(() => getConfig(ld?.ENV))
   const [queryClient] = useState(() => new QueryClient())
 

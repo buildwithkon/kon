@@ -9,7 +9,6 @@ import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
 import type { Env } from '~/types'
-import type { LoaderData } from '~/types'
 import '~/assets/app.css'
 
 export const links: LinksFunction = () => [
@@ -36,9 +35,11 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   }
 }
 
+export type RootLoader = typeof loader
+
 export function Layout({ children }: { children: React.ReactNode }) {
   useSWEffect()
-  const ld = useLoaderData<typeof loader>()
+  const ld = useLoaderData<RootLoader>()
 
   return (
     <html
@@ -66,7 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const ld = useLoaderData<LoaderData>()
+  const ld = useLoaderData<RootLoader>()
 
   if (!ld.appConfig) {
     return <NotFound />
