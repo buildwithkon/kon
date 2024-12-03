@@ -5,7 +5,7 @@ const app = new Hono<{ Bindings: Env }>()
 app.route('/ens', ens)
 
 app.get('/', (c) => {
-  return c.text('kon.xyz API')
+  return c.text('  ┌───────────────┐\n ＜  kon.xyz API  ｜\n  └───────────────┘')
 })
 
 export type ApiType = typeof app
