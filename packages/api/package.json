@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
-    "gen-type": "wrangler type",
+    "typegen": "wrangler type",
     "test": "vitest run"
   },
   "dependencies": {
