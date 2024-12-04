@@ -6,6 +6,11 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "scripts": {
+    "api": "pnpm -F \"kon-api\"",
+    "pwa": "pnpm -F \"kon-pwa\"",
+    "site": "pnpm -F \"kon-site\""
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4"
   },

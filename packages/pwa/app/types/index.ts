@@ -33,7 +33,7 @@ export type LoaderData = {
   appConfig: AppConfig | null
 }
 
-export type RootLoaderData = LoaderData & {
+export type RootLoader = LoaderData & {
   ENV: Env
 }
 

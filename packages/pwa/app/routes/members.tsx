@@ -7,7 +7,7 @@ import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
 
 export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as RootLoaderData
+  const ld = matches[0]?.data as RootLoader
   return [{ title: `Members | ${ld?.appConfig?.name ?? ''}` }]
 }
 

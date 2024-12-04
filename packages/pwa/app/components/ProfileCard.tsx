@@ -5,10 +5,12 @@ import {} from 'react'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
 import QrDrawer from '~/components/QrDrawer'
+import { genRanStr } from '~/lib/utils'
+import type { RootLoader } from '~/types'
 
-export default function ProfileCard() {
+export default function ProfileCard({ qr = true }: { qr?: boolean }) {
   const { address } = useAccount()
-  const ld = useRouteLoaderData('root')
+  const ld = useRouteLoaderData<RootLoader>('root')
   const { angle } = useOrientation()
 
   return (
@@ -33,19 +35,24 @@ export default function ProfileCard() {
       <div className="absolute bottom-6 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
         <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
         <div className="-mt-1 flex-col pl-2.5">
-          <div className="w-2/3 truncate font-bold text-2xl">yuji</div>
+          <div className="min-w-2/3 truncate font-bold text-2xl"> {genRanStr(10)}</div>
           <div className="-mt-0.5 flex items-center font-mono">
             <span className="px-0.5">
-              1,000<span className="px-0.5">pts</span>
+              {genRanStr()}
+              <span className="px-0.5">pts</span>
             </span>
           </div>
         </div>
       </div>
-      <QrDrawer>
-        <button type="button">
-          <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
-        </button>
-      </QrDrawer>
+      {qr ? (
+        <QrDrawer>
+          <button type="button">
+            <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
+          </button>
+        </QrDrawer>
+      ) : (
+        <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
+      )}
     </div>
   )
 }

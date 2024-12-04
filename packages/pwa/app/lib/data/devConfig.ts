@@ -20,18 +20,18 @@ const devConfig1 = {
 }
 
 const devConfig2 = {
-  id: 'demo',
+  id: 'alpha',
   version: '1.0',
-  url: 'demo.kon.xyz',
-  name: 'DEMO with KON',
-  description: 'Demo community app for ETHBangkok 2024 - build with KON',
+  url: 'alpha.kon.xyz',
+  name: 'Alpha Club',
+  description: 'This is an experimental space for KON Alpha.',
   icons: {
-    favicon: 'https://euc.li/sepolia/demo.kululu.eth',
-    logo: 'https://euc.li/sepolia/demo.kululu.eth'
+    favicon: 'https://kon.xyz/static/favicon.png',
+    logo: 'https://kon.xyz/static/favicon.png'
   },
   font: 'sans',
   colors: {
-    main: '#FFB147'
+    main: '#C5F900'
   },
   plugins: {
     xmtp: 'xGqF3kCJXOfGLetv67hTh',
@@ -39,4 +39,4 @@ const devConfig2 = {
   }
 }
 
-export const devConfig = devConfig1
+export const devConfig = devConfig2
