@@ -1,6 +1,8 @@
 name = "kon-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-25"
+[placement]
+mode = "smart"
 
 # compatibility_flags = [ "nodejs_compat" ]
 

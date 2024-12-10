@@ -8,11 +8,15 @@
   "license": "MIT",
   "scripts": {
     "api": "pnpm -F \"kon-api\"",
+    "api:dev": "pnpm -F \"kon-api\" run dev",
     "pwa": "pnpm -F \"kon-pwa\"",
-    "site": "pnpm -F \"kon-site\""
+    "pwa:dev": "pnpm -F \"kon-pwa\" run dev",
+    "site": "pnpm -F \"kon-site\"",
+    "start": "concurrently \"pnpm pwa run dev\" \"pnpm api run dev\""
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
+    "@biomejs/biome": "^1.9.4",
+    "concurrently": "^9.1.0"
   },
   "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
 }
