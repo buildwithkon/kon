@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
 import Loading from '~/components/Loading'
-import { generateManifest } from '~/lib/utils'
+import { generateManifest } from '~/lib/api'
 import type { RootLoader } from '~/root'
 
 export default function AppHandler() {

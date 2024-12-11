@@ -12,7 +12,8 @@
     "pwa": "pnpm -F \"kon-pwa\"",
     "pwa:dev": "pnpm -F \"kon-pwa\" run dev",
     "site": "pnpm -F \"kon-site\"",
-    "start": "concurrently \"pnpm pwa run dev\" \"pnpm api run dev\""
+    "start:dev": "concurrently \"pnpm pwa run dev\" \"pnpm api run dev\"",
+    "start": "concurrently \"pnpm pwa run start\" \"pnpm api run dev\""
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
