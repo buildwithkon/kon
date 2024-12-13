@@ -44,10 +44,10 @@ export default function RegistorForm() {
             placeholder="Your ID"
             aria-describedby="subname"
           />
-          <small id="subname" className="px-2 pt-0.5 text-sm">
+          <small id="subname" className="px-2 pt-0.5 text-xs">
             * Only lowercase letters, numbers, and hyphens.
           </small>
-          {fields.id.errors && <p className="px-1.5 text-red-400 text-sm">{fields.id.errors}</p>}
+          {fields.id.errors && <p className="px-1.5 text-red-400 text-xs">{fields.id.errors}</p>}
         </div>
         <div>
           <input
@@ -57,10 +57,10 @@ export default function RegistorForm() {
             placeholder="Display Name"
             aria-describedby="displayname"
           />
-          <small id="displayname" className="px-2 pt-0.5 text-sm">
+          <small id="displayname" className="px-2 pt-0.5 text-xs">
             * Optional, can be changed later.
           </small>
-          {fields.name.errors && <p className="px-1.5 text-red-400 text-sm">{fields.name.errors}</p>}
+          {fields.name.errors && <p className="px-1.5 text-red-400 text-xs">{fields.name.errors}</p>}
         </div>
         <button type="submit" className="btn-main w-full">
           Join

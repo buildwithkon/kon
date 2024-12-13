@@ -4,7 +4,7 @@ const devConfig1 = {
   url: 'centrum.kon.xyz',
   name: 'Centrum',
   description: 'Global web3 Community Space in Shibuya',
-  font: 'serif',
+  font: 'sans',
   icons: {
     favicon: 'https://i.imgur.com/OlCwNTn.png',
     logo: 'https://i.imgur.com/OlCwNTn.png'
@@ -29,7 +29,7 @@ const devConfig2 = {
     favicon: 'https://kon.xyz/static/favicon.png',
     logo: 'https://kon.xyz/static/favicon.png'
   },
-  font: 'sans',
+  font: 'serif',
   colors: {
     main: '#C5F900'
   },

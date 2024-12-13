@@ -7,9 +7,9 @@ export default {
   safelist: ['font-sans', 'font-serif', 'font-mono', 'font-dot'],
   theme: {
     fontFamily: {
-      sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
-      serif: ['Gelasio', ...defaultTheme.fontFamily.serif],
-      mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+      sans: ['"Mona Sans"', ...defaultTheme.fontFamily.sans],
+      serif: ['"Source Serif 4"', ...defaultTheme.fontFamily.serif],
+      mono: ['"Space Mono"', ...defaultTheme.fontFamily.mono],
       dot: ['DotGothic16', ...defaultTheme.fontFamily.mono]
     },
     extend: {
