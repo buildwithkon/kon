@@ -10,6 +10,7 @@ import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
 import type { Env } from '~/types'
 import '~/assets/app.css'
+import { StrictMode } from 'react'
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,7 +39,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 export type RootLoader = typeof loader
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  useSWEffect()
   const ld = useLoaderData<RootLoader>()
 
   return (
@@ -53,9 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
         <Meta />
-        <link rel="manifest" id="manifest" />
         <Links />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
+        <link rel="manifest" id="manifest" />
       </head>
       <body>
         {children}
@@ -68,15 +68,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const ld = useLoaderData<RootLoader>()
+  useSWEffect()
 
   if (!ld.appConfig) {
     return <NotFound />
   }
 
-  return (
-    <AppProviders>
-      <AppHandler />
-      <Outlet />
-    </AppProviders>
+  return process.env.NODE_ENV === 'development' ? (
+    <StrictMode>
+      <AppContent />
+    </StrictMode>
+  ) : (
+    <AppContent />
   )
 }
+
+const AppContent = () => (
+  <AppProviders>
+    <AppHandler />
+    <Outlet />
+  </AppProviders>
+)

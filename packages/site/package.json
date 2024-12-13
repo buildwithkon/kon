@@ -1,5 +1,5 @@
 {
-  "name": "kon-site",
+  "name": "@konxyz/site",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,6 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.12",
-    "wrangler": "^3.93.0"
+    "wrangler": "^3.95.0"
   }
 }

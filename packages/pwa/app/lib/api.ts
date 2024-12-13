@@ -1,5 +1,5 @@
+import type { ApiType } from '@konxyz/api/src'
 import { hc } from 'hono/client'
-import type { ApiType } from 'kon-api/src'
 import Favicon from '~/assets/favicon.png'
 import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '~/lib/const'
 import { devConfig } from '~/lib/data/devConfig'
