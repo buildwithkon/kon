@@ -92,12 +92,8 @@ export default createRoute((c) => {
             minutes<i>⏱️</i>
           </span>
           <br />
-          <span class="font-extrabold leading-relaxed">with KON</span>
+          <span class="font-bold leading-relaxed">with KON</span>
         </h1>
-        {/* <h1 class="font-extrabold text-8xl leading-tighter tracking-tighter">Build with KON</h1>
-        <p class="px-1.5 pt-4 text-4xl leading-normal tracking-tight">
-          Build<i>💪</i> your own PWA apps<i>📲</i> in minutes<i>⏱️</i>
-        </p> */}
       </main>
       <footer class="flex justify-end space-x-4 text-xl">
         {LINKS.map((item) => (

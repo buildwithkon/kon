@@ -82,8 +82,8 @@ export default function Start() {
     <div className="wrapper-app-full">
       <ProfileCard qr={false} point={str1} name={str2} />
       <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
-      <p className="text-center text-xl">⬇</p>
-      <h1 className="-mx-1 pt-10 pb-6 text-center font-bold text-2xl">👋 Join “{ld?.appConfig?.name}”</h1>
+      <p className="text-center text-xl">⬇️</p>
+      <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
       <RegistarForm />
     </div>
   )

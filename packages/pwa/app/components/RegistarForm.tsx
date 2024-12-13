@@ -45,9 +45,13 @@ export default function RegistorForm() {
             aria-describedby="subname"
           />
           <small id="subname" className="px-2 pt-0.5 text-xs">
-            * Only lowercase letters, numbers, and hyphens.
+            ⓘ&nbsp;Only lowercase letters, numbers, and hyphens.
           </small>
-          {fields.id.errors && <p className="px-1.5 text-red-400 text-xs">{fields.id.errors}</p>}
+          {fields.id?.errors?.map((_err) => (
+            <p key={_err} className="px-2 text-red-400 text-xs">
+              ❗ {_err}
+            </p>
+          ))}
         </div>
         <div>
           <input
@@ -58,9 +62,13 @@ export default function RegistorForm() {
             aria-describedby="displayname"
           />
           <small id="displayname" className="px-2 pt-0.5 text-xs">
-            * Optional, can be changed later.
+            ⓘ&nbsp;Optional, can be changed later.
           </small>
-          {fields.name.errors && <p className="px-1.5 text-red-400 text-xs">{fields.name.errors}</p>}
+          {fields.name?.errors?.map((_err) => (
+            <p key={_err} className="px-2 text-red-400 text-xs">
+              ❗ {_err}
+            </p>
+          ))}
         </div>
         <button type="submit" className="btn-main w-full">
           Join

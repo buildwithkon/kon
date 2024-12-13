@@ -1,5 +1,5 @@
 import { jsxRenderer } from 'hono/jsx-renderer'
-import { HasIslands, Link } from 'honox/server'
+import { Link, Script } from 'honox/server'
 
 export default jsxRenderer(({ children }) => {
   return (
@@ -14,16 +14,10 @@ export default jsxRenderer(({ children }) => {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400,700,800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400,700&display=swap"
           rel="stylesheet"
         />
-        {import.meta.env.PROD ? (
-          <HasIslands>
-            <script type="module" src="/static/client.js" />
-          </HasIslands>
-        ) : (
-          <script type="module" src="/app/client.ts" />
-        )}
+        <Script src="/app/client.ts" />
       </head>
       <body>{children}</body>
     </html>
