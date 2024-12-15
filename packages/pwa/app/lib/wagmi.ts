@@ -7,6 +7,7 @@ Porto.create()
 
 export const getConfig = (ENV: Env) =>
   createConfig({
+    ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
     connectors: [coinbaseWallet({ appName: 'kon', preference: 'smartWalletOnly', version: '4' })],
     transports: {
