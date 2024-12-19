@@ -9,7 +9,6 @@ import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
 import '~/assets/app.css'
-import { StrictMode } from 'react'
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -76,13 +75,7 @@ export default function App() {
     return <NotFound />
   }
 
-  return process.env.NODE_ENV === 'development' ? (
-    <StrictMode>
-      <AppContent />
-    </StrictMode>
-  ) : (
-    <AppContent />
-  )
+  return <AppContent />
 }
 
 const AppContent = () => (

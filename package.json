@@ -9,10 +9,13 @@
   "scripts": {
     "api": "pnpm -F \"@konxyz/api\"",
     "api:dev": "pnpm -F \"@konxyz/api\" run dev",
+    "dashboard": "pnpm -F \"@konxyz/dashboard\"",
+    "dashboard:dev": "pnpm -F \"@konxyz/dashboard\" run dev",
     "pwa": "pnpm -F \"@konxyz/pwa\"",
     "pwa:dev": "pnpm -F \"@konxyz/pwa\" run dev",
     "site": "pnpm -F \"@konxyz/site\"",
-    "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\" ",
+    "site:dev": "pnpm -F \"@konxyz/site\" run dev",
+    "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\" \"pnpm dashboard run dev\" && \"pnpm dashboard run dev --port 5174\"",
     "start": "concurrently \"pnpm api run dev --port=8786 \" \"wait-on tcp:8786 && pnpm pwa run start\""
   },
   "devDependencies": {
