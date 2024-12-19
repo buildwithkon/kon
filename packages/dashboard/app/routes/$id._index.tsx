@@ -4,7 +4,10 @@ import { useLoaderData } from '@remix-run/react'
 
 export const loader: LoaderFunction = async ({ params, context }: LoaderFunctionArgs) => {
   const env = context?.cloudflare?.env as Env
-  const { appConfig } = await loadAppConfig('https://alpha.kon.xyz', env)
+  const { appConfig } = await loadAppConfig(
+    String(params?.id).replace(/\b([\w-]+)\.kon\.eth\b/g, (match, prefix) => `https://${prefix}.kon.xyz`),
+    env
+  )
   return {
     id: params?.id ?? null,
     appConfig
@@ -16,7 +19,7 @@ export default function Index() {
 
   return (
     <div className="mx-auto h-screen max-w-screen-sm px-6">
-      <h1 className="font-bold text-xl py-2">Config for "{ld?.appConfig.name}"</h1>
+      <h1 className="py-2 font-bold text-xl">Config for "{ld?.appConfig.name}"</h1>
       <div className="w-full">
         <p>ID</p>
         <input type="text" value={ld?.appConfig?.id} readOnly />
