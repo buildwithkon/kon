@@ -26,11 +26,6 @@ export const links: LinksFunction = () => [
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const env = context?.cloudflare?.env as Env
-
-  if (!env) {
-    throw new Error('Environment variables are not defined')
-  }
-
   const config = await loadAppConfig(request.url, env)
   const cookie = request.headers.get('cookie')
 

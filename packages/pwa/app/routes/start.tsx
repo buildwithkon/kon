@@ -1,9 +1,10 @@
+import { createRegistarSchema } from '@/schema/registar'
 import { parseWithZod } from '@conform-to/zod'
 import type { ActionFunctionArgs, LoaderFunction, MetaFunction } from '@remix-run/cloudflare'
-import { useLoaderData, useRouteLoaderData } from '@remix-run/react'
+import { useActionData, useLoaderData, useRouteLoaderData } from '@remix-run/react'
 import ProfileCard from '~/components/ProfileCard'
 import RegistarForm from '~/components/RegistarForm'
-import { FormSchema } from '~/components/RegistarForm'
+import { checkId } from '~/lib/api'
 import { genRanStr } from '~/lib/utils'
 import type { RootLoader } from '~/root'
 import type { LoaderData } from '~/types'
@@ -20,24 +21,19 @@ export const loader: LoaderFunction = () => ({
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const formData = await request.formData()
-  const submission = parseWithZod(formData, { schema: FormSchema })
+  const submission = await parseWithZod(formData, {
+    schema: createRegistarSchema({
+      async isIdUnique(id: string) {
+        const res = await checkId(id)
+        return res
+      }
+    }),
+    async: true
+  })
 
   if (submission.status !== 'success') {
     return submission.reply()
   }
-
-  console.log(
-    '-------2',
-    context,
-    `${new URL(request.url).origin}/ens/sepolia/getSubnameAddress/${submission.value.id}`
-  )
-  const res = await context.cloudflare.env.API_WORKER.fetch(
-    `${new URL(request.url).origin}/ens/sepolia/getSubnameAddress/${submission.value.id}`
-  ).then((res) => res.json())
-
-  console.log('-------3')
-  const checkId = JSON.parse(res)
-  console.log('-------4')
 
   // const checkId = await getSubnameAddress(
   //   ld.ENV,
@@ -77,6 +73,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 export default function Start() {
   const ld = useRouteLoaderData<RootLoader>('root')
   const { str1, str2 } = useLoaderData<typeof loader>()
+  const lastResult = useActionData()
 
   return (
     <div className="wrapper-app-full">
@@ -84,7 +81,7 @@ export default function Start() {
       <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
       <p className="text-center text-xl">⬇️</p>
       <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
-      <RegistarForm />
+      <RegistarForm lastResult={lastResult} />
     </div>
   )
 }

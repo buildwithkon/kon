@@ -19,6 +19,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.36.0",
     "@coinbase/wallet-sdk": "^4.2.4",
     "@conform-to/react": "^1.2.2",
     "@conform-to/zod": "^1.2.2",

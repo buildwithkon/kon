@@ -64,3 +64,21 @@ export const generateManifest = (appConfig: AppConfig) => ({
     }
   ]
 })
+
+export const checkId = async (id: string, env: Env) => {
+  try {
+    const res = await client('', env).ens[':chain'].getSubnameAddress[':id'].$get({
+      param: {
+        id: `${id}.alpha.kon.eth`,
+        chain: 'sepolia'
+      }
+    })
+    const json = await res.json()
+    console.log('-------:', JSON.parse(json))
+    return {
+      id: JSON.parse(json).id
+    }
+  } catch (error) {
+    console.error('Error fetching subnameAddress:', error)
+  }
+}
