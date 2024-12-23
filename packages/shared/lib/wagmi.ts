@@ -9,7 +9,14 @@ export const getConfig = (ENV: Env) =>
   createConfig({
     ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
-    connectors: [coinbaseWallet({ appName: 'kon', preference: 'smartWalletOnly', version: '4' })],
+    connectors: [
+      coinbaseWallet({
+        appName: 'kon',
+        appLogoUrl: 'https://kon.xyz/static/favicon.png',
+        preference: 'smartWalletOnly',
+        version: '4'
+      })
+    ],
     transports: {
       [mainnet.id]: http(`https://eth-mainnet.g.alchemy.com/v2/${ENV.ALCHEMY_API_KEY}`),
       [sepolia.id]: http(`https://eth-sepolia.g.alchemy.com/v2/${ENV.ALCHEMY_API_KEY}`),

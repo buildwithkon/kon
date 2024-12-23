@@ -1,5 +1,5 @@
+import { cn } from '@konxyz/shared/lib/utils'
 import BoringAvatar from 'boring-avatars'
-import { cn } from '~/lib/utils'
 
 // @ts-ignore
 const BoringAvatar2 = typeof BoringAvatar.default !== 'undefined' ? BoringAvatar.default : BoringAvatar

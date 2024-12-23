@@ -1,6 +1,6 @@
-import { createRegistarSchema } from '@/schema/registar'
 import { useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
+import { createRegistarSchema } from '@konxyz/shared/schema/registar'
 import { Form } from '@remix-run/react'
 import InputWithError from '~/components/InputWithError'
 

@@ -1,9 +1,9 @@
 import type { ApiType } from '@konxyz/api/src'
+import Favicon from '@konxyz/shared/assets/favicon.png'
+import { devConfig } from '@konxyz/shared/data/devConfig'
+import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '@konxyz/shared/lib/const'
+import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
-import Favicon from '~/assets/favicon.png'
-import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '~/lib/const'
-import { devConfig } from '~/lib/data/devConfig'
-import type { AppConfig } from '~/types'
 
 export const client = (origin: string, env: Env) => {
   if (process.env.NODE_ENV === 'development') {

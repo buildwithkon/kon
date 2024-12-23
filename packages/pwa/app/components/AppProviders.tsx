@@ -1,3 +1,4 @@
+import { getConfig } from '@konxyz/shared/lib/wagmi'
 import { useRouteLoaderData } from '@remix-run/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Provider as JotaiProvider } from 'jotai'
@@ -5,7 +6,6 @@ import { type ReactNode, useState } from 'react'
 import { WagmiProvider } from 'wagmi'
 import { cookieToInitialState } from 'wagmi'
 import { store } from '~/atoms'
-import { getConfig } from '~/lib/wagmi'
 import type { RootLoader } from '~/root'
 
 export default function AppProviders({

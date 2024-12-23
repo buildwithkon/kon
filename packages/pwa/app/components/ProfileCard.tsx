@@ -1,9 +1,9 @@
+import type { RootLoader } from '@konxyz/shared/types'
 import { QrCode } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
 import QrDrawer from '~/components/QrDrawer'
-import type { RootLoader } from '~/types'
 
 export default function ProfileCard({
   qr = true,

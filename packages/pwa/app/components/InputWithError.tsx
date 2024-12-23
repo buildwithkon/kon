@@ -1,4 +1,4 @@
-import { cn } from '~/lib/utils'
+import { cn } from '@konxyz/shared/lib/utils'
 
 export default function InputWithError({
   field,

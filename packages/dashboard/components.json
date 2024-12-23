@@ -12,10 +12,10 @@
   },
   "aliases": {
     "components": "~/components",
-    "utils": "~/lib/utils",
-    "ui": "~/components/ui",
-    "lib": "~/lib",
-    "hooks": "~/hooks"
+    "utils": "@konxyz/shared/lib/utils",
+    "ui": "@konxyz/shared/components/ui",
+    "lib": "@konxyz/shared/lib",
+    "hooks": "@konxyz/shared/hooks"
   },
   "iconLibrary": "lucide"
 }

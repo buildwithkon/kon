@@ -2,6 +2,11 @@ import type { LinksFunction } from '@remix-run/cloudflare'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 import './dashboard.css'
 
+export const meta: MetaFunction = () => [
+  { title: 'KON Dashboard' },
+  { name: 'description', content: 'KON Dashboard' }
+]
+
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   {

@@ -1,14 +1,13 @@
+import DefaultFavicon from '@konxyz/shared/assets/favicon.png'
+import { loadAppConfig } from '@konxyz/shared/lib/api'
+import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 import { useSWEffect } from '@remix-pwa/sw'
 import type { LinksFunction, LoaderFunction } from '@remix-run/cloudflare'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
-import DefaultFavicon from '~/assets/favicon.png'
-import { loadAppConfig } from '~/lib/api'
-import { setAppColor, setFontClass } from '~/lib/style'
-import '~/assets/app.css'
+import '~/assets/pwa.css'
 import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
-import '~/assets/app.css'
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

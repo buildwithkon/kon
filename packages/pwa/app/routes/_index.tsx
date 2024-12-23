@@ -1,10 +1,10 @@
 import { usePwa } from '@dotmind/react-use-pwa'
+import { SITE_URL } from '@konxyz/shared/lib/const'
 import { HandTap } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
 import { useConnect } from 'wagmi'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
 import IconKon from '~/components/icon/kon'
-import { SITE_URL } from '~/lib/const'
 import type { RootLoader } from '~/root'
 
 export default function Home() {

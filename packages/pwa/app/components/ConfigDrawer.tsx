@@ -1,3 +1,4 @@
+import { shortAddr } from '@konxyz/shared/lib/utils'
 import { Check, ClipboardText, GearSix, SignOut, X } from '@phosphor-icons/react'
 import { useNavigate } from '@remix-run/react'
 import { toast } from 'sonner'
@@ -14,7 +15,6 @@ import {
   AlertDialogTrigger
 } from '~/components/ui/AlertDialog'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
-import { shortAddr } from '~/lib/utils'
 
 export default function Config() {
   const { address } = useAccount()

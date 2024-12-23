@@ -1,7 +1,7 @@
 import { usePwa } from '@dotmind/react-use-pwa'
+import { cn } from '@konxyz/shared/lib/utils'
 import { ChatsCircle, House, TextIndent as Menu, UsersThree } from '@phosphor-icons/react'
 import { Link, useLocation } from '@remix-run/react'
-import { cn } from '~/lib/utils'
 
 export default function BottomBar() {
   const { isStandalone } = usePwa()

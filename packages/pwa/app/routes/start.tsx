@@ -1,13 +1,13 @@
-import { createRegistarSchema } from '@/schema/registar'
 import { parseWithZod } from '@conform-to/zod'
+import { checkId } from '@konxyz/shared/lib/api'
+import { genRanStr } from '@konxyz/shared/lib/utils'
+import { createRegistarSchema } from '@konxyz/shared/schema/registar'
+import type { LoaderData } from '@konxyz/shared/types'
 import type { ActionFunctionArgs, LoaderFunction, MetaFunction } from '@remix-run/cloudflare'
 import { useActionData, useLoaderData, useRouteLoaderData } from '@remix-run/react'
 import ProfileCard from '~/components/ProfileCard'
 import RegistarForm from '~/components/RegistarForm'
-import { checkId } from '~/lib/api'
-import { genRanStr } from '~/lib/utils'
 import type { RootLoader } from '~/root'
-import type { LoaderData } from '~/types'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as LoaderData
