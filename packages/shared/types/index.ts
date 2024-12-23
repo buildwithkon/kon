@@ -1,3 +1,5 @@
+import '@konxyz/pwa/worker-configuration.d.ts'
+
 export type AppConfig = {
   id: string
   name: string

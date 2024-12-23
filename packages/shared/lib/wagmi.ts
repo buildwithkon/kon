@@ -12,7 +12,7 @@ export const getConfig = (ENV: Env) =>
     connectors: [
       coinbaseWallet({
         appName: 'kon',
-        appLogoUrl: 'https://kon.xyz/static/favicon.png',
+        appLogoUrl: 'https://kon.xyz/static/logo.png',
         preference: 'smartWalletOnly',
         version: '4'
       })
