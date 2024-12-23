@@ -4,14 +4,14 @@ import { normalize } from 'viem/ens'
 import { getClient } from './lib/client'
 
 const ENS_APPCONFIG_NAME = 'kon.eth'
-const ENS_APPCONFIG_KEY = 'app.kon'
+const ENS_APPCONFIG_BASE_KEY = 'app.kon'
 
 const ens = new Hono<{ Bindings: Env }>()
 
 ens.get(
   '*',
   cache({
-    cacheName: 'kon-api-ens',
+    cacheName: 'kon-api',
     cacheControl: 'max-age=600'
   })
 )
@@ -22,7 +22,7 @@ ens.get('/:chain/getAppConfig/:id', async (c) => {
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
   const res = await client.getEnsText({
     name: normalize(`${id}.${ENS_APPCONFIG_NAME}`),
-    key: ENS_APPCONFIG_KEY
+    key: ENS_APPCONFIG_BASE_KEY
   })
   return c.json(res)
 })

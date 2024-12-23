@@ -1,9 +1,9 @@
+import type { LoaderData } from '@konxyz/shared/types'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import { useRouteLoaderData } from '@remix-run/react'
 import BottomBar from '~/components/BottomBar'
 import ProfileCard from '~/components/ProfileCard'
 import type { RootLoader } from '~/root'
-import type { LoaderData } from '~/types'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as LoaderData
@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <div className="wrapper-app-full">
-        <ProfileCard />
+        <ProfileCard point="1,000" name="▯◇◹◸◿▿" />
         <Badges />
         <BottomBar />
       </div>
@@ -24,7 +24,7 @@ export default function Home() {
   )
 }
 
-const BADGES = ['🤠 Explorer', '🎨 Designer', '🌟 VIP', '📝 Creator']
+const BADGES = ['🤠 Standard plan']
 
 const Badges = () => (
   <ul className="my-10">

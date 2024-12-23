@@ -6,9 +6,18 @@ assets = { directory = "./build/client" }
 services = [
   { binding = "API_WORKER", service = "kon-api" }
 ]
+route = "*.kon.xyz/*"
+vars = { ENVIRONMENT = "production"}
+
+[placement]
+mode = "smart"
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
 [observability]
 enabled = true
+
+[env.staging]
+route = "*.kululu.xyz/*"
+vars = { ENVIRONMENT = "staging" }

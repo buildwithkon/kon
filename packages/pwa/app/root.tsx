@@ -1,15 +1,13 @@
+import DefaultFavicon from '@konxyz/shared/assets/favicon.png'
+import { loadAppConfig } from '@konxyz/shared/lib/api'
+import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 import { useSWEffect } from '@remix-pwa/sw'
 import type { LinksFunction, LoaderFunction } from '@remix-run/cloudflare'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
-import DefaultFavicon from '~/assets/favicon.png'
-import { setAppColor, setFontClass } from '~/lib/style'
-import { loadAppConfig } from '~/lib/utils'
-import '~/assets/app.css'
+import '~/assets/pwa.css'
 import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
-import type { Env } from '~/types'
-import '~/assets/app.css'
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -20,17 +18,20 @@ export const links: LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@400;700&family=Gelasio:wght@400;700&family=DotGothic16&display=swap'
+    href: 'https://fonts.googleapis.com/css2?family=DotGothic16&Mona+Sans:wght@400;700&family=Source+Serif+4:wght@400;700&family=Space+Mono:wght@400;700&display=swap'
   }
 ]
 
 export const loader: LoaderFunction = async ({ request, context }) => {
-  const config = await loadAppConfig(request.url, context.cloudflare.env as Env)
+  const env = context?.cloudflare?.env as Env
+  const config = await loadAppConfig(request.url, env)
+  const cookie = request.headers.get('cookie')
 
   return {
     ...config,
+    cookie,
     ENV: {
-      ...context.cloudflare.env
+      ...env
     }
   }
 }
@@ -38,7 +39,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 export type RootLoader = typeof loader
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  useSWEffect()
   const ld = useLoaderData<RootLoader>()
 
   return (
@@ -53,9 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
         <Meta />
-        <link rel="manifest" id="manifest" />
         <Links />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
+        <link rel="manifest" id="manifest" />
       </head>
       <body>
         {children}
@@ -68,15 +68,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const ld = useLoaderData<RootLoader>()
+  useSWEffect()
 
   if (!ld.appConfig) {
     return <NotFound />
   }
 
-  return (
-    <AppProviders>
-      <AppHandler />
-      <Outlet />
-    </AppProviders>
-  )
+  return <AppContent />
 }
+
+const AppContent = () => (
+  <AppProviders>
+    <AppHandler />
+    <Outlet />
+  </AppProviders>
+)

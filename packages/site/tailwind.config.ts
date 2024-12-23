@@ -6,7 +6,7 @@ export default {
   content: ['./app/**/*.tsx'],
   theme: {
     fontFamily: {
-      mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono]
+      mono: ['"Space Mono"', ...defaultTheme.fontFamily.mono]
     },
     extend: {}
   }

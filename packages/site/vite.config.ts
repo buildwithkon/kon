@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     honox({
       client: {
-        input: ['/app/style.css']
+        input: ['/app/site.css']
       }
     }),
     build()

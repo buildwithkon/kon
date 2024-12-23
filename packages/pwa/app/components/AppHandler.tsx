@@ -1,10 +1,10 @@
+import { generateManifest } from '@konxyz/shared/lib/api'
 import { useLocation, useNavigate, useRouteLoaderData } from '@remix-run/react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom, userAtom } from '~/atoms'
 import Loading from '~/components/Loading'
-import { generateManifest } from '~/lib/utils'
 import type { RootLoader } from '~/root'
 
 export default function AppHandler() {
@@ -16,12 +16,12 @@ export default function AppHandler() {
 
   // redirect
   useEffect(() => {
-    // if (pathname !== '/' && !isConnected) {
-    //   navigate('/')
-    // }
-    // if (pathname === '/' && isConnected && address) {
-    //   navigate('/home')
-    // }
+    if (pathname !== '/' && !isConnected) {
+      navigate('/')
+    }
+    if (pathname === '/' && isConnected && address) {
+      navigate('/home')
+    }
     // if (isConnected && address && !user.subname) {
     //   getSubname(address).then((subname) => {
     //     setUser((prev) => ({ ...prev, subname }))

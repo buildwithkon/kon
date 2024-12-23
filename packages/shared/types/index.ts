@@ -1,12 +1,3 @@
-export type Env = {
-  ORBIS_CERAMIC_GATEWAY: string
-  ORBIS_NODE_GATEWAY: string
-  ORBIS_NODE_ENV: string
-  CDP_CLIENT_API_KEY: string
-  ALCHEMY_API_KEY: string
-  API_ENS: Fetcher
-}
-
 export type AppConfig = {
   id: string
   name: string

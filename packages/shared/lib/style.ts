@@ -1,4 +1,4 @@
-import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
+import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 
 export const hexToRgb = (
   hex: string,

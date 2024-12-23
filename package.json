@@ -1,5 +1,5 @@
 {
-  "name": "ethbangkok2024",
+  "name": "@konxyz/v1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,12 +7,22 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "api": "pnpm -F \"kon-api\"",
-    "pwa": "pnpm -F \"kon-pwa\"",
-    "site": "pnpm -F \"kon-site\""
+    "api": "pnpm -F \"@konxyz/api\"",
+    "api:dev": "pnpm -F \"@konxyz/api\" run dev",
+    "dashboard": "pnpm -F \"@konxyz/dashboard\"",
+    "dashboard:dev": "pnpm -F \"@konxyz/dashboard\" run dev",
+    "pwa": "pnpm -F \"@konxyz/pwa\"",
+    "pwa:dev": "pnpm -F \"@konxyz/pwa\" run dev",
+    "site": "pnpm -F \"@konxyz/site\"",
+    "site:dev": "pnpm -F \"@konxyz/site\" run dev",
+    "shared": "pnpm -F \"@konxyz/shared\"",
+    "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\" \"pnpm dashboard run dev\" && \"pnpm dashboard run dev --port 5174\"",
+    "start": "concurrently \"pnpm api run dev --port=8786 \" \"wait-on tcp:8786 && pnpm pwa run start\""
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
-  },
-  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
+    "@biomejs/biome": "^1.9.4",
+    "concurrently": "^9.1.0",
+    "wait-on": "^8.0.1",
+    "wrangler": "^3.99.0"
+  }
 }

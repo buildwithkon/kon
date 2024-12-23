@@ -1,8 +1,8 @@
+import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import { useRouteLoaderData } from '@remix-run/react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useAccount } from 'wagmi'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
-import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '~/lib/const'
 
 export default function QrDrawer({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()

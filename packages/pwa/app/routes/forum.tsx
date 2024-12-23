@@ -1,8 +1,8 @@
+import type { LoaderData } from '@konxyz/shared/types'
 import { PlusCircle } from '@phosphor-icons/react'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
-import type { LoaderData } from '~/types'
 
 export const meta: MetaFunction = ({ matches }) => {
   const ld = matches[0]?.data as LoaderData

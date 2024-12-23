@@ -1,5 +1,5 @@
+import type { Env } from '@konxyz/shared/types'
 import { OrbisDB } from '@useorbis/db-sdk'
-import type { Env } from '~/types'
 
 export const orbis = (ENV: Env) =>
   new OrbisDB({

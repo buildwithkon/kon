@@ -1,17 +1,17 @@
+import type { RootLoader } from '@konxyz/shared/types'
 import { QrCode } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
-import { useOrientation } from '@uidotdev/usehooks'
-import {} from 'react'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
 import QrDrawer from '~/components/QrDrawer'
-import { genRanStr } from '~/lib/utils'
-import type { RootLoader } from '~/types'
 
-export default function ProfileCard({ qr = true }: { qr?: boolean }) {
+export default function ProfileCard({
+  qr = true,
+  point,
+  name
+}: { qr?: boolean; point?: string; name?: string }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
-  const { angle } = useOrientation()
 
   return (
     <div
@@ -35,10 +35,10 @@ export default function ProfileCard({ qr = true }: { qr?: boolean }) {
       <div className="absolute bottom-6 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
         <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
         <div className="-mt-1 flex-col pl-2.5">
-          <div className="min-w-2/3 truncate font-bold text-2xl"> {genRanStr(10)}</div>
+          <div className="min-w-2/3 truncate font-bold text-2xl">{name}</div>
           <div className="-mt-0.5 flex items-center font-mono">
             <span className="px-0.5">
-              {genRanStr()}
+              {point}
               <span className="px-0.5">pts</span>
             </span>
           </div>
