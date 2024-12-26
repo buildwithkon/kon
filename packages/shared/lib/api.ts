@@ -1,5 +1,5 @@
 import type { ApiType } from '@konxyz/api/src'
-import Favicon from '@konxyz/shared/assets/favicon.png'
+import { FaviconPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
 import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
@@ -58,7 +58,7 @@ export const generateManifest = (appConfig: AppConfig) => ({
   theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
-      src: appConfig?.icons?.favicon ?? Favicon,
+      src: appConfig?.icons?.favicon ?? FaviconPng,
       sizes: '512x512',
       type: 'image/png'
     }

@@ -1,4 +1,4 @@
-import DefaultFavicon from '@konxyz/shared/assets/favicon.png'
+import { FaviconPng } from '@konxyz/shared/assets'
 import { loadAppConfig } from '@konxyz/shared/lib/api'
 import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 import { useSWEffect } from '@remix-pwa/sw'
@@ -51,10 +51,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
+        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? FaviconPng} type="image/png" />
         <Meta />
         <Links />
-        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? DefaultFavicon} type="image/png" />
+        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? FaviconPng} type="image/png" />
         <link rel="manifest" id="manifest" />
       </head>
       <body>

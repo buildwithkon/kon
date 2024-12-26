@@ -5,7 +5,7 @@ import { coinbaseWallet } from 'wagmi/connectors'
 
 Porto.create()
 
-export const getConfig = (ENV: Env) =>
+export const getWagmiConfig = (ENV: Env) =>
   createConfig({
     ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
@@ -33,6 +33,6 @@ export const getConfig = (ENV: Env) =>
 
 declare module 'wagmi' {
   interface Register {
-    config: typeof getConfig
+    config: typeof getWagmiConfig
   }
 }
