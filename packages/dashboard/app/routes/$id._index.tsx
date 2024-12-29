@@ -1,4 +1,4 @@
-import { loadAppConfig } from '@konxyz/shared/lib/api'
+import { loadAppConfig } from '@konxyz/shared/lib/app'
 import type { LoaderFunction, LoaderFunctionArgs } from '@remix-run/cloudflare'
 import { useLoaderData } from '@remix-run/react'
 

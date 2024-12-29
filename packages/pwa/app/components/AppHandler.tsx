@@ -1,4 +1,4 @@
-import { generateManifest } from '@konxyz/shared/lib/api'
+import { generateManifest } from '@konxyz/shared/lib/app'
 import { useLocation, useNavigate, useRouteLoaderData } from '@remix-run/react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
