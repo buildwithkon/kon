@@ -19,6 +19,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-alpha.4",
     "@coinbase/onchainkit": "^0.36.3",
     "@coinbase/wallet-sdk": "^4.2.4",
     "@conform-to/react": "^1.2.2",
@@ -27,7 +28,6 @@
     "@konxyz/api": "workspace:*",
     "@konxyz/shared": "workspace:*",
     "@phosphor-icons/react": "^2.1.7",
-    "@radix-ui/react-alert-dialog": "^1.1.4",
     "@remix-pwa/sw": "3.0.10",
     "@remix-pwa/worker-runtime": "2.1.4",
     "@remix-run/cloudflare": "^2.15.2",
@@ -52,7 +52,6 @@
     "remix-utils": "^8.0.0",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.6.0",
-    "vaul": "^1.1.2",
     "viem": "~2.21.58",
     "wagmi": "^2.14.6",
     "zod": "^3.24.1"

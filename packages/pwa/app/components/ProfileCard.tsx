@@ -3,7 +3,7 @@ import { QrCode } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
-import QrDrawer from '~/components/QrDrawer'
+import QrDialog from '~/components/QrDialog'
 
 export default function ProfileCard({
   qr = true,
@@ -45,11 +45,11 @@ export default function ProfileCard({
         </div>
       </div>
       {qr ? (
-        <QrDrawer>
+        <QrDialog>
           <button type="button">
             <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
           </button>
-        </QrDrawer>
+        </QrDialog>
       ) : (
         <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
       )}

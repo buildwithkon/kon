@@ -1,7 +1,7 @@
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import BottomBar from '~/components/BottomBar'
-import ConfigDrawer from '~/components/ConfigDrawer'
+import ConfigDialog from '~/components/ConfigDialog'
 import TopBar from '~/components/TopBar'
 
 export const meta: MetaFunction = mergeMeta(({ matches }) => [
@@ -14,7 +14,7 @@ export default function Misc() {
       <TopBar backUrl="/home">
         <div className="flex w-full items-center justify-between">
           <span>Misc</span>
-          <ConfigDrawer />
+          <ConfigDialog />
         </div>
       </TopBar>
       <BottomBar />

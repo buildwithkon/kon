@@ -2,19 +2,19 @@ import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import { useRouteLoaderData } from '@remix-run/react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useAccount } from 'wagmi'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '~/components/ui/Drawer'
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
 
-export default function QrDrawer({ children }: { children: React.ReactNode }) {
+export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData('root')
   const isDarkMode = false
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="content pt-8 pb-10">
-        <DrawerTitle className="text-center font-bold text-xl">Alice</DrawerTitle>
-        <DrawerDescription className="hidden text-center">Scan this QR for checkin!</DrawerDescription>
+    <Dialog>
+      <DialogTrigger>{children}</DialogTrigger>
+      <DialogContent className="content pt-8 pb-10">
+        <DialogTitle className="text-center font-bold text-xl">Alice</DialogTitle>
+        <DialogDescription className="hidden text-center">Scan this QR for checkin!</DialogDescription>
         <div className="mx-auto px-6 pt-6">
           <QRCodeSVG
             value={address ?? ''}
@@ -32,7 +32,7 @@ export default function QrDrawer({ children }: { children: React.ReactNode }) {
             }}
           />
         </div>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   )
 }

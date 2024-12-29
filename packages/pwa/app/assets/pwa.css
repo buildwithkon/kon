@@ -48,7 +48,7 @@
   }
 
   .wrapper {
-    @apply mx-auto max-w-screen-xs px-6;
+    @apply mx-auto max-w-screen-xs px-6 isolate;
   }
 
   .wrapper-app {
