@@ -1,3 +1,4 @@
+import { LogoPng } from '@konxyz/shared/assets'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import { useRouteLoaderData } from '@remix-run/react'
 import { QRCode } from 'react-qrcode-logo'
@@ -17,18 +18,19 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
         <DialogDescription className="hidden text-center">Scan this QR for checkin!</DialogDescription>
         <div className="mx-auto px-6 pt-6">
           <QRCode
-            value={address ?? ''}
-            size={168}
+            value={`https://${ld.subdomain}.kon.xyz/users/address/${address ?? ''}`}
+            size={256}
+            ecLevel="Q"
             fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
-            logoImage={ld?.appConfig?.icons?.logo}
+            logoImage={ld?.appConfig?.icons?.logo ?? LogoPng}
             qrStyle="dots"
-            logoPadding={4}
+            logoPadding={2}
             logoPaddingStyle="square"
             removeQrCodeBehindLogo
             eyeRadius={{
-              outer: 14,
-              inner: 10
+              outer: 10,
+              inner: 6
             }}
           />
         </div>
