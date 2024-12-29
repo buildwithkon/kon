@@ -1,13 +1,12 @@
-import type { LoaderData } from '@konxyz/shared/types'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import BottomBar from '~/components/BottomBar'
 import ConfigDrawer from '~/components/ConfigDrawer'
 import TopBar from '~/components/TopBar'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `Misc | ${ld?.appConfig?.name ?? ''}` }]
-}
+export const meta: MetaFunction = mergeMeta(({ matches }) => [
+  { title: `Misc | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+])
 
 export default function Misc() {
   return (

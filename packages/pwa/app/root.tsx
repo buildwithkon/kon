@@ -36,6 +36,28 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   }
 }
 
+export const meta: MetaFunction = ({ data }) => [
+  { title: data?.appConfig?.name ?? 'A build with KON app' },
+  { description: data?.appConfig?.description ?? 'Build with KON' },
+  {
+    property: 'og:title',
+    content: data?.appConfig?.name ?? 'A build with KON app'
+  },
+  {
+    property: 'og:description',
+    content: data?.appConfig?.description ?? 'Build with KON'
+  },
+  {
+    property: 'og:site_name',
+    content: data?.appConfig?.name ?? 'A build with KON app'
+  },
+  { property: 'og:type', content: 'website' },
+  {
+    property: 'og:image',
+    content: data?.appConfig?.icons?.logo ?? LogoPng
+  }
+]
+
 export type RootLoader = typeof loader
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -51,10 +73,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? FaviconPng} type="image/png" />
         <Meta />
-        <Links />
         <link rel="icon" href={ld?.appConfig?.icons?.favicon ?? FaviconPng} type="image/png" />
+        <Links />
         <link rel="manifest" id="manifest" />
       </head>
       <body>

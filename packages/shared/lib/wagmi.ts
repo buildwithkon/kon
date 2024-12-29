@@ -1,3 +1,4 @@
+import type { AppConfg } from '@konxyz/shared/types'
 import { Porto } from 'porto'
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { base, baseSepolia, mainnet, odysseyTestnet, sepolia } from 'wagmi/chains'
@@ -5,14 +6,14 @@ import { coinbaseWallet } from 'wagmi/connectors'
 
 Porto.create()
 
-export const getWagmiConfig = (ENV: Env) =>
+export const getWagmiConfig = (ENV: Env, appConfig?: AppConfg) =>
   createConfig({
     ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
     connectors: [
       coinbaseWallet({
         appName: 'kon',
-        appLogoUrl: 'https://kon.xyz/static/logo.png',
+        appLogoUrl: appConfig?.icons?.logo ?? 'https://kon.xyz/static/logo.png',
         preference: 'smartWalletOnly',
         version: '4'
       })

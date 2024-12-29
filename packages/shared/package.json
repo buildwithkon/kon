@@ -15,6 +15,7 @@
     "@konxyz/pwa": "workspace:*",
     "@konxyz/shared": "workspace:*",
     "@konxyz/site": "workspace:*",
+    "@remix-run/cloudflare": "^2.15.2",
     "@useorbis/db-sdk": "0.0.60-alpha",
     "@wagmi/core": "^2.16.0",
     "hono": "^4.6.14",

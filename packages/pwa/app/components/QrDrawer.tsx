@@ -22,7 +22,7 @@ export default function QrDrawer({ children }: { children: React.ReactNode }) {
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
             size={168}
             imageSettings={{
-              src: ld?.appConfig?.icons?.favicon,
+              src: ld?.appConfig?.icons?.logo,
               x: undefined,
               y: undefined,
               height: 36,

@@ -1,10 +1,11 @@
+import type { InputType } from '@conform-to/react'
 import { cn } from '@konxyz/shared/lib/utils'
 
 export default function InputWithError({
   field,
   hint,
   inputType = 'text'
-}: { field: any; hint?: string; inputType?: string }) {
+}: { field: any; hint?: string; inputType?: InputType }) {
   return (
     <div>
       <input

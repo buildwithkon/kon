@@ -2,7 +2,7 @@ import { conformZodMessage } from '@conform-to/zod'
 import { z } from 'zod'
 
 // Instead of sharing a schema, prepare a schema creator
-export const createRegistarSchema = (options?: {
+export const createRegisterSchema = (options?: {
   isIdUnique: (id: string) => Promise<boolean>
 }) =>
   z.object({

@@ -1,14 +1,12 @@
-import type { LoaderData } from '@konxyz/shared/types'
-import type { MetaFunction } from '@remix-run/cloudflare'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useRouteLoaderData } from '@remix-run/react'
 import BottomBar from '~/components/BottomBar'
 import ProfileCard from '~/components/ProfileCard'
 import type { RootLoader } from '~/root'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `Home | ${ld?.appConfig?.name ?? ''}` }]
-}
+export const meta: MetaFunction = mergeMeta(({ matches }) => [
+  { title: `Home | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+])
 
 export default function Home() {
   const ld = useRouteLoaderData<RootLoader>('root')

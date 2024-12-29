@@ -1,13 +1,12 @@
-import type { LoaderData } from '@konxyz/shared/types'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { PlusCircle } from '@phosphor-icons/react'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `Forum | ${ld?.appConfig?.name ?? ''}` }]
-}
+export const meta: MetaFunction = mergeMeta(({ matches }) => [
+  { title: `Forum | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+])
 
 export default function Forum() {
   return (

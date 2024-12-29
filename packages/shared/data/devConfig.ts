@@ -39,4 +39,4 @@ const devConfig2 = {
   }
 }
 
-export const devConfig = devConfig2
+export const devConfig = devConfig1

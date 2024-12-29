@@ -82,7 +82,7 @@
   }
 
   .btn {
-    @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90;
+    @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80;
   }
 
   .btn-main {

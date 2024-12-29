@@ -7,11 +7,6 @@ import PWAInstallPrompt from '~/components/PWAInstallPrompt'
 import IconKon from '~/components/icon/kon'
 import type { RootLoader } from '~/root'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `${ld?.appConfig?.name ?? 'Build with KON'}` }]
-}
-
 export default function Top() {
   const { connectors, connectAsync } = useConnect()
   const { isStandalone } = usePwa()

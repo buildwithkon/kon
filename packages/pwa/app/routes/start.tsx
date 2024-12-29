@@ -1,18 +1,16 @@
 import { parseWithZod } from '@conform-to/zod'
-import { checkId } from '@konxyz/shared/lib/api'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { genRanStr } from '@konxyz/shared/lib/utils'
-import { createRegistarSchema } from '@konxyz/shared/schema/registar'
-import type { LoaderData } from '@konxyz/shared/types'
+import { createRegisterSchema } from '@konxyz/shared/schema/Register'
 import type { ActionFunctionArgs, LoaderFunction, MetaFunction } from '@remix-run/cloudflare'
 import { useActionData, useLoaderData, useRouteLoaderData } from '@remix-run/react'
 import ProfileCard from '~/components/ProfileCard'
-import RegistarForm from '~/components/RegistarForm'
+import RegisterForm from '~/components/RegisterForm'
 import type { RootLoader } from '~/root'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `Start | ${ld?.appConfig?.name ?? ''}` }]
-}
+export const meta: MetaFunction = mergeMeta(({ matches }) => [
+  { title: `Start | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+])
 
 export const loader: LoaderFunction = () => ({
   str1: genRanStr(),
@@ -22,10 +20,9 @@ export const loader: LoaderFunction = () => ({
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const formData = await request.formData()
   const submission = await parseWithZod(formData, {
-    schema: createRegistarSchema({
+    schema: createRegisterSchema({
       async isIdUnique(id: string) {
-        const res = await checkId(id)
-        return res
+        return true
       }
     }),
     async: true
@@ -34,20 +31,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   if (submission.status !== 'success') {
     return submission.reply()
   }
-
-  // const checkId = await getSubnameAddress(
-  //   ld.ENV,
-  //   `${submission.value.id}.${ld.subdomain}.${ENS_APPCONFIG_NAME}`
-  // )
-
-  console.log('--------submission::', submission.value, '--------checkId::', checkId)
-
-  // check alredy exists
-  if (checkId) {
-    return submission.reply({
-      formErrors: ['ID already exists']
-    })
-  }
+  console.log('--------submission::', submission.value)
 
   // if (chainId !== baseSepolia.id) {
   //   await switchChain({ chainId: baseSepolia.id })
@@ -56,7 +40,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   // try {
   //   const res = await writeContractAsync({
   //     abi,
-  //     address: REGISTAR_ADDRESS,
+  //     address: Register_ADDRESS,
   //     functionName: 'register',
   //     args: [normalize(data.id), address as `0x${string}`]
   //   })
@@ -81,7 +65,7 @@ export default function Start() {
       <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
       <p className="text-center text-xl">⬇️</p>
       <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
-      <RegistarForm lastResult={lastResult} />
+      <RegisterForm lastResult={lastResult} />
     </div>
   )
 }
