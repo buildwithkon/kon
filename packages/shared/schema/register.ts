@@ -1,19 +1,36 @@
 import { conformZodMessage } from '@conform-to/zod'
 import { z } from 'zod'
 
+const idSchema = z
+  .string()
+  .min(3, { message: 'ID must be at least 3 characters long.' })
+  .max(255, { message: 'ID cannot exceed 255 characters.' })
+  .regex(/^[a-z0-9-]+$/, { message: 'ID can only contain lowercase letters, numbers, and hyphens.' })
+  .refine((name) => !name.startsWith('-') && !name.endsWith('-'), {
+    message: 'ID cannot start or end with a hyphen.'
+  })
+
+const nameSchema = z
+  .string()
+  .max(255, { message: 'Display Name cannot exceed 255 characters.' })
+  .or(
+    z
+      .string()
+      .optional()
+      .transform((value) => value ?? '')
+  )
+
+export const RegisterSchema = z.object({
+  id: idSchema,
+  name: nameSchema
+})
+
 // Instead of sharing a schema, prepare a schema creator
 export const createRegisterSchema = (options?: {
   isIdUnique: (id: string) => Promise<boolean>
 }) =>
   z.object({
-    id: z
-      .string()
-      .min(3, { message: 'ID must be at least 3 characters long.' })
-      .max(255, { message: 'ID cannot exceed 255 characters.' })
-      .regex(/^[a-z0-9-]+$/, { message: 'ID can only contain lowercase letters, numbers, and hyphens.' })
-      .refine((name) => !name.startsWith('-') && !name.endsWith('-'), {
-        message: 'ID cannot start or end with a hyphen.'
-      })
+    id: idSchema
       // Pipe the schema so it runs only if the email is valid
       .pipe(
         // Note: The callback cannot be async here
@@ -43,13 +60,5 @@ export const createRegisterSchema = (options?: {
             })
           })
       ),
-    name: z
-      .string()
-      .max(255, { message: 'Display Name cannot exceed 255 characters.' })
-      .or(
-        z
-          .string()
-          .optional()
-          .transform((value) => value ?? '')
-      )
+    name: nameSchema
   })

@@ -16,6 +16,8 @@ type CustomProps = Omit<TransactionReact, 'children'> & {
   disabled?: boolean
   btnClass?: string
   btnText?: string
+  showToast?: boolean
+  btnRef?: React.RefObject<HTMLElement>
 }
 
 export default function CustomTransaction({
@@ -27,7 +29,9 @@ export default function CustomTransaction({
   onStatus,
   onSuccess,
   btnClass,
-  btnText
+  btnText,
+  btnRef,
+  showToast = true
 }: CustomProps) {
   return (
     <Transaction
@@ -38,17 +42,21 @@ export default function CustomTransaction({
       onStatus={onStatus}
       onSuccess={onSuccess}
     >
-      <TransactionButton disabled={disabled} className={btnClass} text={btnText} />
+      <div ref={btnRef}>
+        <TransactionButton disabled={disabled} className={btnClass} text={btnText} />
+      </div>
       <TransactionSponsor />
       <TransactionStatus>
         <TransactionStatusLabel />
         <TransactionStatusAction />
       </TransactionStatus>
-      <TransactionToast>
-        <TransactionToastIcon />
-        <TransactionToastLabel />
-        <TransactionToastAction />
-      </TransactionToast>
+      {showToast && (
+        <TransactionToast position="top-center">
+          <TransactionToastIcon />
+          <TransactionToastLabel />
+          <TransactionToastAction />
+        </TransactionToast>
+      )}
     </Transaction>
   )
 }

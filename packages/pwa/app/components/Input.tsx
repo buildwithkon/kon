@@ -1,11 +1,10 @@
-import type { InputType } from '@conform-to/react'
 import { cn } from '@konxyz/shared/lib/utils'
 
-export default function InputWithError({
+export default function Input({
   field,
   hint,
   inputType = 'text'
-}: { field: any; hint?: string; inputType?: InputType }) {
+}: { field: any; hint?: string; inputType?: 'number' | 'text' | 'email' | 'password' }) {
   return (
     <div>
       <input
@@ -13,8 +12,8 @@ export default function InputWithError({
         name={field.name}
         type={inputType}
         className={cn('w-full border', field?.errors ? 'border-red-400' : 'border-black/20')}
-        placeholder="Display Name"
-        aria-describedby="displayname"
+        placeholder={field.placeholder}
+        aria-describedby={field.ariaDescribedBy}
       />
       {hint && (
         <small id="displayname" className="px-2 pt-0.5 text-xs">

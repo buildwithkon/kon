@@ -1,5 +1,6 @@
 /* @import "./font.css"; */
 @import "./vendor/sonner.css";
+@import "@coinbase/onchainkit/styles.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -63,7 +64,7 @@
   input,
   select,
   button[role="combobox"] {
-    @apply bg-white text-black dark:text-white dark:bg-stone-700 rounded-xl px-4 py-2 text-lg focus:border-main outline-none min-h-12;
+    @apply bg-white text-black dark:text-white dark:bg-stone-700 rounded-xl px-4 py-2 text-lg focus:border-main outline-none min-h-12 w-full;
 
     &:readonly {
       @apply cursor-pointer;
@@ -78,7 +79,7 @@
   }
 
   label {
-    @apply font-bold pb-1.5 px-1;
+    @apply font-bold pb-1.5 px-1 w-full block;
   }
 
   .btn {

@@ -2,9 +2,9 @@ import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
-  darkMode: ['class'],
   content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}'],
-  safelist: ['font-sans', 'font-serif', 'font-mono', 'font-dot'],
+  darkMode: ['class'],
+  safelist: ['dark', 'font-sans', 'font-serif', 'font-mono', 'font-dot'],
   theme: {
     fontFamily: {
       sans: ['"Mona Sans"', ...defaultTheme.fontFamily.sans],

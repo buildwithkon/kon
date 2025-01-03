@@ -210,7 +210,7 @@ const routes = {
     path: "start",
     index: void 0,
     caseSensitive: void 0,
-    hasLoader: true,
+    hasLoader: false,
     hasAction: true,
     hasWorkerLoader: false,
     hasWorkerAction: false,
