@@ -1,23 +1,32 @@
 import type { ApiType } from '@konxyz/api/src'
 import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
-import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '@konxyz/shared/lib/const'
+import { APP_NAME, COLOR_HEX_MAIN_DEFAULT, ENS_APPCONFIG_NAME } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
 
-export const client = (origin: string, env: Env) => {
+export const client = (origin: string, env: Env, noCache = false) => {
   if (process.env.NODE_ENV === 'development') {
     return hc<ApiType>('http://localhost:8787')
   }
   return hc<ApiType>(origin, {
-    fetch: env.API_WORKER.fetch.bind(env.API_WORKER)
+    fetch: env.API_WORKER.fetch.bind(env.API_WORKER),
+    ...(noCache && { headers: { 'x-no-cache': 'true' } })
   })
 }
-
-export const loadAppConfig = async (_url: string, env: Env) => {
+const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')
   const subdomain = urlArr.length > 1 ? urlArr[0] : null
+
+  return {
+    subdomain: process.env.NODE_ENV === 'development' ? devConfig.id : subdomain,
+    origin: url.origin
+  }
+}
+
+export const loadAppConfig = async (_url: string, env: Env) => {
+  const { subdomain, origin } = prepare(_url)
 
   if (process.env.NODE_ENV === 'development') {
     return {
@@ -25,22 +34,19 @@ export const loadAppConfig = async (_url: string, env: Env) => {
       appConfig: devConfig
     }
   }
-  // const subdomain = 'alpha'
 
   let appConfig = null
-  if (subdomain) {
-    try {
-      const res = await client(url.origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
-        param: {
-          subdomain,
-          chain: 'sepolia'
-        }
-      })
-      const json = await res.json()
-      appConfig = JSON.parse(json)
-    } catch (error) {
-      console.error('Error fetching appConfig:', error)
-    }
+  try {
+    const res = await client(origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
+      param: {
+        subdomain,
+        chain: 'sepolia'
+      }
+    })
+    const json = await res.json()
+    appConfig = JSON.parse(json)
+  } catch (error) {
+    console.error('Error fetching appConfig:', error)
   }
 
   return {
@@ -79,19 +85,16 @@ export const generateRootMeta = (appConfig: AppConfig) => [
   { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
 ]
 
-export const checkId = async (id: string, env: Env) => {
+export const checkId = async (id: string, url: string, env: Env) => {
+  const { subdomain, origin } = prepare(url)
   try {
-    const res = await client('', env).ens[':chain'].getSubnameAddress[':id'].$get({
+    const res = await client(origin, env, true).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
-        id: `${id}.alpha.kon.eth`,
+        id: `${id}.${subdomain}.${ENS_APPCONFIG_NAME}`,
         chain: 'sepolia'
       }
     })
-    const json = await res.json()
-    console.log('-------:', JSON.parse(json))
-    return {
-      id: JSON.parse(json).id
-    }
+    return await res.json()
   } catch (error) {
     console.error('Error fetching subnameAddress:', error)
   }

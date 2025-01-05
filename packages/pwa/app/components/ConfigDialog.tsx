@@ -31,7 +31,7 @@ export default function ConfigDialog() {
   const copy = (address: `0x${string}` | undefined) => {
     if (!address) return
     navigator.clipboard.writeText(address)
-    toast.success('Copied to clipboard!')
+    toast.info('Copied to clipboard!')
   }
 
   return (

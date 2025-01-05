@@ -6,6 +6,7 @@ import { useRouteLoaderData } from '@remix-run/react'
 import Avatar from '~/components/Avatar'
 import BottomBar from '~/components/BottomBar'
 import TopBar from '~/components/TopBar'
+import type { RootLoader } from '~/root'
 
 export const meta: MetaFunction = mergeMeta(({ matches }) => [
   { title: `Members | ${matches[0]?.data?.appConfig?.name ?? ''}` }
@@ -32,7 +33,7 @@ export default function Members() {
 }
 
 const UserLists = () => {
-  const ld = useRouteLoaderData('root')
+  const ld = useRouteLoaderData<RootLoader>('root')
 
   return (
     <div className="-mx-6">

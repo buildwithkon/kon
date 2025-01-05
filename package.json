@@ -16,7 +16,7 @@
     "site": "pnpm -F \"@konxyz/site\"",
     "site:dev": "pnpm -F \"@konxyz/site\" run dev",
     "shared": "pnpm -F \"@konxyz/shared\"",
-    "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\" \"pnpm dashboard run dev\" && \"pnpm dashboard run dev --port 5174\"",
+    "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\"",
     "start": "concurrently \"pnpm api run dev --port=8786 \" \"wait-on tcp:8786 && pnpm pwa run start\""
   },
   "devDependencies": {

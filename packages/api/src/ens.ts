@@ -8,13 +8,17 @@ const ENS_APPCONFIG_BASE_KEY = 'app.kon'
 
 const ens = new Hono<{ Bindings: Env }>()
 
-ens.get(
-  '*',
-  cache({
+ens.use('*', async (c, next) => {
+  const noCache = c.req.header('x-no-cache')
+  if (noCache) {
+    return next()
+  }
+
+  return cache({
     cacheName: 'kon-api',
     cacheControl: 'max-age=600'
-  })
-)
+  })(c, next)
+})
 
 ens.get('/:chain/getAppConfig/:id', async (c) => {
   const id = c.req.param('id')

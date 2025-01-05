@@ -29,3 +29,6 @@ export const getAppAvatar = async (env: Env, subdomain: string) =>
     name: normalize(`${subdomain}.${ENS_APPCONFIG_NAME}`),
     chainId: ENS_APPCONFIG_CHAINID
   })
+
+export const generateSubname = (id: string, subdomain: string) =>
+  normalize(`${id}.${subdomain}.${ENS_APPCONFIG_NAME}`)

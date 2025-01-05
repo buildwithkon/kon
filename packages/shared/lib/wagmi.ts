@@ -1,4 +1,4 @@
-import type { AppConfg } from '@konxyz/shared/types'
+import type { AppConfig } from '@konxyz/shared/types'
 import { Porto } from 'porto'
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { base, baseSepolia, mainnet, odysseyTestnet, sepolia } from 'wagmi/chains'
@@ -6,7 +6,7 @@ import { coinbaseWallet } from 'wagmi/connectors'
 
 Porto.create()
 
-export const getWagmiConfig = (ENV: Env, appConfig?: AppConfg) =>
+export const getWagmiConfig = (ENV: Env, appConfig?: AppConfig) =>
   createConfig({
     ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],

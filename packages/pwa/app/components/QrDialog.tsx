@@ -4,10 +4,11 @@ import { useRouteLoaderData } from '@remix-run/react'
 import { QRCode } from 'react-qrcode-logo'
 import { useAccount } from 'wagmi'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
+import type { RootLoader } from '~/root'
 
 export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
-  const ld = useRouteLoaderData('root')
+  const ld = useRouteLoaderData<RootLoader>('root')
   const isDarkMode = false
 
   return (
@@ -18,19 +19,19 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
         <DialogDescription className="hidden text-center">Scan this QR for checkin!</DialogDescription>
         <div className="mx-auto px-6 pt-6">
           <QRCode
-            value={`https://${ld.subdomain}.kon.xyz/users/address/${address ?? ''}`}
+            value={`https://${ld?.subdomain}.kon.xyz/users/address/${address ?? ''}`}
             size={256}
             ecLevel="Q"
             fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
             logoImage={ld?.appConfig?.icons?.logo ?? LogoPng}
             qrStyle="dots"
-            logoPadding={2}
+            logoPadding={1}
             logoPaddingStyle="square"
             removeQrCodeBehindLogo
             eyeRadius={{
-              outer: 10,
-              inner: 6
+              outer: 8,
+              inner: 0.5
             }}
           />
         </div>

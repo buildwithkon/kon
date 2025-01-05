@@ -1,3 +1,4 @@
+import { fmtNum } from '@konxyz/shared/lib/format'
 import type { RootLoader } from '@konxyz/shared/types'
 import { QrCode } from '@phosphor-icons/react'
 import { useRouteLoaderData } from '@remix-run/react'
@@ -8,15 +9,16 @@ import QrDialog from '~/components/QrDialog'
 export default function ProfileCard({
   qr = true,
   point,
-  name
-}: { qr?: boolean; point?: string; name?: string }) {
+  name,
+  id
+}: { qr?: boolean; point?: number; name?: string; id?: string }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
 
   return (
     <div
       className={
-        'shine-overlay relative h-60 w-full overflow-hidden rounded-xl bg-main p-8 text-main-fg shadow-2xl dark:shadow-white/5'
+        'shine-overlay relative aspect-golden w-full overflow-hidden rounded-xl bg-main p-8 text-main-fg shadow-2xl dark:shadow-white/5'
       }
     >
       <div className="shine" />
@@ -35,10 +37,20 @@ export default function ProfileCard({
       <div className="absolute bottom-6 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
         <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
         <div className="-mt-1 flex-col pl-2.5">
-          <div className="min-w-2/3 truncate font-bold text-2xl">{name}</div>
+          <div className="min-w-2/3 truncate font-bold text-lg">
+            {name ? (
+              <span>
+                {name} {id && <span className="font-normal text-base opacity-90">({id})</span>}
+              </span>
+            ) : id ? (
+              id
+            ) : (
+              'Your Name'
+            )}
+          </div>
           <div className="-mt-0.5 flex items-center font-mono">
             <span className="px-0.5">
-              {point}
+              {fmtNum(point)}
               <span className="px-0.5">pts</span>
             </span>
           </div>

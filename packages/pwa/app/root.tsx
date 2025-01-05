@@ -8,6 +8,7 @@ import '~/assets/pwa.css'
 import AppHandler from '~/components/AppHandler'
 import AppProviders from '~/components/AppProviders'
 import NotFound from '~/components/NotFound'
+import { Toaster } from '~/components/ui/Toaster'
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -77,6 +78,7 @@ export default function App() {
 const AppContent = () => (
   <AppProviders>
     <AppHandler />
+    <Toaster />
     <Outlet />
   </AppProviders>
 )

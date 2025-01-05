@@ -13,6 +13,10 @@ export default {
       dot: ['DotGothic16', ...defaultTheme.fontFamily.mono]
     },
     extend: {
+      aspectRatio: {
+        golden: '1.618 / 1',
+        silder: '2.414 / 1'
+      },
       boxShadow: {
         'top-2xl': '0px -25px 30px -25px rgb(0 0 0 / 0.25)'
       },
