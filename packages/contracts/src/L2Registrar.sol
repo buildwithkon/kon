@@ -6,7 +6,7 @@
 // ***********************************************
 
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity ^0.8.27;
 
 /// @author darianb.eth
 /// @custom:project Durin
@@ -56,13 +56,14 @@ contract L2Registrar {
             return true;
         }
     }
-
     /// @notice Registers a new name
     /// @param label The label to register (e.g. "name" for "name.eth")
     /// @param owner The address that will own the name
-    function register(string memory label, address owner) external {
-        bytes32 labelhash = keccak256(bytes(label)); // Hash the label
-        bytes memory addr = abi.encodePacked(owner); // Convert address to bytes
+    /// @param name The name text record to set (optional)
+
+    function register(string memory label, address owner, string memory name) external {
+        bytes32 labelhash = keccak256(bytes(label));
+        bytes memory addr = abi.encodePacked(owner);
 
         // Set the forward address for the current chain. This is needed for reverse resolution.
         // E.g. if this contract is deployed to Base, set an address for chainId 8453 which is
@@ -72,8 +73,16 @@ contract L2Registrar {
         // Set the forward address for mainnet ETH (coinType 60) for easier debugging.
         registry.setAddr(labelhash, 60, addr);
 
-        // Register the name in the L2 registry
+        // Set name text record if provided
+        if (bytes(name).length > 0) {
+            registry.setText(labelhash, "name", name);
+        }
+
         registry.register(label, owner);
         emit NameRegistered(label, owner);
+    }
+
+    function register(string memory label, address owner) external {
+        register(label, owner, "");
     }
 }
