@@ -3,6 +3,7 @@ import { Porto } from 'porto'
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { base, baseSepolia, mainnet, odysseyTestnet, sepolia } from 'wagmi/chains'
 import { coinbaseWallet } from 'wagmi/connectors'
+import { APP_NAME } from './const'
 
 Porto.create()
 
@@ -12,9 +13,11 @@ export const getWagmiConfig = (ENV: Env, appConfig?: AppConfig) =>
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
     connectors: [
       coinbaseWallet({
-        appName: 'kon',
+        appName: APP_NAME,
         appLogoUrl: appConfig?.icons?.logo ?? 'https://kon.xyz/static/logo.png',
-        preference: 'smartWalletOnly',
+        preference: {
+          options: 'smartWalletOnly'
+        },
         version: '4'
       })
     ],

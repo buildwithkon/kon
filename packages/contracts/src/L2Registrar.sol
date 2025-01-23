@@ -37,7 +37,6 @@ contract L2Registrar {
         assembly {
             sstore(chainId.slot, chainid())
         }
-
         coinType = (0x80000000 | chainId) >> 0;
         registry = _registry;
     }
@@ -61,8 +60,9 @@ contract L2Registrar {
     /// @param owner The address that will own the name
     /// @param name The name text record to set (optional)
 
-    function register(string memory label, address owner, string memory name) external {
-        bytes32 labelhash = keccak256(bytes(label));
+    function register(string memory label, string memory subdomain, address owner, string memory name) external {
+        string memory labelWithSubdomain = string.concat(label, ".", subdomain);
+        bytes32 labelhash = keccak256(bytes(labelWithSubdomain));
         bytes memory addr = abi.encodePacked(owner);
 
         // Set the forward address for the current chain. This is needed for reverse resolution.
@@ -78,11 +78,11 @@ contract L2Registrar {
             registry.setText(labelhash, "name", name);
         }
 
-        registry.register(label, owner);
-        emit NameRegistered(label, owner);
+        registry.register(labelWithSubdomain, owner);
+        emit NameRegistered(labelWithSubdomain, owner);
     }
 
-    function register(string memory label, address owner) external {
-        register(label, owner, "");
+    function register(string memory label, string memory subdomain, address owner) external {
+        register(label, subdomain, owner, "");
     }
 }

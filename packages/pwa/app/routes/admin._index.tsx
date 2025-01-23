@@ -1,11 +1,11 @@
-import type { LoaderData } from '@konxyz/shared/types'
 import type { MetaFunction } from '@remix-run/cloudflare'
 import TopBar from '~/components/TopBar'
 
-export const meta: MetaFunction = ({ matches }) => {
-  const ld = matches[0]?.data as LoaderData
-  return [{ title: `Admin | ${ld?.appConfig?.name ?? ''}` }]
-}
+import { mergeMeta } from '@konxyz/shared/lib/remix'
+
+export const meta: MetaFunction = mergeMeta(({ matches }) => [
+  { title: `Admin | ${matches[0]?.data?.appConfig?.name ?? ''}` }
+])
 
 export default function Admin() {
   return (

@@ -18,3 +18,8 @@ export const BLOCKEXPLORER_URLS = [
   { [sepolia.id]: 'https://eth-sepolia.blockscout.com' },
   { [baseSepolia.id]: 'https://base-sepolia.blockscout.com' }
 ]
+
+export const ADDRESSES = {
+  ENS_L2_REGISTRY: '0xde364581c00a929edbf80cabbd6aaafb7f2edf62',
+  ENS_L2_REGISTRAR: '0xde364581c00a929edbf80cabbd6aaafb7f2edf62'
+}

@@ -11,6 +11,7 @@ import {
   TransactionToastIcon,
   TransactionToastLabel
 } from '@coinbase/onchainkit/transaction'
+import { cn } from '@konxyz/shared/lib/utils'
 
 type CustomProps = Omit<TransactionReact, 'children'> & {
   disabled?: boolean
@@ -43,7 +44,11 @@ export default function CustomTransaction({
       onSuccess={onSuccess}
     >
       <div ref={btnRef}>
-        <TransactionButton disabled={disabled} className={btnClass} text={btnText} />
+        <TransactionButton
+          disabled={disabled}
+          className={cn('btn-main font-bold text-lg text-main-fg hover:bg-main active:bg-main', btnClass)}
+          text={btnText}
+        />
       </div>
       <TransactionSponsor />
       <TransactionStatus>

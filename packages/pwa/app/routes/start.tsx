@@ -59,7 +59,6 @@ export default function Start() {
   const [form, fields] = useForm({
     lastResult: ad?.result,
     onValidate({ formData }) {
-      console.log('----client form::', ad)
       return parseWithZod(formData, { schema: createRegisterSchema() })
     },
     shouldValidate: 'onBlur',
@@ -94,7 +93,7 @@ export default function Start() {
             </button>
           </div>
         </Form>
-        <ConfirmDialog2
+        <ConfirmDialog_
           joinTitle={joinTitle}
           confirmOpen={confirmOpen}
           setConfirmOpen={setConfirmOpen}
@@ -112,7 +111,7 @@ const CardComponent = () => {
   return <ProfileCard qr={false} name={name?.[0]?.value} id={id?.[0]?.value} />
 }
 
-const ConfirmDialog2 = ({
+const ConfirmDialog_ = ({
   joinTitle,
   confirmOpen,
   setConfirmOpen,
@@ -146,7 +145,7 @@ const ConfirmDialog2 = ({
           <input readOnly type="text" value={name?.[0]?.value ?? ''} />
         </div>
       </div>
-      <Transaction calls={[]} btnText="Join" btnClass="btn-main mt-7" btnRef={btnInitRef} />
+      <Transaction calls={[]} btnText="Join" btnClass="mt-7" btnRef={btnInitRef} />
     </ConfirmDialog>
   )
 }

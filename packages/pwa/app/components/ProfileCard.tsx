@@ -29,7 +29,7 @@ export default function ProfileCard({
         {ld?.appConfig?.icons?.logo && (
           <img
             src={ld?.appConfig?.icons?.logo}
-            className="max-h-24 max-w-24 rounded-full border-4 border-white/20"
+            className="max-h-24 max-w-24 rounded-full"
             alt={ld?.appConfig?.name ?? ''}
           />
         )}
