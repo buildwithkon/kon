@@ -6,9 +6,9 @@
     "strict": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "lib": ["ESNext"],
-    "types": [],
-    "jsx": "react",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["@react-router/cloudflare"],
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "~/*": ["./*"]

@@ -13,7 +13,8 @@
 
   --breakpoint-xs: 430px;
 
-  --c-bg: #f7f7f7;
+  --color-bg: #f7f7f7;
+  --color-text: #111;
   --color-main: #ccc;
   --color-main-fg: #ccc;
   --color-sub1: #f1f1f1;
@@ -29,8 +30,8 @@ body {
 }
 
 @utility content {
-  background: var(--c-bg);
-  color: var(--c-text);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 @utility max-w-screen-xs {
@@ -89,10 +90,14 @@ label {
 
 
 @utility btn {
-  @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80;
+  @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80 cursor-pointer;
 }
 .btn-main {
   @apply btn bg-main shadow-gray-500/10 text-main-fg;
+}
+
+.btn-main-fg {
+  @apply btn bg-main-fg shadow-gray-500/10 text-main;
 }
 
 .btn-sub {
