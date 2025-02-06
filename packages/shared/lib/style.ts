@@ -24,8 +24,8 @@ export const getFgColorFromBgColor = (mainColor: string): string => {
 
 export const setAppColor = (mainColor: string | undefined): React.CSSProperties =>
   ({
-    '--c-main': mainColor ?? '#C5F900',
-    '--c-main-fg': getFgColorFromBgColor(mainColor ?? '#C5F900')
+    '--color-main': mainColor ?? '#C5F900',
+    '--color-main-fg': getFgColorFromBgColor(mainColor ?? '#C5F900')
   }) as React.CSSProperties
 
 export const setFontClass = (fontStyle: string | undefined = 'sans'): string => `font-${fontStyle}`

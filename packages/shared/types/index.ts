@@ -22,15 +22,16 @@ export type AppConfig = {
 }
 
 export type LoaderData = {
-  subdomain: string | null
-  appConfig: AppConfig | null
+  subdomain: string | undefined
+  appConfig: AppConfig | undefined
 }
 
 export type RootLoader = LoaderData & {
   ENV: Env
+  cookie?: string
 }
 
 export type UserData = {
-  address: `0x${string}` | null
-  subname: string | null
+  address: `0x${string}` | undefined
+  subname: string | undefined
 }

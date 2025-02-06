@@ -1,4 +1,4 @@
-import type { HtmlMetaDescriptor, MetaFunction } from '@remix-run/cloudflare'
+import type { HtmlMetaDescriptor, MetaFunction } from '@react-router/cloudflare'
 
 export const mergeMeta = (overrideFn: MetaFunction, appendFn?: MetaFunction): MetaFunction => {
   return (arg) => {

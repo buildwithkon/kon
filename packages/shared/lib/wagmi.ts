@@ -1,20 +1,19 @@
 import type { AppConfig } from '@konxyz/shared/types'
-import { Porto } from 'porto'
+// import { Porto } from 'porto'
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { base, baseSepolia, mainnet, odysseyTestnet, sepolia } from 'wagmi/chains'
 import { coinbaseWallet } from 'wagmi/connectors'
-import { APP_NAME } from './const'
+import { APP_NAME, DEFAULT_LOGO_URL } from './const'
 
-Porto.create()
+// Porto.create()
 
-export const getWagmiConfig = (ENV: Env, appConfig?: AppConfig) =>
+export const getWagmiConfig = (ENV: Env, appConfig?: AppConfig | undefined) =>
   createConfig({
-    ssr: true,
     chains: [mainnet, sepolia, base, baseSepolia, odysseyTestnet],
     connectors: [
       coinbaseWallet({
         appName: APP_NAME,
-        appLogoUrl: appConfig?.icons?.logo ?? 'https://kon.xyz/static/logo.png',
+        appLogoUrl: appConfig?.icons?.logo ?? DEFAULT_LOGO_URL,
         preference: {
           options: 'smartWalletOnly'
         },
@@ -30,6 +29,7 @@ export const getWagmiConfig = (ENV: Env, appConfig?: AppConfig) =>
       ),
       [odysseyTestnet.id]: http()
     },
+    ssr: true,
     storage: createStorage({
       storage: cookieStorage
     })

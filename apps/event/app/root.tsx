@@ -1,0 +1,119 @@
+import AppHandler from '@konxyz/shared-react/components/AppHandler'
+import AppProviders from '@konxyz/shared-react/components/AppProviders'
+import NotFound from '@konxyz/shared-react/components/NotFound'
+import { Toaster } from '@konxyz/shared-react/components/ui/Toaster'
+
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+  useLoaderData,
+  useLocation,
+  useNavigate
+} from 'react-router'
+import type { Route } from './+types/root'
+import './style.css'
+import { generateRootMeta, loadAppConfig } from '@konxyz/shared/lib/app'
+import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
+
+export const links: Route.LinksFunction = () => [
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=DotGothic16&Mona+Sans:wght@400;700&family=Source+Serif+4:wght@400;700&family=Space+Mono:wght@400;700&display=swap'
+  }
+]
+
+export const meta = ({ data }: Route.MetaArgs) => generateRootMeta(data?.appConfig)
+
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
+  const env = context?.cloudflare?.env as Env
+  const config = await loadAppConfig(request.url, env)
+  const cookie = request.headers.get('cookie')
+
+  return {
+    ...config,
+    cookie,
+    ENV: {
+      ...env
+    }
+  }
+}
+export type RootLoader = typeof loader
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  const ld = useLoaderData<RootLoader>()
+
+  return (
+    <html
+      lang="en"
+      style={setAppColor(ld?.appConfig?.colors?.main)}
+      className={setFontClass(ld?.appConfig?.font)}
+      suppressHydrationWarning
+    >
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+
+export default function App() {
+  const ld = useLoaderData()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  if (!ld.appConfig) {
+    return <NotFound />
+  }
+
+  return (
+    <AppProviders ld={ld}>
+      <AppHandler ld={ld} navigate={navigate} pathname={pathname} />
+      <Toaster />
+      <Outlet />
+    </AppProviders>
+  )
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  let message = 'Oops!'
+  let details = 'An unexpected error occurred.'
+  let stack: string | undefined
+
+  if (isRouteErrorResponse(error)) {
+    message = error.status === 404 ? '404' : 'Error'
+    details = error.status === 404 ? 'The requested page could not be found.' : error.statusText || details
+  } else if (import.meta.env.DEV && error && error instanceof Error) {
+    details = error.message
+    stack = error.stack
+  }
+
+  return (
+    <main className="container mx-auto p-4 pt-16">
+      <h1>{message}</h1>
+      <p>{details}</p>
+      {stack && (
+        <pre className="w-full overflow-x-auto p-4">
+          <code>{stack}</code>
+        </pre>
+      )}
+    </main>
+  )
+}

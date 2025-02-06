@@ -11,11 +11,14 @@
     "api:dev": "pnpm -F \"@konxyz/api\" run dev",
     "dashboard": "pnpm -F \"@konxyz/dashboard\"",
     "dashboard:dev": "pnpm -F \"@konxyz/dashboard\" run dev",
+    "event": "pnpm -F \"@konxyz/event-template\"",
+    "event:dev": "pnpm -F \"@konxyz/event-template\" run dev",
     "pwa": "pnpm -F \"@konxyz/pwa\"",
     "pwa:dev": "pnpm -F \"@konxyz/pwa\" run dev",
     "site": "pnpm -F \"@konxyz/site\"",
     "site:dev": "pnpm -F \"@konxyz/site\" run dev",
     "shared": "pnpm -F \"@konxyz/shared\"",
+    "shared-react": "pnpm -F \"@konxyz/shared-react\"",
     "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\"",
     "start": "concurrently \"pnpm api run dev --port=8786 \" \"wait-on tcp:8786 && pnpm pwa run start\""
   },
@@ -23,6 +26,6 @@
     "@biomejs/biome": "^1.9.4",
     "concurrently": "^9.1.0",
     "wait-on": "^8.0.1",
-    "wrangler": "^3.99.0"
+    "wrangler": "^3.107.3"
   }
 }

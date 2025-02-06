@@ -11,6 +11,9 @@ export const COLOR_HEX_DARK = '#1e1e1e'
 export const COLOR_HEX_LIGHT = '#f7f7f7'
 export const COLOR_HEX_MAIN_DEFAULT = '#ffe614'
 
+export const DEFAULT_FAVICON_URL = 'https://kon.xyz/static/favicon.png'
+export const DEFAULT_LOGO_URL = 'https://kon.xyz/static/logo.png'
+
 export const REGISTER_ADDRESS = '0x39ab724cd0d37e66a3fe0bdf629d3a1a7013aee3'
 
 export const BLOCKEXPLORER_URLS = [
