@@ -8,8 +8,9 @@ import Loading from '~/components/Loading'
 export default function AppHandler({
   ld,
   navigate,
-  pathname
-}: { ld: RootLoader; navigate: (path: string) => void; pathname: string }) {
+  pathname,
+  isNavigating
+}: { ld: RootLoader; navigate: (path: string) => void; pathname: string; isNavigating: boolean }) {
   const { isConnected, isConnecting, address } = useAccount()
   const isLoading = useAtomValue(isLoadingAtom)
 
@@ -48,5 +49,5 @@ export default function AppHandler({
   //   }
   // }, [ld?.appConfig])
 
-  return <>{!ld || isLoading || (isConnecting && <Loading />)}</>
+  return !ld || isLoading || isNavigating || (isConnecting && <Loading />)
 }

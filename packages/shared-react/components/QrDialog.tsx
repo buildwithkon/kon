@@ -1,10 +1,10 @@
 import { LogoPng } from '@konxyz/shared/assets'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
+import type { RootLoader } from '@konxyz/shared/types'
 import { QRCode } from 'react-qrcode-logo'
 import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
-import type { RootLoader } from '~/root'
 
 export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()

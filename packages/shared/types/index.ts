@@ -5,19 +5,19 @@ export type AppConfig = {
   name: string
   description?: string
   url: string
+  version: string
+  template: {
+    type: 'shop' | 'event' | 'community'
+    tabs?: []
+  }
+  font?: 'sans' | 'serif' | 'dot' | 'mono'
   icons: {
     favicon: string
     logo?: string
   }
-  version: string
-  font?: 'sans' | 'serif' | 'dot'
   colors?: {
     main: string
     sub?: string
-  }
-  plugins?: {
-    xmtp?: string
-    points?: string
   }
 }
 

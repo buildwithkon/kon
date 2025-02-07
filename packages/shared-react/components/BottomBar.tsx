@@ -1,10 +1,18 @@
 import { usePwa } from '@dotmind/react-use-pwa'
 import { cn } from '@konxyz/shared/lib/utils'
-import { ChatsCircle, House, TextIndent as Menu, UsersThree } from '@phosphor-icons/react'
+import type { AppConfig } from '@konxyz/shared/types'
+import { CalendarCheck, ChatsCircle, House, TextIndent as Menu, UsersThree, SealQuestion } from '@phosphor-icons/react'
 import { Link, useLocation } from 'react-router'
 
-export default function BottomBar() {
+type TabItem = {
+  id: string
+  title?: string
+  content: string
+}
+
+export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefined }) {
   const { isStandalone } = usePwa()
+  const tabs = appConfig?.template?.tabs ?? []
 
   return (
     <footer
@@ -14,35 +22,50 @@ export default function BottomBar() {
       )}
     >
       <div className="mx-auto flex h-full max-w-screen-xs justify-around px-6">
-        <BottomBarItem to="/home">
-          <House size={42} />
-        </BottomBarItem>
-        <BottomBarItem to="/forum">
-          <ChatsCircle size={42} />
-        </BottomBarItem>
-        <BottomBarItem to="/members">
-          <UsersThree size={42} />
-        </BottomBarItem>
-        <BottomBarItem to="/misc">
-          <Menu size={42} />
-        </BottomBarItem>
+        {tabs.map((item: TabItem) => (
+          <BottomBarItem key={`bottom-bar-${item.id}`} id={item.id} />
+        ))}
       </div>
     </footer>
   )
 }
 
-const BottomBarItem = ({ children, to }: { children: React.ReactNode; to: string }) => {
+const BottomBarItem = ({ id }: {id: string}) => {
   const { pathname } = useLocation()
 
   return (
     <Link
       className={cn(
         'flex h-full w-16 items-center justify-center border-t-4 pb-1 text-main-fg hover:opacity-70',
-        pathname === to ? 'border-main-fg' : 'border-transparent'
+        pathname === `/${id}` ? 'border-main-fg' : 'border-transparent'
       )}
-      to={to}
+      to={`/${id}`}
     >
-      {children}
+      {renderIcon(id)}
     </Link>
   )
+}
+
+const renderIcon = (id: string) => {
+  switch (id) {
+    case 'home':
+      return <House size={42} />
+    case 'forum':
+    case 'message':
+    case 'dm':
+      return <ChatsCircle size={42} />
+    case 'info':
+    case 'schedule':
+      return <CalendarCheck size={42} />
+    case 'members':
+    case 'users':
+      return <UsersThree size={42} />
+    case 'qa':
+      return <SealQuestion size={42} />
+    case 'menu':
+    case 'misc':
+      return <Menu size={42} />
+    default:
+      return <Menu size={42} />
+  }
 }

@@ -12,7 +12,8 @@ import {
   isRouteErrorResponse,
   useLoaderData,
   useLocation,
-  useNavigate
+  useNavigate,
+  useNavigation
 } from 'react-router'
 import type { Route } from './+types/root'
 import './style.css'
@@ -64,6 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <link rel="manifest" href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld.appConfig?.id}`} />
       </head>
       <body>
         {children}
@@ -78,6 +80,8 @@ export default function App() {
   const ld = useLoaderData()
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { location } = useNavigation()
+  const isNavigating = Boolean(location)
 
   if (!ld.appConfig) {
     return <NotFound />
@@ -85,7 +89,7 @@ export default function App() {
 
   return (
     <AppProviders ld={ld}>
-      <AppHandler ld={ld} navigate={navigate} pathname={pathname} />
+      <AppHandler ld={ld} navigate={navigate} pathname={pathname} isNavigating={isNavigating} />
       <Toaster />
       <Outlet />
     </AppProviders>

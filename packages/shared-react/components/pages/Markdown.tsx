@@ -1,12 +1,14 @@
 import type { RootLoader } from '@konxyz/shared/types'
 import BottomBar from '~/components/BottomBar'
-import ProfileCard from '~/components/ProfileCard'
+import TopBar from '~/components/TopBar'
 import Markdown from 'markdown-to-jsx'
 
-export default function Home({ ld, content }: { ld: RootLoader, content: string }) {
+export default function MD({ ld, content }: { ld: RootLoader, content: string }) {
   return (
-    <div className="wrapper-app-full">
-      <ProfileCard point={1000} name="▯◇◹◸◿▿" id="xxx" />
+    <div className="wrapper-app">
+      <TopBar>
+        🚀 Infomation
+      </TopBar>
       <Markdown
         options={{
           overrides: {
@@ -31,23 +33,7 @@ export default function Home({ ld, content }: { ld: RootLoader, content: string 
       >
         {content}
       </Markdown>
-      {/* <Badges /> */}
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )
 }
-
-const BADGES = ['🤠 2024 Presententer', '🐵 Staff']
-
-const Badges = () => (
-  <ul className="my-10">
-    {BADGES.map((badge) => (
-      <li
-        key={badge}
-        className="mr-2.5 mb-2 inline-flex items-center justify-center rounded-2xl border-2 border-muted px-4 py-2 font-bold text-lg"
-      >
-        {badge}
-      </li>
-    ))}
-  </ul>
-)

@@ -58,7 +58,7 @@ export default function ProfileCard({
       </div>
       {qr ? (
         <QrDialog>
-          <button type="button">
+          <button type="button" className="curosr-pointer">
             <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
           </button>
         </QrDialog>

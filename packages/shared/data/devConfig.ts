@@ -1,9 +1,13 @@
 const devConfig1 = {
   id: 'centrum',
-  version: '1.0',
+  version: '0.1',
   url: 'centrum.kon.xyz',
   name: 'Centrum',
   description: 'Global web3 Community Space in Shibuya',
+  template: {
+    type: 'shop',
+    tabs: ['home', 'shop', 'community', 'points', 'notifications', 'settings']
+  },
   font: 'sans',
   icons: {
     favicon: 'https://i.imgur.com/OlCwNTn.png',
@@ -11,32 +15,34 @@ const devConfig1 = {
   },
   colors: {
     main: '#2F2F2F'
-  },
-  plugins: {
-    forum: true,
-    points: true,
-    notification: 'xmtp'
   }
 }
 
 const devConfig2 = {
-  id: 'alpha',
-  version: '1.0',
-  url: 'alpha.kon.xyz',
-  name: 'Alpha Club',
-  description: 'This is an experimental space for KON Alpha.',
+  id: 'fine2024',
+  version: '0.1',
+  url: 'fine2024.kon.xyz',
+  name: 'FINE2024',
+  description: 'Fracton Incubation 2024 Demoday (IRL & Online)',
+  template: {
+    type: 'event',
+    tabs: [
+      { id: 'home', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      { id: 'info', title: 'Information', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      { id: 'qa', title: 'Q & A', content: 'iframe:https://app.sli.do/event/hSquYpgsUtoCKLCuEiBrjf' },
+      { id: 'forum', title: 'Forum', content: 'xmtp:xxx' },
+      { id: 'misc', title: 'Misc', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' }]
+  },
   icons: {
-    favicon: 'https://kon.xyz/static/favicon.png',
-    logo: 'https://kon.xyz/static/favicon.png'
+    favicon: 'https://euc.li/sepolia/fine2024.kon.eth',
+    logo: 'https://euc.li/sepolia/fine2024.kon.eth'
   },
-  font: 'serif',
+  font: 'sans',
   colors: {
-    main: '#C5F900'
-  },
-  plugins: {
-    xmtp: 'xGqF3kCJXOfGLetv67hTh',
-    points: '0x6D884056B5aded7FC77B6d975b13E0210b490ad6'
+    main: '#121212',
+    accent: '#04E348',
+    background: '#121212'
   }
 }
 
-export const devConfig = devConfig1
+export const devConfig = devConfig2

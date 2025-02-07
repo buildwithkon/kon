@@ -37,19 +37,19 @@ body {
 @utility max-w-screen-xs {
   max-width: var(--breakpoint-xs);
 }
-.text-muted {
+@utility text-muted {
   @apply text-stone-950/50 dark:text-white/50;
 }
 
-.bg-muted {
+@utility bg-muted {
   @apply bg-stone-950/20 dark:bg-white/20;
 }
 
-.border-normal {
+@utility border-normal {
   @apply border-black dark:border-white;
 }
 
-.border-muted {
+@utility border-muted {
   @apply border-stone-950/30 dark:border-white/30;
 }
 
@@ -58,13 +58,17 @@ body {
 }
 
 @utility wrapper {
-  @apply mx-auto max-w-screen-xs px-6 isolate;
+  @apply mx-auto max-w-screen-xs isolate;
+}
+
+.wrapper-iframe {
+  @apply wrapper w-full h-full;
 }
 .wrapper-app {
-  @apply wrapper pt-20 pb-28;
+  @apply wrapper pt-20 pb-28 px-6;
 }
 .wrapper-app-full {
-  @apply wrapper pt-8 pb-28;
+  @apply wrapper pt-8 pb-28 px-6;
 }
 
 input,
@@ -88,6 +92,9 @@ label {
   @apply font-bold pb-1.5 px-1 w-full block;
 }
 
+button {
+  @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-80;
+}
 
 @utility btn {
   @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80 cursor-pointer;
@@ -104,6 +111,41 @@ label {
   @apply btn bg-sub2 shadow-gray-500/10 text-main-fg;
 }
 
+.md {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl border-b border-muted pb-1 px-0.5;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h1, h2, h3, h4 {
+    @apply mt-8 mb-4;
+  }
+  p {
+    @apply mb-4;
+  }
+  ul, ol {
+    @apply pl-4;
+  }
+  ol {
+    @apply pl-4 list-decimal;
+  }
+  ul {
+    @apply pl-4 list-disc;
+  }
+  a {
+    @apply text-blue-600 underline;
+  }
+  pre {
+    @apply bg-gray-50 rounded px-4 py-2;
+  }
+  code {
+    @apply bg-gray-50 rounded px-2 py-1;
+  }
+}
 .shine-overlay {
   position: relative;
   overflow: hidden;
