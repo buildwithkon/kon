@@ -35,21 +35,6 @@ export default function AppHandler({
     // }
   }, [isConnected, address, navigate, pathname])
 
-  // // manifest
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && ld.appConfig) {
-  //     const manifestElement = document.getElementById('manifest')
-  //     const manifestString = JSON.stringify({
-  //       ...generateManifest(ld?.appConfig),
-  //       start_url: `${window.location.origin}/home`
-  //     })
-  //     manifestElement?.setAttribute(
-  //       'href',
-  //       `data:application/json;charset=utf-8,${encodeURIComponent(manifestString)}`
-  //     )
-  //   }
-  // }, [ld?.appConfig])
-
   return (
     <>
       {!ld || isLoading || isNavigating || (isConnecting && <Loading />)}

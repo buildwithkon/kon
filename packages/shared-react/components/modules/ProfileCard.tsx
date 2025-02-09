@@ -28,7 +28,7 @@ export default function ProfileCard({
   const isScrolled = isSticky && deboucedY
 
   return (
-    <div className={cn('pt-6', isSticky ? 'sticky top-0' : '')}>
+    <div className={cn(isSticky ? 'sticky top-6 z-10' : '')}>
       <div className={cn('aspect-golden w-full')}>
         <div
           className={cn(

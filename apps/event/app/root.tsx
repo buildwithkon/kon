@@ -83,7 +83,7 @@ export default function App() {
   const { location } = useNavigation()
   const isNavigating = Boolean(location)
 
-  if (!ld.appConfig) {
+  if (!ld?.appConfig) {
     return <NotFound />
   }
 

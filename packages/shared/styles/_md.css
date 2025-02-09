@@ -24,7 +24,7 @@
   }
 
   hr {
-    @apply border-muted my-10;
+    @apply border-t-4 border-double border-muted my-12 -mx-6 min-w-screen;
   }
 
   p {
@@ -40,7 +40,7 @@
     @apply pl-4 list-disc;
   }
   a {
-    @apply text-blue-600 underline;
+    @apply text-cyan-800 underline;
   }
   pre {
     @apply bg-gray-50 rounded px-4 py-2;

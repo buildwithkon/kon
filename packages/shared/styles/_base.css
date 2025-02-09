@@ -1,23 +1,3 @@
-@theme {
-  --font-sans: "Mona Sans", sans-serif;
-  --font-serif: "Source Serif 4", serif;
-  --font-mono: "Space Mono", mono;
-  --font-dot: "DotGothic16", serif;
-
-  --aspect-golden: 1.618 / 1;
-  --aspect-silver: 2.414 / 1;
-
-  --breakpoint-xs: 430px;
-
-  --color-bg: #f7f7f7;
-  --color-text: #111;
-  --color-main: #ccc;
-  --color-main-fg: #ccc;
-  --color-accent: #f900bf;
-  --color-sub1: #f1f1f1;
-  --color-sub2: #c7c7c7;
-}
-
 html,
 body {
   @apply min-h-screen;
@@ -59,7 +39,7 @@ body {
 }
 
 @utility wrapper {
-  @apply mx-auto max-w-screen-xs isolate;
+  @apply mx-auto max-w-screen-xs;
 }
 
 .wrapper-iframe {

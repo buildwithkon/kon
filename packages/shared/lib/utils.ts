@@ -17,4 +17,5 @@ export const genRanStr = (length = 5) => {
 }
 
 export const isStandalone = () =>
-  typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches
+  typeof window !== 'undefined' &&
+  (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true)

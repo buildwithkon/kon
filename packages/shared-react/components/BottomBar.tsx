@@ -5,6 +5,8 @@ import {
   ChatsCircle,
   Hand,
   House,
+  type IconWeight,
+  type IconProps,
   Books as Info,
   TextIndent as Menu,
   UsersThree
@@ -50,12 +52,12 @@ const BottomBarItem = ({ id }: { id: string }) => (
   </NavLink>
 )
 
-const iconProps = (isActive: boolean) => ({
-  size: 38,
+const iconProps = (isActive: boolean): IconProps => ({
+  size: 36,
   weight: isActive ? 'fill' : 'regular'
 })
 
-const renderIcon = (id: 'duotone' | 'fill' | 'regular', isActive: boolean) => {
+const renderIcon = (id: IconWeight, isActive: boolean) => {
   switch (id) {
     case 'home':
       return <House {...iconProps(isActive)} />

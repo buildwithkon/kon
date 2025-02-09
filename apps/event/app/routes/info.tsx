@@ -1,5 +1,5 @@
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
-// import TopBar from '@konxyz/shared-react/components/TopBar'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useLoaderData, useRouteLoaderData } from 'react-router'
@@ -23,8 +23,8 @@ export default function Info() {
   const { content } = useLoaderData()
 
   return (
-    <div className="wrapper pb-24">
-      {/* <TopBar>Information</TopBar> */}
+    <div className="wrapper py-16">
+      <TopBar title="Information" backBtn />
       <Markdown content={content} className="px-6" />
       <BottomBar appConfig={ld?.appConfig} />
     </div>

@@ -23,7 +23,7 @@ export default function Home() {
   const { content } = useLoaderData<typeof loader>()
 
   return (
-    <div className="wrapper px-6 pb-16">
+    <div className="wrapper px-6 pt-6 pb-16">
       <ProfileCard appConfig={ld?.appConfig} name="▯◇◹◸◿▿" id="xxx" isSticky showQr />
       <Markdown content={content} />
       <BottomBar appConfig={ld?.appConfig} />

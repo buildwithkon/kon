@@ -1,6 +1,6 @@
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 
-export const TAILWIND_WHITELIST_CLASSES = ['font-dot']
+export const TAILWIND_WHITELIST_CLASSES = ['font-sans', 'font-serif', 'font-mono', 'font-dot']
 
 export const hexToRgb = (
   hex: string,
