@@ -1,7 +1,8 @@
-import ForumPage from '@konxyz/shared-react/components/pages/Forum'
+import BottomBar from '@konxyz/shared-react/components/BottomBar'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useRouteLoaderData } from 'react-router'
-import type { Route } from './+types/home'
+import type { Route } from './+types/forum'
 
 export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `Forum | ${matches[0]?.data?.appConfig?.name ?? ''}` }
@@ -10,5 +11,10 @@ export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
 export default function Forum() {
   const ld = useRouteLoaderData('root')
 
-  return <ForumPage ld={ld} />
+  return (
+    <div className="wrapper pb-24">
+      <TopBar title="Forum" backUrl="/home" />
+      <BottomBar appConfig={ld?.appConfig} />
+    </div>
+  )
 }

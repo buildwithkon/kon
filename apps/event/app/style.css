@@ -34,6 +34,10 @@ body {
   color: var(--color-text);
 }
 
+@utility min-w-screen-xs {
+  min-width: var(--breakpoint-xs);
+}
+
 @utility max-w-screen-xs {
   max-width: var(--breakpoint-xs);
 }
@@ -42,7 +46,7 @@ body {
 }
 
 @utility bg-muted {
-  @apply bg-stone-950/20 dark:bg-white/20;
+  @apply bg-stone-950/10 dark:bg-white/10;
 }
 
 @utility border-normal {
@@ -50,7 +54,7 @@ body {
 }
 
 @utility border-muted {
-  @apply border-stone-950/30 dark:border-white/30;
+  @apply border-stone-500/30 dark:border-white/30;
 }
 
 body {
@@ -112,8 +116,9 @@ button {
 }
 
 .md {
+  @apply leading-7;
   h1 {
-    @apply text-2xl;
+    @apply text-3xl;
   }
   h2 {
     @apply text-xl border-b border-muted pb-1 px-0.5;
@@ -121,8 +126,11 @@ button {
   h3 {
     @apply text-lg;
   }
-  h1, h2, h3, h4 {
-    @apply mt-8 mb-4;
+  h4, h5, h6 {
+    @apply text-base;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply mt-8 mb-4 font-bold;
   }
   p {
     @apply mb-4;
@@ -144,6 +152,28 @@ button {
   }
   code {
     @apply bg-gray-50 rounded px-2 py-1;
+  }
+  blockquote {
+    @apply border-l-3 border-muted pl-2.5;
+  }
+  .table-wrapper {
+    @apply overflow-x-scroll max-w-full -mx-6 px-6 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+  }
+  table {
+    @apply text-sm border-collapse text-left m-0 table-auto w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+    thead {
+      @apply bg-muted;
+    }
+
+    th, td {
+      @apply border border-muted min-w-24;
+    }
+    th {
+      @apply px-3 py-2.5 whitespace-nowrap;
+    }
+    td {
+      @apply px-3 py-1.5 align-top w-auto break-words max-w-full whitespace-normal;
+    }
   }
 }
 .shine-overlay {

@@ -28,10 +28,15 @@ const devConfig2 = {
     type: 'event',
     tabs: [
       { id: 'home', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
-      { id: 'info', title: 'Information', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      {
+        id: 'info',
+        title: 'Information',
+        content: 'md:https://hackmd.io/58Pt6mAvTjCrXiNsMpmAZw/download'
+      },
       { id: 'qa', title: 'Q & A', content: 'iframe:https://app.sli.do/event/hSquYpgsUtoCKLCuEiBrjf' },
       { id: 'forum', title: 'Forum', content: 'xmtp:xxx' },
-      { id: 'misc', title: 'Misc', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' }]
+      { id: 'misc', title: 'Misc', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' }
+    ]
   },
   icons: {
     favicon: 'https://euc.li/sepolia/fine2024.kon.eth',

@@ -1,7 +1,8 @@
-import MiscPage from '@konxyz/shared-react/components/pages/Misc'
+import BottomBar from '@konxyz/shared-react/components/BottomBar'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useRouteLoaderData } from 'react-router'
-import type { Route } from './+types/home'
+import type { Route } from './+types/misc'
 
 export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `Misc | ${matches[0]?.data?.appConfig?.name ?? ''}` }
@@ -10,5 +11,10 @@ export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
 export default function Home() {
   const ld = useRouteLoaderData('root')
 
-  return <MiscPage ld={ld} />
+  return (
+    <div className="wrapper-app">
+      <TopBar title="Misc" rightBtn="config" />
+      <BottomBar appConfig={ld?.appConfig} />
+    </div>
+  )
 }

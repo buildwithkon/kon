@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <div className="wrapper-app-full">
-        <ProfileCard point={1000} name="▯◇◹◸◿▿" id="xxx" />
+        <ProfileCard name="▯◇◹◸◿▿" id="xxx" />
         <Badges />
         <BottomBar />
       </div>

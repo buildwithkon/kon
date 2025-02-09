@@ -1,10 +1,9 @@
-import { shortAddr } from '@konxyz/shared/lib/utils'
-import { Check, ClipboardText, GearSix, X } from '@phosphor-icons/react'
+import { Check, GearSix, X } from '@phosphor-icons/react'
 import { SignOut } from '@phosphor-icons/react'
 import * as React from 'react'
 import { useNavigate } from 'react-router'
-import { toast } from 'sonner'
-import { useAccount, useDisconnect } from 'wagmi'
+import { useDisconnect } from 'wagmi'
+import AddressInput from '~/components/AddressInput'
 import {
   AlertDialog,
   AlertDialogClose,
@@ -16,7 +15,6 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
 
 export default function ConfigDialog() {
-  const { address } = useAccount()
   const { disconnectAsync } = useDisconnect()
   const navigate = useNavigate()
   const triggerRef = React.useRef<HTMLButtonElement>(null)
@@ -26,12 +24,6 @@ export default function ConfigDialog() {
   const logout = async () => {
     await disconnectAsync()
     navigate('/')
-  }
-
-  const copy = (address: `0x${string}` | undefined) => {
-    if (!address) return
-    navigator.clipboard.writeText(address)
-    toast.info('Copied to clipboard!')
   }
 
   return (
@@ -46,27 +38,9 @@ export default function ConfigDialog() {
         </DialogTitle>
         <DialogDescription className="hidden text-center">User Config</DialogDescription>
         <ul className="mt-4 space-y-4">
-          {/* <li>
-            <label htmlFor="theme">Theme</label>
-            <ThemeSelect />
-          </li> */}
           <li>
             <label htmlFor="address">Address</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={shortAddr(address as string, 14, 5)}
-                readOnly
-                className="w-full overflow-ellipsis pr-10 font-mono"
-              />
-              <button
-                type="button"
-                onClick={() => copy(address)}
-                className="absolute top-2 right-2 backdrop-blur-sm"
-              >
-                <ClipboardText size={30} weight="duotone" className="" />
-              </button>
-            </div>
+            <AddressInput />
           </li>
         </ul>
         <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>

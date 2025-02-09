@@ -16,7 +16,18 @@ export default function AppProviders({
   ld: RootLoader
 }) {
   const [wagmiConfig] = useState(() => getWagmiConfig(ld?.ENV, ld?.appConfig))
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            // With SSR, we usually want to set some default staleTime
+            // above 0 to avoid refetching immediately on the client
+            staleTime: 60 * 1000
+          }
+        }
+      })
+  )
 
   return (
     <JotaiProvider store={store}>
