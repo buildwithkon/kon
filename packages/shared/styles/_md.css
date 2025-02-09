@@ -1,20 +1,32 @@
 .md {
-  @apply leading-7 overflow-hidden;
+  @apply leading-7 overflow-hidden py-6;
   h1 {
     @apply text-3xl;
   }
   h2 {
-    @apply text-xl border-b border-muted pb-1 px-0.5;
+    @apply text-xl border-b border-muted pb-1.5 px-0.5;
   }
   h3 {
+    @apply text-xl;
+  }
+  h4 {
     @apply text-lg;
   }
+
   h4, h5, h6 {
     @apply text-base;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply mt-8 mb-4 font-bold;
+    @apply mb-4 font-bold;
   }
+  :is(h1, h2, h3, h4, h5, h6):not(:first-child) {
+    @apply mt-8;
+  }
+
+  hr {
+    @apply border-muted my-10;
+  }
+
   p {
     @apply mb-4;
   }
