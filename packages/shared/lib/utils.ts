@@ -15,3 +15,6 @@ export const genRanStr = (length = 5) => {
     String.fromCharCode(CHARSET[Math.floor(Math.random() * CHARSET.length)])
   ).join('')
 }
+
+export const isStandalone = () =>
+  typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches

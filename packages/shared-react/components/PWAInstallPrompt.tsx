@@ -1,10 +1,7 @@
-import { usePwa } from '@dotmind/react-use-pwa'
 import { HandArrowDown, PlusSquare, UploadSimple } from '@phosphor-icons/react'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
 
 export default function PWAInstallPrompt({ className = '' }: { className?: string }) {
-  const { installPrompt, isInstalled, isStandalone, isOffline, canInstall } = usePwa()
-
   return (
     <Dialog>
       <DialogTrigger>

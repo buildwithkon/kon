@@ -1,5 +1,4 @@
-import { usePwa } from '@dotmind/react-use-pwa'
-import { cn } from '@konxyz/shared/lib/utils'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
 import {
   CalendarCheck,
@@ -19,14 +18,13 @@ type TabItem = {
 }
 
 export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefined }) {
-  const { isStandalone } = usePwa()
   const tabs = appConfig?.template?.tabs ?? []
 
   return (
     <footer
       className={cn(
         'fixed right-0 bottom-0 left-0 z-40 rounded-t-3xl bg-main text-main-fg',
-        isStandalone ? 'h-20 pb-4' : 'h-16'
+        isStandalone() ? 'h-20 pb-4' : 'h-16'
       )}
     >
       <div className="mx-auto flex h-full max-w-screen-xs justify-around px-6">
@@ -42,37 +40,43 @@ const BottomBarItem = ({ id }: { id: string }) => (
   <NavLink
     className={({ isActive }) =>
       cn(
-        'flex h-full w-16 items-center justify-center border-t-4 pb-1 hover:opacity-70',
-        isActive ? 'border-accent text-accent' : 'border-transparent text-main-fg'
+        'flex h-full w-16 items-center justify-center border-t-3 pb-1 text-main-fg hover:opacity-70',
+        isActive ? 'border-accent' : 'border-transparent'
       )
     }
     to={`/${id}`}
   >
-    {renderIcon(id)}
+    {({ isActive }) => renderIcon(id, isActive)}
   </NavLink>
 )
 
-const renderIcon = (id: string) => {
+const iconProps = (isActive: boolean) => ({
+  size: 38,
+  weight: isActive ? 'fill' : 'regular'
+})
+
+const renderIcon = (id: 'duotone' | 'fill' | 'regular', isActive: boolean) => {
   switch (id) {
     case 'home':
-      return <House size={42} />
+      return <House {...iconProps(isActive)} />
     case 'forum':
     case 'message':
+    case 'messages':
     case 'dm':
-      return <ChatsCircle size={42} />
+      return <ChatsCircle {...iconProps(isActive)} />
     case 'info':
-      return <Info size={42} />
+      return <Info {...iconProps(isActive)} />
     case 'schedule':
-      return <CalendarCheck size={42} />
+      return <CalendarCheck {...iconProps(isActive)} />
     case 'members':
     case 'users':
-      return <UsersThree size={42} />
+      return <UsersThree {...iconProps(isActive)} />
     case 'qa':
-      return <Hand size={42} />
+      return <Hand {...iconProps(isActive)} />
     case 'menu':
     case 'misc':
-      return <Menu size={42} />
+      return <Menu {...iconProps(isActive)} />
     default:
-      return <Menu size={42} />
+      return <Menu {...iconProps(isActive)} />
   }
 }

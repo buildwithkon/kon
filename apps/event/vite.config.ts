@@ -13,6 +13,18 @@ export default defineConfig(({ isSsrBuild }) => ({
         }
       : undefined
   },
+  server: {
+    // https://github.com/xmtp/xmtp-js/tree/main/sdks/browser-sdk#vite
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin'
+    }
+  },
+  optimizeDeps: {
+    // https://github.com/xmtp/xmtp-js/tree/main/sdks/browser-sdk#vite-1
+    exclude: ['@xmtp/browser-sdk'],
+    include: ['@xmtp/proto']
+  },
   plugins: [
     VitePWA({
       manifest: false,

@@ -1,5 +1,5 @@
-import { usePwa } from '@dotmind/react-use-pwa'
 import { SITE_URL } from '@konxyz/shared/lib/const'
+import { isStandalone } from '@konxyz/shared/lib/utils'
 import type { RootLoader } from '@konxyz/shared/types'
 import { HandTap } from '@phosphor-icons/react'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
@@ -7,7 +7,6 @@ import IconKon from '~/components/icon/kon'
 import { useWagmi } from '~/hooks/useWagmi'
 
 export default function TopPage({ ld }: { ld: RootLoader }) {
-  const { isStandalone } = usePwa()
   const { loginAsync } = useWagmi()
 
   const login = async () => {
@@ -35,7 +34,7 @@ export default function TopPage({ ld }: { ld: RootLoader }) {
           {ld?.appConfig?.description && <p className="text-2xl">{ld?.appConfig?.description}</p>}
         </div>
         <footer className="fixed right-0 bottom-0 left-0 mx-auto max-w-screen-xs px-6 py-6">
-          {process.env.NODE_ENV === 'development' || isStandalone ? (
+          {process.env.NODE_ENV === 'development' || isStandalone() ? (
             <button type="button" onClick={login} className="btn-main-fg w-full text-xl">
               <HandTap size={28} className="-ml-4 mr-3" />
               Start

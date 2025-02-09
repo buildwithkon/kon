@@ -1,12 +1,12 @@
 workers_dev = true
-name = "my-react-router-worker"
+name = "kon-event-app"
 compatibility_date = "2024-11-18"
 main = "./build/server/index.js"
 assets = { directory = "./build/client/" }
 services = [
   { binding = "API_WORKER", service = "kon-api" }
 ]
-route = "*.kon.xyz/*"
+route = "fine2024.kon.xyz/*"
 vars = { ENVIRONMENT = "production"}
 
 [placement]
@@ -14,7 +14,3 @@ mode = "smart"
 
 [observability]
 enabled = true
-
-[env.staging]
-route = "*.kululu.xyz/*"
-vars = { ENVIRONMENT = "staging" }
