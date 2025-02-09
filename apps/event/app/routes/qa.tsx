@@ -12,8 +12,8 @@ export default function QA() {
   const ld = useRouteLoaderData('root')
 
   return (
-    <div>
-      <Iframe ld={ld} url="https://app.sli.do/event/hSquYpgsUtoCKLCuEiBrjf" />
+    <div className="wrapper">
+      <Iframe url="https://app.sli.do/event/hSquYpgsUtoCKLCuEiBrjf" />
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )

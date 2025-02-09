@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="wrapper-app">
-      <TopBar title="Misc" rightBtn="config" />
+      <TopBar title="Misc" rightBtn="config" backBtn />
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )

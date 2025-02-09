@@ -1,6 +1,7 @@
+import { cn } from '@konxyz/shared/lib/utils'
 import Markdown from 'markdown-to-jsx'
 
-export default function MD({ content }: { content: string }) {
+export default function MD({ className, content }: { className?: string; content: string }) {
   return (
     <Markdown
       options={{
@@ -29,7 +30,7 @@ export default function MD({ content }: { content: string }) {
           }
         }
       }}
-      className="md"
+      className={cn('md', className)}
     >
       {content}
     </Markdown>

@@ -1,8 +1,16 @@
 import { usePwa } from '@dotmind/react-use-pwa'
 import { cn } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
-import { CalendarCheck, ChatsCircle, House, TextIndent as Menu, UsersThree, SealQuestion } from '@phosphor-icons/react'
-import { Link, useLocation } from 'react-router'
+import {
+  CalendarCheck,
+  ChatsCircle,
+  Hand,
+  House,
+  Books as Info,
+  TextIndent as Menu,
+  UsersThree
+} from '@phosphor-icons/react'
+import { NavLink } from 'react-router'
 
 type TabItem = {
   id: string
@@ -30,21 +38,19 @@ export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefi
   )
 }
 
-const BottomBarItem = ({ id }: {id: string}) => {
-  const { pathname } = useLocation()
-
-  return (
-    <Link
-      className={cn(
+const BottomBarItem = ({ id }: { id: string }) => (
+  <NavLink
+    className={({ isActive }) =>
+      cn(
         'flex h-full w-16 items-center justify-center border-t-4 pb-1 text-main-fg hover:opacity-70',
-        pathname === `/${id}` ? 'border-main-fg' : 'border-transparent'
-      )}
-      to={`/${id}`}
-    >
-      {renderIcon(id)}
-    </Link>
-  )
-}
+        isActive ? 'border-main-fg' : 'border-transparent'
+      )
+    }
+    to={`/${id}`}
+  >
+    {renderIcon(id)}
+  </NavLink>
+)
 
 const renderIcon = (id: string) => {
   switch (id) {
@@ -55,13 +61,14 @@ const renderIcon = (id: string) => {
     case 'dm':
       return <ChatsCircle size={42} />
     case 'info':
+      return <Info size={42} />
     case 'schedule':
       return <CalendarCheck size={42} />
     case 'members':
     case 'users':
       return <UsersThree size={42} />
     case 'qa':
-      return <SealQuestion size={42} />
+      return <Hand size={42} />
     case 'menu':
     case 'misc':
       return <Menu size={42} />

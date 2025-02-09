@@ -23,9 +23,9 @@ export default function Info() {
   const { content } = useLoaderData()
 
   return (
-    <div className="wrapper px-6 pb-24">
+    <div className="wrapper pb-24">
       {/* <TopBar>Information</TopBar> */}
-      <Markdown content={content} />
+      <Markdown content={content} className="px-6" />
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )

@@ -13,7 +13,7 @@ export default function Forum() {
 
   return (
     <div className="wrapper pb-24">
-      <TopBar title="Forum" backUrl="/home" />
+      <TopBar title="Forum" backBtn />
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )
