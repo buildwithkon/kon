@@ -2,7 +2,6 @@ import AppHandler from '@konxyz/shared-react/components/AppHandler'
 import AppProviders from '@konxyz/shared-react/components/AppProviders'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import { Toaster } from '@konxyz/shared-react/components/ui/Toaster'
-
 import {
   Links,
   Meta,
@@ -18,6 +17,7 @@ import {
 import type { Route } from './+types/root'
 import './style.css'
 import { generateRootMeta, loadAppConfig } from '@konxyz/shared/lib/app'
+import { DEFAULT_FAVICON_URL } from '@konxyz/shared/lib/const'
 import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 
 export const links: Route.LinksFunction = () => [
@@ -65,7 +65,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <link rel="manifest" href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld.appConfig?.id}`} />
+        <link rel="icon" href={ld.appConfig?.icons?.favicon ?? DEFAULT_FAVICON_URL} type="image/png" />
+        <link rel="manifest" href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld?.appConfig?.id}`} />
       </head>
       <body>
         {children}
