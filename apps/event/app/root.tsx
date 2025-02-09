@@ -56,7 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      style={setAppColor(ld?.appConfig?.colors?.main)}
+      style={setAppColor(ld?.appConfig?.colors)}
       className={setFontClass(ld?.appConfig?.font)}
       suppressHydrationWarning
     >

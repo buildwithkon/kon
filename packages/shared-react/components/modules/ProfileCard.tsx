@@ -43,7 +43,7 @@ export default function ProfileCard({
           {isScrolled && (
             <button
               type="button"
-              className="absolute top-6 right-6"
+              className="absolute top-6 right-6 text-accent"
               onClick={() => scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <CaretCircleUp size={32} />

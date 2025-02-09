@@ -42,8 +42,8 @@ const BottomBarItem = ({ id }: { id: string }) => (
   <NavLink
     className={({ isActive }) =>
       cn(
-        'flex h-full w-16 items-center justify-center border-t-4 pb-1 text-main-fg hover:opacity-70',
-        isActive ? 'border-main-fg' : 'border-transparent'
+        'flex h-full w-16 items-center justify-center border-t-4 pb-1 hover:opacity-70',
+        isActive ? 'border-accent text-accent' : 'border-transparent text-main-fg'
       )
     }
     to={`/${id}`}

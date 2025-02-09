@@ -1,5 +1,7 @@
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 
+export const TAILWIND_WHITELIST_CLASSES = ['font-dot']
+
 export const hexToRgb = (
   hex: string,
   mode: 'obj' | 'str' = 'obj'
@@ -22,10 +24,12 @@ export const getFgColorFromBgColor = (mainColor: string): string => {
   return luminance < 0.5 ? COLOR_HEX_LIGHT : COLOR_HEX_DARK
 }
 
-export const setAppColor = (mainColor: string | undefined): React.CSSProperties =>
+export const setAppColor = (colors: any): React.CSSProperties =>
   ({
-    '--color-main': mainColor ?? '#C5F900',
-    '--color-main-fg': getFgColorFromBgColor(mainColor ?? '#C5F900')
+    '--color-main': colors?.main ?? '#C5F900',
+    '--color-main-fg': getFgColorFromBgColor(colors?.main ?? '#C5F900'),
+    ...(colors?.accent ? { '--color-accent': colors.accent } : {}),
+    ...(colors?.bg ? { '--color-bg': colors.bg } : {})
   }) as React.CSSProperties
 
 export const setFontClass = (fontStyle: string | undefined = 'sans'): string => `font-${fontStyle}`

@@ -1,3 +1,4 @@
+import { TAILWIND_WHITELIST_CLASSES } from '@konxyz/shared/lib/style'
 import type { RootLoader } from '@konxyz/shared/types'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -49,5 +50,10 @@ export default function AppHandler({
   //   }
   // }, [ld?.appConfig])
 
-  return !ld || isLoading || isNavigating || (isConnecting && <Loading />)
+  return (
+    <>
+      {!ld || isLoading || isNavigating || (isConnecting && <Loading />)}
+      <span className={`hidden ${TAILWIND_WHITELIST_CLASSES}.join(' ')`} />
+    </>
+  )
 }

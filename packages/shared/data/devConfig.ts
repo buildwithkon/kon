@@ -45,8 +45,7 @@ const devConfig2 = {
   font: 'sans',
   colors: {
     main: '#121212',
-    accent: '#04E348',
-    background: '#121212'
+    accent: '#04E348'
   }
 }
 
