@@ -1,8 +1,8 @@
-import TopPage from '@konxyz/shared-react/components/pages/Top'
+import TopPage from '@konxyz/shared-react/components/modules/TopPage'
 import { useRouteLoaderData } from 'react-router'
 
 export default function Top() {
   const ld = useRouteLoaderData('root')
 
-  return <TopPage ld={ld} />
+  return <TopPage appConfig={ld?.appConfig} />
 }

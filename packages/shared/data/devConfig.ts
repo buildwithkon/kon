@@ -40,7 +40,7 @@ const devConfig2 = {
   },
   icons: {
     favicon: 'https://euc.li/sepolia/fine2024.kon.eth',
-    logo: 'https://euc.li/sepolia/fine2024.kon.eth'
+    logo: 'https://i.imgur.com/rxpmtxU.png'
   },
   font: 'sans',
   colors: {

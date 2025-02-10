@@ -66,7 +66,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
         <link rel="icon" href={ld.appConfig?.icons?.favicon ?? DEFAULT_FAVICON_URL} type="image/png" />
-        <link rel="manifest" href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld?.appConfig?.id}`} />
+        <link
+          rel="manifest"
+          href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld?.appConfig?.id}`}
+          type="application/manifest+json"
+        />
       </head>
       <body>
         {children}

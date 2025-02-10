@@ -28,7 +28,14 @@ export default defineConfig(({ isSsrBuild }) => ({
   plugins: [
     VitePWA({
       manifest: false,
-      registerType: 'autoUpdate'
+      injectRegister: 'auto',
+      registerType: 'autoUpdate',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+      },
+      devOptions: {
+        enabled: true
+      }
     }),
     cloudflareDevProxy({
       getLoadContext({ context }) {

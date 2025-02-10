@@ -1,5 +1,5 @@
 {
-  "name": "@konxyz/event-template",
+  "name": "@konxyz/event-app",
   "private": true,
   "type": "module",
   "scripts": {

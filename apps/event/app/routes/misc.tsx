@@ -1,5 +1,6 @@
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import TopBar from '@konxyz/shared-react/components/TopBar'
+import BuildWith from '@konxyz/shared-react/components/modules/BuildWith'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useLoaderData, useRouteLoaderData } from 'react-router'
@@ -18,7 +19,7 @@ export const loader = async ({}: Route.LoaderArgs) => {
   }
 }
 
-export default function Home() {
+export default function Misc() {
   const ld = useRouteLoaderData('root')
   const { content } = useLoaderData()
 
@@ -26,6 +27,7 @@ export default function Home() {
     <div className="wrapper px-6 py-16">
       <TopBar title="" rightBtn="config" backBtn />
       <Markdown content={content} />
+      <BuildWith className="absolute right-0 bottom-24 left-0" />
       <BottomBar appConfig={ld?.appConfig} />
     </div>
   )
