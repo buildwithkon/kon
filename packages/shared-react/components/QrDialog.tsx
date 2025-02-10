@@ -1,4 +1,4 @@
-import { LogoPng } from '@konxyz/shared/assets'
+import { FaviconPng } from '@konxyz/shared/assets'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import type { RootLoader } from '@konxyz/shared/types'
 import { QRCode } from 'react-qrcode-logo'
@@ -28,7 +28,7 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             ecLevel="Q"
             fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
-            logoImage={ld?.appConfig?.icons?.logo ?? LogoPng}
+            logoImage={ld?.appConfig?.icons?.favicon ?? ld?.appConfig?.icons?.logo ?? FaviconPng}
             qrStyle="dots"
             logoPadding={1}
             logoPaddingStyle="square"
