@@ -4,11 +4,9 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 export default function PWAInstallPrompt({ className = '' }: { className?: string }) {
   return (
     <Dialog>
-      <DialogTrigger>
-        <button type="button" className={className}>
-          <HandArrowDown size={28} className="-ml-4 mr-3" />
-          Install
-        </button>
+      <DialogTrigger className={className}>
+        <HandArrowDown size={28} className="-ml-4 mr-3" />
+        Install
       </DialogTrigger>
       <DialogContent className="content">
         <DialogTitle className="flex items-center justify-center py-6 font-bold text-2xl">

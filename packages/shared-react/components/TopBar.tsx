@@ -6,7 +6,7 @@ export default function TopBar({
   backBtn,
   title,
   rightBtn
-}: { backBtn?: string | true; title: string | React.ReactNode; rightBtn?: 'config' }) {
+}: { backBtn?: string | true; title?: string | React.ReactNode; rightBtn?: 'config' }) {
   return (
     <nav className="topbar content fixed top-0 right-0 left-0 z-40 h-16 shadow-sm">
       <div className="mx-auto flex h-full max-w-screen-xs items-center px-4">
@@ -17,7 +17,7 @@ export default function TopBar({
                 <CaretCircleLeft size={32} weight="bold" className="-mt-1 mr-2.5 text-muted" />
               </Link>
             )}
-            {title}
+            {title ?? ''}
           </span>
           {rightBtn === 'config' && <ConfigDialog />}
         </div>

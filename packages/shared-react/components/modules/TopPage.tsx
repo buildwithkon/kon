@@ -20,7 +20,7 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-main text-main-fg">
       <div className="wrapper">
-        <div className="-mt-32 flex flex-col items-center justify-center space-y-8 text-center">
+        <div className="-mt-40 flex flex-col items-center justify-center space-y-8 text-center">
           {appConfig?.icons?.logo ? (
             <img
               src={appConfig?.icons?.logo}

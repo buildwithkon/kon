@@ -25,7 +25,7 @@ export default function Misc() {
 
   return (
     <div className="wrapper px-6 py-16">
-      <TopBar title="" rightBtn="config" backBtn />
+      <TopBar rightBtn="config" backBtn />
       <Markdown content={content} />
       <BuildWith className="absolute right-0 bottom-24 left-0" />
       <BottomBar appConfig={ld?.appConfig} />
