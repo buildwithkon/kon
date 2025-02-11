@@ -6,11 +6,12 @@ import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
 import AddressInput from '~/components/AddressInput'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
+import { useDarkMode } from '~/hooks/useDarkMode'
 
 export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
-  const isDarkMode = false
+  const isDarkMode = useDarkMode()
 
   const name = 'My Name'
   const id = 'mytestid'

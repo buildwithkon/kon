@@ -1,8 +1,6 @@
 import { shortAddr } from '@konxyz/shared/lib/utils'
 import { ClipboardText } from '@phosphor-icons/react'
 import { useAccount } from 'wagmi'
-import {} from '~/components/ui/AlertDialog'
-import {} from '~/components/ui/Dialog'
 import { toast } from '~/components/ui/Toaster'
 
 export default function AddressInput() {
