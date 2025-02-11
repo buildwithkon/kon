@@ -13,7 +13,6 @@
     "@coinbase/wallet-sdk": "^4.2.4",
     "@conform-to/zod": "^1.2.2",
     "@konxyz/api": "workspace:*",
-    "@konxyz/pwa": "workspace:*",
     "@konxyz/shared": "workspace:*",
     "@konxyz/site": "workspace:*",
     "@remix-run/cloudflare": "^2.15.2",

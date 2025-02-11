@@ -13,8 +13,6 @@
     "dashboard:dev": "pnpm -F \"@konxyz/dashboard\" run dev",
     "event": "pnpm -F \"@konxyz/event-app\"",
     "event:dev": "pnpm -F \"@konxyz/event-app\" run dev",
-    "pwa": "pnpm -F \"@konxyz/pwa\"",
-    "pwa:dev": "pnpm -F \"@konxyz/pwa\" run dev",
     "site": "pnpm -F \"@konxyz/site\"",
     "site:dev": "pnpm -F \"@konxyz/site\" run dev",
     "shared": "pnpm -F \"@konxyz/shared\"",

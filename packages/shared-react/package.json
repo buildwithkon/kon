@@ -13,6 +13,8 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-alpha.6",
     "@coinbase/onchainkit": "^0.36.9",
+    "@conform-to/react": "^1.2.2",
+    "@conform-to/zod": "^1.2.2",
     "@konxyz/api": "workspace:*",
     "@konxyz/shared": "workspace:*",
     "@phosphor-icons/react": "^2.1.7",

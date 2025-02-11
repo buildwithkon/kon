@@ -61,6 +61,10 @@ button[role="combobox"] {
   }
 }
 
+input, select {
+  @apply placeholder-black/40 dark:placeholder-white/40;
+}
+
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,

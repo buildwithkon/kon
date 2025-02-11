@@ -2,17 +2,23 @@ import { cn } from '@konxyz/shared/lib/utils'
 
 export default function Input({
   field,
+  placeholder,
   hint,
   inputType = 'text'
-}: { field: any; hint?: string; inputType?: 'number' | 'text' | 'email' | 'password' }) {
+}: {
+  field: any
+  placeholder?: string
+  hint?: string
+  inputType?: 'number' | 'text' | 'email' | 'password'
+}) {
   return (
     <div>
       <input
         key={field.key}
         name={field.name}
         type={inputType}
-        className={cn('w-full border', field?.errors ? 'border-red-400' : 'border-black/20')}
-        placeholder={field.placeholder}
+        className={cn('w-full border', field?.errors ? 'border-red-400/50' : 'border-gray-500/10')}
+        placeholder={field.placeholder ?? placeholder}
         aria-describedby={field.ariaDescribedBy}
       />
       {hint && (
