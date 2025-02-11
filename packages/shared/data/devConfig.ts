@@ -19,11 +19,11 @@ const devConfig1 = {
 }
 
 const devConfig2 = {
-  id: 'fine2024',
+  id: 'fine3',
   version: '0.1',
-  url: 'fine2024.kon.xyz',
-  name: 'FINE2024',
-  description: 'Fracton Incubation 2024 Demoday (IRL & Online)',
+  url: 'fine3.kon.xyz',
+  name: 'FINE3',
+  description: 'DemoDay for Fracton Incubation Cohort 3',
   template: {
     type: 'event',
     tabs: [

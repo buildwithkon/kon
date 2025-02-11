@@ -38,7 +38,7 @@ export default function AppHandler({
   return (
     <>
       {!ld || isLoading || isNavigating || (isConnecting && <Loading />)}
-      <span className={`hidden ${TAILWIND_WHITELIST_CLASSES}.join(' ')`} />
+      <span className={`hidden ${TAILWIND_WHITELIST_CLASSES.join(' ')}`} />
     </>
   )
 }
