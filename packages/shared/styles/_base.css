@@ -1,14 +1,13 @@
 html,
 body {
   @apply min-h-screen;
-  /* @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) {
     color-scheme: dark;
-  } */
+  }
 }
 
 @utility content {
-  background: var(--color-bg);
-  color: var(--color-text);
+  @apply bg-stone-50 text-slate-950 dark:bg-stone-700 dark:text-slate-50;
 }
 
 @utility min-w-screen-xs {
@@ -88,6 +87,6 @@ button {
   @apply btn bg-main-fg shadow-gray-500/10 text-main;
 }
 
-.btn-sub {
-  @apply btn bg-sub2 shadow-gray-500/10 text-main-fg;
+.btn-accent {
+  @apply btn bg-accent shadow-gray-500/10 text-main-fg;
 }

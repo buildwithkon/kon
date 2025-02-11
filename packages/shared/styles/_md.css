@@ -40,13 +40,13 @@
     @apply pl-4 list-disc;
   }
   a {
-    @apply text-cyan-800 underline;
+    @apply text-cyan-800 dark:text-cyan-500 underline;
   }
   pre {
-    @apply bg-gray-50 rounded px-4 py-2;
+    @apply bg-stone-400/20 rounded px-4 py-2;
   }
   code {
-    @apply bg-gray-50 rounded px-2 py-1;
+    @apply bg-stone-400/20 rounded px-2 py-1;
   }
   blockquote {
     @apply border-l-3 border-muted pl-2.5;
@@ -56,7 +56,7 @@
     @apply my-4 mx-auto;
   }
   .table-wrapper {
-    @apply overflow-x-scroll max-w-full -mx-6 px-6 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+    @apply overflow-x-scroll max-w-full -ml-6 pl-6 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
   }
   table {
     @apply text-sm border-collapse text-left m-0 table-auto w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
