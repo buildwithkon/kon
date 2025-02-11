@@ -51,6 +51,10 @@
   blockquote {
     @apply border-l-3 border-muted pl-2.5;
   }
+
+  img {
+    @apply my-4 mx-auto;
+  }
   .table-wrapper {
     @apply overflow-x-scroll max-w-full -mx-6 px-6 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
   }
