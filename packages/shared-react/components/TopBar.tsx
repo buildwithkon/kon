@@ -8,7 +8,7 @@ export default function TopBar({
   rightBtn
 }: { backBtn?: string | true; title?: string | React.ReactNode; rightBtn?: 'config' }) {
   return (
-    <nav className="topbar content fixed top-0 right-0 left-0 z-40 h-16 shadow-sm">
+    <nav className="topbar content fixed top-0 right-0 left-0 z-40 h-16 shadow-sm dark:shadow-white/10">
       <div className="mx-auto flex h-full max-w-screen-xs items-center px-4">
         <div className="flex h-full w-full items-center justify-between pt-1 font-bold text-3xl">
           <span className="flex items-center">
