@@ -1,7 +1,10 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body {
   @apply min-h-dvh;
-  @media (prefers-color-scheme: dark) {
+
+  &.dark {
     color-scheme: dark;
   }
 }

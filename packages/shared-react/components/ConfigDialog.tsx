@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useNavigate } from 'react-router'
 import { useDisconnect } from 'wagmi'
 import AddressInput from '~/components/AddressInput'
+import ThemeChanger from '~/components/ThemeChanger'
 import {
   AlertDialog,
   AlertDialogClose,
@@ -41,6 +42,12 @@ export default function ConfigDialog() {
           <li>
             <label htmlFor="address">Address</label>
             <AddressInput />
+          </li>
+          <li>
+            <label htmlFor="theme">Theme</label>
+            <div className="px-2.5">
+              <ThemeChanger />
+            </div>
           </li>
         </ul>
         <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>

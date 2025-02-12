@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { isLoadingAtom } from '~/atoms'
 import Loading from '~/components/Loading'
+import { useDarkMode } from '~/hooks/useDarkMode'
 
 export default function AppHandler({
   ld,
@@ -14,6 +15,7 @@ export default function AppHandler({
 }: { ld: RootLoader; navigate: (path: string) => void; pathname: string; isNavigating: boolean }) {
   const { isConnected, isConnecting, address } = useAccount()
   const isLoading = useAtomValue(isLoadingAtom)
+  useDarkMode()
 
   // redirect
   useEffect(() => {

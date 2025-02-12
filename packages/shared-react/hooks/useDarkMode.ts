@@ -14,6 +14,8 @@ export function useDarkMode() {
   )
 
   useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode === 'dark' || prefersDarkMode)
+
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia('(prefers-color-scheme: dark)').matches
       setPrefersDarkMode(doesMatch)
@@ -29,7 +31,7 @@ export function useDarkMode() {
         .matchMedia('(prefers-color-scheme: dark)')
         .removeEventListener('change', handleDarkModePrefferedChange)
     }
-  }, [])
+  }, [darkMode, prefersDarkMode])
 
   return darkMode === 'system' ? prefersDarkMode : darkMode === 'dark'
 }
