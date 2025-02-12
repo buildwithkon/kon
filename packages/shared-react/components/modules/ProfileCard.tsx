@@ -62,10 +62,10 @@ export default function ProfileCard({
             </div>
           )}
           {!isScrolled && (
-            <div className="absolute bottom-6 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
+            <div className="absolute bottom-5 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
               <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
-              <div className="-mt-1 flex-col pl-2.5">
-                <div className="min-w-2/3 truncate font-bold text-lg">
+              <div className="flex-col pl-2.5">
+                <div className="mt-0.5 min-w-2/3 truncate font-bold text-lg leading-tight">
                   {name ? (
                     <span>
                       {name}

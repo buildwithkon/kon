@@ -3,6 +3,7 @@ import TopBar from '@konxyz/shared-react/components/TopBar'
 import BuildWith from '@konxyz/shared-react/components/modules/BuildWith'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import { useLoaderData, useRouteLoaderData } from 'react-router'
 import type { Route } from './+types/misc'
 
@@ -24,7 +25,7 @@ export default function Misc() {
   const { content } = useLoaderData()
 
   return (
-    <div className="wrapper px-6 py-16">
+    <div className={cn('wrapper px-6 pt-16', isStandalone() ? 'pb-22' : 'pb-16')}>
       <TopBar rightBtn="config" backBtn />
       <Markdown content={content} />
       <BuildWith className="py-4" />

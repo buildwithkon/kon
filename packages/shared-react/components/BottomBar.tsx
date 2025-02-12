@@ -26,10 +26,10 @@ export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefi
     <footer
       className={cn(
         'fixed right-0 bottom-0 left-0 z-40 rounded-none xs:rounded-t-3xl bg-main text-main-fg shadow-black/5 shadow-up-lg dark:shadow-white/5',
-        isStandalone() ? 'h-20 pb-4' : 'h-16'
+        isStandalone() ? 'h-22 pb-6' : 'h-16'
       )}
     >
-      <div className="mx-auto flex h-full max-w-screen-xs justify-around px-6">
+      <div className="mx-auto flex h-full max-w-screen-xs justify-around px-4">
         {tabs.map((item: TabItem) => (
           <BottomBarItem key={`bottom-bar-${item.id}`} id={item.id} />
         ))}
