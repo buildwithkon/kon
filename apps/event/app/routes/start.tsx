@@ -1,5 +1,4 @@
 import RegisterForm, { submittion } from '@konxyz/shared-react/components/RegisterForm'
-import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useRouteLoaderData } from 'react-router'
 import type { Route } from './+types/start'
@@ -14,21 +13,28 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
   console.log('action, formData:', formData, 'submittion:', res)
 
   if (res.status !== 'success') {
-    return res.reply()
+    return {
+      result: res.reply(),
+      showConfirm: false
+    }
+  }
+  return {
+    result: res.reply(),
+    showConfirm: true
   }
 }
 
-export default function Home() {
+export default function Start() {
   const ld = useRouteLoaderData('root')
   const lastResult = ld?.lastResult
 
   return (
     <div className="wrapper p-6">
-      <ProfileCard appConfig={ld?.appConfig} name="" id="" />
-      <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
-      <p className="text-center text-xl">⬇️</p>
-      <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
-      <RegisterForm lastResult={lastResult} />
+      <RegisterForm appConfig={ld?.appConfig} lastResult={lastResult}>
+        <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
+        <p className="text-center text-xl">⬇️</p>
+        <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
+      </RegisterForm>
     </div>
   )
 }

@@ -37,6 +37,7 @@ export default function ProfileCard({
             isScrolled ? 'h-20' : 'h-full'
           )}
         >
+          {!isScrolled && <div className="shine" />}
           <div className="-mt-2 line-clamp-3 h-auto w-2/3 break-words pr-1 font-bold text-3xl">
             {appConfig?.name ?? ''}
           </div>
@@ -89,9 +90,7 @@ export default function ProfileCard({
           {!isScrolled ? (
             showQr ? (
               <QrDialog>
-                <div>
-                  <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
-                </div>
+                <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
               </QrDialog>
             ) : (
               <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />

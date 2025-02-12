@@ -56,7 +56,7 @@
     @apply my-4 mx-auto;
   }
   .table-wrapper {
-    @apply overflow-x-scroll max-w-full -ml-6 px-6 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+    @apply overflow-x-scroll max-w-full -ml-6 pl-6 pr-12 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
   }
   table {
     @apply text-sm border-collapse text-left m-0 table-auto w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
