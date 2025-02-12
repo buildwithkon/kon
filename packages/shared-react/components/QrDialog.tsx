@@ -11,7 +11,7 @@ import { useDarkMode } from '~/hooks/useDarkMode'
 export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
-  const isDarkMode = useDarkMode()
+  const { isDarkMode } = useDarkMode()
 
   const name = 'My Name'
   const id = 'mytestid'
