@@ -10,7 +10,7 @@ export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `Misc | ${matches[0]?.data?.appConfig?.name ?? ''}` }
 ])
 
-export const loader = async ({}: Route.LoaderArgs) => {
+export const loader = async (_: Route.LoaderArgs) => {
   const res = await fetch('https://hackmd.io/@yujiym/BkOGAVIt1g/download')
   const content = await res.text()
 

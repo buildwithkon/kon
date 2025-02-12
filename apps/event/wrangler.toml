@@ -6,7 +6,6 @@ assets = { directory = "./build/client/" }
 services = [
   { binding = "API_WORKER", service = "kon-api" }
 ]
-route = "fine2024.kon.xyz/*"
 vars = { ENVIRONMENT = "production"}
 
 [placement]
