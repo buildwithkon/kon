@@ -5,8 +5,8 @@ import {
   ChatsCircle,
   Hand,
   House,
-  type IconWeight,
   type IconProps,
+  type IconWeight,
   Books as Info,
   TextIndent as Menu,
   UsersThree
@@ -25,7 +25,7 @@ export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefi
   return (
     <footer
       className={cn(
-        'fixed right-0 bottom-0 left-0 z-40 rounded-t-3xl bg-main text-main-fg',
+        'fixed right-0 bottom-0 left-0 z-40 rounded-none xs:rounded-t-3xl bg-main text-main-fg shadow-black/5 shadow-up-lg dark:shadow-white/5',
         isStandalone() ? 'h-20 pb-4' : 'h-16'
       )}
     >

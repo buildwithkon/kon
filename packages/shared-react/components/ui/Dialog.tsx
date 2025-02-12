@@ -1,5 +1,5 @@
 import { Dialog as DialogPrimitive } from '@base-ui-components/react/dialog'
-import { cn } from '@konxyz/shared/lib/utils'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import React from 'react'
 
 const Dialog = ({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) => (
@@ -44,12 +44,13 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Popup>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Popup>
 >(({ className, ...props }, ref) => (
-  <DialogPortal className="z-50">
+  <DialogPortal>
     <DialogBackdrop />
     <div className="fixed inset-0 z-50 mx-auto flex max-w-screen-xs items-center justify-center px-6">
       <DialogPopup
         className={cn(
           'data-[closed]:slide-out-to-bottom content data-[open]:slide-in-to-top fixed inset-x-0 bottom-0 z-40 mx-auto flex h-auto max-w-screen-xs flex-col rounded-t-2xl px-6 py-8 duration-200 data-[closed]:animate-out data-[open]:animate-in',
+          isStandalone() ? 'pt-8 pb-12' : 'py-8',
           className
         )}
         {...props}
