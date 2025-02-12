@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <div className="wrapper px-6 pt-6 pb-16">
-      <ProfileCard appConfig={ld?.appConfig} name="▯◇◹◸◿▿" id="xxx" isSticky showQr />
+      <ProfileCard appConfig={ld?.appConfig} name="Your Name" isSticky showQr />
       <Markdown content={content} />
       <BottomBar appConfig={ld?.appConfig} />
     </div>

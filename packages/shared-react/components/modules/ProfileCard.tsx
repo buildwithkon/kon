@@ -68,7 +68,9 @@ export default function ProfileCard({
                 <div className="min-w-2/3 truncate font-bold text-lg">
                   {name ? (
                     <span>
-                      {name} {id && <span className="font-normal text-base opacity-90">({id})</span>}
+                      {name}
+                      <br />
+                      {id && <span className="pl-0.5 font-normal text-base opacity-90">{id}</span>}
                     </span>
                   ) : id ? (
                     id
