@@ -8,16 +8,13 @@ export function useDarkMode() {
   }
 
   const darkMode = useAtomValue(darkModeAtom)
-
   const [prefersDarkMode, setPrefersDarkMode] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches
   )
+  const isDarkMode = darkMode === 'system' ? prefersDarkMode : darkMode === 'dark'
 
   useEffect(() => {
-    document.documentElement.classList.toggle(
-      'dark',
-      darkMode === 'system' ? prefersDarkMode : darkMode === 'dark'
-    )
+    document.documentElement.classList.toggle('dark', isDarkMode)
 
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -34,16 +31,10 @@ export function useDarkMode() {
         .matchMedia('(prefers-color-scheme: dark)')
         .removeEventListener('change', handleDarkModePrefferedChange)
     }
-  }, [darkMode, prefersDarkMode])
-
-  console.log({
-    isDarkMode: darkMode === 'system' ? prefersDarkMode : darkMode === 'dark',
-    prefersDarkMode,
-    current: darkMode
-  })
+  }, [isDarkMode])
 
   return {
-    isDarkMode: darkMode === 'system' ? prefersDarkMode : darkMode === 'dark',
+    isDarkMode,
     prefersDarkMode,
     current: darkMode
   }
