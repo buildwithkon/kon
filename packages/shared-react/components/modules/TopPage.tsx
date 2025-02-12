@@ -18,8 +18,8 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
   }
 
   return (
-    <div className="min-h-screen bg-main text-main-fg">
-      <div className="wrapper flex min-h-screen flex-col items-center justify-center">
+    <div className="min-h-dvh bg-main text-main-fg">
+      <div className="wrapper flex min-h-dvh flex-col items-center justify-center">
         <div className="grid w-full flex-1 place-items-center p-6 text-center">
           <div className="grid gap-6">
             {appConfig?.icons?.logo ? (
@@ -35,7 +35,7 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
             {appConfig?.description && <p className="text-2xl">{appConfig?.description}</p>}
           </div>
         </div>
-        <footer className="w-full px-6">
+        <footer className="w-full p-6">
           {process.env.NODE_ENV === 'development' || isStandalone() ? (
             <button type="button" onClick={login} className="btn-main-fg w-full text-xl">
               <HandTap size={28} className="-ml-4 mr-3" />

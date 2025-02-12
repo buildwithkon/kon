@@ -1,6 +1,6 @@
 html,
 body {
-  @apply min-h-screen;
+  @apply min-h-dvh;
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
@@ -34,7 +34,7 @@ body {
 }
 
 body {
-  @apply min-h-screen content;
+  @apply min-h-dvh content;
 }
 
 @utility wrapper {

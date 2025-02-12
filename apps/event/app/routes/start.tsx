@@ -8,15 +8,14 @@ export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `Start | ${matches[0]?.data?.appConfig?.name ?? ''}` }
 ])
 
-export const action = async ({ request }: Route.ActionArgs) => {
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const formData = await request.formData()
-  console.log('formData:', formData)
-  const submission = await submittion(formData)
+  const res = await submittion(formData, request.url, context?.cloudflare?.env as Env)
+  console.log('action, formData:', formData, 'submittion:', res)
 
-  if (submission.status !== 'success') {
-    return submission.reply()
+  if (res.status !== 'success') {
+    return res.reply()
   }
-  console.log('--------submission::', submission.value)
 }
 
 export default function Home() {
@@ -25,7 +24,7 @@ export default function Home() {
 
   return (
     <div className="wrapper p-6">
-      <ProfileCard appConfig={ld?.appConfig} name="▯◇◹◸◿▿" id="xxx" />
+      <ProfileCard appConfig={ld?.appConfig} name="" id="" />
       <p className="px-4 pt-6 pb-8 text-xl">{ld?.appConfig?.description}</p>
       <p className="text-center text-xl">⬇️</p>
       <h1 className="pt-10 pb-6 text-center font-bold text-2xl">👋&nbsp;Join “{ld?.appConfig?.name}”</h1>
