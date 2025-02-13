@@ -7,7 +7,7 @@ export const isLoadingAtom = atom<boolean>(false)
 
 export const darkModeAtom = atomWithStorage<'light' | 'dark' | 'system'>('kon.darkMode', 'system')
 
-export const userAtom = atom({
-  address: null,
-  subname: null
-})
+export const subnameAtom = atomWithStorage<string | null>('kon.subname', null, undefined, {getOnInit: true})
+
+export const displayNameAtom = atomWithStorage<string | null>('kon.displayName', null, undefined, {getOnInit: true})
+

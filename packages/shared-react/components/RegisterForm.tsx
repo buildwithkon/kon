@@ -4,8 +4,11 @@ import { registerCalls } from '@konxyz/shared/calls/register'
 import { checkId } from '@konxyz/shared/lib/app'
 import { createRegisterSchema } from '@konxyz/shared/schema/register'
 import type { AppConfig } from '@konxyz/shared/types'
-import { Form } from 'react-router'
+import { useSetAtom } from 'jotai'
+import { useCallback } from 'react'
+import { Form, useNavigate } from 'react-router'
 import { useAccount } from 'wagmi'
+import { displayNameAtom, subnameAtom } from '~/atoms'
 import ConfirmDialog from '~/components/ConfirmDialog'
 import Transaction from '~/components/CustomTransaction'
 import InputWithError from '~/components/Input'
@@ -86,6 +89,22 @@ export const RegisterConfirmDialog = ({
   const id = fieldId?.[0]?.value ?? ''
   const name = fieldName?.[0]?.value ?? ''
   const { address } = useAccount()
+  const setDisplayName = useSetAtom(displayNameAtom)
+  const setSubname = useSetAtom(subnameAtom)
+  const navigate = useNavigate()
+
+  const handleOnStatus = useCallback(
+    (status: LifecycleStatus) => {
+      console.log('LifecycleStatus', status)
+      if (status.statusName === 'success') {
+        setSubname(id)
+        setDisplayName(name)
+        console.log('id & name:', id, name)
+        navigate('/home')
+      }
+    },
+    [id, name, setSubname, setDisplayName, navigate]
+  )
 
   return (
     <ConfirmDialog title={joinTitle} open={confirmOpen} onOpenChange={() => setConfirmOpen(!confirmOpen)}>
@@ -100,6 +119,7 @@ export const RegisterConfirmDialog = ({
         </div>
       </div>
       <Transaction
+        onStatus={handleOnStatus}
         calls={registerCalls(address, id, name)}
         disabled={!address || !id}
         btnText="Join"

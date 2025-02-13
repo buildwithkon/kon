@@ -88,7 +88,7 @@ export const generateRootMeta = (appConfig: AppConfig) => [
 export const checkId = async (id: string, url: string, env: Env) => {
   const { origin } = prepare(url)
   try {
-    const res = await client(origin, env, true).ens[':chain'].getSubnameAddress[':id'].$get({
+    const res = await client(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
         id: `${id}.${ENS_APPCONFIG_USER}`,
         chain: 'sepolia'
@@ -97,5 +97,21 @@ export const checkId = async (id: string, url: string, env: Env) => {
     return await res.json()
   } catch (error) {
     console.error('Error fetching subnameAddress:', error)
+  }
+}
+
+export const checkName = async (address: `0x${string}`, url: string, env: Env) => {
+  const { origin } = prepare(url)
+  try {
+    const res = await client(origin, env).ens[':chain'].getSubname[':address'].$get({
+      param: {
+        address,
+        chain: 'sepolia'
+      }
+    })
+    console.log('----checkname', res)
+    return await res.json()
+  } catch (error) {
+    console.error('Error fetching subname:', error)
   }
 }

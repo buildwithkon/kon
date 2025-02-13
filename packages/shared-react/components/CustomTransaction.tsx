@@ -32,7 +32,7 @@ export default function CustomTransaction({
   btnClass,
   btnText,
   btnRef,
-  showToast = true
+  showToast = false
 }: CustomProps) {
   return (
     <Transaction
