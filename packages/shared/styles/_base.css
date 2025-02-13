@@ -56,8 +56,9 @@ body {
 
 input,
 select,
+textarea,
 button[role="combobox"] {
-  @apply bg-white dark:bg-stone-950 rounded-xl px-4 py-2 text-lg outline-none min-h-12 w-full;
+  @apply bg-white dark:bg-stone-950 rounded-xl px-4 py-2 text-lg outline-none min-h-12 w-full border border-gray-500/10;
 
   &:readonly {
     @apply cursor-pointer;
@@ -81,6 +82,10 @@ label {
 
 button {
   @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-80;
+}
+
+hr {
+  @apply border-t border-muted my-2;
 }
 
 @utility btn {

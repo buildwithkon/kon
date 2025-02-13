@@ -17,7 +17,7 @@ export default function Input({
         key={field.key}
         name={field.name}
         type={inputType}
-        className={cn('w-full border', field?.errors ? 'border-red-400/50' : 'border-gray-500/10')}
+        className={cn('w-full', field?.errors && '!border-red-400/50')}
         placeholder={field.placeholder ?? placeholder}
         aria-describedby={field.ariaDescribedBy}
       />

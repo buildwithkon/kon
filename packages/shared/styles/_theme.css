@@ -6,7 +6,7 @@
 
   --aspect-golden: 1.618 / 1;
   --aspect-silver: 2.414 / 1;
-  --shadow-up-lg: 0 -10px 15px -3px rgb(0 0 0 / 0.1), 0 -4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-up: 0 -12px 18px -5px rgb(0 0 0 / 0.1), 0 -6px 10px -4px rgb(0 0 0 / 0.1);
 
   --breakpoint-xs: 30rem;
 

@@ -86,11 +86,11 @@ export const generateRootMeta = (appConfig: AppConfig) => [
 ]
 
 export const checkId = async (id: string, url: string, env: Env) => {
-  const { subdomain, origin } = prepare(url)
+  const { origin } = prepare(url)
   try {
     const res = await client(origin, env, true).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
-        id: `${id}.${subdomain}.${ENS_APPCONFIG_NAME}`,
+        id: `${id}.u.${ENS_APPCONFIG_NAME}`,
         chain: 'sepolia'
       }
     })

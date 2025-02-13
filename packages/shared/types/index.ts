@@ -17,7 +17,8 @@ export type AppConfig = {
   }
   colors?: {
     main: string
-    sub?: string
+    accent?: string
+    bg?: string
   }
 }
 
