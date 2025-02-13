@@ -3,8 +3,8 @@ import {
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
   DEFAULT_FAVICON_URL,
-  ENS_APPCONFIG_KEY,
-  ENS_APPCONFIG_NAME
+  ENS_APPCONFIG_BASE,
+  ENS_APPCONFIG_KEY
 } from '@konxyz/shared/lib/const'
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
@@ -41,7 +41,7 @@ ens.get('/:chain/getAppConfig/:id', async (c) => {
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
   const res = await client.getEnsText({
-    name: normalize(`${id}.${ENS_APPCONFIG_NAME}`),
+    name: normalize(`${id}.${ENS_APPCONFIG_BASE}`),
     key: ENS_APPCONFIG_KEY
   })
   return c.json(res)
@@ -52,7 +52,7 @@ ens.get('/:chain/getManigfest/:id', async (c) => {
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
   const res = await client.getEnsText({
-    name: normalize(`${id}.${ENS_APPCONFIG_NAME}`),
+    name: normalize(`${id}.${ENS_APPCONFIG_BASE}`),
     key: ENS_APPCONFIG_KEY
   })
   const data = JSON.parse(res ?? '')
@@ -79,7 +79,7 @@ ens.get('/:chain/getAppAvatar/:id', async (c) => {
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, c.env.ALCHEMY_API_KEY)
   const res = await client.getEnsAvatar({
-    name: normalize(`${id}.${ENS_APPCONFIG_NAME}`)
+    name: normalize(`${id}.${ENS_APPCONFIG_BASE}`)
   })
   return c.json(res)
 })

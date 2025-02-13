@@ -29,7 +29,6 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
 export default function Start() {
   const data = useActionData()
   const ld = useRouteLoaderData('root')
-  console.log('data!!!!', data)
 
   const joinTitle = `👋 Join ${ld?.appConfig?.name}`
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false)

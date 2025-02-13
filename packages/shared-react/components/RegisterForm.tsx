@@ -1,9 +1,11 @@
 import { FormProvider, getFormProps, useField, useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
+import { registerCalls } from '@konxyz/shared/calls/register'
 import { checkId } from '@konxyz/shared/lib/app'
 import { createRegisterSchema } from '@konxyz/shared/schema/register'
 import type { AppConfig } from '@konxyz/shared/types'
 import { Form } from 'react-router'
+import { useAccount } from 'wagmi'
 import ConfirmDialog from '~/components/ConfirmDialog'
 import Transaction from '~/components/CustomTransaction'
 import InputWithError from '~/components/Input'
@@ -79,22 +81,32 @@ export const RegisterConfirmDialog = ({
   confirmOpen: boolean
   setConfirmOpen: (open: boolean) => void
 }) => {
-  const id = useField('id')
-  const name = useField('name')
+  const fieldId = useField('id')
+  const fieldName = useField('name')
+  const id = fieldId?.[0]?.value ?? ''
+  const name = fieldName?.[0]?.value ?? ''
+  const { address } = useAccount()
+
+  console.log('calls:', address, id, name, registerCalls(address, id, name))
 
   return (
     <ConfirmDialog title={joinTitle} open={confirmOpen} onOpenChange={() => setConfirmOpen(!confirmOpen)}>
       <div className="space-y-4">
         <div>
           <label htmlFor="id">Your ID</label>
-          <input readOnly type="text" value={id?.[0]?.value ?? ''} />
+          <input readOnly type="text" value={id} />
         </div>
         <div>
           <label htmlFor="name">Display Name</label>
-          <input readOnly type="text" value={name?.[0]?.value ?? ''} />
+          <input readOnly type="text" value={name} />
         </div>
       </div>
-      <Transaction calls={[]} btnText="Join" btnClass="mt-7" />
+      <Transaction
+        calls={registerCalls(address, id, name)}
+        disabled={!address || !id}
+        btnText="Join"
+        btnClass="mt-7"
+      />
     </ConfirmDialog>
   )
 }
