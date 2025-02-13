@@ -10,4 +10,3 @@ export const darkModeAtom = atomWithStorage<'light' | 'dark' | 'system'>('kon.da
 export const subnameAtom = atomWithStorage<string | null>('kon.subname', null, undefined, {getOnInit: true})
 
 export const displayNameAtom = atomWithStorage<string | null>('kon.displayName', null, undefined, {getOnInit: true})
-

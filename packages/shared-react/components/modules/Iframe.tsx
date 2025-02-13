@@ -7,7 +7,7 @@ export default function Iframe({ url }: { url: string }) {
     <div className={isStandalone() ? 'h-[calc(100vh-5.5rem)]' : 'h-[calc(100vh-4rem)]'}>
       <iframe
         src={url}
-        className={cn('h-full w-full', isStandalone() ? 'h-[calc(100vh-5.5rem)]' : 'h-[calc(100vh-4rem)]')}
+        className={cn('h-full w-full', isStandalone() ? 'h-[calc(100dvh-5.5rem)]' : 'h-[calc(100dvh-4rem)]')}
         {...(isSlido && { allow: 'clipboard-write' })}
       />
     </div>
