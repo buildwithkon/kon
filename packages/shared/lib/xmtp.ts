@@ -1,14 +1,16 @@
-import { Client, type Signer } from '@xmtp/browser-sdk'
+import {Client, type Signer } from '@xmtp/browser-sdk'
+import secureRandom from 'secure-random'
 
-const accountAddress = '0x...'
-const signer: Signer = {
-  getAddress: () => accountAddress,
-  signMessage: async (message) => {
-    // return value from a signing method here
-  }
-}
+const generateEncKey = secureRandom(32, {type: 'Uint8Array'})
 
-// this value should be generated once per installation and stored securely
-const encryptionKey = window.crypto.getRandomValues(new Uint8Array(32))
+export const getSigner: Signer = (address: `0x${string}`) => ({
+  getAddress: () => address,
+  signMessage: async (message) => {},
+  getChainId: () => BigInt(84532) // Base Sepolia
+})
 
-const client = await Client.create(signer, encryptionKey, options /* optional */)
+
+export const getClient = async (address: `0x${string}`, encKey: Uint8Array | undefined) => await Client.create(
+  signer: getSigner(address),
+  encryptionKey: encKey ?? generateEncKey()),
+)

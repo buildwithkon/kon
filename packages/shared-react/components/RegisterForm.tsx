@@ -3,8 +3,9 @@ import { parseWithZod } from '@conform-to/zod'
 import { checkId } from '@konxyz/shared/lib/app'
 import { createRegisterSchema } from '@konxyz/shared/schema/register'
 import type { AppConfig } from '@konxyz/shared/types'
-import type React from 'react'
-import { useFetcher } from 'react-router'
+import { Form } from 'react-router'
+import ConfirmDialog from '~/components/ConfirmDialog'
+import Transaction from '~/components/CustomTransaction'
 import InputWithError from '~/components/Input'
 import ProfileCard from '~/components/modules/ProfileCard'
 
@@ -13,7 +14,6 @@ export const submittion = async (formData: any, url: string, env: Env) =>
     schema: createRegisterSchema({
       async isIdUnique(id: string) {
         const res = await checkId(id, url, env)
-        console.log('----checkId in form-----', res)
         return !res
       }
     }),
@@ -25,8 +25,6 @@ export default function RegisterForm({
   lastResult,
   children
 }: { appConfig: AppConfig; lastResult: any; children?: React.ReactNode }) {
-  const fetcher = useFetcher()
-
   const [form, fields] = useForm({
     defaultValue: {
       id: '',
@@ -42,9 +40,9 @@ export default function RegisterForm({
 
   return (
     <FormProvider context={form.context}>
-      <_ProfileCard appConfig={appConfig} />
+      <ProfileCard_ appConfig={appConfig} />
       {children}
-      <fetcher.Form method="post" {...getFormProps(form)}>
+      <Form method="post" {...getFormProps(form)}>
         <div className="space-y-4">
           <InputWithError
             field={fields.id}
@@ -60,14 +58,43 @@ export default function RegisterForm({
             Check ID
           </button>
         </div>
-      </fetcher.Form>
+      </Form>
     </FormProvider>
   )
 }
 
-const _ProfileCard = ({ appConfig }: { appConfig: AppConfig }) => {
+const ProfileCard_ = ({ appConfig }: { appConfig: AppConfig }) => {
   const id = useField('id')
   const name = useField('name')
 
   return <ProfileCard appConfig={appConfig} name={name?.[0]?.value} id={id?.[0]?.value} />
+}
+
+export const RegisterConfirmDialog = ({
+  joinTitle,
+  confirmOpen,
+  setConfirmOpen
+}: {
+  joinTitle: string
+  confirmOpen: boolean
+  setConfirmOpen: (open: boolean) => void
+}) => {
+  const id = useField('id')
+  const name = useField('name')
+
+  return (
+    <ConfirmDialog title={joinTitle} open={confirmOpen} onOpenChange={() => setConfirmOpen(!confirmOpen)}>
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="id">Your ID</label>
+          <input readOnly type="text" value={id?.[0]?.value ?? ''} />
+        </div>
+        <div>
+          <label htmlFor="name">Display Name</label>
+          <input readOnly type="text" value={name?.[0]?.value ?? ''} />
+        </div>
+      </div>
+      <Transaction calls={[]} btnText="Join" btnClass="mt-7" />
+    </ConfirmDialog>
+  )
 }
