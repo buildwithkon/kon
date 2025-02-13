@@ -12,7 +12,6 @@ export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
 export const action = async ({ request, context }: Route.ActionArgs) => {
   const formData = await request.formData()
   const res = await submittion(formData, request.url, context?.cloudflare?.env as Env)
-  console.log(res)
 
   if (res.status !== 'success') {
     return {

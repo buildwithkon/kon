@@ -1,54 +1,65 @@
 export const abi = [
   {
-    type: 'constructor',
-    inputs: [{ name: '_registry', type: 'address', internalType: 'contract IL2Registry' }],
-    stateMutability: 'nonpayable'
+    inputs: [{ internalType: 'contract IL2Registry', name: '_registry', type: 'address' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
   },
   {
-    type: 'function',
-    name: 'available',
-    inputs: [{ name: 'label', type: 'string', internalType: 'string' }],
-    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
-    stateMutability: 'view'
-  },
-  {
-    type: 'function',
-    name: 'chainId',
-    inputs: [],
-    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
-    stateMutability: 'view'
-  },
-  {
-    type: 'function',
-    name: 'coinType',
-    inputs: [],
-    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
-    stateMutability: 'view'
-  },
-  {
-    type: 'function',
-    name: 'register',
+    anonymous: false,
     inputs: [
-      { name: 'label', type: 'string', internalType: 'string' },
-      { name: 'owner', type: 'address', internalType: 'address' }
+      { indexed: true, internalType: 'string', name: 'label', type: 'string' },
+      { indexed: true, internalType: 'address', name: 'owner', type: 'address' }
     ],
-    outputs: [],
-    stateMutability: 'nonpayable'
-  },
-  {
-    type: 'function',
-    name: 'registry',
-    inputs: [],
-    outputs: [{ name: '', type: 'address', internalType: 'contract IL2Registry' }],
-    stateMutability: 'view'
-  },
-  {
-    type: 'event',
     name: 'NameRegistered',
+    type: 'event'
+  },
+  {
+    inputs: [{ internalType: 'string', name: 'label', type: 'string' }],
+    name: 'available',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'chainId',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'coinType',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
     inputs: [
-      { name: 'label', type: 'string', indexed: true, internalType: 'string' },
-      { name: 'owner', type: 'address', indexed: true, internalType: 'address' }
+      { internalType: 'string', name: 'label', type: 'string' },
+      { internalType: 'address', name: 'owner', type: 'address' },
+      { internalType: 'string', name: 'name', type: 'string' }
     ],
-    anonymous: false
+    name: 'register',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: 'label', type: 'string' },
+      { internalType: 'address', name: 'owner', type: 'address' }
+    ],
+    name: 'register',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'registry',
+    outputs: [{ internalType: 'contract IL2Registry', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
   }
 ] as const

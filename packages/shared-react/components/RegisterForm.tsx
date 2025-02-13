@@ -87,8 +87,6 @@ export const RegisterConfirmDialog = ({
   const name = fieldName?.[0]?.value ?? ''
   const { address } = useAccount()
 
-  console.log('calls:', address, id, name, registerCalls(address, id, name))
-
   return (
     <ConfirmDialog title={joinTitle} open={confirmOpen} onOpenChange={() => setConfirmOpen(!confirmOpen)}>
       <div className="space-y-4">
