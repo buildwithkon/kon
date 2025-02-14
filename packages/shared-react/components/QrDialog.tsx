@@ -1,9 +1,11 @@
 import { FaviconPng } from '@konxyz/shared/assets'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import type { RootLoader } from '@konxyz/shared/types'
+import { useAtomValue } from 'jotai'
 import { QRCode } from 'react-qrcode-logo'
 import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
+import { displayNameAtom, subnameAtom } from '~/atoms'
 import AddressInput from '~/components/AddressInput'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
 import { useDarkMode } from '~/hooks/useDarkMode'
@@ -13,8 +15,8 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
   const ld = useRouteLoaderData<RootLoader>('root')
   const { isDarkMode } = useDarkMode()
 
-  const name = 'My Name'
-  const id = 'mytestid'
+  const name = useAtomValue(displayNameAtom)
+  const id = useAtomValue(subnameAtom)
 
   return (
     <Dialog>
