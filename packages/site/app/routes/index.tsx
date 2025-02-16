@@ -1,5 +1,30 @@
 import { createRoute } from 'honox/factory'
 
+const MailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+    <rect width="256" height="256" fill="none" />
+    <line
+      x1="144"
+      y1="128"
+      x2="80"
+      y2="128"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="24"
+    />
+    <path
+      d="M48.49,221.28A8,8,0,0,0,59.93,231l168-96.09a8,8,0,0,0,0-14l-168-95.85a8,8,0,0,0-11.44,9.67L80,128Z"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="24"
+    />
+  </svg>
+)
+
 const LINKS = [
   {
     href: 'https://x.com/buildwithkon',
@@ -94,6 +119,17 @@ export default createRoute((c) => {
           <br />
           <span class="font-bold leading-relaxed">with KON</span>
         </h1>
+        <a
+          href="https://app.deform.cc/form/ab05c58b-5db9-4aea-855c-e4790b39b74c/?page_number=0"
+          target="_blank"
+          rel="noreferrer"
+          class="mt-4 inline-flex items-center space-x-2 rounded-full border-2 border-black py-2 pr-8 pl-6 font-bold text-lg hover:bg-black/5"
+        >
+          <div class="h-6 w-6">
+            <MailIcon />
+          </div>
+          <span>Pre sign-up</span>
+        </a>
       </main>
       <footer class="flex justify-end space-x-4 text-xl">
         {LINKS.map((item) => (
