@@ -24,6 +24,6 @@
     "@biomejs/biome": "^1.9.4",
     "concurrently": "^9.1.0",
     "wait-on": "^8.0.1",
-    "wrangler": "^3.108.1"
+    "wrangler": "^4.6.0"
   }
 }
