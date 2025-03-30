@@ -1,6 +1,7 @@
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
 import { NavLink } from 'react-router'
+import { BottomBarIcon } from '~/components/Icon'
 
 type TabItem = {
   id: string
@@ -20,14 +21,14 @@ export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefi
     >
       <div className="mx-auto flex h-full max-w-screen-xs justify-around px-4">
         {tabs.map((item: TabItem) => (
-          <BottomBarItem key={`bottom-bar-${item.id}`} id={item.id} />
+          <BottomBarItem key={`bottom-bar-${item.id}`} id={item.id} icon={item?.icon} />
         ))}
       </div>
     </footer>
   )
 }
 
-const BottomBarItem = ({ id }: { id: string }) => (
+const BottomBarItem = ({ id, icon }: { id: string; icon?: string }) => (
   <NavLink
     className={({ isActive }) =>
       cn(
@@ -37,32 +38,6 @@ const BottomBarItem = ({ id }: { id: string }) => (
     }
     to={`/${id}`}
   >
-    {({ isActive }) => renderIcon(id, isActive)}
+    {({ isActive }) => BottomBarIcon(id, isActive, icon)}
   </NavLink>
 )
-
-const renderIcon = (id: string, isActive: boolean) => {
-  switch (id) {
-    case 'home':
-      return <ph-house size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'forum':
-    case 'message':
-    case 'messages':
-    case 'dm':
-      return <ph-chats-circle size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'info':
-      return <ph-info size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'schedule':
-      return <ph-calendar-check size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'members':
-    case 'users':
-      return <ph-users-three size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'qa':
-      return <ph-hand size="36" weight={isActive ? 'fill' : 'regular'} />
-    case 'menu':
-    case 'misc':
-      return <ph-text-indent size="36" weight={isActive ? 'fill' : 'regular'} />
-    default:
-      return <ph-text-indent size="36" weight={isActive ? 'fill' : 'regular'} />
-  }
-}

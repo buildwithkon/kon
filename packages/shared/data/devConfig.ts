@@ -27,7 +27,7 @@ const devConfig2 = {
   template: {
     type: 'event',
     tabs: [
-      { id: 'home', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      { id: 'home', icon: 'ph-house', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
       {
         id: 'info',
         title: 'Information',
