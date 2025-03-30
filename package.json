@@ -7,16 +7,16 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "api": "pnpm -F \"@konxyz/api\"",
-    "api:dev": "pnpm -F \"@konxyz/api\" run dev",
-    "dashboard": "pnpm -F \"@konxyz/dashboard\"",
-    "dashboard:dev": "pnpm -F \"@konxyz/dashboard\" run dev",
-    "event": "pnpm -F \"@konxyz/event-app\"",
-    "event:dev": "pnpm -F \"@konxyz/event-app\" run dev",
-    "site": "pnpm -F \"@konxyz/site\"",
-    "site:dev": "pnpm -F \"@konxyz/site\" run dev",
-    "shared": "pnpm -F \"@konxyz/shared\"",
-    "shared-react": "pnpm -F \"@konxyz/shared-react\"",
+    "api": "bun --filter \"@konxyz/api\"",
+    "api:dev": "bun --filter \"@konxyz/api\" run dev",
+    "dashboard": "bun --filter \"@konxyz/dashboard\"",
+    "dashboard:dev": "bun --filter \"@konxyz/dashboard\" run dev",
+    "event": "bun --filter \"@konxyz/event-app\"",
+    "event:dev": "bun --filter \"@konxyz/event-app\" run dev",
+    "site": "bun --filter \"@konxyz/site\"",
+    "site:dev": "bun --filter \"@konxyz/site\" run dev",
+    "shared": "bun --filter \"@konxyz/shared\"",
+    "shared-react": "bun --filter \"@konxyz/shared-react\"",
     "dev": "concurrently \"pnpm api run dev\" \"pnpm pwa run dev\"",
     "start": "concurrently \"pnpm api run dev --port=8786 \" \"wait-on tcp:8786 && pnpm pwa run start\""
   },
@@ -25,5 +25,6 @@
     "concurrently": "^9.1.0",
     "wait-on": "^8.0.1",
     "wrangler": "^4.6.0"
-  }
+  },
+  "workspaces": ["apps/*", "packages/*"]
 }

@@ -1,16 +1,5 @@
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
-import {
-  CalendarCheck,
-  ChatsCircle,
-  Hand,
-  House,
-  type IconProps,
-  type IconWeight,
-  Books as Info,
-  TextIndent as Menu,
-  UsersThree
-} from '@phosphor-icons/react'
 import { NavLink } from 'react-router'
 
 type TabItem = {
@@ -52,33 +41,28 @@ const BottomBarItem = ({ id }: { id: string }) => (
   </NavLink>
 )
 
-const iconProps = (isActive: boolean): IconProps => ({
-  size: 36,
-  weight: isActive ? 'fill' : 'regular'
-})
-
-const renderIcon = (id: IconWeight, isActive: boolean) => {
+const renderIcon = (id: string, isActive: boolean) => {
   switch (id) {
     case 'home':
-      return <House {...iconProps(isActive)} />
+      return <ph-house size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'forum':
     case 'message':
     case 'messages':
     case 'dm':
-      return <ChatsCircle {...iconProps(isActive)} />
+      return <ph-chats-circle size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'info':
-      return <Info {...iconProps(isActive)} />
+      return <ph-info size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'schedule':
-      return <CalendarCheck {...iconProps(isActive)} />
+      return <ph-calendar-check size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'members':
     case 'users':
-      return <UsersThree {...iconProps(isActive)} />
+      return <ph-users-three size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'qa':
-      return <Hand {...iconProps(isActive)} />
+      return <ph-hand size="36" weight={isActive ? 'fill' : 'regular'} />
     case 'menu':
     case 'misc':
-      return <Menu {...iconProps(isActive)} />
+      return <ph-text-indent size="36" weight={isActive ? 'fill' : 'regular'} />
     default:
-      return <Menu {...iconProps(isActive)} />
+      return <ph-text-indent size="36" weight={isActive ? 'fill' : 'regular'} />
   }
 }

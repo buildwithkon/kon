@@ -5,6 +5,3 @@
 @import "./_utils";
 @import "./_md";
 @import "./_coinbase.onchainkit";
-
-@source "../app";
-@source "../../../../packages/shared-react/components";
