@@ -27,7 +27,7 @@ const devConfig2 = {
   template: {
     type: 'event',
     tabs: [
-      { id: 'home', icon: 'ph-house', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      { id: 'home', title: 'Home', icon: 'ph-house', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
       {
         id: 'info',
         title: 'Information',
@@ -35,7 +35,12 @@ const devConfig2 = {
       },
       { id: 'qa', title: 'Q & A', content: 'iframe:https://app.sli.do/event/hSquYpgsUtoCKLCuEiBrjf' },
       { id: 'forum', title: 'Forum', content: 'xmtp:xxx' },
-      { id: 'misc', title: 'Misc', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' }
+      {
+        id: 'misc',
+        title: 'Misc',
+        icon: 'ph-text-indent',
+        content: 'md:https://hackmd.io/@yujiym/BkOGAVIt1g/download'
+      }
     ]
   },
   icons: {

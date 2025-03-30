@@ -6,7 +6,7 @@ export default function TopBar({
   backBtn,
   title,
   rightBtn
-}: { backBtn?: string | true; title?: string | React.ReactNode; rightBtn?: 'config' }) {
+}: { backBtn?: string | true; title?: string | React.ReactNode; rightBtn?: 'config' | null }) {
   return (
     <nav className="topbar content fixed top-0 right-0 left-0 z-40 h-16 shadow-black/5 shadow-lg dark:shadow-white/5">
       <div className="mx-auto flex h-full max-w-screen-xs items-center px-4">
