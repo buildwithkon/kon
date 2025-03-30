@@ -1,8 +1,10 @@
+import React from 'react'
+
 const renderIcon = (icon: string, props: any) => {
   if (icon) {
     // Create a dynamic element using the icon string as the component name
-    const WebcomponentIconComponent = icon as keyof JSX.IntrinsicElements
-    return <WebcomponentIconComponent {...props} />
+    const WebcomponentIconComponent = icon as keyof typeof IconMap
+    return React.createElement(WebcomponentIconComponent, props)
   }
 }
 
