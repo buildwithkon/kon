@@ -68,7 +68,11 @@ export default function Page() {
     <div
       className={cn(
         'wrapper',
-        contentType === 'iframe' ? 'px-0 pt-0' : isFirstTab ? 'px-6 pt-6' : 'px-6 pt-16',
+        contentType === 'iframe' || contentType === 'xmtp'
+          ? 'px-0 pt-0'
+          : isFirstTab
+            ? 'px-6 pt-6'
+            : 'px-6 pt-16',
         isStandalone() ? 'pb-22' : 'pb-16'
       )}
     >
