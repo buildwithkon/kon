@@ -9,17 +9,17 @@ import {
   TransactionToast,
   TransactionToastAction,
   TransactionToastIcon,
-  TransactionToastLabel
-} from '@coinbase/onchainkit/transaction'
-import { cn } from '@konxyz/shared/lib/utils'
+  TransactionToastLabel,
+} from "@coinbase/onchainkit/transaction";
+import { cn } from "@konxyz/shared/lib/utils";
 
-type CustomProps = Omit<TransactionReact, 'children'> & {
-  disabled?: boolean
-  btnClass?: string
-  btnText?: string
-  showToast?: boolean
-  btnRef?: React.RefObject<HTMLElement>
-}
+type CustomProps = Omit<TransactionReact, "children"> & {
+  disabled?: boolean;
+  btnClass?: string;
+  btnText?: string;
+  showToast?: boolean;
+  btnRef?: React.RefObject<HTMLElement>;
+};
 
 export default function CustomTransaction({
   calls,
@@ -32,7 +32,7 @@ export default function CustomTransaction({
   btnClass,
   btnText,
   btnRef,
-  showToast = false
+  showToast = false,
 }: CustomProps) {
   return (
     <Transaction
@@ -46,7 +46,10 @@ export default function CustomTransaction({
       <div ref={btnRef}>
         <TransactionButton
           disabled={disabled}
-          className={cn('btn-main font-bold text-lg text-main-fg hover:bg-main active:bg-main', btnClass)}
+          className={cn(
+            "btn-main font-bold text-lg text-main-fg hover:bg-main active:bg-main",
+            btnClass,
+          )}
           text={btnText}
         />
       </div>
@@ -63,5 +66,5 @@ export default function CustomTransaction({
         </TransactionToast>
       )}
     </Transaction>
-  )
+  );
 }

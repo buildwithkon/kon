@@ -28,7 +28,7 @@ const prepare = (_url: string) => {
 export const loadAppConfig = async (_url: string, env: Env) => {
   const { subdomain, origin } = prepare(_url)
 
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     return {
       subdomain: devConfig.id,
       appConfig: devConfig
@@ -78,11 +78,11 @@ export const generateRootMeta = (appConfig: AppConfig) => [
   { property: 'og:description', content: appConfig?.description ?? 'Build with KON' },
   { property: 'og:site_name', content: appConfig?.name ?? 'A build with KON app' },
   { property: 'og:type', content: 'website' },
-  { property: 'og:image', content: appConfig?.icons?.logo ?? LogoPng },
+  { property: 'og:image', content: appConfig?.icons?.favicon ?? LogoPng },
   { property: 'twitter:card', content: 'summary' },
   { property: 'twitter:title', content: appConfig?.name ?? 'A build with KON app' },
   { property: 'twitter:description', content: appConfig?.description ?? 'Build with KON' },
-  { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
+  { property: 'twitter:image', content: appConfig?.icons?.favicon ?? LogoPng }
 ]
 
 export const checkId = async (id: string, url: string, env: Env) => {

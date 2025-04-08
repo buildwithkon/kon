@@ -1,15 +1,15 @@
-import { cn } from '@konxyz/shared/lib/utils'
+import { cn } from "@konxyz/shared/lib/utils";
 
 export default function Input({
   field,
   placeholder,
   hint,
-  inputType = 'text'
+  inputType = "text",
 }: {
-  field: any
-  placeholder?: string
-  hint?: string
-  inputType?: 'number' | 'text' | 'email' | 'password'
+  field: any;
+  placeholder?: string;
+  hint?: string;
+  inputType?: "number" | "text" | "email" | "password";
 }) {
   return (
     <div>
@@ -17,7 +17,7 @@ export default function Input({
         key={field.key}
         name={field.name}
         type={inputType}
-        className={cn('w-full', field?.errors && '!border-red-400/50')}
+        className={cn("w-full", field?.errors && "!border-red-400/50")}
         placeholder={field.placeholder ?? placeholder}
         aria-describedby={field.ariaDescribedBy}
       />
@@ -32,5 +32,5 @@ export default function Input({
         </p>
       ))}
     </div>
-  )
+  );
 }

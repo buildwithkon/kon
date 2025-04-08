@@ -38,7 +38,7 @@ export default function ProfileCard({
           )}
         >
           {!isScrolled && <div className="shine" />}
-          <div className="-mt-2 line-clamp-3 h-auto w-2/3 break-words pr-1 font-bold text-3xl">
+          <div className="-mt-2 line-clamp-3 h-auto w-2/3 break-words pr-1 font-bold text-2xl">
             {appConfig?.name ?? ''}
           </div>
           {isScrolled && (
@@ -53,11 +53,7 @@ export default function ProfileCard({
           {!isScrolled && (
             <div className="absolute top-6 right-6 mx-auto">
               {appConfig?.icons?.logo && (
-                <img
-                  src={appConfig?.icons?.logo}
-                  className="max-h-24 max-w-24 rounded-full"
-                  alt={appConfig?.name ?? ''}
-                />
+                <img src={appConfig?.icons?.logo} className="max-h-20 max-w-20" alt={appConfig?.name ?? ''} />
               )}
             </div>
           )}
@@ -65,12 +61,12 @@ export default function ProfileCard({
             <div className="absolute bottom-5 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
               <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
               <div className="flex-col pl-2.5">
-                <div className="mt-0.5 min-w-2/3 truncate font-bold text-lg leading-tight">
+                <div className="mt-0.5 min-w-2/3 truncate font-bold leading-tight">
                   {name ? (
                     <span>
                       {name}
                       <br />
-                      {id && <span className="pl-0.5 font-normal text-base opacity-90">{id}</span>}
+                      {id && <span className="pl-0.5 font-normal text-sm opacity-90">{id}</span>}
                     </span>
                   ) : id ? (
                     id

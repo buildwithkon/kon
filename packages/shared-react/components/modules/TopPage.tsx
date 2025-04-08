@@ -25,13 +25,13 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
             {appConfig?.icons?.logo ? (
               <img
                 src={appConfig?.icons?.logo}
-                className="mx-auto mb-10 max-h-48 max-w-48 rounded-full"
+                className="mx-auto mb-10 max-h-48 max-w-48"
                 alt={appConfig?.name ?? ''}
               />
             ) : (
               <IconKon size={198} className="mb-8" />
             )}
-            <h1 className="font-bold text-6xl text-accent">{appConfig?.name ?? 'KON'}</h1>
+            <h1 className="font-bold text-5xl text-accent">{appConfig?.name ?? 'KON'}</h1>
             {appConfig?.description && <p className="text-2xl">{appConfig?.description}</p>}
           </div>
         </div>

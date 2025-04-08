@@ -27,7 +27,12 @@ const devConfig2 = {
   template: {
     type: 'event',
     tabs: [
-      { id: 'home', title: 'Home', icon: 'ph-house', content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download' },
+      {
+        id: 'home',
+        title: 'Home',
+        icon: 'ph-house',
+        content: 'md:https://hackmd.io/@yujiym/BJRcrQQK1g/download'
+      },
       {
         id: 'info',
         title: 'Information',
@@ -54,4 +59,56 @@ const devConfig2 = {
   }
 }
 
-export const devConfig = devConfig2
+const devConfig3 = {
+  id: 'ethtokyo',
+  version: '0.1',
+  url: 'ethtokyo.kon.xyz',
+  name: "ETHTokyo'25",
+  description:
+    'ETHTokyo is a engaging hackathon for the global Ethereum community where people with all sorts of backgrounds, ideas, and skills come together to share their love for Ethereum and its world.',
+  template: {
+    type: 'event',
+    tabs: [
+      {
+        id: 'home',
+        title: 'Home',
+        icon: 'ph-house',
+        content: 'md:https://hackmd.io/@yujiym/BkWsINrp1e/download'
+      },
+      {
+        id: 'conf',
+        title: 'Conference',
+        icon: 'ph-user-sound',
+        content: 'md:https://hackmd.io/@yujiym/SkvoWc86yx/download'
+      },
+      {
+        id: 'hackathon',
+        title: 'Hackathon',
+        icon: 'ph-code',
+        content: 'md:https://hackmd.io/@yujiym/rkVGH9UTkx/download'
+      },
+      {
+        id: 'forum',
+        title: 'Forum',
+        content: 'xmtp:1111'
+      },
+      {
+        id: 'info',
+        title: 'Information',
+        icon: 'ph-text-indent',
+        content: 'md:https://hackmd.io/@yujiym/BydSuqUa1x/download'
+      }
+    ]
+  },
+  icons: {
+    favicon: 'https://i.imgur.com/3G9N6sa.png',
+    logo: 'https://i.imgur.com/wzAQxaz.png'
+  },
+  font: 'sans',
+  colors: {
+    main: '#5E1913',
+    accent: '#FF6476'
+  }
+}
+
+export const devConfig = devConfig3

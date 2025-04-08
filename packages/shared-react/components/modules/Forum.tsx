@@ -12,7 +12,7 @@ export default function Forum() {
         )}
       />
       <Chats />
-      <div className="relative flex h-16 items-center bg-gray-200 px-3">
+      <div className="relative flex h-16 items-center bg-gray-200 px-3 dark:bg-gray-800">
         <input className="w-full" />
         <PaperPlaneTilt size={32} className="absolute top-4 right-6" />
       </div>

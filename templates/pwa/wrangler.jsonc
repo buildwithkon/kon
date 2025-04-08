@@ -2,19 +2,24 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "kon-template-pwa",
   "compatibility_date": "2025-02-24",
+  "compatibility_flags": ["nodejs_compat"],
   "main": "./workers/app.ts",
   "assets": {
     "directory": "./build/client/"
   },
-  "vars": {
-    "ENVIRONMENT": "production"
-  },
-  "services": [
-    {
-      "binding": "API_WORKER",
-      "service": "kon-api"
+  "env": {
+    "production": {
+      "vars": {
+        "ENVIRONMENT": "production"
+      },
+      "services": [
+        {
+          "binding": "API_WORKER",
+          "service": "kon-api"
+        }
+      ]
     }
-  ],
+  },
   "placement": {
     "mode": "smart"
   },
