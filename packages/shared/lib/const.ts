@@ -5,7 +5,7 @@ export const SITE_URL = 'https://kon.xyz'
 
 export const ENS_APPCONFIG_CHAINID = sepolia.id
 export const ENS_APPCONFIG_BASE = 'kon.eth'
-export const ENS_APPCONFIG_USER = 'u.kon.eth'
+export const ENS_APPCONFIG_USER = 'user.kon.eth'
 export const ENS_APPCONFIG_KEY = 'app.kon'
 
 export const COLOR_HEX_DARK = '#1e1e1e'
