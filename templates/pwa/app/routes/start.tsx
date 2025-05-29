@@ -1,5 +1,5 @@
-import { submittion } from '@konxyz/shared-react/components/RegisterForm'
 import RegisterForm, { RegisterConfirmDialog } from '@konxyz/shared-react/components/RegisterForm'
+import { submittion } from '@konxyz/shared-react/components/RegisterForm'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { useEffect, useState } from 'react'
 import { useActionData, useRouteLoaderData } from 'react-router'
