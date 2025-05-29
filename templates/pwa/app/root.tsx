@@ -1,5 +1,6 @@
 import AppHandler from '@konxyz/shared-react/components/AppHandler'
 import AppProviders from '@konxyz/shared-react/components/AppProviders'
+import ClientOnly from '@konxyz/shared-react/components/ClientOnly'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import { Toaster } from '@konxyz/shared-react/components/ui/Toaster'
 import {
@@ -92,16 +93,20 @@ export default function App() {
   const { location } = useNavigation()
   const isNavigating = Boolean(location)
 
-  if (!ld?.appConfig) {
-    return <NotFound />
-  }
-
   return (
-    <AppProviders ld={ld}>
-      <AppHandler ld={ld} navigate={navigate} pathname={pathname} isNavigating={isNavigating} />
-      <Toaster />
-      <Outlet />
-    </AppProviders>
+    <ClientOnly>
+      {() =>
+        ld?.appConfig ? (
+          <AppProviders ld={ld}>
+            <AppHandler ld={ld} navigate={navigate} pathname={pathname} isNavigating={isNavigating} />
+            <Toaster />
+            <Outlet />
+          </AppProviders>
+        ) : (
+          <NotFound />
+        )
+      }
+    </ClientOnly>
   )
 }
 

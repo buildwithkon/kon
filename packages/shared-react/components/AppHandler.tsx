@@ -6,7 +6,6 @@ import { useAccount } from 'wagmi'
 import { isLoadingAtom } from '~/atoms'
 import Loading from '~/components/Loading'
 import { useDarkMode } from '~/hooks/useDarkMode'
-import { useEnsUser } from '~/hooks/useEnsUser'
 
 export default function AppHandler({
   ld,
@@ -18,8 +17,6 @@ export default function AppHandler({
   const isLoading = useAtomValue(isLoadingAtom)
   useDarkMode()
   const subname = ''
-  const user = useEnsUser(address)
-  console.log(user, 'USER')
 
   // redirect
   useEffect(() => {

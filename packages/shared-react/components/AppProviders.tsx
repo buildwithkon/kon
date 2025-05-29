@@ -7,7 +7,6 @@ import { type ReactNode, useState } from 'react'
 import { base, baseSepolia } from 'viem/chains'
 import { WagmiProvider, cookieToInitialState } from 'wagmi'
 import { store } from '~/atoms'
-import ClientOnly from '~/components/ClientOnly'
 
 export default function AppProviders({
   children,
@@ -31,16 +30,14 @@ export default function AppProviders({
   )
 
   return (
-    <ClientOnly>
-      <JotaiProvider store={store}>
-        <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
-          <QueryClientProvider client={queryClient}>
-            <OnchainKitProvider apiKey={ld?.ENV?.CDP_CLIENT_API_KEY} chain={baseSepolia ?? base}>
-              {children}
-            </OnchainKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
-      </JotaiProvider>
-    </ClientOnly>
+    <JotaiProvider store={store}>
+      <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
+        <QueryClientProvider client={queryClient}>
+          <OnchainKitProvider apiKey={ld?.ENV?.CDP_CLIENT_API_KEY} chain={baseSepolia ?? base}>
+            {children}
+          </OnchainKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </JotaiProvider>
   )
 }
