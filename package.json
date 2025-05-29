@@ -22,9 +22,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "concurrently": "^9.1.0",
-    "wait-on": "^8.0.1",
-    "wrangler": "^4.6.0"
+    "concurrently": "^9.1.2",
+    "wait-on": "^8.0.3",
+    "wrangler": "^4.17.0"
   },
-  "packageManager": "pnpm@10.7.0+sha256.35cab26953bf90847e798839db58c9a2a82d526b7af179fd2a103c18242cadc6"
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
