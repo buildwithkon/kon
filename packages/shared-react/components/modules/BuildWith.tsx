@@ -1,6 +1,6 @@
 import { SITE_URL } from '@konxyz/shared/lib/const'
 import { cn } from '@konxyz/shared/lib/utils'
-import IconKon from '~/components/icon/kon'
+import IconKon from '~/components/svg/kon'
 
 export default function BuildWith({ className }: { className?: string }) {
   return (

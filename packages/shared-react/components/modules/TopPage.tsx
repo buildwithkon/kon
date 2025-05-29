@@ -2,8 +2,8 @@ import { isStandalone } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
 import { HandTap } from '@phosphor-icons/react'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
-import IconKon from '~/components/icon/kon'
 import BuildWith from '~/components/modules/BuildWith'
+import IconKon from '~/components/svg/kon'
 import { useWagmi } from '~/hooks/useWagmi'
 
 export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
