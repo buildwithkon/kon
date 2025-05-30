@@ -32,7 +32,7 @@ export default function ProfileCard({
       <div className={cn('aspect-golden w-full')}>
         <div
           className={cn(
-            'shine-overlay relative rounded-xl bg-main p-8 text-main-fg shadow-2xl dark:shadow-white/5',
+            'shine-overlay relative rounded-xl bg-main p-8 text-main-fg shadow-2xl shadow-gray-500/10',
             'overflow-hidden transition-all duration-300 ease-in-out',
             isScrolled ? 'h-20' : 'h-full'
           )}

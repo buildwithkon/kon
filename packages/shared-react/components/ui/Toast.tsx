@@ -8,7 +8,7 @@ export default function CsutomToast({ children }: { children?: React.ReactNode }
     <Toast.Provider toastManager={toastManager}>
       {children}
       <Toast.Portal>
-        <Toast.Viewport className="fixed top-22 right-0 bottom-auto left-0 z-50 mx-auto flex w-full max-w-[320px]">
+        <Toast.Viewport className="fixed top-18 right-0 bottom-auto left-0 z-50 mx-auto flex w-full max-w-[320px]">
           <ToastList />
         </Toast.Viewport>
       </Toast.Portal>

@@ -15,7 +15,7 @@ export default function BottomBar({ appConfig }: { appConfig: AppConfig | undefi
   return (
     <footer
       className={cn(
-        'fixed right-0 bottom-0 left-0 z-40 rounded-none xs:rounded-t-3xl bg-main text-main-fg shadow-black/5 shadow-up dark:shadow-white/5',
+        'fixed right-0 bottom-0 left-0 z-40 rounded-none xs:rounded-t-3xl bg-main text-main-fg shadow-up',
         isStandalone() ? 'h-22 pb-6' : 'h-16'
       )}
     >
