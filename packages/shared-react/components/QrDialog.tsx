@@ -1,12 +1,14 @@
 import { FaviconPng } from '@konxyz/shared/assets'
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
 import type { RootLoader } from '@konxyz/shared/types'
+import { WalletIcon } from '@phosphor-icons/react'
 import { useAtomValue } from 'jotai'
 import { QRCode } from 'react-qrcode-logo'
 import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
 import { displayNameAtom, subnameAtom } from '~/atoms'
 import AddressInput from '~/components/AddressInput'
+import FaceIdIcon from '~/components/svg/FaceId'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
 import { useDarkMode } from '~/hooks/useDarkMode'
 import { useCurrentConnector } from '~/hooks/useWallet'
@@ -15,7 +17,7 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
   const { isDark } = useDarkMode()
-  const { isSCW, connector } = useCurrentConnector()
+  const { isSCW } = useCurrentConnector()
 
   const name = useAtomValue(displayNameAtom)
   const id = useAtomValue(subnameAtom)
@@ -57,6 +59,21 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             )}
           </li>
           <li>
+            <label htmlFor="address" className="relative flex items-center justify-between">
+              <span />
+              <span className="font-normal text-muted text-xs">
+                {isSCW ? (
+                  <div className="flex items-center gap-1">
+                    Smart Wallet <FaceIdIcon className="h-4 w-4" />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1">
+                    EOA <WalletIcon size={18} />
+                  </div>
+                )}
+              </span>
+            </label>
+
             <AddressInput />
           </li>
         </ul>
