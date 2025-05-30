@@ -1,4 +1,4 @@
-import { CaretCircleLeft } from '@phosphor-icons/react'
+import { CaretCircleLeftIcon } from '@phosphor-icons/react'
 import { Link } from 'react-router'
 import ConfigDialog from '~/components/ConfigDialog'
 
@@ -14,7 +14,7 @@ export default function TopBar({
           <span className="flex items-center">
             {backBtn && (
               <Link to={typeof backBtn === 'boolean' ? '/home' : backBtn}>
-                <CaretCircleLeft size={32} weight="bold" className="-mt-1 mr-2.5 text-muted" />
+                <CaretCircleLeftIcon size={32} weight="bold" className="-mt-1 mr-2.5 text-muted" />
               </Link>
             )}
             {title ?? ''}

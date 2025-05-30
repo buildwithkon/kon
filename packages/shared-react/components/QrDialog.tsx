@@ -16,8 +16,6 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
   const ld = useRouteLoaderData<RootLoader>('root')
   const { isDark } = useDarkMode()
   const { isSCW, connector } = useCurrentConnector()
-  console.log('ccc:::', isSCW, connector)
-  // console.log('connections:::', connections)
 
   const name = useAtomValue(displayNameAtom)
   const id = useAtomValue(subnameAtom)

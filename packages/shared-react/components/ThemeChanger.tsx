@@ -1,12 +1,12 @@
 import { cn } from '@konxyz/shared/lib/utils'
-import { Laptop, MoonStars, Sun } from '@phosphor-icons/react'
+import { LaptopIcon, MoonStarsIcon, SunIcon } from '@phosphor-icons/react'
 import { useAtom } from 'jotai'
 import { darkModeAtom } from '~/atoms'
 
 const OPTIONS = [
-  { id: 'system', icon: <Laptop size={28} />, text: 'System' },
-  { id: 'light', icon: <Sun size={28} />, text: 'Light' },
-  { id: 'dark', icon: <MoonStars size={28} />, text: 'Dark' }
+  { id: 'system', icon: <LaptopIcon size={28} />, text: 'System' },
+  { id: 'light', icon: <SunIcon size={28} />, text: 'Light' },
+  { id: 'dark', icon: <MoonStarsIcon size={28} />, text: 'Dark' }
 ]
 
 export default function ThemeChanger() {
@@ -19,7 +19,7 @@ export default function ThemeChanger() {
           key={id}
           type="button"
           className={cn(
-            'grid place-items-center rounded-xl border pt-2 pb-3 text-center hover:bg-gray-400/5',
+            'grid place-items-center rounded-xl border border-2 pt-2 pb-3 text-center hover:bg-gray-400/5',
             id === darkMode ? 'border-accent' : 'border-muted'
           )}
           onClick={() => setDarkMode(id as 'system' | 'light' | 'dark')}

@@ -49,7 +49,7 @@ const DialogContent = React.forwardRef<
     <div className="fixed inset-0 z-50 mx-auto flex max-w-screen-xs items-center justify-center px-6">
       <DialogPopup
         className={cn(
-          'data-[closed]:slide-out-to-bottom content data-[open]:slide-in-to-top fixed inset-x-0 bottom-0 z-40 mx-auto flex h-auto max-w-screen-xs flex-col rounded-t-2xl px-6 py-8 duration-200 data-[closed]:animate-out data-[open]:animate-in',
+          'data-[closed]:slide-out-to-bottom content data-[open]:slide-in-to-top fixed inset-x-0 bottom-0 z-40 mx-auto flex h-auto max-w-screen-xs flex-col rounded-t-2xl px-6 py-8 shadow-black/5 shadow-lg duration-200 data-[closed]:animate-out data-[open]:animate-in sm:bottom-auto sm:rounded-2xl dark:shadow-white/5',
           isStandalone() ? 'pt-8 pb-12' : 'py-8',
           className
         )}
