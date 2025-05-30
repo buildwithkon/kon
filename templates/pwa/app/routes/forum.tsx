@@ -5,7 +5,7 @@ import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import { PaperPlaneTilt } from '@phosphor-icons/react'
 import { useRouteLoaderData } from 'react-router'
-import type { Route } from './+types/forum'
+import type { Route } from './+types/page'
 
 export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `Forum | ${matches[0]?.data?.appConfig?.name ?? ''}` }

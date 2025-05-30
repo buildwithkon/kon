@@ -22,5 +22,9 @@ export default defineConfig({
     tailwindcss(),
     reactRouter(),
     tsconfigPaths()
-  ]
+  ],
+  optimizeDeps: {
+    exclude: ['@xmtp/wasm-bindings', '@xmtp/browser-sdk'],
+    include: ['@xmtp/proto']
+  }
 })

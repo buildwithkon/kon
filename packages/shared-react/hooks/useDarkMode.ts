@@ -4,17 +4,22 @@ import { darkModeAtom } from '~/atoms'
 
 export function useDarkMode() {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
-    return false
+    // return default
+    return {
+      isDark: false,
+      prefersDarkMode: false,
+      current: 'system'
+    }
   }
 
   const darkMode = useAtomValue(darkModeAtom)
   const [prefersDarkMode, setPrefersDarkMode] = useState(
     window.matchMedia('(prefers-color-scheme: dark)').matches
   )
-  const isDarkMode = darkMode === 'system' ? prefersDarkMode : darkMode === 'dark'
+  const isDark: boolean = darkMode === 'system' ? prefersDarkMode : darkMode === 'dark'
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode)
+    document.documentElement.classList.toggle('dark', isDark)
 
     function handleDarkModePrefferedChange() {
       const doesMatch = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -31,10 +36,10 @@ export function useDarkMode() {
         .matchMedia('(prefers-color-scheme: dark)')
         .removeEventListener('change', handleDarkModePrefferedChange)
     }
-  }, [isDarkMode])
+  }, [isDark])
 
   return {
-    isDarkMode,
+    isDark,
     prefersDarkMode,
     current: darkMode
   }

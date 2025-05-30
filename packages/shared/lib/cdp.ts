@@ -1,10 +1,16 @@
-import { createCoinbaseWalletSDK } from '@coinbase/wallet-sdk'
-import { base, baseSepolia } from 'wagmi/chains'
-import { APP_NAME } from './const'
+import type { RootLoader } from '@konxyz/shared/types'
+import { base, baseSepolia } from 'viem/chains'
+import { APP_FALLBACK_NAME, DEFAULT_LOGO_URL } from './const'
 
-const sdk = new createCoinbaseWalletSDK({
-  appName: APP_NAME,
-  appChainIds: [base.id, baseSepolia.id]
+export const getCdpConfig = (ld: RootLoader) => ({
+  apiKey: ld?.ENV?.CDP_CLIENT_API_KEY,
+  chain: baseSepolia ?? base,
+  config: {
+    appearance: {
+      name: ld?.appConfig?.name ?? APP_FALLBACK_NAME,
+      logo: ld?.appConfig?.icons?.favicon ?? DEFAULT_LOGO_URL,
+      mode: 'auto',
+      theme: 'hacker'
+    }
+  }
 })
-
-export const getProvider = () => sdk.getProvider({ options: 'smartWalletOnly' })

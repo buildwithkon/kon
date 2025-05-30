@@ -1,7 +1,13 @@
+import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { baseSepolia, mainnet, sepolia } from 'viem/chains'
 
 export const APP_NAME = 'KON'
 export const SITE_URL = 'https://kon.xyz'
+
+export const APP_FAVICON_URL = FaviconPng
+export const APP_LOGO_URL = LogoPng
+export const APP_FALLBACK_NAME = 'A build with KON app'
+export const APP_FALLBACK_DESCRIPTION = 'Build with KON'
 
 export const ENS_APPCONFIG_CHAINID = sepolia.id
 export const ENS_APPCONFIG_BASE = 'kon.eth'

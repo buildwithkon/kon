@@ -19,3 +19,8 @@ export const genRanStr = (length = 5) => {
 export const isStandalone = () =>
   typeof window !== 'undefined' &&
   (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true)
+
+export const isValidEthereumAddress = (address: string): address is `0x${string}` =>
+  /^0x[a-fA-F0-9]{40}$/.test(address)
+
+export const isValidInboxId = (inboxId: string): inboxId is string => /^[a-z0-9]{64}$/.test(inboxId)

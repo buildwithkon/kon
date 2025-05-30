@@ -78,13 +78,13 @@ const devConfig3 = {
       {
         id: 'conf',
         title: 'Conference',
-        icon: 'ph-user-sound',
+        icon: 'ph-megaphone',
         content: 'md:https://hackmd.io/@yujiym/SkvoWc86yx/download'
       },
       {
         id: 'hackathon',
         title: 'Hackathon',
-        icon: 'ph-code',
+        icon: 'ph-laptop',
         content: 'md:https://hackmd.io/@yujiym/rkVGH9UTkx/download'
       },
       {
@@ -106,8 +106,8 @@ const devConfig3 = {
   },
   font: 'sans',
   colors: {
-    main: '#5E1913',
-    accent: '#FF6476'
+    main: '#562266',
+    accent: '#FF5545'
   }
 }
 

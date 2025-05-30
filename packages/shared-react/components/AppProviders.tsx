@@ -1,10 +1,10 @@
 import { OnchainKitProvider } from '@coinbase/onchainkit'
+import { getCdpConfig } from '@konxyz/shared/lib/cdp'
 import { getWagmiConfig } from '@konxyz/shared/lib/wagmi'
 import type { RootLoader } from '@konxyz/shared/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Provider as JotaiProvider } from 'jotai'
 import { type ReactNode, useState } from 'react'
-import { base, baseSepolia } from 'viem/chains'
 import { WagmiProvider, cookieToInitialState } from 'wagmi'
 import { store } from '~/atoms'
 
@@ -15,7 +15,9 @@ export default function AppProviders({
   children: ReactNode
   ld: RootLoader
 }) {
-  const [wagmiConfig] = useState(() => getWagmiConfig(ld?.ENV, ld?.appConfig))
+  const [wagmiConfig] = useState(() => getWagmiConfig(ld))
+  const [cdpConfig] = useState(() => getCdpConfig(ld))
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -33,9 +35,7 @@ export default function AppProviders({
     <JotaiProvider store={store}>
       <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
         <QueryClientProvider client={queryClient}>
-          <OnchainKitProvider apiKey={ld?.ENV?.CDP_CLIENT_API_KEY} chain={baseSepolia ?? base}>
-            {children}
-          </OnchainKitProvider>
+          <OnchainKitProvider {...cdpConfig}>{children}</OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </JotaiProvider>

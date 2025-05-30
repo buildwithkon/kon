@@ -2,7 +2,7 @@ import TopBar from '@konxyz/shared-react/components/TopBar'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import type { AppConfig } from '@konxyz/shared/types'
 import { useRouteLoaderData } from 'react-router'
-import type { Route } from './+types/admin/config'
+import type { Route } from './+types/page'
 
 export const meta = mergeMeta(({ matches }: Route.MetaArgs) => [
   { title: `App Config | ${matches[0]?.data?.appConfig?.name ?? ''}` }
@@ -13,9 +13,9 @@ export default function AdminConfig() {
 
   return (
     <div className="wrapper px-6 pt-16 pb-6">
-      <TopBar title="App Config" backBtn rightBtn="admin" isAdmin />
       <AppConfigForm appConfig={ld?.appConfig} />
-    </div>
+    </div>      <TopBar title="App Config" backBtn rightBtn="admin" isAdmin />
+
   )
 }
 

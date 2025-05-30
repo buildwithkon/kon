@@ -1,16 +1,60 @@
-import {Client, type Signer } from '@xmtp/browser-sdk'
-import secureRandom from 'secure-random'
+import type { Signer } from '@xmtp/browser-sdk'
+import { type Hex, toBytes } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
 
-const generateEncKey = secureRandom(32, {type: 'Uint8Array'})
+export const isValidInboxId = (inboxId: string): inboxId is string => /^[a-z0-9]{64}$/.test(inboxId)
 
-export const getSigner: Signer = (address: `0x${string}`) => ({
-  getAddress: () => address,
-  signMessage: async (message) => {},
-  getChainId: () => BigInt(84532) // Base Sepolia
-})
+export const createEphemeralSigner = (privateKey: Hex): Signer => {
+  const account = privateKeyToAccount(privateKey)
+  return {
+    type: 'EOA',
+    getIdentifier: () => ({
+      identifier: account.address.toLowerCase(),
+      identifierKind: 'Ethereum'
+    }),
+    signMessage: async (message: string) => {
+      const signature = await account.signMessage({
+        message
+      })
+      return toBytes(signature)
+    }
+  }
+}
 
+export const createEOASigner = (
+  address: `0x${string}`,
+  signMessage: (message: string) => Promise<string> | string
+): Signer => {
+  return {
+    type: 'EOA',
+    getIdentifier: () => ({
+      identifier: address.toLowerCase(),
+      identifierKind: 'Ethereum'
+    }),
+    signMessage: async (message: string) => {
+      const signature = await signMessage(message)
+      return toBytes(signature)
+    }
+  }
+}
 
-export const getClient = async (address: `0x${string}`, encKey: Uint8Array | undefined) => await Client.create(
-  signer: getSigner(address),
-  encryptionKey: encKey ?? generateEncKey()),
-)
+export const createSCWSigner = (
+  address: `0x${string}`,
+  signMessage: (message: string) => Promise<string> | string,
+  chainId = 1
+): Signer => {
+  console.log('Creating SCW signer with chain ID:', chainId)
+  return {
+    type: 'SCW',
+    getIdentifier: () => ({
+      identifier: address.toLowerCase(),
+      identifierKind: 'Ethereum'
+    }),
+    signMessage: async (message: string) => {
+      const signature = await signMessage(message)
+      const signatureBytes = toBytes(signature)
+      return signatureBytes
+    },
+    getChainId: () => BigInt(chainId)
+  }
+}

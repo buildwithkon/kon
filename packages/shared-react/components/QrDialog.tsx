@@ -9,11 +9,15 @@ import { displayNameAtom, subnameAtom } from '~/atoms'
 import AddressInput from '~/components/AddressInput'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
 import { useDarkMode } from '~/hooks/useDarkMode'
+import { useCurrentConnector } from '~/hooks/useWallet'
 
 export default function QrDialog({ children }: { children: React.ReactNode }) {
   const { address } = useAccount()
   const ld = useRouteLoaderData<RootLoader>('root')
-  const { isDarkMode } = useDarkMode()
+  const { isDark } = useDarkMode()
+  const { isSCW, connector } = useCurrentConnector()
+  console.log('ccc:::', isSCW, connector)
+  // console.log('connections:::', connections)
 
   const name = useAtomValue(displayNameAtom)
   const id = useAtomValue(subnameAtom)
@@ -29,8 +33,8 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             value={`https://${ld?.subdomain}.kon.xyz/users/address/${address ?? ''}`}
             size={256}
             ecLevel="Q"
-            fgColor={isDarkMode ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
-            bgColor={isDarkMode ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
+            fgColor={isDark ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
+            bgColor={isDark ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
             logoImage={ld?.appConfig?.icons?.favicon ?? ld?.appConfig?.icons?.logo ?? FaviconPng}
             qrStyle="dots"
             logoPadding={1}

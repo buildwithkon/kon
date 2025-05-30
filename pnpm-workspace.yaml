@@ -1,5 +1,7 @@
 packages:
   - packages/*
   - templates/*
+ignoredBuiltDependencies:
+  - '@tailwindcss/oxide'
 onlyBuiltDependencies:
   - esbuild

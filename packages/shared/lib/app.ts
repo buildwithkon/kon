@@ -1,7 +1,13 @@
 import type { ApiType } from '@konxyz/api/src'
 import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
-import { APP_NAME, COLOR_HEX_MAIN_DEFAULT, ENS_APPCONFIG_USER } from '@konxyz/shared/lib/const'
+import {
+  APP_FALLBACK_DESCRIPTION,
+  APP_FALLBACK_NAME,
+  APP_NAME,
+  COLOR_HEX_MAIN_DEFAULT,
+  ENS_APPCONFIG_USER
+} from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
 
@@ -72,16 +78,16 @@ export const generateManifest = (appConfig: AppConfig) => ({
 })
 
 export const generateRootMeta = (appConfig: AppConfig) => [
-  { title: appConfig?.name ?? 'A build with KON app' },
-  { description: appConfig?.description ?? 'Build with KON' },
-  { property: 'og:title', content: appConfig?.name ?? 'A build with KON app' },
-  { property: 'og:description', content: appConfig?.description ?? 'Build with KON' },
-  { property: 'og:site_name', content: appConfig?.name ?? 'A build with KON app' },
+  { title: appConfig?.name ?? APP_FALLBACK_NAME },
+  { description: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
+  { property: 'og:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
+  { property: 'og:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
+  { property: 'og:site_name', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'og:type', content: 'website' },
   { property: 'og:image', content: appConfig?.icons?.favicon ?? LogoPng },
   { property: 'twitter:card', content: 'summary' },
-  { property: 'twitter:title', content: appConfig?.name ?? 'A build with KON app' },
-  { property: 'twitter:description', content: appConfig?.description ?? 'Build with KON' },
+  { property: 'twitter:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
+  { property: 'twitter:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
   { property: 'twitter:image', content: appConfig?.icons?.favicon ?? LogoPng }
 ]
 

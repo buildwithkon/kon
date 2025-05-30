@@ -1,13 +1,13 @@
 import { isStandalone } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
-import { HandTap } from '@phosphor-icons/react'
+import { HandTapIcon } from '@phosphor-icons/react'
 import PWAInstallPrompt from '~/components/PWAInstallPrompt'
 import BuildWith from '~/components/modules/BuildWith'
 import IconKon from '~/components/svg/kon'
-import { useWagmi } from '~/hooks/useWagmi'
+import { useLogin } from '~/hooks/useWallet'
 
 export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
-  const { loginAsync } = useWagmi()
+  const { loginAsync } = useLogin()
 
   const login = async () => {
     try {
@@ -38,7 +38,7 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
         <footer className="w-full p-6">
           {process.env.NODE_ENV === 'development' || isStandalone() ? (
             <button type="button" onClick={login} className="btn-main-fg w-full text-xl">
-              <HandTap size={28} className="-ml-4 mr-3" />
+              <HandTapIcon size={28} className="-ml-4 mr-3" />
               Start
             </button>
           ) : (
