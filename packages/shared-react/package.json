@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@base-ui-components/react": "1.0.0-alpha.8",
+    "@base-ui-components/react": "1.0.0-beta.0",
     "@coinbase/onchainkit": "^0.38.13",
     "@conform-to/react": "^1.2.2",
     "@conform-to/zod": "^1.2.2",
@@ -29,7 +29,6 @@
     "react-dom": "^19.1.0",
     "react-qrcode-logo": "^3.0.0",
     "react-router": "^7.6.1",
-    "sonner": "^1.7.4",
     "viem": "^2.22.22",
     "wagmi": "^2.14.10",
     "zod": "^3.24.1"

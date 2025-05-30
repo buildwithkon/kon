@@ -7,6 +7,7 @@ import { Provider as JotaiProvider } from 'jotai'
 import { type ReactNode, useState } from 'react'
 import { WagmiProvider, cookieToInitialState } from 'wagmi'
 import { store } from '~/atoms'
+import Toast from '~/components/ui/Toast'
 
 export default function AppProviders({
   children,
@@ -35,7 +36,9 @@ export default function AppProviders({
     <JotaiProvider store={store}>
       <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
         <QueryClientProvider client={queryClient}>
-          <OnchainKitProvider {...cdpConfig}>{children}</OnchainKitProvider>
+          <OnchainKitProvider {...cdpConfig}>
+            <Toast>{children}</Toast>
+          </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </JotaiProvider>

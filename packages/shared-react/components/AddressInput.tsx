@@ -1,15 +1,16 @@
+import { Toast } from '@base-ui-components/react'
 import { shortAddr } from '@konxyz/shared/lib/utils'
 import { ClipboardTextIcon } from '@phosphor-icons/react'
 import { useAccount } from 'wagmi'
-import { toast } from '~/components/ui/Toaster'
 
 export default function AddressInput() {
   const { address } = useAccount()
+  const tm = Toast.useToastManager()
 
   const copy = (address: `0x${string}` | undefined) => {
     if (!address) return
     navigator.clipboard.writeText(address)
-    toast.info('Copied to clipboard!')
+    tm.add({ title: '📋 Copied to clipboard!' })
   }
 
   return (

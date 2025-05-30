@@ -1,7 +1,7 @@
 import { fmtNum } from '@konxyz/shared/lib/format'
 import { cn } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
-import { CaretCircleUp, QrCode } from '@phosphor-icons/react'
+import { CaretCircleUpIcon, QrCodeIcon } from '@phosphor-icons/react'
 import { useDebounce, useWindowScroll } from '@uidotdev/usehooks'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
@@ -47,7 +47,7 @@ export default function ProfileCard({
               className="absolute top-6 right-6 text-accent"
               onClick={() => scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <CaretCircleUp size={32} />
+              <CaretCircleUpIcon size={32} />
             </button>
           )}
           {!isScrolled && (
@@ -88,10 +88,10 @@ export default function ProfileCard({
           {!isScrolled ? (
             showQr ? (
               <QrDialog>
-                <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
+                <QrCodeIcon size={52} weight="duotone" className="absolute right-4 bottom-5" />
               </QrDialog>
             ) : (
-              <QrCode size={52} weight="duotone" className="absolute right-4 bottom-5" />
+              <QrCodeIcon size={52} weight="duotone" className="absolute right-4 bottom-5" />
             )
           ) : null}
         </div>
