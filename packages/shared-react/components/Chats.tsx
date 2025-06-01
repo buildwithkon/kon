@@ -9,7 +9,7 @@ const CHATS = [
   },
   {
     id: '0x000011111',
-    message: 'gm!'
+    message: 'gm!gm!gm!gm!gm!gm!m!gm!gm!gm!gm! aaa'
   }
 ]
 
@@ -35,7 +35,7 @@ const ChatLists = () => {
   return (
     <div className="oveflow-y-scroll over-flow-x-hidden flex-1 px-4 pt-6">
       {CHATS.map((chat) => (
-        <div className={cn('mb-5 flex w-full', isMe(chat.id) ? 'justify-end pl-4' : 'pr-4')} key={chat.id}>
+        <div className={cn('mb-5 flex w-full', isMe(chat.id) ? 'justify-end pl-17' : 'pr-8')} key={chat.id}>
           {!isMe(chat.id) && (
             <div className="mr-2.5 flex h-9 w-9 items-center justify-center">
               <Avatar name={chat.id} />
@@ -43,7 +43,7 @@ const ChatLists = () => {
           )}
           <div
             className={cn(
-              'shawow-gray-500/10 max-w-96 rounded-lg px-4 py-2 shadow-sm',
+              'shawow-gray-500/10 text-wrap break-all rounded-lg px-4 py-2 shadow-sm',
               isMe(chat.id) ? 'bg-main text-main-fg' : 'bg-stone-300/50 dark:bg-stone-500/50'
             )}
           >
