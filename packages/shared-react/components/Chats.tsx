@@ -37,8 +37,8 @@ const ChatLists = () => {
       {CHATS.map((chat) => (
         <div className={cn('mb-5 flex w-full', isMe(chat.id) ? 'justify-end pl-17' : 'pr-8')} key={chat.id}>
           {!isMe(chat.id) && (
-            <div className="mr-2.5 flex h-9 w-9 items-center justify-center">
-              <Avatar name={chat.id} />
+            <div className="mr-2.5 pt-1 flex items-start justify-center">
+              <Avatar name={chat.id} className="w-8 h-8" />
             </div>
           )}
           <div

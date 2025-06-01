@@ -59,7 +59,7 @@ export default function ProfileCard({
           )}
           {!isScrolled && (
             <div className="absolute bottom-5 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
-              <Avatar name={address ?? ''} className="flex w-[52px] shrink-0" />
+              <Avatar name={address ?? ''} className="flex w-[52px] shrink-0 border border-gray-500/50" />
               <div className="flex-col pl-2.5">
                 <div className="mt-0.5 min-w-2/3 truncate font-bold leading-tight">
                   {name ? (

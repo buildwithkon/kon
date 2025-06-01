@@ -14,7 +14,7 @@ export default function Avatar({
       variant="beam"
       name={name ?? ''}
       size={size}
-      className={cn('rounded-full border-2 border-white/20', className)}
+      className={cn('rounded-full', className)}
     />
   )
 }
