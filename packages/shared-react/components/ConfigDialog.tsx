@@ -42,6 +42,12 @@ export default function ConfigDialog() {
         <DialogDescription className="hidden text-center">User Config</DialogDescription>
         <ul className="mt-4 space-y-4">
           <li>
+            <label htmlFor="theme">Theme</label>
+            <div className="px-2 pt-1.5">
+              <ThemeChanger />
+            </div>
+          </li>
+          <li>
             <label htmlFor="address" className="relative flex items-center justify-between">
               <span>Wallet</span>
               <span className="font-normal text-muted text-xs">
@@ -57,12 +63,6 @@ export default function ConfigDialog() {
               </span>
             </label>
             <AddressInput />
-          </li>
-          <li>
-            <label htmlFor="theme">Theme</label>
-            <div className="px-2 pt-1.5">
-              <ThemeChanger />
-            </div>
           </li>
         </ul>
         <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
