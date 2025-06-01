@@ -10,7 +10,7 @@ const AlertDialogPortal = AlertDialogPrimitive.Portal
 const AlertDialogPopup = AlertDialogPrimitive.Popup
 
 const AlertDialogTitle = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Title>,
+  React.ComponentRef<typeof AlertDialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Title
@@ -22,7 +22,7 @@ const AlertDialogTitle = React.forwardRef<
 AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
 
 const AlertDialogDescription = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Description>,
+  React.ComponentRef<typeof AlertDialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description className={cn('text-center text-sm', className)} {...props} ref={ref} />
@@ -30,7 +30,7 @@ const AlertDialogDescription = React.forwardRef<
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName
 
 const AlertDialogBackdrop = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Backdrop>,
+  React.ComponentRef<typeof AlertDialogPrimitive.Backdrop>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Backdrop>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Backdrop
@@ -45,7 +45,7 @@ const AlertDialogBackdrop = React.forwardRef<
 AlertDialogBackdrop.displayName = AlertDialogPrimitive.Backdrop.displayName
 
 const AlertDialogContent = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Popup>,
+  React.ComponentRef<typeof AlertDialogPrimitive.Popup>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Popup>
 >(({ className, ...props }, ref) => (
   <AlertDialogPortal className="z-50">
@@ -65,7 +65,7 @@ const AlertDialogContent = React.forwardRef<
 AlertDialogContent.displayName = 'AlertDialogContent'
 
 const AlertDialogClose = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Close>,
+  React.ComponentRef<typeof AlertDialogPrimitive.Close>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Close>
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Close
