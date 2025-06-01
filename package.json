@@ -7,6 +7,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
+    "@agent": "$npm_execpath --filter \"@konxyz/xmtp-agent\"",
     "@api": "$npm_execpath --filter \"@konxyz/api\"",
     "@api:dev": "$npm_execpath --filter \"@konxyz/api\" run dev",
     "@dashboard": "$npm_execpath --filter \"@konxyz/dashboard\"",
