@@ -1,4 +1,3 @@
-import { displayNameAtom, subnameAtom } from '@konxyz/shared-react/atoms'
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import TopBar from '@konxyz/shared-react/components/TopBar'
@@ -9,7 +8,6 @@ import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import { loadAppConfig } from '@konxyz/shared/lib/app'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
-import { useAtomValue } from 'jotai'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
 
@@ -59,27 +57,24 @@ export default function Page() {
 
   if (!tabData) return <NotFound />
 
-  const displayName = useAtomValue(displayNameAtom)
-  const subname = useAtomValue(subnameAtom)
-
   const showHeader = contentType !== 'iframe' && !isFirstTab
 
   return (
     <div
       className={cn(
         'wrapper',
-        contentType === 'iframe' || contentType === 'xmtp'
+        contentType === 'iframe'
           ? 'px-0 pt-0'
-          : isFirstTab
-            ? 'px-6 pt-6'
-            : 'px-6 pt-16',
+          : contentType === 'xmtp'
+            ? 'px-0 pt-16'
+            : isFirstTab
+              ? 'px-6 pt-6'
+              : 'px-6 pt-16',
         isStandalone() ? 'pb-22' : 'pb-16'
       )}
     >
       {showHeader && <TopBar title={tabData?.title ?? ''} rightBtn={isLastTab && 'config'} backBtn />}
-      {isFirstTab && (
-        <ProfileCard appConfig={appConfig} name={displayName ?? ''} id={subname ?? ''} isSticky showQr />
-      )}
+      {isFirstTab && <ProfileCard appConfig={appConfig} name="" id="" isSticky showQr />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
       {contentType === 'xmtp' && <Forum />}

@@ -1,6 +1,8 @@
 import { useAtomValue } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import { useEffect, useState } from 'react'
-import { darkModeAtom } from '~/atoms'
+
+export const darkModeAtom = atomWithStorage<'light' | 'dark' | 'system'>('kon.darkMode', 'system')
 
 export function useDarkMode() {
   if (typeof window === 'undefined' || typeof document === 'undefined') {

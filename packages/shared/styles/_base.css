@@ -13,6 +13,10 @@ body {
   @apply bg-stone-50 text-slate-950 dark:bg-stone-900 dark:text-white;
 }
 
+@utility content-blur {
+  @apply bg-stone-50/90 text-slate-950 dark:bg-stone-900/90 dark:text-white backdrop-blur-xs;
+}
+
 @utility min-w-screen-xs {
   min-width: var(--breakpoint-xs);
 }
@@ -65,6 +69,10 @@ button[role="combobox"] {
   }
 }
 
+textarea {
+  @apply resize-none;
+}
+
 input,
 select {
   @apply placeholder-black/40 dark:placeholder-white/40;
@@ -90,7 +98,7 @@ hr {
 }
 
 @utility btn {
-  @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80 cursor-pointer;
+  @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80 cursor-pointer shadow-lg;
 }
 .btn-main {
   @apply btn bg-main shadow-gray-500/10 text-main-fg;

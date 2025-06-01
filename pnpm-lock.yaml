@@ -61,8 +61,8 @@ importers:
         specifier: ^2.16.0
         version: 2.17.2(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
       '@xmtp/browser-sdk':
-        specifier: ^2.0.13
-        version: 2.0.13
+        specifier: ^2.1.0
+        version: 2.1.0
       ethers:
         specifier: ^6.14.3
         version: 6.14.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -136,12 +136,15 @@ importers:
       '@uidotdev/usehooks':
         specifier: ^2.4.1
         version: 2.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@xmtp/browser-sdk':
+        specifier: ^2.1.0
+        version: 2.1.0
       boring-avatars:
         specifier: ^1.11.2
         version: 1.11.2
       framer-motion:
         specifier: ^12.4.3
-        version: 12.15.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       jotai:
         specifier: ^2.11.3
         version: 2.12.5(@types/react@19.1.6)(react@19.1.0)
@@ -238,8 +241,11 @@ importers:
         specifier: ^5.66.0
         version: 5.77.2(react@19.1.0)
       '@xmtp/browser-sdk':
-        specifier: ^2.0.13
-        version: 2.0.13
+        specifier: ^2.1.0
+        version: 2.1.0
+      '@xmtp/proto':
+        specifier: ^3.82.0
+        version: 3.82.0
       isbot:
         specifier: ^5.1.28
         version: 5.1.28
@@ -255,9 +261,6 @@ importers:
       react-router:
         specifier: ^7.6.1
         version: 7.6.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      sonner:
-        specifier: ^1.7.4
-        version: 1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       viem:
         specifier: ~2.22.23
         version: 2.22.23(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
@@ -1143,6 +1146,12 @@ packages:
 
   '@emnapi/runtime@1.4.3':
     resolution: {integrity: sha512-pBPWdu6MLKROBX05wSNKcNb++m5Er+KQ9QkB+WVM+pW2Kx9hoSrVTnu3BdkI5eBLZoKu/J6mW/B6i6bJB2ytXQ==}
+
+  '@emotion/is-prop-valid@1.3.1':
+    resolution: {integrity: sha512-/ACwoqx7XQi9knQs/G0qKvv5teDMhD7bXYns9N/wM8ah8iNb8jZ2uNO0YOgiq2o2poIvVtJS2YALasQuMSQ7Kw==}
+
+  '@emotion/memoize@0.9.0':
+    resolution: {integrity: sha512-30FAj7/EoJ5mwVPOWhAyCX+FPfMDrVecJAM+Iw9NRoSl4BBAQeqj4cApHHUXOVvIPgLVDsCFoz/hGD+5QQD1GQ==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -2888,8 +2897,8 @@ packages:
   '@walletconnect/window-metadata@1.0.1':
     resolution: {integrity: sha512-9koTqyGrM2cqFRW517BPY/iEtUDx2r1+Pwwu5m7sJ7ka79wi3EyqhqcICk/yDmv6jAS1rjKgTKXlEhanYjijcA==}
 
-  '@xmtp/browser-sdk@2.0.13':
-    resolution: {integrity: sha512-S81IGmOV8kXVJzSfgllgsGG+0mclm4MdhxZhPr/hd8grQhf5QBr9bnRZbbm69Bhi64Oget+o6DSIpSfSnvF14A==}
+  '@xmtp/browser-sdk@2.1.0':
+    resolution: {integrity: sha512-69qOeoZZYJETFMUXVEPHG4QTV8EgISbx7RD9CKzufXukSNFRw6sgX3FSlzuWxOPMUA4n5immgW9TUyZVi91/uA==}
     engines: {node: '>=20'}
 
   '@xmtp/content-type-group-updated@2.0.2':
@@ -2904,8 +2913,8 @@ packages:
   '@xmtp/proto@3.82.0':
     resolution: {integrity: sha512-pWZDv0wzSMGoMBFtA/CCgf5ZDdtobTqtsIPy7URbcESWl6PnJgadn4wLwOj34r8m6ZMplitVwRK6Ii70I+XTcQ==}
 
-  '@xmtp/wasm-bindings@1.1.7':
-    resolution: {integrity: sha512-/HkRWHCEhHHuoWnoXFtTzYRSEIPkOvxGJlVvMVMgmdVgd4DTavf3llbVfyC2r1BC7xVfjXSpJzNLnKVExIGIKA==}
+  '@xmtp/wasm-bindings@1.2.0':
+    resolution: {integrity: sha512-RxVloGY7+XQ37YaR6MJYb5VSm4h1V2EXw8RKEe290DXCMOXlnDM3iZcq8M5HELPup3LYvuvEOpYDo3WD7LTGsw==}
     engines: {node: '>=20'}
 
   abitype@1.0.8:
@@ -5256,12 +5265,6 @@ packages:
   sonic-boom@2.8.0:
     resolution: {integrity: sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==}
 
-  sonner@1.7.4:
-    resolution: {integrity: sha512-DIS8z4PfJRbIyfVFDVnK9rO3eYDtse4Omcm6bt0oEr5/jtLgysmjuBl1frJ9E/EQZrFmKx2A8m/s5s9CRXIzhw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -7334,6 +7337,14 @@ snapshots:
   '@emnapi/runtime@1.4.3':
     dependencies:
       tslib: 2.8.1
+    optional: true
+
+  '@emotion/is-prop-valid@1.3.1':
+    dependencies:
+      '@emotion/memoize': 0.9.0
+    optional: true
+
+  '@emotion/memoize@0.9.0':
     optional: true
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -9585,13 +9596,12 @@ snapshots:
       '@walletconnect/window-getters': 1.0.1
       tslib: 1.14.1
 
-  '@xmtp/browser-sdk@2.0.13':
+  '@xmtp/browser-sdk@2.1.0':
     dependencies:
       '@xmtp/content-type-group-updated': 2.0.2
       '@xmtp/content-type-primitives': 2.0.2
       '@xmtp/content-type-text': 2.0.2
-      '@xmtp/proto': 3.82.0
-      '@xmtp/wasm-bindings': 1.1.7
+      '@xmtp/wasm-bindings': 1.2.0
       uuid: 11.1.0
 
   '@xmtp/content-type-group-updated@2.0.2':
@@ -9614,7 +9624,7 @@ snapshots:
       rxjs: 7.8.2
       undici: 5.29.0
 
-  '@xmtp/wasm-bindings@1.1.7': {}
+  '@xmtp/wasm-bindings@1.2.0': {}
 
   abitype@1.0.8(typescript@5.8.3)(zod@3.22.4):
     optionalDependencies:
@@ -10657,12 +10667,13 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
-  framer-motion@12.15.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  framer-motion@12.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       motion-dom: 12.15.0
       motion-utils: 12.12.1
       tslib: 2.8.1
     optionalDependencies:
+      '@emotion/is-prop-valid': 1.3.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
@@ -12182,11 +12193,6 @@ snapshots:
   sonic-boom@2.8.0:
     dependencies:
       atomic-sleep: 1.0.0
-
-  sonner@1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
 
   source-map-js@1.2.1: {}
 

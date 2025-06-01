@@ -1,11 +1,12 @@
 import { TAILWIND_WHITELIST_CLASSES } from '@konxyz/shared/lib/style'
 import type { RootLoader } from '@konxyz/shared/types'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
-import { isLoadingAtom } from '~/atoms'
 import Loading from '~/components/Loading'
 import { useDarkMode } from '~/hooks/useDarkMode'
+
+export const isLoadingAtom = atom<boolean>(false)
 
 export default function AppHandler({
   ld,

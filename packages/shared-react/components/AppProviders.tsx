@@ -3,10 +3,8 @@ import { getCdpConfig } from '@konxyz/shared/lib/cdp'
 import { getWagmiConfig } from '@konxyz/shared/lib/wagmi'
 import type { RootLoader } from '@konxyz/shared/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider as JotaiProvider } from 'jotai'
 import { type ReactNode, useState } from 'react'
 import { WagmiProvider, cookieToInitialState } from 'wagmi'
-import { store } from '~/atoms'
 import Toast from '~/components/ui/Toast'
 
 export default function AppProviders({
@@ -33,14 +31,12 @@ export default function AppProviders({
   )
 
   return (
-    <JotaiProvider store={store}>
-      <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
-        <QueryClientProvider client={queryClient}>
-          <OnchainKitProvider {...cdpConfig}>
-            <Toast>{children}</Toast>
-          </OnchainKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </JotaiProvider>
+    <WagmiProvider config={wagmiConfig} initialState={cookieToInitialState(wagmiConfig, ld?.cookie)}>
+      <QueryClientProvider client={queryClient}>
+        <OnchainKitProvider {...cdpConfig}>
+          <Toast>{children}</Toast>
+        </OnchainKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }

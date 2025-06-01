@@ -1,7 +1,7 @@
 import { cn } from '@konxyz/shared/lib/utils'
 import { LaptopIcon, MoonStarsIcon, SunIcon } from '@phosphor-icons/react'
 import { useAtom } from 'jotai'
-import { darkModeAtom } from '~/atoms'
+import { darkModeAtom } from '~/hooks/useDarkMode'
 
 const OPTIONS = [
   { id: 'system', icon: <LaptopIcon size={28} />, text: 'System' },
