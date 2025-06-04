@@ -16,8 +16,8 @@
     "@pwa:dev": "$npm_execpath --filter \"@konxyz/template-pwa\" run dev",
     "@site": "$npm_execpath --filter \"@konxyz/site\"",
     "@site:dev": "$npm_execpath --filter \"@konxyz/site\" run dev",
-    "@s": "$npm_execpath --filter \"@konxyz/shared\"",
-    "@sr": "$npm_execpath --filter \"@konxyz/shared-react\"",
+    "@sh": "$npm_execpath --filter \"@konxyz/shared\"",
+    "@shr": "$npm_execpath --filter \"@konxyz/shared-react\"",
     "dev": "concurrently \"$npm_execpath api run dev\" \"$npm_execpath pwa run dev\"",
     "start": "concurrently \"$npm_execpath api run dev --port=8786 \" \"wait-on tcp:8786 && $npm_execpath pwa run start\""
   },
