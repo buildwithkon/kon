@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +24,7 @@
     "hono": "^4.6.14",
     "porto": "^0.0.3",
     "secure-random": "^1.1.2",
+    "uint8arrays": "^5.1.0",
     "viem": "^2.30.5",
     "wagmi": "^2.15.4",
     "zod": "^3.25.34"
