@@ -53,7 +53,7 @@ const AppConfigForm = ({ appConfig }: { appConfig: AppConfig }) => {
         <p>🖼️ Icons</p>
         <hr />
         <p>favicon</p>
-        <input type="text" value={appConfig?.icons?.favicon} readOnly />
+        <input type="text" value={appConfig?.icons?.logoBgTransparent} readOnly />
       </div>
       <div>
         <p>logo</p>

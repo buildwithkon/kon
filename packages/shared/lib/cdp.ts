@@ -8,7 +8,7 @@ export const getCdpConfig = (ld: RootLoader) => ({
   config: {
     appearance: {
       name: ld?.appConfig?.name ?? APP_FALLBACK_NAME,
-      logo: ld?.appConfig?.icons?.favicon ?? DEFAULT_LOGO_URL,
+      logo: ld?.appConfig?.icons?.logo ?? DEFAULT_LOGO_URL,
       mode: 'auto',
       theme: 'hacker'
     }

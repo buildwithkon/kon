@@ -1,8 +1,6 @@
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
-import { Link } from 'react-router'
 import Avatar from '~/components/Avatar'
 import ChatInput from '~/components/ChatInput'
-import { useXMTP } from '~/hooks/useXMTP'
 
 const CHATS = [
   {
@@ -15,9 +13,7 @@ const CHATS = [
   }
 ]
 
-export default function Chats({ children }: { children?: React.ReactNode }) {
-  const { conversations } = useXMTP()
-
+export default function Conversatin({ children }: { children?: React.ReactNode }) {
   return (
     <div
       className={cn(
@@ -25,37 +21,14 @@ export default function Chats({ children }: { children?: React.ReactNode }) {
         isStandalone() ? 'min-h-[calc(100dvh-9.5rem)]' : 'min-h-[calc(100dvh-8rem)]'
       )}
     >
-      {conversations && conversations.length > 0 && <ChatLists />}
+      <Chats />
       {children}
       <ChatInput />
     </div>
   )
 }
 
-const ChatLists = () => {
-  const { conversations } = useXMTP()
-
-  return (
-    <ul className="oveflow-y-scroll over-flow-x-hidden">
-      {conversations.map((conv) => (
-        <li key={`inbox-${conv.id}`} className="flex min-h-18 items-center border-muted border-b">
-          <Link to={`/forum/${conv.id}`} className="flex h-full min-h-18 w-full items-center">
-            <div className="px-5 py-2">
-              <img src={conv?.imageUrl} alt={conv?.name} className="h-10 w-10 rounded-full" />
-            </div>
-            <div className="font-medium">
-              <p>{conv?.name}</p>
-              <p className="text-muted text-xs">test test</p>
-              {conv?.description && <p className="text-muted text-xs">{conv?.description}</p>}
-            </div>
-          </Link>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-const ChatSingle = () => {
+const Chats = () => {
   // TODO: update
   const isMe = (id: string) => id === '0x000011111'
 

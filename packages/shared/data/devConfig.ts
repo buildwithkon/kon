@@ -10,7 +10,6 @@ const devConfig1 = {
   },
   font: 'sans',
   icons: {
-    favicon: 'https://i.imgur.com/OlCwNTn.png',
     logo: 'https://i.imgur.com/OlCwNTn.png'
   },
   colors: {
@@ -49,8 +48,8 @@ const devConfig2 = {
     ]
   },
   icons: {
-    favicon: 'https://euc.li/sepolia/fine2024.kon.eth',
-    logo: 'https://i.imgur.com/rxpmtxU.png'
+    logo: 'https://euc.li/sepolia/fine2024.kon.eth',
+    logoBgTransparent: 'https://i.imgur.com/rxpmtxU.png'
   },
   font: 'sans',
   colors: {
@@ -101,8 +100,8 @@ const devConfig3 = {
     ]
   },
   icons: {
-    favicon: 'https://i.imgur.com/3G9N6sa.png',
-    logo: 'https://i.imgur.com/wzAQxaz.png'
+    logo: 'https://i.imgur.com/3G9N6sa.png',
+    logoBgTransparent: 'https://i.imgur.com/wzAQxaz.png'
   },
   font: 'sans',
   colors: {

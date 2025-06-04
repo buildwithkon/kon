@@ -65,7 +65,7 @@ ens.get('/:chain/getManigfest/:id', async (c) => {
     theme_color: data?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
     icons: [
       {
-        src: data?.icons?.favicon ?? DEFAULT_FAVICON_URL,
+        src: data?.icons?.logo ?? DEFAULT_FAVICON_URL,
         sizes: '512x512',
         type: 'image/png'
       }

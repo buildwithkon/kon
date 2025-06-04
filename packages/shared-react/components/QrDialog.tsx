@@ -33,7 +33,7 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             ecLevel="Q"
             fgColor={isDark ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDark ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
-            logoImage={ld?.appConfig?.icons?.favicon ?? ld?.appConfig?.icons?.logo ?? FaviconPng}
+            logoImage={ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? FaviconPng}
             qrStyle="dots"
             logoPadding={1}
             logoPaddingStyle="square"

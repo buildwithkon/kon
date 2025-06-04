@@ -65,7 +65,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <link rel="icon" href={ld.appConfig?.icons?.favicon ?? DEFAULT_FAVICON_URL} type="image/png" />
+        <link
+          rel="icon"
+          href={ld.appConfig?.icons?.logo ?? ld.appConfig?.icons?.logoBgTransparent ?? DEFAULT_FAVICON_URL}
+          type="image/png"
+        />
         <link
           rel="manifest"
           href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld?.appConfig?.id}`}

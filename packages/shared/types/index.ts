@@ -12,8 +12,8 @@ export type AppConfig = {
   }
   font?: 'sans' | 'serif' | 'dot' | 'mono'
   icons: {
-    favicon: string
-    logo?: string
+    logo: string
+    logoBgTransparent?: string
   }
   colors?: {
     main: string

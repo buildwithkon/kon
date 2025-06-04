@@ -22,9 +22,9 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
       <div className="wrapper flex min-h-dvh flex-col items-center justify-center">
         <div className="grid w-full flex-1 place-items-center p-6 text-center">
           <div className="grid gap-6">
-            {appConfig?.icons?.logo ? (
+            {(appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo) ? (
               <img
-                src={appConfig?.icons?.logo}
+                src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
                 className="mx-auto mb-10 max-h-48 max-w-48"
                 alt={appConfig?.name ?? ''}
               />

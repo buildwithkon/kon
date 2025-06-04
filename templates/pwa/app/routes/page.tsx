@@ -73,7 +73,13 @@ export default function Page() {
         isStandalone() ? 'pb-22' : 'pb-16'
       )}
     >
-      {showHeader && <TopBar title={tabData?.title ?? ''} rightBtn={isLastTab && 'config'} backBtn />}
+      {showHeader && (
+        <TopBar
+          title={tabData?.title ?? ''}
+          rightBtn={isLastTab ? 'config' : contentType === 'xmtp' ? 'xmtp' : undefined}
+          backBtn
+        />
+      )}
       {isFirstTab && <ProfileCard appConfig={appConfig} name="" id="" isSticky showQr />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}

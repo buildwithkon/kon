@@ -70,7 +70,7 @@ export const generateManifest = (appConfig: AppConfig) => ({
   theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
-      src: appConfig?.icons?.favicon ?? FaviconPng,
+      src: appConfig?.icons?.logo ?? FaviconPng,
       sizes: '512x512',
       type: 'image/png'
     }
@@ -84,11 +84,11 @@ export const generateRootMeta = (appConfig: AppConfig) => [
   { property: 'og:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
   { property: 'og:site_name', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'og:type', content: 'website' },
-  { property: 'og:image', content: appConfig?.icons?.favicon ?? LogoPng },
+  { property: 'og:image', content: appConfig?.icons?.logo ?? LogoPng },
   { property: 'twitter:card', content: 'summary' },
   { property: 'twitter:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'twitter:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
-  { property: 'twitter:image', content: appConfig?.icons?.favicon ?? LogoPng }
+  { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
 ]
 
 export const checkId = async (id: string, url: string, env: Env) => {
