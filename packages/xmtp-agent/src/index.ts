@@ -1,8 +1,7 @@
 import { TransactionReferenceCodec } from '@xmtp/content-type-transaction-reference'
-import { ContentTypeWalletSendCalls, WalletSendCallsCodec } from '@xmtp/content-type-wallet-send-calls'
-import { Client, type XmtpEnv } from '@xmtp/node-sdk'
-import { devConfig } from '../../shared/data/devConfig'
-import { getAppInfo, sendSetTextCalls } from './lib/ens'
+import { WalletSendCallsCodec } from '@xmtp/content-type-wallet-send-calls'
+import { Client, type DecodedMessage, type XmtpEnv } from '@xmtp/node-sdk'
+import { getAppInfo } from './lib/ens'
 import { USDCHandler } from './lib/usdc'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
 
@@ -14,6 +13,37 @@ if (!walletKey) {
 }
 
 const signer = createSigner(walletKey)
+
+export async function waitForMessage(
+  stream,
+  opts?: {
+    timeout?: number
+    filter?: (msg: DecodedMessage) => boolean
+  }
+): Promise<DecodedMessage | null> {
+  const timeout = opts?.timeout ?? 60000
+
+  return new Promise((resolve) => {
+    let resolved = false
+    const timer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true
+        resolve(null)
+      }
+    }, timeout)
+    ;(async () => {
+      for await (const msg of stream) {
+        if (opts?.filter && !opts.filter(msg)) continue
+        if (!resolved) {
+          resolved = true
+          clearTimeout(timer)
+          resolve(msg)
+          break
+        }
+      }
+    })()
+  })
+}
 
 async function main() {
   const client = await Client.create(signer, {
@@ -62,17 +92,33 @@ async function main() {
     const messageContent = message.content as string
     const command = messageContent.toLowerCase().trim()
     try {
-      if (command === '/setup') {
-        await conversation.send('🚀 Setting up A KON App...')
+      if (command === '/help') {
         await conversation.send(
-          sendSetTextCalls(memberAddress, 'demoapp', JSON.stringify(devConfig)),
-          ContentTypeWalletSendCalls
+          'Available commands:\n' +
+            '▶️ /setup <appName> <appType> <referenceUrl>\n' +
+            '- Setup app (e.g. /setup demoapp event https://ethtokyo.org)\n' +
+            '  - <appName> ENS subnames for app (e.g. <demoapp>.kon.eth) \n' +
+            '  - <appType> "event" or "shop" \n' +
+            '▶️ /info <appName>\n' +
+            '- Get app information (e.g. /appinfo demoapp)'
         )
+      } else if (command === '/setup') {
+        await conversation.send('🚀 Setting up A KON App...')
+        const reply = await waitForMessage(stream)
+        console.log('Reply received:', reply)
+        // await conversation.send(
+        //   sendSetSubnodeRecordCalls(memberAddress, 'demoapp1'),
+        //   ContentTypeWalletSendCalls
+        // )
+        // await conversation.send(
+        //   sendSetTextCalls(memberAddress, 'demoapp', JSON.stringify(devConfig)),
+        //   ContentTypeWalletSendCalls
+        // )
         await conversation.send('You can access your app 👉 https://demoapp.kon.xyz after tx confirmation.')
-      } else if (command.startsWith('/appinfo')) {
+      } else if (command.startsWith('/info')) {
         const [, appName] = messageContent.trim().split(/\s+/, 2)
         const appInfo = await getAppInfo(appName)
-        if (appInfo) {
+        if (appInfo && typeof appInfo === 'object') {
           await conversation.send(
             `⏳ Loading '${appInfo.target}' ...\n\n----- ℹ️ General ---------------------\nID : ${appInfo.id}\nName : ${appInfo.name}\nDescription : ${appInfo.description}\n\n----- 🔧 Config ---------------------\nColors : ${appInfo.colors}\nTemplate : ${appInfo.template}`
           )
