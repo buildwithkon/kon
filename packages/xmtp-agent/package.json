@@ -9,6 +9,10 @@
     "start": "tsx ./src/index.ts"
   },
   "dependencies": {
+    "@coinbase/agentkit": "^0.8.0",
+    "@coinbase/agentkit-langchain": "^0.3.0",
+    "@langchain/core": "^0.3.57",
+    "@langchain/openai": "^0.5.12",
     "@xmtp/content-type-transaction-reference": "^2.0.2",
     "@xmtp/content-type-wallet-send-calls": "^1.0.1",
     "@xmtp/node-sdk": "^2.1.0",

@@ -8,7 +8,6 @@ const APP_DOMAIN = 'kon.xyz'
 const ENS_PARENT = 'kon.eth'
 
 const SEPOLIA_ENS_PUBLIC_RESOLVER = '0x8948458626811dd0c23eb25cc74291247077cc51'
-
 const SEPOLIA_ENS_NAMEWRAPPER = '0x0635513f179d50a207757e05759cbd106d7dfce8'
 
 export const publicClient = createPublicClient({
@@ -17,13 +16,16 @@ export const publicClient = createPublicClient({
 })
 
 export const getAppInfo = async (appName: string) => {
-  const target = `${appName}.${ENS_PARENT}`
+  const check = await checkENS(appName)
+  if (!check) {
+    return null
+  }
 
+  const target = `${appName}.${ENS_PARENT}`
   const res = await publicClient.getEnsText({
     name: normalize(target),
     key: ENS_APP_KEY
   })
-
   if (!res) {
     return null
   }
@@ -38,6 +40,13 @@ export const getAppInfo = async (appName: string) => {
     colors: JSON.stringify(appInfo?.colors, null, 2),
     template: JSON.stringify(appInfo?.template, null, 2)
   }
+}
+
+export const checkENS = async (appName: string): Promise<boolean> => {
+  const res = await publicClient.getEnsAddress({
+    name: normalize(`${appName}.${ENS_PARENT}`)
+  })
+  return !!res
 }
 
 export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string): WalletSendCallsParams => {
