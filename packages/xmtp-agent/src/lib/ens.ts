@@ -16,11 +16,6 @@ export const publicClient = createPublicClient({
 })
 
 export const getAppInfo = async (appName: string) => {
-  const check = await checkENS(appName)
-  if (!check) {
-    return null
-  }
-
   const target = `${appName}.${ENS_PARENT}`
   const res = await publicClient.getEnsText({
     name: normalize(target),
@@ -43,10 +38,10 @@ export const getAppInfo = async (appName: string) => {
 }
 
 export const checkENS = async (appName: string): Promise<boolean> => {
-  const res = await publicClient.getEnsAddress({
+  const address = await publicClient.getEnsAddress({
     name: normalize(`${appName}.${ENS_PARENT}`)
   })
-  return !!res
+  return !!address
 }
 
 export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string): WalletSendCallsParams => {

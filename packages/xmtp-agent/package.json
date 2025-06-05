@@ -12,6 +12,7 @@
     "@coinbase/agentkit": "^0.8.0",
     "@coinbase/agentkit-langchain": "^0.3.0",
     "@langchain/core": "^0.3.57",
+    "@langchain/langgraph": "^0.3.0",
     "@langchain/openai": "^0.5.12",
     "@xmtp/content-type-transaction-reference": "^2.0.2",
     "@xmtp/content-type-wallet-send-calls": "^1.0.1",
