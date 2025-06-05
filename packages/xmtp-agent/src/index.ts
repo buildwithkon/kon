@@ -4,7 +4,7 @@ import { Client, type XmtpEnv } from '@xmtp/node-sdk'
 import { devConfig } from '../../shared/data/devConfig'
 import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls } from './lib/ens'
 import { USDCHandler } from './lib/usdc'
-import { isValidName, isValidURL } from './lib/utils'
+import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
 
 /* Create the signer using viem and parse the encryption key for the local db */
@@ -22,7 +22,7 @@ async function main() {
     codecs: [new WalletSendCallsCodec(), new TransactionReferenceCodec()]
   })
   const identifier = await signer.getIdentifier()
-  const agentAddress = identifier.identifier
+  const agentAddress = identifier.identifier as `0x${string}`
 
   void logAgentDetails(client as Client)
 
@@ -53,7 +53,7 @@ async function main() {
     }
 
     const inboxState = await client.preferences.inboxStateFromInboxIds([message.senderInboxId])
-    const memberAddress = inboxState[0].identifiers[0].identifier
+    const memberAddress = inboxState[0].identifiers[0].identifier as `0x${string}`
 
     if (!memberAddress) {
       console.log('Unable to find member address, skipping')
@@ -113,7 +113,7 @@ async function main() {
         const result = await usdcHandler.getUSDCBalance(addr)
         await conversation.send(`${addr}'s USDC balance is: ${result} USDC`)
       } else if (command === '/gm') {
-        await conversation.send('👋 gm!')
+        await conversation.send(`👋 gm! "${shortAddr(memberAddress)}" from "${shortAddr(agentAddress)}"`)
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error)

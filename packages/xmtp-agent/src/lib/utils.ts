@@ -11,9 +11,12 @@ export const isValidURL = (str: string): boolean => {
   return !!pattern.test(str)
 }
 
-export function isValidName(id: string): boolean {
+export const isValidName = (id: string): boolean => {
   if (id.length < 3 || id.length > 255) return false
   if (!/^[a-z0-9-]+$/.test(id)) return false
   if (id.startsWith('-') || id.endsWith('-')) return false
   return true
 }
+
+export const shortAddr = (address: `0x${string}` | undefined): string =>
+  !address ? '' : `${address.slice(0, 6)}...${address.slice(-4)}`
