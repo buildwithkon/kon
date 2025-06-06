@@ -52,14 +52,13 @@ export default function ProfileCard({
           )}
           {!isScrolled && (
             <div className="absolute top-6 right-6 mx-auto">
-              {appConfig?.icons?.logoBgTransparent ||
-                (appConfig?.icons?.logo && (
-                  <img
-                    src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
-                    className="max-h-20 max-w-20"
-                    alt={appConfig?.name ?? ''}
-                  />
-                ))}
+              {(appConfig?.icons?.logoBgTransparent || appConfig?.icons?.logo) && (
+                <img
+                  src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
+                  className="max-h-20 max-w-20"
+                  alt={appConfig?.name ?? ''}
+                />
+              )}
             </div>
           )}
           {!isScrolled && (

@@ -20,7 +20,7 @@ type Agent = ReturnType<typeof createReactAgent>
  * @param userId - The unique identifier for the user
  * @returns The initialized agent and its configuration
  */
-export const initializeAgent = (userId: string): Promise<{ agent: Agent; config: AgentConfig }> => {
+export const initializeAgent = async (userId: string): Promise<{ agent: Agent; config: AgentConfig }> => {
   try {
     const llm = new ChatOpenAI({
       model: 'gpt-4.1-mini'
@@ -30,8 +30,8 @@ export const initializeAgent = (userId: string): Promise<{ agent: Agent; config:
     // console.log(`Wallet data for ${userId}: ${storedWalletData ? 'Found' : 'Not found'}`)
 
     const config = {
-      apiKeyName: process.env.CDP_API_KEY_NAME!,
-      apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+      apiKeyId: process.env.CDP_API_KEY_ID!,
+      apiKeySecret: process.env.CDP_API_KEY_SECRET!.replace(/\\n/g, '\n'),
       // cdpWalletData: storedWalletData || undefined,
       networkId: process.env.NETWORK_ID || 'base-sepolia'
     }
@@ -92,6 +92,8 @@ export const initializeAgent = (userId: string): Promise<{ agent: Agent; config:
  */
 export const processMessage = async (agent: Agent, config: AgentConfig, message: string): Promise<string> => {
   let response = ''
+
+  console.log('----Processing message:', agent, config, message)
 
   try {
     const stream = await agent.stream({ messages: [new HumanMessage(message)] }, config)

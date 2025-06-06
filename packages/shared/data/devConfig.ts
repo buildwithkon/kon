@@ -110,4 +110,41 @@ const devConfig3 = {
   }
 }
 
+export const baseConfig = {
+  id: 'appname',
+  version: '0.1',
+  url: 'appname.kon.xyz', // appname is same as is
+  name: 'App Name', // use title tag
+  description: 'App Description', // use meta description tag
+  template: {
+    type: 'event', // 'event' | 'shop'
+    tabs: [
+      {
+        id: 'home',
+        title: 'Home',
+        content: '#Info' // markdown content
+      },
+      {
+        id: 'forum',
+        title: 'Forum',
+        content: 'xmtp:1111'
+      },
+      {
+        id: 'info',
+        title: 'Information',
+        content: '#Info' // markdown content
+      }
+    ]
+  },
+  icons: {
+    logo: 'https://i.imgur.com/3G9N6sa.png', // get logo from site
+    logoBgTransparent: 'https://i.imgur.com/wzAQxaz.png' // get logo with transparent background from site optional
+  },
+  font: 'sans', // 'sans' | 'serif' | 'dot' | 'mono'
+  colors: {
+    main: '#562266', // main color of the app, used for background and primary elements
+    accent: '#FF5545' // accent color of the app, used for background and primary elements
+  }
+}
+
 export const devConfig = devConfig3

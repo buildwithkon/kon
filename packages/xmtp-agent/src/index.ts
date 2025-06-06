@@ -1,7 +1,7 @@
 import { TransactionReferenceCodec } from '@xmtp/content-type-transaction-reference'
 import { ContentTypeWalletSendCalls, WalletSendCallsCodec } from '@xmtp/content-type-wallet-send-calls'
 import { Client, type Conversation, type DecodedMessage, type XmtpEnv } from '@xmtp/node-sdk'
-// import { initializeAgent, processMessage } from './lib/agent'
+import { initializeAgent, processMessage } from './lib/agent'
 import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
@@ -109,6 +109,11 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       await conversation.send(`You can access your app 👉 https://${appName}.kon.xyz after tx confirmation.`)
     } else if (command === '/gm') {
       await conversation.send(`👋 gm! "${shortAddr(senderAddress)}" from "${shortAddr(botAddress)}"`)
+    } else if (command.startsWith('/agent-test')) {
+      const [, url] = messageContent.trim().split(/\s+/, 2)
+      const { agent, config } = await initializeAgent(senderAddress)
+      const response = await processMessage(agent, config, url)
+      console.log('----', url, response)
     } else {
       await conversation.send(
         '----- 👨‍💻 Available commands -----\n' +
