@@ -10,13 +10,13 @@ No-code On-chain App Framework
 |------ contracts => Smart Contracts
 |------ shared => Shared ts lib
 |------ shared-react => Shared react lib
-|------ site => Shared react lib
+|------ site => LP
 |------ xmtp-agent => XMTP agent
 |--- templates
-|------ pwa => PWA template for app
+|------ pwa => PWA app template
 ```
 
-## Dev
+## Development
 
 Install
 
@@ -24,9 +24,12 @@ Install
 pnpm install
 ```
 
-Running example frontend
+Running pwa frontend
 
 ```bash
+# Setup env
+cp ./templates/pwa/.dev.vars.example ./templates/pwa/.dev.vars
+# Run
 pnpm @pwa dev
 ```
 
