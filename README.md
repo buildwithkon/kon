@@ -18,20 +18,39 @@ No-code On-chain App Framework
 
 ## Development
 
-Install
+#### Install
 
 ```bash
 pnpm install
 ```
 
-Running pwa frontend
+#### Running PWA frontend app
 
 ```bash
 # Setup env
 cp ./templates/pwa/.dev.vars.example ./templates/pwa/.dev.vars
 # Run
-pnpm @pwa dev
+pnpm @pwa run dev
 ```
+
+#### Running API
+
+```bash
+# Setup env
+cp ./packages/api/.dev.vars.example ./packages/api/.dev.vars
+# Run
+pnpm @api run dev
+```
+
+#### Running XMTP agent
+
+```bash
+# Setup env
+cp ./packages/xmtp-agent/.env.example ./packages/xmtp-agent/.env
+# Run
+pnpm @agent run dev
+```
+
 
 _TBU_
 
