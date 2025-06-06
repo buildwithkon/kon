@@ -1,0 +1,113 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body {
+  @apply min-h-dvh;
+
+  &.dark {
+    color-scheme: dark;
+  }
+}
+
+@utility content {
+  @apply bg-stone-50 text-slate-950 dark:bg-stone-900 dark:text-white;
+}
+
+@utility content-blur {
+  @apply bg-stone-50/90 text-slate-950 dark:bg-stone-900/90 dark:text-white backdrop-blur-xs;
+}
+
+@utility min-w-screen-xs {
+  min-width: var(--breakpoint-xs);
+}
+
+@utility max-w-screen-xs {
+  max-width: var(--breakpoint-xs);
+}
+@utility text-muted {
+  @apply text-stone-950/50 dark:text-white/50;
+}
+
+@utility bg-muted {
+  @apply bg-stone-950/10 dark:bg-white/10;
+}
+
+@utility border-normal {
+  @apply border-black dark:border-white;
+}
+
+@utility border-muted {
+  @apply border-stone-500/30 dark:border-white/30;
+}
+
+body {
+  @apply min-h-dvh content;
+}
+
+@utility wrapper {
+  @apply mx-auto max-w-screen-xs;
+}
+
+.wrapper-iframe {
+  @apply wrapper w-full h-full;
+}
+.wrapper-app {
+  @apply wrapper pt-20 pb-28 px-6;
+}
+.wrapper-app-full {
+  @apply wrapper pt-8 pb-28 px-6;
+}
+
+input,
+select,
+textarea,
+button[role="combobox"] {
+  @apply bg-white dark:bg-stone-950 rounded-xl px-4 py-2 text-lg outline-none min-h-12 w-full border border-gray-500/20 dark:border-gray-300/20;
+
+  &:readonly {
+    @apply cursor-pointer;
+  }
+}
+
+textarea {
+  @apply resize-none;
+}
+
+input,
+select {
+  @apply placeholder-black/40 dark:placeholder-white/40;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+label {
+  @apply font-bold pb-1.5 px-1 w-full;
+}
+
+button {
+  @apply cursor-pointer disabled:cursor-not-allowed disabled:opacity-80;
+}
+
+hr {
+  @apply border-t border-muted my-2;
+}
+
+@utility btn {
+  @apply transition-all ease-in-out delay-75 duration-300 rounded-2xl hover:rounded-lg px-4 py-2 text-lg font-bold flex items-center justify-center min-h-12 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-80 cursor-pointer shadow-lg;
+}
+.btn-main {
+  @apply btn bg-main shadow-gray-500/10 text-main-fg;
+}
+
+.btn-main-fg {
+  @apply btn bg-main-fg shadow-gray-500/10 text-main;
+}
+
+.btn-accent {
+  @apply btn bg-accent shadow-gray-500/10 text-main-fg;
+}

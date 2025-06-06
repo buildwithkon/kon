@@ -1,0 +1,18 @@
+@theme {
+  --font-sans: "Mona Sans", "Hiragino Sans", "Meiryo", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Source Serif 4", "Yu Mincho", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --font-dot: "DotGothic16", cursive;
+
+  --aspect-golden: 1.618 / 1;
+  --aspect-silver: 2.414 / 1;
+  --shadow-up: 0 -12px 18px -5px rgb(153 161 175 / 0.1), 0 -6px 10px -4px rgb(153 161 175 / 0.1);
+
+  --breakpoint-xs: 30rem;
+
+  --color-main: #ccc;
+  --color-main-fg: #ccc;
+  --color-accent: #f900bf;
+}

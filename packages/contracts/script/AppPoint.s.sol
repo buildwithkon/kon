@@ -10,7 +10,7 @@ contract Deploy is Script {
         vm.startBroadcast(privateKey);
 
         // Load the factory address from the environment variable
-        address factoryAddress = vm.envAddress("FACTORY_ADDRESS");
+        address factoryAddress = vm.envAddress("APP_POINT_FACTORY_ADDRESS");
         AppPointFactory factory = AppPointFactory(factoryAddress);
 
         // Deploy a new AppPoint using the factory

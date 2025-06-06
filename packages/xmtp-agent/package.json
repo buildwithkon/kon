@@ -1,0 +1,30 @@
+{
+  "name": "@konxyz/xmtp-agent",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx --watch --env-file=.env ./src/index.ts",
+    "start": "tsx ./src/index.ts"
+  },
+  "dependencies": {
+    "@coinbase/agentkit": "^0.8.0",
+    "@coinbase/agentkit-langchain": "^0.3.0",
+    "@langchain/core": "^0.3.57",
+    "@langchain/langgraph": "^0.3.0",
+    "@langchain/openai": "^0.5.12",
+    "@xmtp/content-type-transaction-reference": "^2.0.2",
+    "@xmtp/content-type-wallet-send-calls": "^1.0.1",
+    "@xmtp/node-sdk": "^2.1.0",
+    "uint8arrays": "^5.1.0",
+    "viem": "^2.30.5"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10",
+    "@types/node": "^20.17.52",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912"
+}

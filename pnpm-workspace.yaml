@@ -1,4 +1,7 @@
 packages:
-  - "packages/*"
-  - "components/*"
-  - "shared/*"
+  - packages/*
+  - templates/*
+ignoredBuiltDependencies:
+  - '@tailwindcss/oxide'
+onlyBuiltDependencies:
+  - esbuild

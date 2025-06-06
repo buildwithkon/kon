@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    ".react-router/types/**/*",
+    "app/**/*",
+    "app/**/.server/**/*",
+    "app/**/.client/**/*",
+    "workers/**/*",
+    "worker-configuration.d.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "strict": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": [
+      "@cloudflare/workers-types",
+      "vite/client",
+      "vite-plugin-pwa/react",
+      "vite-plugin-pwa/info"
+    ],
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "rootDirs": [".", "./.react-router/types"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"],
+      "@/shared/*": ["@konxyz/shared/*"],
+      "@/shared-react/*": ["@konxyz/shared-react/*"]
+    },
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  }
+}

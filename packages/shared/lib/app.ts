@@ -1,46 +1,58 @@
 import type { ApiType } from '@konxyz/api/src'
 import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
-import { APP_NAME, COLOR_HEX_MAIN_DEFAULT } from '@konxyz/shared/lib/const'
+import {
+  APP_FALLBACK_DESCRIPTION,
+  APP_FALLBACK_NAME,
+  APP_NAME,
+  COLOR_HEX_MAIN_DEFAULT,
+  ENS_APPCONFIG_USER
+} from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
 
-export const client = (origin: string, env: Env) => {
+export const client = (origin: string, env: Env, noCache = false) => {
   if (process.env.NODE_ENV === 'development') {
     return hc<ApiType>('http://localhost:8787')
   }
   return hc<ApiType>(origin, {
-    fetch: env.API_WORKER.fetch.bind(env.API_WORKER)
+    fetch: env.API_WORKER.fetch.bind(env.API_WORKER),
+    ...(noCache && { headers: { 'x-no-cache': 'true' } })
   })
 }
-
-export const loadAppConfig = async (_url: string, env: Env) => {
+const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')
   const subdomain = urlArr.length > 1 ? urlArr[0] : null
 
-  if (process.env.NODE_ENV === 'development') {
+  return {
+    subdomain: process.env.NODE_ENV === 'development' ? devConfig.id : subdomain,
+    origin: url.origin
+  }
+}
+
+export const loadAppConfig = async (_url: string, env: Env) => {
+  const { subdomain, origin } = prepare(_url)
+
+  if (import.meta.env.DEV) {
     return {
       subdomain: devConfig.id,
       appConfig: devConfig
     }
   }
-  // const subdomain = 'alpha'
 
   let appConfig = null
-  if (subdomain) {
-    try {
-      const res = await client(url.origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
-        param: {
-          subdomain,
-          chain: 'sepolia'
-        }
-      })
-      const json = await res.json()
-      appConfig = JSON.parse(json)
-    } catch (error) {
-      console.error('Error fetching appConfig:', error)
-    }
+  try {
+    const res = await client(origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
+      param: {
+        subdomain,
+        chain: 'sepolia'
+      }
+    })
+    const json = await res.json()
+    appConfig = JSON.parse(json)
+  } catch (error) {
+    console.error('Error fetching appConfig:', error)
   }
 
   return {
@@ -58,7 +70,7 @@ export const generateManifest = (appConfig: AppConfig) => ({
   theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
-      src: appConfig?.icons?.favicon ?? FaviconPng,
+      src: appConfig?.icons?.logo ?? FaviconPng,
       sizes: '512x512',
       type: 'image/png'
     }
@@ -66,33 +78,46 @@ export const generateManifest = (appConfig: AppConfig) => ({
 })
 
 export const generateRootMeta = (appConfig: AppConfig) => [
-  { title: appConfig?.name ?? 'A build with KON app' },
-  { description: appConfig?.description ?? 'Build with KON' },
-  { property: 'og:title', content: appConfig?.name ?? 'A build with KON app' },
-  { property: 'og:description', content: appConfig?.description ?? 'Build with KON' },
-  { property: 'og:site_name', content: appConfig?.name ?? 'A build with KON app' },
+  { title: appConfig?.name ?? APP_FALLBACK_NAME },
+  { description: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
+  { property: 'og:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
+  { property: 'og:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
+  { property: 'og:site_name', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'og:type', content: 'website' },
   { property: 'og:image', content: appConfig?.icons?.logo ?? LogoPng },
   { property: 'twitter:card', content: 'summary' },
-  { property: 'twitter:title', content: appConfig?.name ?? 'A build with KON app' },
-  { property: 'twitter:description', content: appConfig?.description ?? 'Build with KON' },
+  { property: 'twitter:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
+  { property: 'twitter:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
   { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
 ]
 
-export const checkId = async (id: string, env: Env) => {
+export const checkId = async (id: string, url: string, env: Env) => {
+  const { origin } = prepare(url)
   try {
-    const res = await client('', env).ens[':chain'].getSubnameAddress[':id'].$get({
+    const res = await client(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
-        id: `${id}.alpha.kon.eth`,
+        id: `${id}.${ENS_APPCONFIG_USER}`,
         chain: 'sepolia'
       }
     })
-    const json = await res.json()
-    console.log('-------:', JSON.parse(json))
-    return {
-      id: JSON.parse(json).id
-    }
+    return await res.json()
   } catch (error) {
     console.error('Error fetching subnameAddress:', error)
+  }
+}
+
+export const checkName = async (address: `0x${string}`, url: string, env: Env) => {
+  const { origin } = prepare(url)
+  try {
+    const res = await client(origin, env).ens[':chain'].getSubname[':address'].$get({
+      param: {
+        address,
+        chain: 'sepolia'
+      }
+    })
+    console.log('----checkname', res)
+    return await res.json()
+  } catch (error) {
+    console.error('Error fetching subname:', error)
   }
 }

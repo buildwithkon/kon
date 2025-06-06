@@ -1,0 +1,77 @@
+.md {
+  @apply leading-7 overflow-hidden py-6;
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-xl border-b border-muted pb-1.5 px-0.5;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+
+  h4, h5, h6 {
+    @apply text-base;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply mb-4 font-bold;
+  }
+  :is(h1, h2, h3, h4, h5, h6):not(:first-child) {
+    @apply mt-8;
+  }
+
+  hr {
+    @apply border-t-4 border-double border-muted my-12 -mx-6 min-w-screen;
+  }
+
+  p {
+    @apply mb-4;
+  }
+  ul, ol {
+    @apply pl-4;
+  }
+  ol {
+    @apply pl-4 list-decimal;
+  }
+  ul {
+    @apply pl-4 list-disc;
+  }
+  a {
+    @apply text-cyan-800 dark:text-cyan-500 underline;
+  }
+  pre {
+    @apply bg-stone-400/20 rounded px-4 py-2;
+  }
+  code {
+    @apply bg-stone-400/20 rounded px-2 py-1;
+  }
+  blockquote {
+    @apply border-l-3 border-muted pl-2.5;
+  }
+
+  img {
+    @apply my-4 mx-auto;
+  }
+  .table-wrapper {
+    @apply overflow-x-scroll max-w-full -ml-6 pl-6 pr-12 w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+  }
+  table {
+    @apply text-sm border-collapse text-left m-0 table-auto w-full min-w-[calc(theme(screens.xs)-theme(spacing.8))];
+    thead {
+      @apply bg-muted;
+    }
+
+    th, td {
+      @apply border border-muted min-w-24;
+    }
+    th {
+      @apply px-3 py-2.5 whitespace-nowrap;
+    }
+    td {
+      @apply px-3 py-1.5 align-top w-auto break-words max-w-full whitespace-normal;
+    }
+  }
+}

@@ -1,36 +1,38 @@
-import '@konxyz/pwa/worker-configuration.d.ts'
+import '@konxyz/event/worker-configuration.d.ts'
 
 export type AppConfig = {
   id: string
   name: string
   description?: string
   url: string
-  icons: {
-    favicon: string
-    logo?: string
-  }
   version: string
-  font?: 'sans' | 'serif' | 'dot'
+  template: {
+    type: 'shop' | 'event' | 'community'
+    tabs?: []
+  }
+  font?: 'sans' | 'serif' | 'dot' | 'mono'
+  icons: {
+    logo: string
+    logoBgTransparent?: string
+  }
   colors?: {
     main: string
-    sub?: string
-  }
-  plugins?: {
-    xmtp?: string
-    points?: string
+    accent?: string
+    bg?: string
   }
 }
 
 export type LoaderData = {
-  subdomain: string | null
-  appConfig: AppConfig | null
+  subdomain: string | undefined
+  appConfig: AppConfig | undefined
 }
 
 export type RootLoader = LoaderData & {
   ENV: Env
+  cookie?: string
 }
 
 export type UserData = {
-  address: `0x${string}` | null
-  subname: string | null
+  address: `0x${string}` | undefined
+  subname: string | undefined
 }

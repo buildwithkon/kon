@@ -5,7 +5,8 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "lib": ["ESNext"],
+    "allowJs": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": [],
     "baseUrl": ".",
     "paths": {

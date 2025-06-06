@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AppPoint is ERC20, Ownable {
     mapping(address => bool) public admins;
     mapping(address => uint256) public totalReceivedPoints;
 
-    constructor(string memory name, string memory symbol, address initialOwner) ERC20(name, symbol) Ownable(initialOwner) {
+    constructor(string memory name, string memory symbol, address initialOwner)
+        ERC20(name, symbol)
+        Ownable(initialOwner)
+    {
         _transferOwnership(initialOwner); // Set the initial owner
         admins[initialOwner] = true; // Set the initial owner as an admin
     }
