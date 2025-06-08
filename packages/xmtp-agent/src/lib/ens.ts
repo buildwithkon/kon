@@ -1,9 +1,11 @@
 import type { WalletSendCallsParams } from '@xmtp/content-type-wallet-send-calls'
-import { http, createPublicClient, encodeFunctionData, toHex } from 'viem'
-import { sepolia } from 'viem/chains'
+import { http, createPublicClient, encodeFunctionData, toHex, erc20Abi } from 'viem'
+import { sepolia, baseSepolia } from 'viem/chains'
 import { namehash, normalize } from 'viem/ens'
+import { getCoinNameAndSymbol } from './coin'
 
 const ENS_APP_KEY = 'app.kon'
+const ENS_APP_COIN_KEY = 'coin.kon'
 const APP_DOMAIN = 'kon.xyz'
 const ENS_PARENT = 'kon.eth'
 
@@ -12,6 +14,11 @@ const SEPOLIA_ENS_NAMEWRAPPER = '0x0635513f179d50a207757e05759cbd106d7dfce8'
 
 export const publicClient = createPublicClient({
   chain: sepolia,
+  transport: http()
+})
+
+export const publicClientBase = createPublicClient({
+  chain: baseSepolia,
   transport: http()
 })
 
@@ -134,5 +141,28 @@ export const sendSetTextCalls = (
         }
       }
     ]
+  }
+}
+
+export const getCoinInfo = async (appName: string) => {
+  const target = `${appName}.${ENS_PARENT}`
+  try {
+    const coinAddress = await publicClient.getEnsText({
+      name: normalize(target),
+      key: ENS_APP_COIN_KEY
+    })
+    if (!coinAddress) {
+      return null
+    }
+
+    const coinInfo = await getCoinNameAndSymbol(coinAddress as `0x${string}`)
+
+    return {
+      address: coinAddress,
+      ...coinInfo,
+    }
+  } catch (error) {
+    console.error('Error getting coin info:', error)
+    return null
   }
 }

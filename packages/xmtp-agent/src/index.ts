@@ -2,7 +2,7 @@ import { TransactionReferenceCodec } from '@xmtp/content-type-transaction-refere
 import { ContentTypeWalletSendCalls, WalletSendCallsCodec } from '@xmtp/content-type-wallet-send-calls'
 import { Client, type Conversation, type DecodedMessage, type XmtpEnv } from '@xmtp/node-sdk'
 import { initializeAgent, processMessage } from './lib/agent'
-import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls } from './lib/ens'
+import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls, getCoinInfo } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
 
@@ -69,23 +69,22 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
     const messageContent = message.content as string
     const command = messageContent.toLowerCase().trim()
 
-    if (command.startsWith('/info')) {
+    if (command.startsWith('/app-info')) {
       const [, appName] = messageContent.trim().split(/\s+/, 2)
       const appInfo = await getAppInfo(appName)
-      console.log('App Info:', appInfo)
       if (appInfo && typeof appInfo === 'object') {
         await conversation.send(
-          `⏳ Loading '${appInfo.target}' ...\n\n----- ℹ️ General ---------------------\nID : ${appInfo.id}\nName : ${appInfo.name}\nDescription : ${appInfo.description}\n\n----- 🔧 Config ---------------------\nColors : ${appInfo.colors}\nTemplate : ${appInfo.template}`
+          `⏳ Loading '${appInfo.target}' ...\n\n----- ℹ️ General -----\nID : ${appInfo.id}\nName : ${appInfo.name}\nDescription : ${appInfo.description}\n\n----- 🔧 Config -----\nColors : ${appInfo.colors}\nTemplate : ${appInfo.template}`
         )
       } else {
         await conversation.send('🤷‍♂️ Not found or no information available.')
       }
-    } else if (command.startsWith('/setup')) {
+    } else if (command.startsWith('/app-setup')) {
       const [, appName, referenceUrl] = messageContent.trim().split(/\s+/)
       // Check args
       if (!appName || !referenceUrl || !isValidName(appName) || !isValidURL(referenceUrl)) {
         await conversation.send(
-          '⚠️ Usage: /setup <appName> <referenceUrl>\ne.g. /setup demoapp https://ethtokyo.org'
+          '⚠️ Usage: /app-setup <appName> <referenceUrl>\ne.g. /setup demoapp https://ethtokyo.org'
         )
         return
       }
@@ -107,23 +106,48 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
         ContentTypeWalletSendCalls
       )
       await conversation.send(`You can access your app 👉 https://${appName}.kon.xyz after tx confirmation.`)
+    } else if (command.startsWith('/coin-info')) {
+      const [, appName] = messageContent.trim().split(/\s+/, 2)
+      if (!appName) {
+        await conversation.send('⚠️ Usage: /coin-info <appName>\ne.g. /coin-info demoapp')
+        return
+      }
+
+      const coinInfo = await getCoinInfo(appName)
+      if (!coinInfo) {
+        await conversation.send('⚠️ Coin not found for this app.')
+        return
+      }
+
+      await conversation.send(
+        `----- 🪙 ${appName}'s coin -----\n` +
+        `Address: ${coinInfo.address}\n` +
+        `Name: ${coinInfo.name}\n` +
+        `Symbol: ${coinInfo.symbol}\n` +
+        `Total supply: ${coinInfo.totalSupply}`
+      )
     } else if (command === '/gm') {
       await conversation.send(`👋 gm! "${shortAddr(senderAddress)}" from "${shortAddr(botAddress)}"`)
     } else if (command.startsWith('/agent-test')) {
       const [, url] = messageContent.trim().split(/\s+/, 2)
       const { agent, config } = await initializeAgent(senderAddress)
       const response = await processMessage(agent, config, url)
-      console.log('----', url, response)
     } else {
       await conversation.send(
         '----- 👨‍💻 Available commands -----\n' +
-          '▶️ /setup <appName> <referenceUrl>\n' +
-          '・Setup app (e.g. /setup demoapp https://ethtokyo.org)\n' +
+        '▶️ /gm\n' +
+        '▶️ /app-info <appName>\n' +
+        '・Get app information (e.g. /appinfo demoapp)\n' +
+        '▶️ /coin-info <appName>\n' +
+        '・Get app\'s coin information (e.g. /coin demoapp)\n' +
+        '▶️ /app-setup <appName> <referenceUrl>\n' +
+          '・Setup app (e.g. /app-setup demoapp https://ethtokyo.org)\n' +
           '  ・<appName> - ENS subnames for app (e.g. <demoapp>.kon.eth) \n' +
           '  ・<referenceUrl> - official site or similar linkfor app info\n' +
-          '▶️ /info <appName>\n' +
-          '・Get app information (e.g. /appinfo demoapp)\n' +
-          '▶️ /gm'
+          '▶️ /coin-setup <name> <symbol>\n' +
+          '・Setup app\'s coin (e.g. /coin-setup MYCOIN MYCOIN)\n' +
+          '  ・<name> - Name of coin \n' +
+          '  ・<symbol> - SYMBOL of coin'
       )
     }
   } catch (error) {
