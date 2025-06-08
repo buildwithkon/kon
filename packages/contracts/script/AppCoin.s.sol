@@ -2,7 +2,8 @@
 pragma solidity ^0.8.27;
 
 import "forge-std/Script.sol";
-import "../src/AppPointFactory.sol";
+import "../src/AppCoin.sol";
+import "../src/AppCoinFactory.sol";
 
 contract Deploy is Script {
     function run() external {
@@ -10,11 +11,10 @@ contract Deploy is Script {
         vm.startBroadcast(privateKey);
 
         // Load the factory address from the environment variable
-        address factoryAddress = vm.envAddress("APP_POINT_FACTORY_ADDRESS");
-        AppPointFactory factory = AppPointFactory(factoryAddress);
+        address factoryAddress = vm.envAddress("APP_COIN_FACTORY_ADDRESS");
+        AppCoinFactory factory = AppCoinFactory(factoryAddress);
 
-        // Deploy a new AppPoint using the factory
-        factory.createAppPoint("KonPoint", "KON");
+        new AppCoin("Test AppCoin", "TEST", msg.sender);
 
         vm.stopBroadcast();
     }
