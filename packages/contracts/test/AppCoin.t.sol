@@ -40,34 +40,34 @@ contract AppCoinTest is Test {
         vm.stopPrank();
     }
 
-    function test_distributeCoins() public {
+    function test_distributeCoin() public {
         vm.startPrank(owner);
-        appCoin.distributeCoins(user1, 100);
+        appCoin.distributeCoin(user1, 100);
         assertEq(appCoin.balanceOf(user1), 100);
-        assertEq(appCoin.totalReceivedCoins(user1), 100);
+        assertEq(appCoin.totalReceived(user1), 100);
         vm.stopPrank();
     }
 
     function test_Tip() public {
         vm.startPrank(owner);
-        appCoin.distributeCoins(user1, 100);
+        appCoin.distributeCoin(user1, 100);
         vm.stopPrank();
 
         vm.startPrank(user1);
         appCoin.tip(user2, 50);
         assertEq(appCoin.balanceOf(user1), 50);
         assertEq(appCoin.balanceOf(user2), 50);
-        assertEq(appCoin.totalReceivedCoins(user2), 50);
+        assertEq(appCoin.totalReceived(user2), 50);
         vm.stopPrank();
     }
 
-    function test_RedeemPoints() public {
+    function test_RedeemCoin() public {
         vm.startPrank(owner);
-        appCoin.distributeCoins(user1, 100);
+        appCoin.distributeCoin(user1, 100);
         vm.stopPrank();
 
         vm.startPrank(user1);
-        appCoin.redeemCoinsForReward(50);
+        appCoin.redeemCoinForReward(50);
         assertEq(appCoin.balanceOf(user1), 50);
         vm.stopPrank();
     }

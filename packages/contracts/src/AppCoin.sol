@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract AppCoin is ERC20, Ownable {
     mapping(address => bool) public admins;
-    mapping(address => uint256) public totalReceivedCoins;
+    mapping(address => uint256) public totalReceived;
 
     constructor(string memory name, string memory symbol, address initialOwner)
         ERC20(name, symbol)
@@ -26,29 +26,29 @@ contract AppCoin is ERC20, Ownable {
         admins[account] = false;
     }
 
-    // Distribute coins (only callable by admins)
-    function distributeCoins(address to, uint256 amount) external {
-        require(admins[msg.sender], "Only admins can distribute coins");
+    // Distribute coin (only callable by admins)
+    function distributeCoin(address to, uint256 amount) external {
+        require(admins[msg.sender], "Only admins can distribute coin");
         _mint(to, amount);
-        totalReceivedCoins[to] += amount;
+        totalReceived[to] += amount;
     }
 
-    // Tip coins from one user to another
+    // Tip coin from one user to another
     function tip(address to, uint256 amount) external {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance for tip");
         _transfer(msg.sender, to, amount);
-        totalReceivedCoins[to] += amount;
+        totalReceived[to] += amount;
     }
 
-    // Redeem coins for rewards
-    function redeemCoinsForReward(uint256 amount) external {
+    // Redeem coin for rewards
+    function redeemCoinForReward(uint256 amount) external {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance to redeem");
         _burn(msg.sender, amount);
         // Custom reward redemption logic can be added here
     }
 
-    // Get the total coins received by a specific user
-    function getTotalReceivedCoins(address user) external view returns (uint256) {
-        return totalReceivedCoins[user];
+    // Get the total coin received by a specific user
+    function getTotalReceived(address user) external view returns (uint256) {
+        return totalReceived[user];
     }
 }

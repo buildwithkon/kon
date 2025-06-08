@@ -5,7 +5,7 @@ import { initializeAgent, processMessage } from './lib/agent'
 import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls, getCoinInfo } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
-import { createCoinCalls, getDeployedCoinAddress } from './lib/coin'
+import { sendCoinCalls, getDeployedCoinAddress, createCoinCalls } from './lib/coin'
 
 /* Create the signer using viem and parse the encryption key for the local db */
 const walletKey = process.env.WALLET_KEY!
@@ -160,6 +160,15 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
         ContentTypeWalletSendCalls
       )
       await conversation.send('💫 Careated')
+    } else if (command.startsWith('/coin-send')) {
+      const [, appName, toAddress, amount] = messageContent.trim().split(/\s+/)
+      const coinInfo = await getCoinInfo(appName)
+      if (coinInfo?.address) {
+        await conversation.send(
+          sendCoinCalls(senderAddress, coinInfo.address, [{ address: toAddress, amount: BigInt(amount) }]),
+          ContentTypeWalletSendCalls
+        )
+      }
     } else if (command === '/gm') {
       await conversation.send(`👋 gm! "${shortAddr(senderAddress)}" from "${shortAddr(botAddress)}"`)
     } else if (command.startsWith('/agent-test')) {

@@ -34,6 +34,19 @@ const appCoinFactoryAbi = [
   }
 ] as const
 
+const appCoinAbi = [
+  {
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' }
+    ],
+    name: 'distributeCoin',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+] as const
+
 export const createCoinCalls = (
   fromAddress: string,
   appName: string,
@@ -126,5 +139,34 @@ export const getDeployedCoinAddress = async (
   } catch (error) {
     console.error('Error getting deployed coin address:', error)
     return null
+  }
+}
+
+export const sendCoinCalls = (
+  fromAddress: string,
+  coinAddress: string,
+  recipients: { address: string; amount: bigint }
+): WalletSendCallsParams => {
+  const distributeData = encodeFunctionData({
+    abi: appCoinAbi,
+    functionName: 'distributeCoin',
+    args: [recipients.address as `0x${string}`, recipients.amount]
+  })
+
+  return {
+    version: '1.0',
+    from: fromAddress as `0x${string}`,
+    chainId: toHex(baseSepolia.id),
+    calls: [
+      {
+        to: coinAddress as `0x${string}`,
+        data: distributeData as `0x${string}`,
+        metadata: {
+          description: `💡 Distributing coins to ${recipients.length} recipients`,
+          transactionType: 'call',
+          networkId: baseSepolia.id
+        }
+      }
+    ]
   }
 }
