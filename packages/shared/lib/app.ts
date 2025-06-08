@@ -6,7 +6,7 @@ import {
   APP_FALLBACK_NAME,
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
-  ENS_APPCONFIG_USER
+  getEnsAppConfigUser
 } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
@@ -96,7 +96,7 @@ export const checkId = async (id: string, url: string, env: Env) => {
   try {
     const res = await client(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
-        id: `${id}.${ENS_APPCONFIG_USER}`,
+        id: `${id}.${getEnsAppConfigUser()}`,
         chain: 'sepolia'
       }
     })
