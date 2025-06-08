@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.30;
 
 import "forge-std/Script.sol";
 import "../src/AppCoin.sol";
 import "../src/AppCoinFactory.sol";
 
 contract Deploy is Script {
-    function run() external {
+    function run(string memory name, string memory symbol) external {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
@@ -14,7 +14,9 @@ contract Deploy is Script {
         address factoryAddress = vm.envAddress("APP_COIN_FACTORY_ADDRESS");
         AppCoinFactory factory = AppCoinFactory(factoryAddress);
 
-        new AppCoin("Test AppCoin", "TEST", msg.sender);
+        // Create new AppCoin with provided name and symbol
+        factory.createAppCoin(name, symbol);
+        console.log("AppCoin created with name:", name, "and symbol:", symbol);
 
         vm.stopBroadcast();
     }

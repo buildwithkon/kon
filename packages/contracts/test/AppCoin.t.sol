@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.30;
 
 import "forge-std/Test.sol";
 import "../src/AppCoin.sol";
@@ -19,7 +19,7 @@ contract AppCoinTest is Test {
         vm.stopPrank();
     }
 
-    function test_InitialSetup() public {
+    function test_InitialSetup() public view {
         assertEq(appCoin.name(), "Test AppCoin");
         assertEq(appCoin.symbol(), "TEST");
         assertTrue(appCoin.admins(owner));
