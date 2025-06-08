@@ -2,7 +2,7 @@
 
 No-code On-chain App Framework
 
-## Project structure
+## 🗂️ Folder structure
 
 ```
 |--- packages
@@ -16,7 +16,7 @@ No-code On-chain App Framework
 |------ pwa => PWA app template
 ```
 
-## Development
+## 🚀 Development
 
 #### Install
 
@@ -54,6 +54,3 @@ pnpm @agent run dev
 
 _TBU_
 
-## Contribute
-
-_TBU_
