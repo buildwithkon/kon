@@ -5,6 +5,7 @@ import { initializeAgent, processMessage } from './lib/agent'
 import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls, getCoinInfo } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
+import { getCoinStats, createCoinCalls, setCoinAddressCalls, getDeployedCoinAddress } from './lib/coin'
 
 /* Create the signer using viem and parse the encryption key for the local db */
 const walletKey = process.env.WALLET_KEY!
@@ -102,7 +103,7 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       // const response = await processMessage(agent, config, referenceUrl)
       // Write app config
       await conversation.send(
-        sendSetTextCalls(senderAddress, appName, JSON.stringify({})),
+        sendSetTextCalls(senderAddress, appName, 'app.kon', JSON.stringify({})),
         ContentTypeWalletSendCalls
       )
       await conversation.send(`You can access your app 👉 https://${appName}.kon.xyz after tx confirmation.`)
@@ -126,6 +127,39 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
         `Symbol: ${coinInfo.symbol}\n` +
         `Total supply: ${coinInfo.totalSupply}`
       )
+    } else if (command.startsWith('/coin-setup')) {
+      const [, appName, name, symbol] = messageContent.trim().split(/\s+/)
+      // Check args
+      if (!appName || !name || !symbol || !isValidName(appName)) {
+        await conversation.send(
+          '⚠️ Usage: /coin-setup <appName> <coinName> <coinSymbol>\ne.g. /coin-setup demoapp MYCOIN MYCOIN'
+        )
+        return
+      }
+
+      // Create app's coin
+      await conversation.send(
+        createCoinCalls(senderAddress, appName, name, symbol),
+        ContentTypeWalletSendCalls
+      )
+      await conversation.send('🚀 Creating your app\'s coin... Please wait for tx confirmation.')
+
+      // Wait for a few blocks to ensure the tx is confirmed
+      await new Promise(resolve => setTimeout(resolve, 30000)) // 30 seconds
+
+      // Get the deployed coin address
+      const coinAddress = await getDeployedCoinAddress(senderAddress, name, symbol)
+      if (!coinAddress) {
+        await conversation.send('⚠️ Failed to get coin address. Please try again.')
+        return
+      }
+
+      // Set ENS text record
+      await conversation.send(
+        sendSetTextCalls(senderAddress, appName, 'koin.kon', coinAddress),
+        ContentTypeWalletSendCalls
+      )
+      await conversation.send('💫 Careated')
     } else if (command === '/gm') {
       await conversation.send(`👋 gm! "${shortAddr(senderAddress)}" from "${shortAddr(botAddress)}"`)
     } else if (command.startsWith('/agent-test')) {
@@ -144,10 +178,11 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
           '・Setup app (e.g. /app-setup demoapp https://ethtokyo.org)\n' +
           '  ・<appName> - ENS subnames for app (e.g. <demoapp>.kon.eth) \n' +
           '  ・<referenceUrl> - official site or similar linkfor app info\n' +
-          '▶️ /coin-setup <name> <symbol>\n' +
-          '・Setup app\'s coin (e.g. /coin-setup MYCOIN MYCOIN)\n' +
-          '  ・<name> - Name of coin \n' +
-          '  ・<symbol> - SYMBOL of coin'
+        '▶️ /coin-setup <appName> <coinName> <coinSymbol>\n' +
+          '・Setup app\'s coin (e.g. /coin-setup demoapp MYCOIN MYCOIN)\n' +
+          '  ・<appName> - App name \n' +
+          '  ・<coinName> - Name of coin \n' +
+          '  ・<coinSymbol> - SYMBOL of coin'
       )
     }
   } catch (error) {

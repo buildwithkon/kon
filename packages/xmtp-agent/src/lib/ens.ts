@@ -1,6 +1,6 @@
 import type { WalletSendCallsParams } from '@xmtp/content-type-wallet-send-calls'
 import { http, createPublicClient, encodeFunctionData, toHex, erc20Abi } from 'viem'
-import { sepolia, baseSepolia } from 'viem/chains'
+import { sepolia } from 'viem/chains'
 import { namehash, normalize } from 'viem/ens'
 import { getCoinNameAndSymbol } from './coin'
 
@@ -14,11 +14,6 @@ const SEPOLIA_ENS_NAMEWRAPPER = '0x0635513f179d50a207757e05759cbd106d7dfce8'
 
 export const publicClient = createPublicClient({
   chain: sepolia,
-  transport: http()
-})
-
-export const publicClientBase = createPublicClient({
-  chain: baseSepolia,
   transport: http()
 })
 
@@ -103,11 +98,11 @@ export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string):
 export const sendSetTextCalls = (
   fromAddress: string,
   appName: string,
+  key: string,
   value: string
 ): WalletSendCallsParams => {
   const target = `${appName}.kon.eth`
   const node = namehash(normalize(target))
-  const key = ENS_APP_KEY
   const abi = [
     {
       type: 'function',
@@ -135,7 +130,7 @@ export const sendSetTextCalls = (
         to: SEPOLIA_ENS_PUBLIC_RESOLVER,
         data: transactionData as `0x${string}`,
         metadata: {
-          description: `💡 You are updating application: "${appName}.${APP_DOMAIN}". (🔄 setText "${ENS_APP_KEY}" on ENS: "${target}")`,
+          description: `💡 You are updating application: "${appName}.${APP_DOMAIN}". (🔄 setText "${key}" on ENS: "${target}")`,
           transactionType: 'call',
           networkId: sepolia.id
         }
