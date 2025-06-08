@@ -5,7 +5,7 @@ import { initializeAgent, processMessage } from './lib/agent'
 import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls, getCoinInfo } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
-import { getCoinStats, createCoinCalls, setCoinAddressCalls, getDeployedCoinAddress } from './lib/coin'
+import { createCoinCalls, getDeployedCoinAddress } from './lib/coin'
 
 /* Create the signer using viem and parse the encryption key for the local db */
 const walletKey = process.env.WALLET_KEY!

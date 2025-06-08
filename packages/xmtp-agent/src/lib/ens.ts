@@ -14,7 +14,7 @@ const SEPOLIA_ENS_NAMEWRAPPER = '0x0635513f179d50a207757e05759cbd106d7dfce8'
 
 export const publicClient = createPublicClient({
   chain: sepolia,
-  transport: http()
+  transport: http(`https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY!}`)
 })
 
 export const getAppInfo = async (appName: string) => {

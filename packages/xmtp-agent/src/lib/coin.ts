@@ -4,7 +4,8 @@ import type { WalletSendCallsParams } from '@xmtp/content-type-wallet-send-calls
 
 const client = createPublicClient({
   chain: baseSepolia,
-  transport: http()
+  transport: http(
+    `https://api.developer.coinbase.com/rpc/v1/base-sepolia/${process.env.CDP_CLIENT_API_KEY!}`),
 })
 
 const APP_COIN_FACTORY_ADDRESS = '0x...' // TODO: Set the actual factory address
