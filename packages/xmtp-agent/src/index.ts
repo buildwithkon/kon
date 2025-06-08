@@ -165,7 +165,7 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       const coinInfo = await getCoinInfo(appName)
       if (coinInfo?.address) {
         await conversation.send(
-          sendCoinCalls(senderAddress, coinInfo.address, [{ address: toAddress, amount: BigInt(amount) }]),
+          sendCoinCalls(senderAddress, coinInfo.address, { address: toAddress, amount: BigInt(amount) }),
           ContentTypeWalletSendCalls
         )
       }
