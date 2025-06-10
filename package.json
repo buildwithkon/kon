@@ -12,8 +12,8 @@
     "@api:dev": "$npm_execpath --filter \"@konxyz/api\" run dev",
     "@dashboard": "$npm_execpath --filter \"@konxyz/dashboard\"",
     "@dashboard:dev": "$npm_execpath --filter \"@konxyz/dashboard\" run dev",
-    "@pwa": "$npm_execpath --filter \"@konxyz/template-pwa\"",
-    "@pwa:dev": "$npm_execpath --filter \"@konxyz/template-pwa\" run dev",
+    "@pwa": "$npm_execpath --filter \"@konxyz/app-pwa\"",
+    "@pwa:dev": "$npm_execpath --filter \"@konxyz/app-pwa\" run dev",
     "@site": "$npm_execpath --filter \"@konxyz/site\"",
     "@site:dev": "$npm_execpath --filter \"@konxyz/site\" run dev",
     "@sh": "$npm_execpath --filter \"@konxyz/shared\"",
@@ -25,7 +25,7 @@
     "@biomejs/biome": "^1.9.4",
     "concurrently": "^9.1.2",
     "wait-on": "^8.0.3",
-    "wrangler": "^4.17.0"
+    "wrangler": "^4.19.1"
   },
   "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
 }
