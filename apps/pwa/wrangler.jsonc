@@ -10,7 +10,7 @@
   "env": {
     "production": {
       "vars": {
-        "ENVIRONMENT": "production"
+        "ENV": "production"
       },
       "services": [
         {
@@ -18,6 +18,17 @@
           "service": "kon-api"
         }
       ]
+    },
+    "staging": {
+      "vars": {
+        "ENV": "staging"
+      },
+      "services": [
+        {
+          "binding": "API_WORKER",
+          "service": "kon-api"
+        }
+      ],
     }
   },
   "placement": {

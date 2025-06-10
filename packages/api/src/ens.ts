@@ -1,4 +1,3 @@
-// import { FaviconPng } from '@konxyz/shared/assets'
 import {
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
