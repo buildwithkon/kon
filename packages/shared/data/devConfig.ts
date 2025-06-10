@@ -58,7 +58,7 @@ const devConfig2 = {
   }
 }
 
-const devConfig3 = {
+export const devConfig3 = {
   id: 'ethtokyo',
   version: '0.1',
   url: 'ethtokyo.kon.xyz',

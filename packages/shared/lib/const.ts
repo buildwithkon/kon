@@ -10,8 +10,9 @@ export const APP_FALLBACK_NAME = 'A build with KON app'
 export const APP_FALLBACK_DESCRIPTION = 'Build with KON'
 
 // export const ENS_APPCONFIG_CHAINID = sepolia.id
-export const ENS_APPCONFIG_KEY = 'app.kon'
-export const ENS_APPCONFIG_COIN_KEY = 'coin.kon'
+export const ENS_APPCONFIG_KEY = 'kon.app'
+export const ENS_APPCONFIG_COIN_KEY = 'kon.coin'
+export const ENS_APPCONFIG_REWORDS_KEY = 'kon.rewords'
 // export const ENS_APPCONFIG_BASE = 'kon.eth'
 // export const ENS_APPCONFIG_USER = 'user.kon.eth'
 export const getEnsAppconfigChainId = (isProd = false) => (isProd ? sepolia.id : mainnet.id)

@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "kon-template-pwa",
+  "name": "kon-app-pwa",
   "compatibility_date": "2025-02-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "./workers/app.ts",

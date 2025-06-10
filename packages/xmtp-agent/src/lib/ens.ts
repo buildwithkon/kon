@@ -4,8 +4,8 @@ import { sepolia } from 'viem/chains'
 import { namehash, normalize } from 'viem/ens'
 import { getCoinNameAndSymbol } from './coin'
 
-const ENS_APP_KEY = 'app.kon'
-const ENS_APP_COIN_KEY = 'coin.kon'
+const ENS_APP_KEY = 'kon.app'
+const ENS_APP_COIN_KEY = 'kon.coin'
 const APP_DOMAIN = 'kon.xyz'
 const ENS_PARENT = 'kon.eth'
 
