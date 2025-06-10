@@ -1,5 +1,4 @@
-import { FaviconPng } from '@konxyz/shared/assets'
-import { COLOR_HEX_DARK, COLOR_HEX_LIGHT } from '@konxyz/shared/lib/const'
+import { COLOR_HEX_DARK, COLOR_HEX_LIGHT, DEFAULT_LOGO_URL } from '@konxyz/shared/lib/const'
 import type { RootLoader } from '@konxyz/shared/types'
 import { WalletIcon } from '@phosphor-icons/react'
 import { QRCode } from 'react-qrcode-logo'
@@ -33,7 +32,7 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             ecLevel="Q"
             fgColor={isDark ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDark ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
-            logoImage={ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? FaviconPng}
+            logoImage={ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? DEFAULT_LOGO_URL}
             qrStyle="dots"
             logoPadding={1}
             logoPaddingStyle="square"

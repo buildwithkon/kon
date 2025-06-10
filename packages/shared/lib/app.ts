@@ -1,11 +1,12 @@
 import type { ApiType } from '@konxyz/api/src'
-import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
 import {
   APP_FALLBACK_DESCRIPTION,
   APP_FALLBACK_NAME,
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
+  DEFAULT_FAVICON_URL,
+  DEFAULT_LOGO_URL,
   getEnsAppConfigUser
 } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
@@ -70,7 +71,7 @@ export const generateManifest = (appConfig: AppConfig) => ({
   theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
-      src: appConfig?.icons?.logo ?? FaviconPng,
+      src: appConfig?.icons?.logo ?? DEFAULT_FAVICON_URL,
       sizes: '512x512',
       type: 'image/png'
     }
@@ -84,11 +85,11 @@ export const generateRootMeta = (appConfig: AppConfig) => [
   { property: 'og:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
   { property: 'og:site_name', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'og:type', content: 'website' },
-  { property: 'og:image', content: appConfig?.icons?.logo ?? LogoPng },
+  { property: 'og:image', content: appConfig?.icons?.logo ?? DEFAULT_LOGO_URL },
   { property: 'twitter:card', content: 'summary' },
   { property: 'twitter:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'twitter:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
-  { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
+  { property: 'twitter:image', content: appConfig?.icons?.logo ?? DEFAULT_LOGO_URL }
 ]
 
 export const checkId = async (id: string, url: string, env: Env) => {

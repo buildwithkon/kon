@@ -4,29 +4,34 @@
   "name": "kon-api",
   "compatibility_date": "2025-02-24",
   "main": "src/index.ts",
+  "secrets_store_secrets": [
+    {
+      "binding": "ALCHEMY_API_KEY",
+      "store_id": "97afb9f31a864e728b81e32277f335e0",
+      "secret_name": "KON_ALCHEMY_API_KEY"
+    }
+  ],
   "env": {
     "production": {
       "vars": {
         "ENV": "production"
       },
-      "secrets_store_secrets": [
+      "routes": [
         {
-          "binding": "ALCHEMY_API_KEY",
-          "store_id": "97afb9f31a864e728b81e32277f335e0",
-          "secret_name": "KON_ALCHEMY_API_KEY"
-        }
-      ]
+          "pattern": "api.kon.xyz",
+          "custom_domain": true
+        },
+      ],
     },
     "staging": {
       "vars": {
         "ENV": "staging"
       },
-      "secrets_store_secrets": [
+      "routes": [
         {
-          "binding": "ALCHEMY_API_KEY",
-          "store_id": "97afb9f31a864e728b81e32277f335e0",
-          "secret_name": "KON_ALCHEMY_API_KEY"
-        },
+          "pattern": "api.kon.wtf",
+          "custom_domain": true
+        }
       ]
     }
   },

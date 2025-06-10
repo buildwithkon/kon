@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "deploy": "$npm_execpath run build && wrangler deploy",
+    "deploy": "$npm_execpath run deploy:staging",
+    "deploy:production": "CLOUDFLARE_ENV=production $npm_execpath run build && wrangler deploy",
+    "deploy:staging": "CLOUDFLARE_ENV=staging $npm_execpath run build && wrangler deploy",
     "dev": "react-router dev",
     "dev:config": "tsx ./scripts/devConfig",
     "start": "wrangler dev",

@@ -7,15 +7,44 @@
   "assets": {
     "directory": "./build/client/"
   },
+  "placement": {
+    "mode": "smart"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "secrets_store_secrets": [
+    {
+      "binding": "ALCHEMY_API_KEY",
+      "store_id": "97afb9f31a864e728b81e32277f335e0",
+      "secret_name": "KON_ALCHEMY_API_KEY"
+    },
+    {
+      "binding": "CDP_CLIENT_API_KEY",
+      "store_id": "97afb9f31a864e728b81e32277f335e0",
+      "secret_name": "KON_CDP_CLIENT_API_KEY"
+    },
+    {
+      "binding": "WC_PROJECT_ID",
+      "store_id": "97afb9f31a864e728b81e32277f335e0",
+      "secret_name": "KON_WC_PROJECT_ID"
+    },
+  ],
   "env": {
     "production": {
       "vars": {
         "ENV": "production"
       },
+      "routes": [
+        {
+          "pattern": "*.kon.xyz/*",
+          "zone_name": "kon.xyz"
+        }
+      ],
       "services": [
         {
           "binding": "API_WORKER",
-          "service": "kon-api"
+          "service": "kon-api-production"
         }
       ]
     },
@@ -23,18 +52,18 @@
       "vars": {
         "ENV": "staging"
       },
+      "routes": [
+        {
+          "pattern": "*.kon.wtf/*",
+          "zone_name": "kon.wtf"
+        }
+      ],
       "services": [
         {
           "binding": "API_WORKER",
-          "service": "kon-api"
+          "service": "kon-api-staging"
         }
       ],
     }
-  },
-  "placement": {
-    "mode": "smart"
-  },
-  "observability": {
-    "enabled": true
   }
 }

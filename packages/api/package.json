@@ -2,7 +2,9 @@
   "name": "@konxyz/api",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
+    "deploy": "$npm_execpath run deploy:staging",
+    "deploy:production": "wrangler deploy --minify --env production",
+    "deploy:staging": "wrangler deploy --minify --env staging",
     "typegen": "wrangler types",
     "test": "vitest run"
   },
