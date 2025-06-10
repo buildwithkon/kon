@@ -5,15 +5,16 @@ No-code On-chain App Framework
 ## 🗂️ Folder structure
 
 ```
+|--- apps
+|------ pwa => PWA app template
 |--- packages
 |------ api => API
 |------ contracts => Smart Contracts
 |------ shared => Shared ts lib
 |------ shared-react => Shared react lib
 |------ site => LP
+|------ subdomain-router => Handling subdomain - e.g. *.kon.xyz
 |------ xmtp-agent => XMTP agent
-|--- templates
-|------ pwa => PWA app template
 ```
 
 ## 🚀 Development

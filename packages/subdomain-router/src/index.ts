@@ -1,18 +1,17 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.jsonc`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
-	},
-} satisfies ExportedHandler<Env>;
+  async fetch(request, env): Promise<Response> {
+    const url = new URL(request.url)
+    const subdomain = url.hostname.split('.')[0]
+    const excludeList = env.EXCLUDE_LIST.split(',')
+    console.log('excludeList', excludeList)
+    if (excludeList.includes(subdomain)) {
+      console.log('---1', 'in list')
+      return fetch(request)
+    }
+    if (env.APP_WORKER) {
+      console.log('---2', 'no list')
+      return env.APP_WORKER.fetch(request)
+    }
+    return new Response('Router Worker: APP_WORKER is not configured.', { status: 500 })
+  }
+} satisfies ExportedHandler<Env>

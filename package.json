@@ -18,6 +18,7 @@
     "@site:dev": "$npm_execpath --filter \"@konxyz/site\" run dev",
     "@sh": "$npm_execpath --filter \"@konxyz/shared\"",
     "@shr": "$npm_execpath --filter \"@konxyz/shared-react\"",
+    "@router": "$npm_execpath --filter \"@konxyz/subdomain-router\"",
     "dev": "concurrently \"$npm_execpath api run dev\" \"$npm_execpath pwa run dev\"",
     "start": "concurrently \"$npm_execpath api run dev --port=8786 \" \"wait-on tcp:8786 && $npm_execpath pwa run start\""
   },
