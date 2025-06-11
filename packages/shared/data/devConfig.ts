@@ -1,3 +1,21 @@
+const DUMMY_REWARDS = [
+  {
+    title: '🏷️ 10% off ticket',
+    description: '10% off next purchase',
+    value: 1
+  },
+  {
+    title: '☕ 1 free coffee',
+    description: '1 free coffee next time',
+    value: 10
+  },
+  {
+    title: '💎 VIP',
+    description: 'You are VIP',
+    value: 10000
+  }
+]
+
 export const devConfig1 = {
   id: 'centrum',
   version: '0.1',
@@ -142,7 +160,12 @@ export const devConfig4 = {
   colors: {
     main: '#6D3A11',
     accent: '#4BE3E5'
-  }
+  },
+  coin: {
+    chainId: 8453,
+    address: '0x0000000000000000000000000000000000000000'
+  },
+  rewards: DUMMY_REWARDS
 }
 
 export const baseConfig = {

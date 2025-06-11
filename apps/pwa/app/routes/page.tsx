@@ -82,11 +82,11 @@ export default function Page() {
           backBtn
         />
       )}
-      {isFirstTab && <ProfileCard appConfig={appConfig} isSticky showQr point={10} />}
+      {isFirstTab && <ProfileCard appConfig={appConfig} isSticky showQr />}
       {isFirstTab && !contentType && (
         <div className="flex flex-col gap-6 py-6">
           <p className="whitespace-pre-wrap px-1">{appConfig?.description}</p>
-          <Rewards />
+          <Rewards coin={appConfig?.coin} />
         </div>
       )}
       {contentType === 'md' && <Markdown content={content} />}

@@ -1,28 +1,11 @@
+import type { AppConfig } from '@konxyz/shared/types'
 import { useAccount } from 'wagmi'
 import Skelton from '~/components/Skelton'
 import { useCoinBalance } from '~/hooks/useWallet'
 
-const DUMMY_REWARDS = [
-  {
-    title: '🏷️ 10% off ticket',
-    description: '10% off next purchase',
-    value: 1
-  },
-  {
-    title: '☕ 1 free coffee',
-    description: '1 free coffee next time',
-    value: 10
-  },
-  {
-    title: '💎 VIP',
-    description: 'You are VIP',
-    value: 10000
-  }
-]
-
-export default function Rewards({ coin }: { coin: { chainId: number; address: `0x${string}` } }) {
+export default function Rewards({ appConfig }: { appConfig: AppConfig }) {
   const { address } = useAccount()
-  const { data, isLoading } = useCoinBalance(address, coin?.chainId, coin?.address)
+  const { data, isLoading } = useCoinBalance(address, appConfig?.coin?.chainId, appConfig?.coin?.address)
 
   return isLoading ? (
     <div className="flex flex-col gap-4">
@@ -31,11 +14,11 @@ export default function Rewards({ coin }: { coin: { chainId: number; address: `0
       <Skelton className="h-16 w-full" />
       <Skelton className="h-16 w-full" />
     </div>
-  ) : coin ? (
+  ) : appConfig?.coin && appConfig?.rewards ? (
     <div className="border-muted border-t pt-6">
       <h2 className="font-bold text-xl">🎁 Rewards</h2>
       <ul className="flex flex-col gap-3 px-1 pt-3">
-        {DUMMY_REWARDS.map((item) => (
+        {appConfig?.rewards.map((item) => (
           <li
             key={item.title}
             className="relative flex items-center justify-between rounded-lg border border-muted"
