@@ -63,7 +63,9 @@ export default function ProfileCard({
                 <div className="mt-0.5 min-w-2/3 truncate font-bold leading-tight">
                   <Name address={address} />
                 </div>
-                <Point address={address} />
+                {appConfig?.coin?.chainId && appConfig?.coin?.address && (
+                  <Point address={address} coin={appConfig.coin} />
+                )}
               </div>
             </div>
           )}

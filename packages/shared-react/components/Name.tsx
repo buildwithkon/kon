@@ -1,3 +1,4 @@
+import Skelton from '~/components/Skelton'
 import { useName } from '~/hooks/useWallet'
 
 export default function Name({ address }: { address: `0x${string}` | undefined }) {
@@ -5,7 +6,7 @@ export default function Name({ address }: { address: `0x${string}` | undefined }
   const [id, rest] = (name ?? '').match(/^([^.]+)\.(.+)$/)?.slice(1) ?? [name ?? '', '']
 
   return isLoading ? (
-    <div className="h-5 w-32 animate-pulse rounded-full bg-gray-500/50" />
+    <Skelton className="h-5 w-32" />
   ) : id && rest ? (
     <span>
       {id}

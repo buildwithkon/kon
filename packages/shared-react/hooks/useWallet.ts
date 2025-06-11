@@ -1,8 +1,6 @@
 import { useAvatar as useAvatarOCK, useName as useNameOCK } from '@coinbase/onchainkit/identity'
-import { ENS_APPCONFIG_COIN_KEY, getEnsAppConfigBase, getEnsAppconfigChainId } from '@konxyz/shared/lib/const'
-import { base, baseSepolia, mainnet } from 'viem/chains'
-import { normalize } from 'viem/ens'
-import { useBalance, useConnect, useConnections, useEnsText } from 'wagmi'
+import { base, mainnet } from 'viem/chains'
+import { useBalance, useConnect, useConnections } from 'wagmi'
 
 export const useLogin = () => {
   const { connectAsync, connectors } = useConnect()
@@ -39,25 +37,23 @@ export const useAvatar = (name: string | undefined) => {
   }
 }
 
-export const useCoinBalance = (address: `0x${string}` | undefined) => {
-  const { data: coinAddress } = useEnsText({
-    name: normalize(`${address}.${getEnsAppConfigBase()}`),
-    key: ENS_APPCONFIG_COIN_KEY,
-    chainId: getEnsAppconfigChainId()
-  })
+export const useCoinBalance = (
+  address: `0x${string}` | undefined,
+  coinChainId: number | undefined,
+  coinAddress: `0x${string}` | undefined
+) => {
   const { data, isLoading } = useBalance({
     address,
-    token: coinAddress as `0x${string}`,
-    chainId: baseSepolia.id,
+    token: coinAddress,
+    chainId: coinChainId,
     query: {
-      enabled: !!coinAddress
+      enabled: !!address && !!coinAddress && !!coinChainId
     }
   })
 
   return {
     data,
-    coin: coinAddress,
-    isLoading: address || coinAddress ? isLoading : false
+    isLoading: address || coinChainId || coinAddress ? isLoading : false
   }
 }
 
