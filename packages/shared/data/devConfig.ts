@@ -163,7 +163,7 @@ export const devConfig4 = {
   },
   coin: {
     chainId: 8453,
-    address: '0x0000000000000000000000000000000000000000'
+    address: '0x036cbd53842c5426634e7929541ec2318f3dcf7e'
   },
   rewards: DUMMY_REWARDS
 }

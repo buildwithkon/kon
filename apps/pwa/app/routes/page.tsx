@@ -86,7 +86,7 @@ export default function Page() {
       {isFirstTab && !contentType && (
         <div className="flex flex-col gap-6 py-6">
           <p className="whitespace-pre-wrap px-1">{appConfig?.description}</p>
-          <Rewards coin={appConfig?.coin} />
+          <Rewards appConfig={appConfig} />
         </div>
       )}
       {contentType === 'md' && <Markdown content={content} />}
