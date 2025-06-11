@@ -1,4 +1,3 @@
-import { fmtNum } from '@konxyz/shared/lib/format'
 import { cn } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
 import { CaretCircleUpIcon, QrCodeIcon } from '@phosphor-icons/react'
@@ -6,16 +5,15 @@ import { useDebounce, useWindowScroll } from '@uidotdev/usehooks'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
 import Name from '~/components/Name'
+import Point from '~/components/Point'
 import QrDialog from '~/components/QrDialog'
 
 export default function ProfileCard({
   appConfig,
   showQr = false,
-  point,
   isSticky = false
 }: {
   showQr?: boolean
-  point?: number
   isSticky?: boolean
   appConfig: AppConfig
 }) {
@@ -65,14 +63,7 @@ export default function ProfileCard({
                 <div className="mt-0.5 min-w-2/3 truncate font-bold leading-tight">
                   <Name address={address} />
                 </div>
-                {point && (
-                  <div className="flex items-center font-mono">
-                    <span className="px-0.5">
-                      {fmtNum(point)}
-                      <span className="px-0.5 text-sm italic">pt{point > 1 ? 's' : ''}</span>
-                    </span>
-                  </div>
-                )}
+                <Point address={address} />
               </div>
             </div>
           )}

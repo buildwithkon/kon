@@ -56,6 +56,7 @@ export const useCoinBalance = (address: `0x${string}` | undefined) => {
 
   return {
     data,
+    coin: coinAddress,
     isLoading: address || coinAddress ? isLoading : false
   }
 }
