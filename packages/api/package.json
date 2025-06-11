@@ -5,7 +5,7 @@
     "deploy": "$npm_execpath run deploy:staging",
     "deploy:production": "wrangler deploy --minify --env production",
     "deploy:staging": "wrangler deploy --minify --env staging",
-    "typegen": "wrangler types",
+    "cf-typegen": "wrangler types",
     "test": "vitest run"
   },
   "dependencies": {
@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@konxyz/shared": "workspace:*",
-    "@cloudflare/workers-types": "^4.20250610.0",
     "vitest": "^3.2.3"
   }
 }

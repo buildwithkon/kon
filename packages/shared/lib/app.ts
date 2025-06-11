@@ -11,6 +11,7 @@ import {
 } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
+import type { Env } from 'hono/types'
 
 export const client = (origin: string, env: Env, noCache = false) => {
   if (process.env.NODE_ENV === 'development') {
@@ -21,6 +22,24 @@ export const client = (origin: string, env: Env, noCache = false) => {
     ...(noCache && { headers: { 'x-no-cache': 'true' } })
   })
 }
+
+export const resolveEnv = async (env: Env) => {
+  const result = {}
+  for (const key of Object.keys(env)) {
+    const value = env[key]
+    if (typeof value === 'string') {
+      result[key] = value
+    } else if (value && typeof value.get === 'function') {
+      // Cloudflare SecretStore binding
+      result[key] = await value.get()
+    } else {
+      // fallback: toString or undefined
+      result[key] = value?.toString?.() ?? ''
+    }
+  }
+  return result
+}
+
 const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')

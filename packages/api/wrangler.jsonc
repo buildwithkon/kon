@@ -4,13 +4,9 @@
   "name": "kon-api",
   "compatibility_date": "2025-02-24",
   "main": "src/index.ts",
-  "secrets_store_secrets": [
-    {
-      "binding": "ALCHEMY_API_KEY",
-      "store_id": "97afb9f31a864e728b81e32277f335e0",
-      "secret_name": "KON_ALCHEMY_API_KEY"
-    }
-  ],
+  "vars": {
+    "ENV": "development"
+  },
   "env": {
     "production": {
       "vars": {
@@ -20,8 +16,15 @@
         {
           "pattern": "api.kon.xyz",
           "custom_domain": true
-        },
+        }
       ],
+      "secrets_store_secrets": [
+        {
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
+        }
+      ]
     },
     "staging": {
       "vars": {
@@ -31,6 +34,13 @@
         {
           "pattern": "api.kon.wtf",
           "custom_domain": true
+        }
+      ],
+      "secrets_store_secrets": [
+        {
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
         }
       ]
     }

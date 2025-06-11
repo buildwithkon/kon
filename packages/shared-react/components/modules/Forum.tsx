@@ -2,7 +2,7 @@ import { createEOASigner, createSCWSigner } from '@konxyz/shared/lib/xmtp'
 import { useCallback, useEffect } from 'react'
 import { base } from 'viem/chains'
 import { useAccount, useSignMessage, useSwitchChain } from 'wagmi'
-import Conversations from '~/components/modules/Conversations'
+import Conversations from '~/components/modules/Conversation'
 import { useCurrentConnector } from '~/hooks/useWallet'
 import { useXMTP } from '~/hooks/useXMTP'
 
@@ -33,7 +33,7 @@ export default function Forum() {
   }, [address, chainId, client, initialize, signMessageAsync, isSCW, switchChainAsync])
 
   useEffect(() => {
-    init()
+    // init()
   }, [init])
 
   return <Conversations />

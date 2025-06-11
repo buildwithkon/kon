@@ -38,7 +38,7 @@ const Chats = () => {
         <div className={cn('mb-5 flex w-full', isMe(chat.id) ? 'justify-end pl-17' : 'pr-8')} key={chat.id}>
           {!isMe(chat.id) && (
             <div className="mr-2.5 flex items-start justify-center pt-1">
-              <Avatar name={chat.id} className="h-8 w-8" />
+              <Avatar address={chat.id} className="h-8 w-8 rounded-full" />
             </div>
           )}
           <div

@@ -5,20 +5,17 @@ import { CaretCircleUpIcon, QrCodeIcon } from '@phosphor-icons/react'
 import { useDebounce, useWindowScroll } from '@uidotdev/usehooks'
 import { useAccount } from 'wagmi'
 import Avatar from '~/components/Avatar'
+import Name from '~/components/Name'
 import QrDialog from '~/components/QrDialog'
 
 export default function ProfileCard({
   appConfig,
   showQr = false,
   point,
-  name,
-  id,
   isSticky = false
 }: {
   showQr?: boolean
   point?: number
-  name?: string
-  id?: string
   isSticky?: boolean
   appConfig: AppConfig
 }) {
@@ -55,7 +52,7 @@ export default function ProfileCard({
               {(appConfig?.icons?.logoBgTransparent || appConfig?.icons?.logo) && (
                 <img
                   src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
-                  className="max-h-20 max-w-20"
+                  className="max-h-20 max-w-20 rounded-full"
                   alt={appConfig?.name ?? ''}
                 />
               )}
@@ -63,26 +60,16 @@ export default function ProfileCard({
           )}
           {!isScrolled && (
             <div className="absolute bottom-5 left-6 flex w-9/12 flex-nowrap items-center overflow-hidden">
-              <Avatar name={address ?? ''} className="flex w-[52px] shrink-0 border border-gray-500/50" />
+              <Avatar address={address} className="flex w-[52px] shrink-0 border border-gray-500/50" />
               <div className="flex-col pl-2.5">
                 <div className="mt-0.5 min-w-2/3 truncate font-bold leading-tight">
-                  {name ? (
-                    <span>
-                      {name}
-                      <br />
-                      {id && <span className="pl-0.5 font-normal text-sm opacity-90">{id}</span>}
-                    </span>
-                  ) : id ? (
-                    id
-                  ) : (
-                    'Your Name'
-                  )}
+                  <Name address={address} />
                 </div>
                 {point && (
-                  <div className="-mt-0.5 flex items-center font-mono">
+                  <div className="flex items-center font-mono">
                     <span className="px-0.5">
                       {fmtNum(point)}
-                      <span className="px-0.5">pts</span>
+                      <span className="px-0.5 text-sm italic">pt{point > 1 ? 's' : ''}</span>
                     </span>
                   </div>
                 )}

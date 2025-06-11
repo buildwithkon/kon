@@ -25,9 +25,7 @@
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"],
-      "@/shared/*": ["@konxyz/shared/*"],
-      "@/shared-react/*": ["@konxyz/shared-react/*"]
+      "~/*": ["./app/*"]
     },
     "esModuleInterop": true,
     "resolveJsonModule": true

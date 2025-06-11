@@ -16,8 +16,8 @@ import {
 } from 'react-router'
 import type { Route } from './+types/root'
 import './style.css'
-import { generateRootMeta, loadAppConfig } from '@konxyz/shared/lib/app'
-import { DEFAULT_FAVICON_URL } from '@konxyz/shared/lib/const'
+import { generateRootMeta, loadAppConfig, resolveEnv } from '@konxyz/shared/lib/app'
+import { DEFAULT_FAVICON_URL, getEnsAppConfigBase } from '@konxyz/shared/lib/const'
 import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 
 export const links: Route.LinksFunction = () => [
@@ -36,7 +36,7 @@ export const links: Route.LinksFunction = () => [
 export const meta = ({ data }: Route.MetaArgs) => generateRootMeta(data?.appConfig)
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const env = context?.cloudflare?.env as Env
+  const env = await resolveEnv(context?.cloudflare?.env)
   const config = await loadAppConfig(request.url, env)
   const cookie = request.headers.get('cookie')
 
@@ -67,14 +67,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <link
           rel="icon"
-          href={ld.appConfig?.icons?.logo ?? ld.appConfig?.icons?.logoBgTransparent ?? DEFAULT_FAVICON_URL}
+          href={ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? DEFAULT_FAVICON_URL}
           type="image/png"
         />
-        <link
-          rel="manifest"
-          href={`https://api.kon.xyz/ens/sepolia/getManigfest/${ld?.appConfig?.id}`}
-          type="application/manifest+json"
-        />
+        {!(ld?.ENV?.ENV === 'development') && (
+          <link
+            rel="manifest"
+            href={`https://api.${getEnsAppConfigBase(ld?.ENV?.ENV === 'production')}/ens/sepolia/getManigfest/${ld?.appConfig?.id}`}
+            type="application/manifest+json"
+          />
+        )}
         <script
           type="module"
           src="https://cdn.jsdelivr.net/npm/@phosphor-icons/webcomponents@2.1.5/dist/index.mjs"

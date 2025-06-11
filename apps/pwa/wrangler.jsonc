@@ -13,32 +13,26 @@
   "observability": {
     "enabled": true
   },
-  "secrets_store_secrets": [
-    {
-      "binding": "ALCHEMY_API_KEY",
-      "store_id": "97afb9f31a864e728b81e32277f335e0",
-      "secret_name": "KON_ALCHEMY_API_KEY"
-    },
-    {
-      "binding": "CDP_CLIENT_API_KEY",
-      "store_id": "97afb9f31a864e728b81e32277f335e0",
-      "secret_name": "KON_CDP_CLIENT_API_KEY"
-    },
-    {
-      "binding": "WC_PROJECT_ID",
-      "store_id": "97afb9f31a864e728b81e32277f335e0",
-      "secret_name": "KON_WC_PROJECT_ID"
-    },
-  ],
+  "vars": {
+    "ENV": "development",
+    "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+  },
   "env": {
     "production": {
       "vars": {
-        "ENV": "production"
+        "ENV": "production",
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
       },
-      "routes": [
+      "secrets_store_secrets": [
         {
-          "pattern": "*.kon.xyz/*",
-          "zone_name": "kon.xyz"
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
+        },
+        {
+          "binding": "CDP_CLIENT_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_CDP_CLIENT_API_KEY"
         }
       ],
       "services": [
@@ -50,12 +44,19 @@
     },
     "staging": {
       "vars": {
-        "ENV": "staging"
+        "ENV": "staging",
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
       },
-      "routes": [
+      "secrets_store_secrets": [
         {
-          "pattern": "*.kon.wtf/*",
-          "zone_name": "kon.wtf"
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
+        },
+        {
+          "binding": "CDP_CLIENT_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_CDP_CLIENT_API_KEY"
         }
       ],
       "services": [
@@ -63,7 +64,7 @@
           "binding": "API_WORKER",
           "service": "kon-api-staging"
         }
-      ],
+      ]
     }
   }
 }

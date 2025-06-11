@@ -2,14 +2,15 @@ import {
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
   DEFAULT_FAVICON_URL,
-  getEnsAppConfigBase,
-  ENS_APPCONFIG_KEY
+  ENS_APPCONFIG_KEY,
+  getEnsAppConfigBase
 } from '@konxyz/shared/lib/const'
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 import { normalize } from 'viem/ens'
 import { getClient } from './lib/client'
+import { getEnv } from './lib/env'
 
 const ens = new Hono<{ Bindings: Env }>()
 
@@ -36,9 +37,10 @@ ens.use('*', async (c, next) => {
 })
 
 ens.get('/:chain/getAppConfig/:id', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
-  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsText({
     name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
     key: ENS_APPCONFIG_KEY
@@ -47,9 +49,10 @@ ens.get('/:chain/getAppConfig/:id', async (c) => {
 })
 
 ens.get('/:chain/getManigfest/:id', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
-  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsText({
     name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
     key: ENS_APPCONFIG_KEY
@@ -74,9 +77,10 @@ ens.get('/:chain/getManigfest/:id', async (c) => {
 })
 
 ens.get('/:chain/getAppAvatar/:id', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
-  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsAvatar({
     name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`)
   })
@@ -84,9 +88,10 @@ ens.get('/:chain/getAppAvatar/:id', async (c) => {
 })
 
 ens.get('/:chain/getSubname/:address', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
   const address = c.req.param('address') as `0x${string}`
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
-  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsName({
     address
   })
@@ -94,9 +99,10 @@ ens.get('/:chain/getSubname/:address', async (c) => {
 })
 
 ens.get('/:chain/getSubnameAddress/:name', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
   const name = c.req.param('name')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
-  const client = getClient(chain, c.env.ALCHEMY_API_KEY)
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsAddress({
     name: normalize(name)
   })

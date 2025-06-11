@@ -1,7 +1,6 @@
-const devConfig1 = {
+export const devConfig1 = {
   id: 'centrum',
   version: '0.1',
-  url: 'centrum.kon.xyz',
   name: 'Centrum',
   description: 'Global web3 Community Space in Shibuya',
   template: {
@@ -17,7 +16,7 @@ const devConfig1 = {
   }
 }
 
-const devConfig2 = {
+export const devConfig2 = {
   id: 'fine3',
   version: '0.1',
   url: 'fine3.kon.xyz',
@@ -61,12 +60,11 @@ const devConfig2 = {
 export const devConfig3 = {
   id: 'ethtokyo',
   version: '0.1',
-  url: 'ethtokyo.kon.xyz',
   name: "ETHTokyo'25",
   description:
     'ETHTokyo is a engaging hackathon for the global Ethereum community where people with all sorts of backgrounds, ideas, and skills come together to share their love for Ethereum and its world.',
   template: {
-    type: 'event',
+    type: 'pwa',
     tabs: [
       {
         id: 'home',
@@ -110,10 +108,46 @@ export const devConfig3 = {
   }
 }
 
+export const devConfig4 = {
+  id: 'wassiecoffee',
+  version: '0.1',
+  name: 'Wassie Coffee',
+  site: 'https://wassiecoffee.xyz',
+  description:
+    'What Wassie Coffee Will Do: \n☕ Share top-tier coffee roastery insights \n🌍 Organize IRL coffee stands & roastery tours during crypto events worldwide',
+  template: {
+    type: 'pwa',
+    tabs: [
+      {
+        id: 'home',
+        title: 'Home',
+        content: ''
+      },
+      {
+        id: 'forum',
+        title: 'Forum',
+        content: 'xmtp:1111'
+      },
+      {
+        id: 'misc',
+        title: 'Information',
+        content: 'md:https://hackmd.io/@yujiym/BydSuqUa1x/download'
+      }
+    ]
+  },
+  icons: {
+    logo: 'https://raw.githubusercontent.com/9dai5/wassiecoffee/refs/heads/main/0194f33c-f19f-7dad-bf2d-a7d5435ffd0f.jpeg'
+  },
+  font: 'sans',
+  colors: {
+    main: '#6D3A11',
+    accent: '#4BE3E5'
+  }
+}
+
 export const baseConfig = {
   id: 'appname',
   version: '0.1',
-  url: 'appname.kon.xyz', // appname is same as is
   name: 'App Name', // use title tag
   description: 'App Description', // use meta description tag
   template: {
@@ -147,4 +181,4 @@ export const baseConfig = {
   }
 }
 
-export const devConfig = devConfig3
+export const devConfig = devConfig4

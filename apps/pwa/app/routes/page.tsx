@@ -5,6 +5,7 @@ import Forum from '@konxyz/shared-react/components/modules/Forum'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
+import Rewards from '@konxyz/shared-react/components/modules/Rewards'
 import { loadAppConfig } from '@konxyz/shared/lib/app'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
@@ -31,9 +32,10 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     }
   })()
 
-  const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/)
+  let content = undefined
 
-  let content = null
+  const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/) || []
+
   if (contentType === 'md') {
     const res = await fetch(contentBody)
     content = await res.text()
@@ -80,7 +82,13 @@ export default function Page() {
           backBtn
         />
       )}
-      {isFirstTab && <ProfileCard appConfig={appConfig} name="" id="" isSticky showQr />}
+      {isFirstTab && <ProfileCard appConfig={appConfig} isSticky showQr point={10} />}
+      {isFirstTab && !contentType && (
+        <div className="flex flex-col gap-6 py-6">
+          <p className="whitespace-pre-wrap px-1">{appConfig?.description}</p>
+          <Rewards />
+        </div>
+      )}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
       {contentType === 'xmtp' && <Forum />}

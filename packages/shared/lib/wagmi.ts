@@ -3,7 +3,7 @@ import type { RootLoader } from '@konxyz/shared/types'
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { base, baseSepolia, mainnet, odysseyTestnet, sepolia } from 'wagmi/chains'
 import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
-import { APP_FALLBACK_NAME, DEFAULT_LOGO_URL } from './const'
+import { APP_FALLBACK_NAME, DEFAULT_LOGO_URL } from '~/lib/const'
 
 // Porto.create()
 

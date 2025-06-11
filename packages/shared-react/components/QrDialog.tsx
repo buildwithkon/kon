@@ -5,6 +5,7 @@ import { QRCode } from 'react-qrcode-logo'
 import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
 import AddressInput from '~/components/AddressInput'
+import Name from '~/components/Name'
 import FaceIdIcon from '~/components/svg/FaceId'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
 import { useDarkMode } from '~/hooks/useDarkMode'
@@ -32,7 +33,9 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
             ecLevel="Q"
             fgColor={isDark ? COLOR_HEX_LIGHT : COLOR_HEX_DARK}
             bgColor={isDark ? COLOR_HEX_DARK : COLOR_HEX_LIGHT}
-            logoImage={ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? DEFAULT_LOGO_URL}
+            logoImage={
+              ld?.appConfig?.icons?.logo ?? ld?.appConfig?.icons?.logoBgTransparent ?? DEFAULT_LOGO_URL
+            }
             qrStyle="dots"
             logoPadding={1}
             logoPaddingStyle="square"
@@ -45,15 +48,7 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
         </div>
         <ul className="space-y-4 pt-5">
           <li className="text-center font-bold text-lg">
-            {name ? (
-              <span>
-                {name} {id && <span className="font-normal text-base opacity-90">({id})</span>}
-              </span>
-            ) : id ? (
-              id
-            ) : (
-              'Your Name'
-            )}
+            <Name address={address} />
           </li>
           <li>
             <label htmlFor="address" className="relative flex items-center justify-between">
