@@ -20,6 +20,17 @@ export type AppConfig = {
     accent?: string
     bg?: string
   }
+  coin?: {
+    chainId: number
+    address: `0x${string}` | undefined
+  }
+  rewards?: {
+    id: string
+    title: string
+    description?: string
+    value: number
+    amount?: number
+  }[]
 }
 
 export type LoaderData = {

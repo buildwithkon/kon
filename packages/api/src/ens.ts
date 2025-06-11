@@ -2,7 +2,9 @@ import {
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
   DEFAULT_FAVICON_URL,
+  ENS_APPCONFIG_COIN_KEY,
   ENS_APPCONFIG_KEY,
+  ENS_APPCONFIG_REWARDS_KEY,
   getEnsAppConfigBase
 } from '@konxyz/shared/lib/const'
 import { Hono } from 'hono'
@@ -41,9 +43,59 @@ ens.get('/:chain/getAppConfig/:id', async (c) => {
   const id = c.req.param('id')
   const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
   const client = getClient(chain, ALCHEMY_API_KEY)
+  const [appConfig, appCoin, appRewards] = await Promise.all([
+    client.getEnsText({
+      name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
+      key: ENS_APPCONFIG_KEY
+    }),
+    client.getEnsText({
+      name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
+      key: ENS_APPCONFIG_COIN_KEY
+    }),
+    client.getEnsText({
+      name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
+      key: ENS_APPCONFIG_REWARDS_KEY
+    })
+  ])
+
+  const [coinChainId, coinAddress] = appCoin?.split(':') ?? []
+
+  const res = {
+    ...JSON.parse(appConfig ?? '{}'),
+    ...(appCoin && {
+      coin: {
+        chainId: coinChainId,
+        address: coinAddress
+      }
+    }),
+    ...(appRewards && {
+      rewards: JSON.parse(appRewards)
+    })
+  }
+
+  return c.json(res)
+})
+
+ens.get('/:chain/getAppCoin/:id', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
+  const id = c.req.param('id')
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, ALCHEMY_API_KEY)
   const res = await client.getEnsText({
     name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
-    key: ENS_APPCONFIG_KEY
+    key: ENS_APPCONFIG_COIN_KEY
+  })
+  return c.text(res ?? '')
+})
+
+ens.get('/:chain/getAppRewards/:id', async (c) => {
+  const { ALCHEMY_API_KEY } = await getEnv(c.env)
+  const id = c.req.param('id')
+  const chain = c.req.param('chain') as 'mainnet' | 'sepolia'
+  const client = getClient(chain, ALCHEMY_API_KEY)
+  const res = await client.getEnsText({
+    name: normalize(`${id}.${getEnsAppConfigBase(chain === 'mainnet')}`),
+    key: ENS_APPCONFIG_REWARDS_KEY
   })
   return c.json(res)
 })

@@ -1,4 +1,4 @@
-import { sepolia, mainnet } from 'viem/chains'
+import { mainnet, sepolia } from 'viem/chains'
 
 export const APP_NAME = 'KON'
 export const SITE_URL = 'https://kon.xyz'
@@ -9,7 +9,7 @@ export const APP_FALLBACK_DESCRIPTION = 'Build with KON'
 // export const ENS_APPCONFIG_CHAINID = sepolia.id
 export const ENS_APPCONFIG_KEY = 'kon.app'
 export const ENS_APPCONFIG_COIN_KEY = 'kon.coin'
-export const ENS_APPCONFIG_REWORDS_KEY = 'kon.rewords'
+export const ENS_APPCONFIG_REWARDS_KEY = 'kon.rewards'
 // export const ENS_APPCONFIG_BASE = 'kon.eth'
 // export const ENS_APPCONFIG_USER = 'user.kon.eth'
 export const getEnsAppconfigChainId = (isProd = false) => (isProd ? sepolia.id : mainnet.id)

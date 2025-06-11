@@ -3,8 +3,7 @@ export interface Env {
 }
 
 export const getEnv = async (env: Env): Promise<Env> => {
-  const ALCHEMY_API_KEY =
-    process.env.NODE_ENV === 'development' ? env.ALCHEMY_API_KEY : await env.ALCHEMY_API_KEY.get()
+  const ALCHEMY_API_KEY = env.ENV === 'development' ? env.ALCHEMY_API_KEY : await env.ALCHEMY_API_KEY.get()
 
   return {
     ALCHEMY_API_KEY
