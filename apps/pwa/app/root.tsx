@@ -16,7 +16,7 @@ import {
 } from 'react-router'
 import type { Route } from './+types/root'
 import './style.css'
-import { generateRootMeta, loadAppConfig, resolveEnv } from '@konxyz/shared/lib/app'
+import { generateRootMeta, loadAppConfig } from '@konxyz/shared/lib/app'
 import { DEFAULT_FAVICON_URL, getEnsAppConfigBase } from '@konxyz/shared/lib/const'
 import { setAppColor, setFontClass } from '@konxyz/shared/lib/style'
 
@@ -36,9 +36,11 @@ export const links: Route.LinksFunction = () => [
 export const meta = ({ data }: Route.MetaArgs) => generateRootMeta(data?.appConfig)
 
 export const loader = async ({ request, context }: Route.LoaderArgs) => {
-  const env = await resolveEnv(context?.cloudflare?.env)
+  const env = context?.cloudflare?.env as Env
   const config = await loadAppConfig(request.url, env)
   const cookie = request.headers.get('cookie')
+
+  console.log('----env---', env, config)
 
   return {
     ...config,

@@ -69,8 +69,7 @@ export const loadAppConfig = async (_url: string, env: Env) => {
         chain: 'sepolia'
       }
     })
-    const json = await res.json()
-    appConfig = JSON.parse(json)
+    appConfig = await res.json()
   } catch (error) {
     console.error('Error fetching appConfig:', error)
   }

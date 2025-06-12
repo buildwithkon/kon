@@ -20,8 +20,17 @@ const requestHandler = createRequestHandler(
 
 export default {
   async fetch(request, env, ctx) {
+    const envVars =
+      import.meta.env.MODE === 'production'
+        ? {
+            ...env,
+            // patch secrets_store_secrets
+            ALCHEMY_API_KEY: await (env.ALCHEMY_API_KEY as unknown as { get(): Promise<string> }).get(),
+            CDP_CLIENT_API_KEY: await (env.CDP_CLIENT_API_KEY as unknown as { get(): Promise<string> }).get()
+          }
+        : env
     return requestHandler(request, {
-      cloudflare: { env, ctx }
+      cloudflare: { env: envVars, ctx }
     })
   }
 } satisfies ExportedHandler<CloudflareEnvironment>

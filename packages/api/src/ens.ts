@@ -61,7 +61,7 @@ ens.get('/:chain/getAppConfig/:id', async (c) => {
   const [coinChainId, coinAddress] = appCoin?.split(':') ?? []
 
   const res = {
-    ...JSON.parse(appConfig ?? '{}'),
+    ...JSON.parse(appConfig ?? ''),
     ...(appCoin && {
       coin: {
         chainId: coinChainId,

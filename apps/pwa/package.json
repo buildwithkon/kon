@@ -10,7 +10,9 @@
     "dev": "react-router dev",
     "dev:config": "tsx ./scripts/devConfig",
     "cf-typegen": "wrangler types",
-    "start": "wrangler dev",
+    "start": "$npm_execpath run start:staging",
+    "start:production": "CLOUDFLARE_ENV=production wrangler dev",
+    "start:staging": "CLOUDFLARE_ENV=staging wrangler dev",
     "typecheck": "react-router typegen && tsc -b"
   },
   "dependencies": {
