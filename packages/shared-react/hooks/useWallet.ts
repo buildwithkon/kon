@@ -4,8 +4,8 @@ import { useBalance, useConnect, useConnections } from 'wagmi'
 
 export const useLogin = () => {
   const { connectAsync, connectors } = useConnect()
-  const loginAsync = async () =>
-    connectAsync({ connector: connectors.find((c) => c.id === 'coinbaseWalletSDK') ?? connectors[0] })
+  const loginAsync = async (connectorId = 'coinbaseWalletSDK') =>
+    connectAsync({ connector: connectors.find((c) => c.id === connectorId) ?? connectors[0] })
 
   return { loginAsync }
 }

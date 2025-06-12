@@ -24,3 +24,19 @@ export const isValidEthereumAddress = (address: string): address is `0x${string}
   /^0x[a-fA-F0-9]{40}$/.test(address)
 
 export const isValidInboxId = (inboxId: string): inboxId is string => /^[a-z0-9]{64}$/.test(inboxId)
+
+export const getMobileOS = (): 'windowsPhone' | 'android' | 'ios' | undefined => {
+  const userAgent = navigator.userAgent
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return 'windowsPhone'
+  }
+  if (/android/i.test(userAgent)) {
+    return 'android'
+  }
+  // iOS detection from: http://stackoverflow.com/a/9039885/177710
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window?.MSStream) {
+    return 'ios'
+  }
+  return undefined
+}
