@@ -69,7 +69,7 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
               Install App
             </DialogTitle>
             <DialogDescription className="px-6">
-              Installing this app as a PWA gives you the most advanced features.
+              Installing this app in smartphone gives you the most advanced features.
             </DialogDescription>
             <ol className="w-full space-y-3 py-4 pt-6 text-sm">
               {getPwasteps().map((item, i) => (
@@ -96,7 +96,7 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
         <div className="flex flex-col gap-4">
           <button
             type="button"
-            className="btn-main justify-start! w-full gap-4 px-6!"
+            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
             onClick={() => login('coinbaseWalletSDK')}
           >
             <FaceIdIcon className="h-7 w-7" />
@@ -104,7 +104,7 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
           </button>
           <button
             type="button"
-            className="btn-main justify-start! w-full gap-4 px-6!"
+            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
             onClick={() => login('injected')}
           >
             <CompassIcon size={28} />
@@ -112,14 +112,17 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
           </button>
           <button
             type="button"
-            className="btn-main justify-start! w-full gap-4 px-6!"
+            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
             onClick={() => login('walletConnect')}
           >
             <WalletConnectIcon className="h-7 w-7" />
             WalletConnect
           </button>
         </div>
-        <p className="px-2 pt-4 text-sm">A wallet with Basenames or ENS is recommended.</p>
+        <p className="px-2 pt-4 text-sm">
+          A wallet with Basenames or ENS is recommended.
+          <br /> We'll also adopt original ENS Subnames soon.
+        </p>
       </DialogContent>
     </Dialog>
   )
