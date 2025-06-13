@@ -1,3 +1,4 @@
+import { cn } from '@konxyz/shared/lib/utils'
 import type { AppConfig } from '@konxyz/shared/types'
 import LoginDialog from '~/components/LoginDialog'
 import BuildWith from '~/components/modules/BuildWith'
@@ -12,7 +13,10 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
             {(appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo) ? (
               <img
                 src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
-                className="mx-auto mb-10 max-h-48 max-w-48 rounded-full"
+                className={cn(
+                  'mx-auto mb-10 max-h-48 max-w-48',
+                  appConfig?.icons?.logoBgTransparent ? 'rounded-full' : 'rounded-4xl'
+                )}
                 alt={appConfig?.name ?? ''}
               />
             ) : (
