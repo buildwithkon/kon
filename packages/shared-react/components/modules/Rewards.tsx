@@ -6,7 +6,7 @@ export default function Rewards({ appConfig }: { appConfig: AppConfig }) {
   const { address } = useAccount()
   const { data, isLoading } = useCoinBalance(address, appConfig?.coin?.chainId, appConfig?.coin?.address)
 
-  return appConfig?.coin?.address ? (
+  return appConfig?.coin?.address && appConfig?.rewards && appConfig?.rewards.length > 0 ? (
     <div className="border-muted border-t pt-6">
       <h2 className="font-bold text-xl">🎁 Rewards</h2>
       <ul className="flex flex-col gap-3 px-1 pt-3">

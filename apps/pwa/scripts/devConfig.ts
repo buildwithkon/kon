@@ -1,3 +1,3 @@
-import { devConfig3 } from '@konxyz/shared/data/devConfig'
+import { devConfig4 } from '@konxyz/shared/data/devConfig'
 
-console.log(JSON.stringify(devConfig3))
+console.log(JSON.stringify(devConfig4))

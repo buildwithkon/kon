@@ -1,11 +1,10 @@
-import { createPublicClient, erc20Abi, http, encodeFunctionData, toHex } from 'viem'
-import { baseSepolia } from 'viem/chains'
 import type { WalletSendCallsParams } from '@xmtp/content-type-wallet-send-calls'
+import { http, createPublicClient, encodeFunctionData, erc20Abi, toHex } from 'viem'
+import { baseSepolia } from 'viem/chains'
 
 const client = createPublicClient({
   chain: baseSepolia,
-  transport: http(
-    `https://api.developer.coinbase.com/rpc/v1/base-sepolia/${process.env.CDP_CLIENT_API_KEY!}`),
+  transport: http(`https://api.developer.coinbase.com/rpc/v1/base-sepolia/${process.env.CDP_CLIENT_API_KEY!}`)
 })
 
 const APP_COIN_FACTORY_ADDRESS = '0x...' // TODO: Set the actual factory address
@@ -102,11 +101,11 @@ export const getCoinNameAndSymbol = async (coinAddress: `0x${string}`) => {
     return {
       name: name?.result ?? '',
       symbol: symbol?.result ?? '',
-      totalSupply: totalSupply?.result ? totalSupply.result.toLocaleString('en-US'): '0',
+      totalSupply: totalSupply?.result ? totalSupply.result.toLocaleString('en-US') : '0'
     }
   } catch (error) {
-  console.error('Error getting coin info:', error)
-  return null
+    console.error('Error getting coin info:', error)
+    return null
   }
 }
 
@@ -123,14 +122,12 @@ export const getDeployedCoinAddress = async (
       args: {
         owner: ownerAddress as `0x${string}`
       },
-      fromBlock: BigInt(await client.getBlockNumber() - 1000n),
+      fromBlock: BigInt((await client.getBlockNumber()) - 1000n),
       toBlock: 'latest'
     })
 
     // Filter logs by name and symbol since they're not indexed
-    const matchingLog = logs.find(log =>
-      log.args.name === name && log.args.symbol === symbol
-    )
+    const matchingLog = logs.find((log) => log.args.name === name && log.args.symbol === symbol)
 
     if (matchingLog) {
       return matchingLog.args.appCoinAddress ?? null

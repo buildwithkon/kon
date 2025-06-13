@@ -9,6 +9,7 @@ import {
   SignInIcon,
   UploadSimpleIcon
 } from '@phosphor-icons/react'
+import isMobile from 'is-mobile'
 import FaceIdIcon from '~/components/svg/FaceId'
 import WalletConnectIcon from '~/components/svg/WalletConnect'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
@@ -102,14 +103,16 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
             <FaceIdIcon className="h-7 w-7" />
             Smart Wallet
           </button>
-          <button
-            type="button"
-            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
-            onClick={() => login('injected')}
-          >
-            <CompassIcon size={28} />
-            Browser Wallet
-          </button>
+          {!isMobile() && (
+            <button
+              type="button"
+              className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
+              onClick={() => login('injected')}
+            >
+              <CompassIcon size={28} />
+              Browser Wallet
+            </button>
+          )}
           <button
             type="button"
             className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
