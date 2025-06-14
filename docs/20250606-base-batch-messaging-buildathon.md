@@ -39,7 +39,6 @@
 - __AppCoinFactory__ : [Contract](https://basescan.org/address/0xab3BB37f5885a9528eC61Cf6ef7f04D327Ec798d#code)
   - Tx from XMTP Agent: [Create demoapp's coin](https://basescan.org/tx/0x1123a54f82d0caeacd86f387b8da72db8f3d593f2cfddf4bf94168333cd0afab)
 - __AppCoin__ : [Contract](https://basescan.org/address/0xe1310e9ba4b0ce0665834bdfdc96cf7efb68bfd5#code)
-  - Tx from XMTP Agent: [DistributeCoin from App Owner]()
 - __ENS__ (spolia)
   - Tx from XMTP Agent: [Claim ENS subnames](https://sepolia.etherscan.io/tx/0xb7563578ae55fc0618d1a99dd946130e159d855613875f56a579cc96102a9034)
   - Tx from XMTP Agent: [Set ENS textRecord](https://sepolia.etherscan.io/tx/0xc0a95e0f10703d79a22f39c20250dd39e36e364eace0f92d36a115dfc625e928)
