@@ -1,40 +1,43 @@
 import { createEOASigner, createSCWSigner } from '@konxyz/shared/lib/xmtp'
-import { useCallback, useEffect } from 'react'
-import { base } from 'viem/chains'
-import { useAccount, useSignMessage, useSwitchChain } from 'wagmi'
-import Conversations from '~/components/modules/Conversation'
+import { useAccount, useSignMessage } from 'wagmi'
+import Loading from '~/components/Loading'
+import Conversation from '~/components/modules/Conversation.old'
 import { useCurrentConnector } from '~/hooks/useWallet'
 import { useXMTP } from '~/hooks/useXMTP'
 
 export default function Forum() {
-  const { address, chainId } = useAccount()
+  const { chainId, address } = useAccount()
   const { signMessageAsync } = useSignMessage()
-  const { initialize, client } = useXMTP()
+  const { client, initialize, isLoading } = useXMTP()
   const { isSCW } = useCurrentConnector()
-  const { switchChainAsync } = useSwitchChain()
 
-  const init = useCallback(async () => {
+  console.log('client----', client)
+
+  const init = async () => {
+    // create xmtp-client if wallet is connected
     if (!address || (isSCW && !chainId)) {
       return
     }
-    if (chainId !== base.id) {
-      await switchChainAsync({ chainId: base.id })
-    }
-    if (!client) {
-      const signer = isSCW
-        ? await createSCWSigner(
-            address,
-            (message: string) => signMessageAsync({ message }),
-            chainId ?? base.id
-          )
-        : await createEOASigner(address, (message: string) => signMessageAsync({ message }))
-      await initialize(signer)
-    }
-  }, [address, chainId, client, initialize, signMessageAsync, isSCW, switchChainAsync])
+    void initialize(
+      isSCW
+        ? createSCWSigner(address, (message: string) => signMessageAsync({ message }))
+        : createEOASigner(address, (message: string) => signMessageAsync({ message }))
+    )
+  }
 
-  useEffect(() => {
-    // init()
-  }, [init])
-
-  return <Conversations />
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : client ? (
+        <Conversation />
+      ) : (
+        <div className="flex w-full flex-col items-center justify-center px-6">
+          <button type="button" onClick={() => init()} className="btn-main mt-48 w-full">
+            Join group chat
+          </button>
+        </div>
+      )}
+    </>
+  )
 }

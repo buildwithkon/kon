@@ -40,8 +40,7 @@ export const createEOASigner = (
 
 export const createSCWSigner = (
   address: `0x${string}`,
-  signMessage: (message: string) => Promise<string> | string,
-  chainId: number | bigint
+  signMessage: (message: string) => Promise<string> | string
 ): Signer => {
   return {
     type: 'SCW',
@@ -54,6 +53,6 @@ export const createSCWSigner = (
       const signatureBytes = toBytes(signature)
       return signatureBytes
     },
-    getChainId: () => BigInt(chainId ?? 1n)
+    getChainId: () => BigInt(8453)
   }
 }

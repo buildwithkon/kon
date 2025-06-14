@@ -13,6 +13,6 @@ export default function Name({ address }: { address: `0x${string}` | undefined }
       <span className="opacity-80">.{rest}</span>
     </span>
   ) : (
-    <span>{name}</span>
+    <span>{name ?? <span className="font-normal! opacity-60">-</span>}</span>
   )
 }

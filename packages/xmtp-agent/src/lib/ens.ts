@@ -2,9 +2,10 @@ import type { WalletSendCallsParams } from '@xmtp/content-type-wallet-send-calls
 import { http, createPublicClient, encodeFunctionData, toHex } from 'viem'
 import { sepolia } from 'viem/chains'
 import { namehash, normalize } from 'viem/ens'
-import { ENS_APPCONFIG_COIN_KEY, ENS_APPCONFIG_KEY, getEnsAppConfigBase } from '../../../shared/lib/const'
+import { ENS_APPCONFIG_COIN_KEY, ENS_APPCONFIG_KEY } from '../../../shared/lib/const'
 import { getCoinNameAndSymbol } from './coin'
 
+const ENS_PARENT = 'kon.eth'
 const SEPOLIA_ENS_PUBLIC_RESOLVER = '0x8948458626811dd0c23eb25cc74291247077cc51'
 const SEPOLIA_ENS_NAMEWRAPPER = '0x0635513f179d50a207757e05759cbd106d7dfce8'
 
@@ -14,7 +15,7 @@ export const publicClient = createPublicClient({
 })
 
 export const getAppInfo = async (appName: string) => {
-  const target = `${appName}.${getEnsAppConfigBase()}`
+  const target = `${appName}.${ENS_PARENT}`
   const res = await publicClient.getEnsText({
     name: normalize(target),
     key: ENS_APPCONFIG_KEY
@@ -37,16 +38,16 @@ export const getAppInfo = async (appName: string) => {
 
 export const checkENS = async (appName: string): Promise<boolean> => {
   const address = await publicClient.getEnsAddress({
-    name: normalize(`${appName}.${getEnsAppConfigBase()}`)
+    name: normalize(`${appName}.${ENS_PARENT}`)
   })
   return !!address
 }
 
 export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string): WalletSendCallsParams => {
-  const parentNode = namehash(normalize(getEnsAppConfigBase()))
+  const parentNode = namehash(normalize(ENS_PARENT))
   const label = appName
   const owner = fromAddress as `0x${string}`
-  const labelHash = `${appName}.${getEnsAppConfigBase()}`
+  const labelHash = `${appName}.${ENS_PARENT}`
   const resolver = SEPOLIA_ENS_PUBLIC_RESOLVER
   const ttl = 0
   const fuses = 0
@@ -67,6 +68,7 @@ export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string):
       ]
     }
   ]
+
   const transactionData = encodeFunctionData({
     abi,
     functionName: 'setSubnodeRecord',
@@ -82,7 +84,7 @@ export const sendSetSubnodeRecordCalls = (fromAddress: string, appName: string):
         to: SEPOLIA_ENS_NAMEWRAPPER,
         data: transactionData as `0x${string}`,
         metadata: {
-          description: `💡 You are creating application: "${appName}.${getEnsAppConfigBase()}". (🔄 claim ENS: "${labelHash}")`,
+          description: `💡 You are creating application: "${appName}.kon.wtf". (🔄 claim ENS: "${labelHash}")`,
           transactionType: 'call',
           networkId: sepolia.id
         }
@@ -126,7 +128,7 @@ export const sendSetTextCalls = (
         to: SEPOLIA_ENS_PUBLIC_RESOLVER,
         data: transactionData as `0x${string}`,
         metadata: {
-          description: `💡 You are updating application: "${appName}.${getEnsAppConfigBase()}". (🔄 setText "${key}" on ENS: "${target}")`,
+          description: `💡 You are updating application: "${appName}.${ENS_PARENT}". (🔄 setText "${key}" on ENS: "${target}")`,
           transactionType: 'call',
           networkId: sepolia.id
         }
@@ -136,7 +138,7 @@ export const sendSetTextCalls = (
 }
 
 export const getCoinInfo = async (appName: string) => {
-  const target = `${appName}.${getEnsAppConfigBase()}`
+  const target = `${appName}.${ENS_PARENT}`
   try {
     const res = await publicClient.getEnsText({
       name: normalize(target),
@@ -145,12 +147,13 @@ export const getCoinInfo = async (appName: string) => {
     if (!res) {
       return null
     }
-    const [_, coinAddress] = res?.split(':') ?? []
+    const [coinChainId, coinAddress] = res?.split(':') ?? []
 
     const coinInfo = await getCoinNameAndSymbol(coinAddress as `0x${string}`)
 
     return {
       address: coinAddress,
+      chainId: coinChainId,
       ...coinInfo
     }
   } catch (error) {

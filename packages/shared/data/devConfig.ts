@@ -79,8 +79,7 @@ export const devConfig3 = {
   id: 'ethtokyo',
   version: '0.1',
   name: "ETHTokyo'25",
-  description:
-    'ETHTokyo is a engaging hackathon for the global Ethereum community where people with all sorts of backgrounds, ideas, and skills come together to share their love for Ethereum and its world.',
+  description: 'Emancipatory Tech for the Future of Humanity',
   template: {
     type: 'pwa',
     tabs: [
@@ -144,12 +143,12 @@ export const devConfig4 = {
       {
         id: 'forum',
         title: 'Forum',
-        content: 'xmtp:1111'
+        content: 'xmtp:c1b9bfa71d0f743aaa9bd838d1e5b946'
       },
       {
         id: 'misc',
         title: 'Information',
-        content: 'md:https://hackmd.io/@yujiym/BydSuqUa1x/download'
+        content: 'md:https://hackmd.io/@yujiym/ByO2Pqt7lx/download'
       }
     ]
   },

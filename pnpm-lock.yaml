@@ -233,6 +233,21 @@ importers:
       '@xmtp/browser-sdk':
         specifier: ^2.1.1
         version: 2.1.1
+      '@xmtp/content-type-reaction':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@xmtp/content-type-remote-attachment':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@xmtp/content-type-reply':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@xmtp/content-type-transaction-reference':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@xmtp/content-type-wallet-send-calls':
+        specifier: ^2.0.0
+        version: 2.0.0
       boring-avatars:
         specifier: ^1.11.2
         version: 1.11.2
@@ -260,6 +275,9 @@ importers:
       react-router:
         specifier: ^7.6.1
         version: 7.6.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      uint8array-extras:
+        specifier: ^1.4.0
+        version: 1.4.0
       viem:
         specifier: ^2.22.22
         version: 2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
@@ -2156,6 +2174,9 @@ packages:
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/secp256k1@2.3.0':
+    resolution: {integrity: sha512-0TQed2gcBbIrh7Ccyw+y/uZQvbJwm7Ao4scBUxqpBCcsOlZG0O4KGfjtNAy/li4W8n1xt3dxrwJ0beZ2h2G6Kw==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -3133,6 +3154,15 @@ packages:
   '@xmtp/content-type-primitives@2.0.2':
     resolution: {integrity: sha512-OTUsCD48sO2Eg69dfre32OSnXSkmefbSZA4L0S58LqYK6+hMymFRRjEH4fvPzXc9WCw5FmCYEG7DFAaB680HiQ==}
 
+  '@xmtp/content-type-reaction@2.0.2':
+    resolution: {integrity: sha512-v7wGMycSsUi8NyLR+ytjDhNY4Nr4p8qNwKx8LZPlA8IwLacq2Bp2vKxlOAnGX7m5XP9ivpBNNZvkpR5Limvz1g==}
+
+  '@xmtp/content-type-remote-attachment@2.0.2':
+    resolution: {integrity: sha512-gV2yU6UWsLQcJ228B7jOvtzUyK/+TfG0EUevxbz3OUuWpVpoo110qAa3HWUlahL1fWuaoFSX9GmESyw2UJWAQw==}
+
+  '@xmtp/content-type-reply@2.0.2':
+    resolution: {integrity: sha512-tks5WEevzOzUTmpvpJjxLH5jil3cHSddWgS5MPfm8bGU5hCUfy8uojlVaFEUbBBjpDVwU1o++SW5h5HggHKsgg==}
+
   '@xmtp/content-type-text@2.0.2':
     resolution: {integrity: sha512-nlRufOYPrG5sNbruNPCsb6Qk9/jmJ5lMooPsZEo4Dbwda/2S4bSvrrIncT6if7M2SCha3hxtlgJlFGeTtHy4gQ==}
 
@@ -3141,6 +3171,9 @@ packages:
 
   '@xmtp/content-type-wallet-send-calls@1.0.1':
     resolution: {integrity: sha512-PVpp0WDMzcKBAO4dFWa2jXTtuLzwimdp+aucpBFlfEv4dJBi2QFaXHinJc79FXdz+UZx70ed1RkAqLmEHN8y8g==}
+
+  '@xmtp/content-type-wallet-send-calls@2.0.0':
+    resolution: {integrity: sha512-212g68DjwFMh3gaAwULJvrhpuje6Tp4rF94oy3lQRvnXCQ+xLkyDi8pT5Pyw3Dm6jW+ke1U0hauzV7sLCgIFSw==}
 
   '@xmtp/node-bindings@1.2.0':
     resolution: {integrity: sha512-bMaekheq8+q9QOy51jcmwxVt3uARw3ASYc84V463pvA0e9wh6NQiy7SuFTBD43aohD/oD3Rk8m+kThEB5xZZtw==}
@@ -6264,6 +6297,10 @@ packages:
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
+  uint8array-extras@1.4.0:
+    resolution: {integrity: sha512-ZPtzy0hu4cZjv3z5NW9gfKnNLjoz4y6uv4HlelAjDK7sY/xOkKZv9xK/WQpcsBB3jEybChz9DPC2U/+cusjJVQ==}
+    engines: {node: '>=18'}
+
   uint8arrays@3.1.0:
     resolution: {integrity: sha512-ei5rfKtoRO8OyOIor2Rz5fhzjThwIHJZ3uyDPnDHTXbP0aMQ1RN/6AI5B5d9dBxJOU+BvOAk7ZQ1xphsX8Lrog==}
 
@@ -8886,6 +8923,8 @@ snapshots:
 
   '@noble/hashes@1.8.0': {}
 
+  '@noble/secp256k1@2.3.0': {}
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -10691,6 +10730,21 @@ snapshots:
     dependencies:
       '@xmtp/proto': 3.82.0
 
+  '@xmtp/content-type-reaction@2.0.2':
+    dependencies:
+      '@xmtp/content-type-primitives': 2.0.2
+
+  '@xmtp/content-type-remote-attachment@2.0.2':
+    dependencies:
+      '@noble/secp256k1': 2.3.0
+      '@xmtp/content-type-primitives': 2.0.2
+      '@xmtp/proto': 3.82.0
+
+  '@xmtp/content-type-reply@2.0.2':
+    dependencies:
+      '@xmtp/content-type-primitives': 2.0.2
+      '@xmtp/proto': 3.82.0
+
   '@xmtp/content-type-text@2.0.2':
     dependencies:
       '@xmtp/content-type-primitives': 2.0.2
@@ -10700,6 +10754,10 @@ snapshots:
       '@xmtp/content-type-primitives': 2.0.2
 
   '@xmtp/content-type-wallet-send-calls@1.0.1':
+    dependencies:
+      '@xmtp/content-type-primitives': 2.0.2
+
+  '@xmtp/content-type-wallet-send-calls@2.0.0':
     dependencies:
       '@xmtp/content-type-primitives': 2.0.2
 
@@ -14098,6 +14156,8 @@ snapshots:
   typescript@5.8.3: {}
 
   ufo@1.6.1: {}
+
+  uint8array-extras@1.4.0: {}
 
   uint8arrays@3.1.0:
     dependencies:

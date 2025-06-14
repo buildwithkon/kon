@@ -2,10 +2,10 @@ import { TransactionReferenceCodec } from '@xmtp/content-type-transaction-refere
 import { ContentTypeWalletSendCalls, WalletSendCallsCodec } from '@xmtp/content-type-wallet-send-calls'
 import { Client, type Conversation, type DecodedMessage, type XmtpEnv } from '@xmtp/node-sdk'
 import { initializeAgent, processMessage } from './lib/agent'
-import { checkENS, getAppInfo, sendSetSubnodeRecordCalls, sendSetTextCalls, getCoinInfo } from './lib/ens'
+import { createCoinCalls, sendCoinCalls } from './lib/coin'
+import { checkENS, getAppInfo, getCoinInfo, sendSetSubnodeRecordCalls, sendSetTextCalls } from './lib/ens'
 import { isValidName, isValidURL, shortAddr } from './lib/utils'
 import { createSigner, logAgentDetails } from './lib/xmtp-node'
-import { sendCoinCalls, getDeployedCoinAddress, createCoinCalls } from './lib/coin'
 
 /* Create the signer using viem and parse the encryption key for the local db */
 const walletKey = process.env.WALLET_KEY!
@@ -21,7 +21,6 @@ if (!walletKey) {
  */
 async function initializeXmtpClient() {
   const signer = createSigner(process.env.WALLET_KEY!)
-  // const dbEncryptionKey = getEncryptionKeyFromHex(ENCRYPTION_KEY);
 
   // const identifier = await signer.getIdentifier()
   // const address = identifier.identifier
@@ -49,11 +48,13 @@ async function initializeXmtpClient() {
 const handleMessage = async (message: DecodedMessage, client: Client) => {
   let conversation: Conversation | null = null
   try {
-    const senderAddress = message.senderInboxId as `0x${string}`
+    const senderInboxId = message.senderInboxId as `0x${string}`
+    const inboxState = await client.preferences.inboxStateFromInboxIds([message.senderInboxId])
+    const senderAddress = inboxState[0].identifiers[0].identifier
     const botAddress = client.inboxId.toLowerCase() as `0x${string}`
 
     // Ignore messages from the bot itself
-    if (senderAddress.toLowerCase() === botAddress) {
+    if (senderInboxId.toLowerCase() === botAddress) {
       return
     }
 
@@ -67,7 +68,11 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       throw new Error(`Could not find conversation for ID: ${message.conversationId}`)
     }
 
-    const messageContent = message.content as string
+    const messageContent = message.content
+    if (typeof messageContent !== 'string') {
+      console.log('----005---', console.dir(messageContent, { depth: null }))
+      return
+    }
     const command = messageContent.toLowerCase().trim()
 
     if (command.startsWith('/app-info')) {
@@ -85,7 +90,7 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       // Check args
       if (!appName || !referenceUrl || !isValidName(appName) || !isValidURL(referenceUrl)) {
         await conversation.send(
-          '⚠️ Usage: /app-setup <appName> <referenceUrl>\ne.g. /setup demoapp https://ethtokyo.org'
+          '⚠️ Usage: /app-setup <appName> <referenceUrl>\ne.g. /app-setup demoapp https://ethtokyo.org'
         )
         return
       }
@@ -99,14 +104,14 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       // Claim ENS Subnames
       await conversation.send(sendSetSubnodeRecordCalls(senderAddress, appName), ContentTypeWalletSendCalls)
       // Create app config with AI
-      // const { agent, config } = await initializeAgent(senderAddress)
-      // const response = await processMessage(agent, config, referenceUrl)
+      const { agent, config } = await initializeAgent(senderAddress)
+      const response = await processMessage(agent, config, referenceUrl)
       // Write app config
       await conversation.send(
-        sendSetTextCalls(senderAddress, appName, 'app.kon', JSON.stringify({})),
+        sendSetTextCalls(senderAddress, appName, 'kon.app', JSON.stringify(JSON.parse(response))),
         ContentTypeWalletSendCalls
       )
-      await conversation.send(`You can access your app 👉 https://${appName}.kon.xyz after tx confirmation.`)
+      await conversation.send(`You can access your app 👉 https://${appName}.kon.wtf after tx confirmation.`)
     } else if (command.startsWith('/coin-info')) {
       const [, appName] = messageContent.trim().split(/\s+/, 2)
       if (!appName) {
@@ -122,10 +127,10 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
 
       await conversation.send(
         `----- 🪙 ${appName}'s coin -----\n` +
-        `Address: ${coinInfo.address}\n` +
-        `Name: ${coinInfo.name}\n` +
-        `Symbol: ${coinInfo.symbol}\n` +
-        `Total supply: ${coinInfo.totalSupply}`
+          `Address: ${coinInfo.address}\n` +
+          `Name: ${coinInfo.name}\n` +
+          `Symbol: ${coinInfo.symbol}\n` +
+          `Total supply: ${coinInfo.totalSupply}`
       )
     } else if (command.startsWith('/coin-setup')) {
       const [, appName, name, symbol] = messageContent.trim().split(/\s+/)
@@ -142,13 +147,11 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
         createCoinCalls(senderAddress, appName, name, symbol),
         ContentTypeWalletSendCalls
       )
-      await conversation.send('🚀 Creating your app\'s coin... Please wait for tx confirmation.')
-
-      // Wait for a few blocks to ensure the tx is confirmed
-      await new Promise(resolve => setTimeout(resolve, 30000)) // 30 seconds
+      await conversation.send("🚀 Creating your app's coin... Please wait for tx confirmation.")
+    } else if (command.startsWith('/coin-set')) {
+      const [, appName, coinAddress] = messageContent.trim().split(/\s+/)
 
       // Get the deployed coin address
-      const coinAddress = await getDeployedCoinAddress(senderAddress, name, symbol)
       if (!coinAddress) {
         await conversation.send('⚠️ Failed to get coin address. Please try again.')
         return
@@ -156,10 +159,10 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
 
       // Set ENS text record
       await conversation.send(
-        sendSetTextCalls(senderAddress, appName, 'koin.kon', coinAddress),
+        sendSetTextCalls(senderAddress, appName, 'kon.coin', `8453:${coinAddress}`),
         ContentTypeWalletSendCalls
       )
-      await conversation.send('💫 Careated')
+      await conversation.send('💫 Coin created!')
     } else if (command.startsWith('/coin-send')) {
       const [, appName, toAddress, amount] = messageContent.trim().split(/\s+/)
       const coinInfo = await getCoinInfo(appName)
@@ -175,23 +178,29 @@ const handleMessage = async (message: DecodedMessage, client: Client) => {
       const [, url] = messageContent.trim().split(/\s+/, 2)
       const { agent, config } = await initializeAgent(senderAddress)
       const response = await processMessage(agent, config, url)
+      console.log('---response---', response)
     } else {
       await conversation.send(
         '----- 👨‍💻 Available commands -----\n' +
-        '▶️ /gm\n' +
-        '▶️ /app-info <appName>\n' +
-        '・Get app information (e.g. /appinfo demoapp)\n' +
-        '▶️ /coin-info <appName>\n' +
-        '・Get app\'s coin information (e.g. /coin demoapp)\n' +
-        '▶️ /app-setup <appName> <referenceUrl>\n' +
+          '▶️ /gm\n' +
+          '▶️ /app-info <appName>\n' +
+          '・Get app information (e.g. /appinfo demoapp)\n' +
+          '▶️ /coin-info <appName>\n' +
+          "・Get app's coin information (e.g. /coin demoapp)\n" +
+          '▶️ /app-setup <appName> <referenceUrl>\n' +
           '・Setup app (e.g. /app-setup demoapp https://ethtokyo.org)\n' +
-          '  ・<appName> - ENS subnames for app (e.g. <demoapp>.kon.eth) \n' +
+          '  ・<appName> - ENS subnames for app (e.g. <demoapp>.kon.wtf) \n' +
           '  ・<referenceUrl> - official site or similar linkfor app info\n' +
-        '▶️ /coin-setup <appName> <coinName> <coinSymbol>\n' +
-          '・Setup app\'s coin (e.g. /coin-setup demoapp MYCOIN MYCOIN)\n' +
+          '▶️ /coin-setup <appName> <coinName> <coinSymbol>\n' +
+          "・Setup app's coin (e.g. /coin-setup demoapp MYCOIN MYCOIN)\n" +
           '  ・<appName> - App name \n' +
           '  ・<coinName> - Name of coin \n' +
-          '  ・<coinSymbol> - SYMBOL of coin'
+          '  ・<coinSymbol> - SYMBOL of coin\n' +
+          '▶️ /coin-send <appName> <toAddress> <amount> \n' +
+          "・Send app's coin (e.g. /coin-send demoapp 0x000 1)\n" +
+          '  ・<appName> - App name \n' +
+          '  ・<toAddress> - Address to send \n' +
+          '  ・<amount> - Amount'
       )
     }
   } catch (error) {

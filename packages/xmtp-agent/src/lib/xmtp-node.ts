@@ -24,7 +24,8 @@ export const createUser = (key: string): User => {
       account,
       chain: baseSepolia,
       transport: http(
-        `https://api.developer.coinbase.com/rpc/v1/base-sepolia/${process.env.CDP_CLIENT_API_KEY!}`)
+        `https://api.developer.coinbase.com/rpc/v1/base-sepolia/${process.env.CDP_CLIENT_API_KEY!}`
+      )
     })
   }
 }

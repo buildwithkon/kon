@@ -21,7 +21,7 @@ export const useName = (address: `0x${string}` | undefined) => {
   })
 
   return {
-    name: baseName ?? ensName ?? '',
+    name: baseName ?? ensName ?? undefined,
     ensName,
     baseName,
     isLoading: address ? isLoadingBaseName || isLoadingEnsName : false
