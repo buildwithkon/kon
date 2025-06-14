@@ -1,7 +1,24 @@
-const devConfig1 = {
+const DUMMY_REWARDS = [
+  {
+    title: '🏷️ 10% off ticket',
+    description: '10% off next purchase',
+    value: 1
+  },
+  {
+    title: '☕ 1 free coffee',
+    description: '1 free coffee next time',
+    value: 10
+  },
+  {
+    title: '💎 VIP',
+    description: 'You are VIP',
+    value: 10000
+  }
+]
+
+export const devConfig1 = {
   id: 'centrum',
   version: '0.1',
-  url: 'centrum.kon.xyz',
   name: 'Centrum',
   description: 'Global web3 Community Space in Shibuya',
   template: {
@@ -17,7 +34,7 @@ const devConfig1 = {
   }
 }
 
-const devConfig2 = {
+export const devConfig2 = {
   id: 'fine3',
   version: '0.1',
   url: 'fine3.kon.xyz',
@@ -58,15 +75,13 @@ const devConfig2 = {
   }
 }
 
-const devConfig3 = {
+export const devConfig3 = {
   id: 'ethtokyo',
   version: '0.1',
-  url: 'ethtokyo.kon.xyz',
   name: "ETHTokyo'25",
-  description:
-    'ETHTokyo is a engaging hackathon for the global Ethereum community where people with all sorts of backgrounds, ideas, and skills come together to share their love for Ethereum and its world.',
+  description: 'Emancipatory Tech for the Future of Humanity',
   template: {
-    type: 'event',
+    type: 'pwa',
     tabs: [
       {
         id: 'home',
@@ -110,10 +125,51 @@ const devConfig3 = {
   }
 }
 
+export const devConfig4 = {
+  id: 'wassiecoffee',
+  version: '0.1',
+  name: 'Wassie Coffee',
+  site: 'https://wassiecoffee.xyz',
+  description:
+    'What Wassie Coffee Will Do: \n☕ Share top-tier coffee roastery insights \n🌍 Organize IRL coffee stands & roastery tours during crypto events worldwide',
+  template: {
+    type: 'pwa',
+    tabs: [
+      {
+        id: 'home',
+        title: 'Home',
+        content: ''
+      },
+      {
+        id: 'forum',
+        title: 'Forum',
+        content: 'xmtp:c1b9bfa71d0f743aaa9bd838d1e5b946'
+      },
+      {
+        id: 'misc',
+        title: 'Information',
+        content: 'md:https://hackmd.io/@yujiym/ByO2Pqt7lx/download'
+      }
+    ]
+  },
+  icons: {
+    logo: 'https://raw.githubusercontent.com/9dai5/wassiecoffee/refs/heads/main/0194f33c-f19f-7dad-bf2d-a7d5435ffd0f.jpeg'
+  },
+  font: 'sans',
+  colors: {
+    main: '#6D3A11',
+    accent: '#4BE3E5'
+  },
+  coin: {
+    chainId: 8453,
+    address: '0x036cbd53842c5426634e7929541ec2318f3dcf7e'
+  },
+  rewards: DUMMY_REWARDS
+}
+
 export const baseConfig = {
   id: 'appname',
   version: '0.1',
-  url: 'appname.kon.xyz', // appname is same as is
   name: 'App Name', // use title tag
   description: 'App Description', // use meta description tag
   template: {
@@ -147,4 +203,4 @@ export const baseConfig = {
   }
 }
 
-export const devConfig = devConfig3
+export const devConfig = devConfig4

@@ -1,6 +1,8 @@
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
+import { useEffect } from 'react'
 import Avatar from '~/components/Avatar'
 import ChatInput from '~/components/ChatInput'
+import { type Client, useXMTP } from '~/hooks/useXMTP'
 
 const CHATS = [
   {
@@ -13,7 +15,16 @@ const CHATS = [
   }
 ]
 
-export default function Conversatin({ children }: { children?: React.ReactNode }) {
+export default function Conversation({ client, children }: { client: Client; children?: React.ReactNode }) {
+  const { conversation, conversations, getConversation, getConversations } = useXMTP()
+
+  useEffect(() => {
+    getConversation('8393bf5556b020d0feb28301ea231423')
+    getConversations()
+  }, [getConversation, getConversations])
+
+  console.log('conv----', conversations, conversation)
+
   return (
     <div
       className={cn(
@@ -38,7 +49,7 @@ const Chats = () => {
         <div className={cn('mb-5 flex w-full', isMe(chat.id) ? 'justify-end pl-17' : 'pr-8')} key={chat.id}>
           {!isMe(chat.id) && (
             <div className="mr-2.5 flex items-start justify-center pt-1">
-              <Avatar name={chat.id} className="h-8 w-8" />
+              <Avatar name={chat.id} className="h-8 w-8 rounded-full" />
             </div>
           )}
           <div

@@ -1,0 +1,70 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "kon-app-pwa",
+  "compatibility_date": "2025-02-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./workers/app.ts",
+  "assets": {
+    "directory": "./build/client/"
+  },
+  "placement": {
+    "mode": "smart"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ENV": "development",
+    "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+  },
+  "env": {
+    "production": {
+      "vars": {
+        "ENV": "production",
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+      },
+      "secrets_store_secrets": [
+        {
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
+        },
+        {
+          "binding": "CDP_CLIENT_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_CDP_CLIENT_API_KEY"
+        }
+      ],
+      "services": [
+        {
+          "binding": "API_WORKER",
+          "service": "kon-api-production"
+        }
+      ]
+    },
+    "staging": {
+      "vars": {
+        "ENV": "staging",
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+      },
+      "secrets_store_secrets": [
+        {
+          "binding": "ALCHEMY_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_ALCHEMY_API_KEY"
+        },
+        {
+          "binding": "CDP_CLIENT_API_KEY",
+          "store_id": "97afb9f31a864e728b81e32277f335e0",
+          "secret_name": "KON_CDP_CLIENT_API_KEY"
+        }
+      ],
+      "services": [
+        {
+          "binding": "API_WORKER",
+          "service": "kon-api-staging"
+        }
+      ]
+    }
+  }
+}

@@ -3,8 +3,8 @@ import '@konxyz/event/worker-configuration.d.ts'
 export type AppConfig = {
   id: string
   name: string
+  site?: string
   description?: string
-  url: string
   version: string
   template: {
     type: 'shop' | 'event' | 'community'
@@ -20,6 +20,17 @@ export type AppConfig = {
     accent?: string
     bg?: string
   }
+  coin?: {
+    chainId: number
+    address: `0x${string}` | undefined
+  }
+  rewards?: {
+    id: string
+    title: string
+    description?: string
+    value: number
+    amount?: number
+  }[]
 }
 
 export type LoaderData = {

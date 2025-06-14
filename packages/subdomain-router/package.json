@@ -1,0 +1,19 @@
+{
+  "name": "@konxyz/subdomain-router",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "$npm_execpath run deploy:staging",
+    "deploy:production": "wrangler deploy --env production",
+    "deploy:staging": "wrangler deploy --env staging",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.8.19",
+    "typescript": "^5.5.2",
+    "vitest": "~3.0.7"
+  }
+}

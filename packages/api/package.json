@@ -2,17 +2,18 @@
   "name": "@konxyz/api",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
-    "typegen": "wrangler type",
+    "deploy": "$npm_execpath run deploy:staging",
+    "deploy:production": "wrangler deploy --minify --env production",
+    "deploy:staging": "wrangler deploy --minify --env staging",
+    "cf-typegen": "wrangler types",
     "test": "vitest run"
   },
   "dependencies": {
-    "hono": "^4.6.14",
+    "hono": "^4.7.11",
     "viem": "2.x"
   },
   "devDependencies": {
     "@konxyz/shared": "workspace:*",
-    "@cloudflare/workers-types": "^4.20241205.0",
-    "vitest": "^3.0.5"
+    "vitest": "^3.2.3"
   }
 }

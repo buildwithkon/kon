@@ -1,15 +1,17 @@
 import type { ApiType } from '@konxyz/api/src'
-import { FaviconPng, LogoPng } from '@konxyz/shared/assets'
 import { devConfig } from '@konxyz/shared/data/devConfig'
 import {
   APP_FALLBACK_DESCRIPTION,
   APP_FALLBACK_NAME,
   APP_NAME,
   COLOR_HEX_MAIN_DEFAULT,
-  ENS_APPCONFIG_USER
+  DEFAULT_FAVICON_URL,
+  DEFAULT_LOGO_URL,
+  getEnsAppConfigUser
 } from '@konxyz/shared/lib/const'
 import type { AppConfig } from '@konxyz/shared/types'
 import { hc } from 'hono/client'
+import type { Env } from 'hono/types'
 
 export const client = (origin: string, env: Env, noCache = false) => {
   if (process.env.NODE_ENV === 'development') {
@@ -20,6 +22,24 @@ export const client = (origin: string, env: Env, noCache = false) => {
     ...(noCache && { headers: { 'x-no-cache': 'true' } })
   })
 }
+
+export const resolveEnv = async (env: Env) => {
+  const result = {}
+  for (const key of Object.keys(env)) {
+    const value = env[key]
+    if (typeof value === 'string') {
+      result[key] = value
+    } else if (value && typeof value.get === 'function') {
+      // Cloudflare SecretStore binding
+      result[key] = await value.get()
+    } else {
+      // fallback: toString or undefined
+      result[key] = value?.toString?.() ?? ''
+    }
+  }
+  return result
+}
+
 const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')
@@ -49,8 +69,7 @@ export const loadAppConfig = async (_url: string, env: Env) => {
         chain: 'sepolia'
       }
     })
-    const json = await res.json()
-    appConfig = JSON.parse(json)
+    appConfig = await res.json()
   } catch (error) {
     console.error('Error fetching appConfig:', error)
   }
@@ -70,7 +89,7 @@ export const generateManifest = (appConfig: AppConfig) => ({
   theme_color: appConfig?.colors?.main ?? COLOR_HEX_MAIN_DEFAULT,
   icons: [
     {
-      src: appConfig?.icons?.logo ?? FaviconPng,
+      src: appConfig?.icons?.logo ?? DEFAULT_FAVICON_URL,
       sizes: '512x512',
       type: 'image/png'
     }
@@ -84,11 +103,11 @@ export const generateRootMeta = (appConfig: AppConfig) => [
   { property: 'og:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
   { property: 'og:site_name', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'og:type', content: 'website' },
-  { property: 'og:image', content: appConfig?.icons?.logo ?? LogoPng },
+  { property: 'og:image', content: appConfig?.icons?.logo ?? DEFAULT_LOGO_URL },
   { property: 'twitter:card', content: 'summary' },
   { property: 'twitter:title', content: appConfig?.name ?? APP_FALLBACK_NAME },
   { property: 'twitter:description', content: appConfig?.description ?? APP_FALLBACK_DESCRIPTION },
-  { property: 'twitter:image', content: appConfig?.icons?.logo ?? LogoPng }
+  { property: 'twitter:image', content: appConfig?.icons?.logo ?? DEFAULT_LOGO_URL }
 ]
 
 export const checkId = async (id: string, url: string, env: Env) => {
@@ -96,7 +115,7 @@ export const checkId = async (id: string, url: string, env: Env) => {
   try {
     const res = await client(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
-        id: `${id}.${ENS_APPCONFIG_USER}`,
+        id: `${id}.${getEnsAppConfigUser()}`,
         chain: 'sepolia'
       }
     })

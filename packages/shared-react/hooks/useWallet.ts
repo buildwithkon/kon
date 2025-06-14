@@ -1,11 +1,60 @@
-import { useConnect, useConnections } from 'wagmi'
+import { useAvatar as useAvatarOCK, useName as useNameOCK } from '@coinbase/onchainkit/identity'
+import { base, mainnet } from 'viem/chains'
+import { useBalance, useConnect, useConnections } from 'wagmi'
 
 export const useLogin = () => {
   const { connectAsync, connectors } = useConnect()
-  const loginAsync = async () =>
-    connectAsync({ connector: connectors.find((c) => c.id === 'coinbaseWalletSDK') ?? connectors[0] })
+  const loginAsync = async (connectorId = 'coinbaseWalletSDK') =>
+    connectAsync({ connector: connectors.find((c) => c.id === connectorId) ?? connectors[0] })
 
   return { loginAsync }
+}
+
+export const useName = (address: `0x${string}` | undefined) => {
+  const { data: baseName, isLoading: isLoadingBaseName } = useNameOCK({
+    address: address ?? '0x',
+    chain: base
+  })
+  const { data: ensName, isLoading: isLoadingEnsName } = useNameOCK({
+    address: address ?? '0x',
+    chain: mainnet
+  })
+
+  return {
+    name: baseName ?? ensName ?? undefined,
+    ensName,
+    baseName,
+    isLoading: address ? isLoadingBaseName || isLoadingEnsName : false
+  }
+}
+
+export const useAvatar = (name: string | undefined) => {
+  const { data: avatar, isLoading } = useAvatarOCK({ ensName: name ?? '' })
+
+  return {
+    avatar,
+    isLoading: name ? isLoading : false
+  }
+}
+
+export const useCoinBalance = (
+  address: `0x${string}` | undefined,
+  coinChainId: number | undefined,
+  coinAddress: `0x${string}` | undefined
+) => {
+  const { data, isLoading } = useBalance({
+    address,
+    token: coinAddress,
+    chainId: coinChainId,
+    query: {
+      enabled: !!address && !!coinAddress && !!coinChainId
+    }
+  })
+
+  return {
+    data,
+    isLoading: address || coinChainId || coinAddress ? isLoading : false
+  }
 }
 
 export const useCurrentConnector = () => {
