@@ -40,8 +40,6 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const config = await loadAppConfig(request.url, env)
   const cookie = request.headers.get('cookie')
 
-  console.log('----env---', env, config)
-
   return {
     ...config,
     cookie,
