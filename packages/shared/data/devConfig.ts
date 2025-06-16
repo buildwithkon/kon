@@ -102,6 +102,13 @@ export const devConfig3 = {
         content: 'md:https://hackmd.io/@yujiym/rkVGH9UTkx/download'
       },
       {
+        id: 'agenda',
+        title: 'Agenda',
+        icon: 'ph-calendar-dots',
+        content:
+          'ical:https://calendar.google.com/calendar/ical/c_59c730ff62a448e3f51ec962649df4d21f9727835fe7e116c291a3cde3dff1da%40group.calendar.google.com/public/basic.ics'
+      },
+      {
         id: 'forum',
         title: 'Forum',
         content: 'xmtp:1111'
@@ -203,4 +210,4 @@ export const baseConfig = {
   }
 }
 
-export const devConfig = devConfig4
+export const devConfig = devConfig3

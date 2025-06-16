@@ -2,6 +2,7 @@ import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
+import Ical from '@konxyz/shared-react/components/modules/Ical'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
@@ -40,7 +41,7 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     const res = await fetch(contentBody)
     content = await res.text()
   }
-  if (contentType === 'iframe') {
+  if (contentType === 'iframe' || contentType === 'ical') {
     content = contentBody
   }
 
@@ -69,16 +70,26 @@ export default function Page() {
           ? 'px-0 pt-0'
           : contentType === 'xmtp'
             ? 'px-0 pt-16'
-            : isFirstTab
-              ? 'px-6 pt-6'
-              : 'px-6 pt-16',
+            : contentType === 'ical'
+              ? 'flex h-full flex-col px-6 pt-16'
+              : isFirstTab
+                ? 'px-6 pt-6'
+                : 'px-6 pt-16',
         isStandalone() ? 'pb-22' : 'pb-16'
       )}
     >
       {showHeader && (
         <TopBar
           title={tabData?.title ?? ''}
-          rightBtn={isLastTab ? 'config' : contentType === 'xmtp' ? 'xmtp' : undefined}
+          rightBtn={
+            isLastTab
+              ? 'config'
+              : contentType === 'xmtp'
+                ? 'xmtp'
+                : contentType === 'ical'
+                  ? 'ical'
+                  : undefined
+          }
           backBtn
         />
       )}
@@ -87,6 +98,11 @@ export default function Page() {
         <div className="flex flex-col gap-6 py-6">
           <p className="whitespace-pre-wrap px-1">{appConfig?.description}</p>
           <Rewards appConfig={appConfig} />
+        </div>
+      )}
+      {contentType === 'ical' && (
+        <div className="min-h-0 flex-1">
+          <Ical url={content} />
         </div>
       )}
       {contentType === 'md' && <Markdown content={content} />}
