@@ -1,7 +1,12 @@
+import { Toast } from '@base-ui-components/react'
 import { getIcalData } from '@konxyz/shared/lib/ical'
-import { CalendarDotIcon, ClockIcon } from '@phosphor-icons/react'
+import { BookmarkSimpleIcon, CalendarDotIcon, ClockIcon, MapPinSimpleIcon } from '@phosphor-icons/react'
+import { useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import { useEffect, useRef, useState } from 'react'
 import type { IcsCalendar, IcsEvent } from 'ts-ics'
+
+export const savedEventIdsAtom = atomWithStorage('kon.events', [] as string[])
 
 // Helper function to strip HTML tags and decode HTML entities
 const parseHtmlContent = (html: string | undefined): string => {
@@ -17,6 +22,7 @@ const parseHtmlContent = (html: string | undefined): string => {
 
 // Helper function to format event time only (since date is now in header)
 const formatEventTime = (event: IcsEvent): string => {
+  console.log('event----', event)
   if (!event.start) return ''
 
   const timeOptions: Intl.DateTimeFormatOptions = {
@@ -26,11 +32,9 @@ const formatEventTime = (event: IcsEvent): string => {
   }
 
   // Check if event has specific times (not all-day)
-  const hasStartTime = event.start && 'dateTime' in event.start
-  const hasEndTime = event.end && 'dateTime' in event.end
-
+  const hasStartTime = event.start?.date
+  const hasEndTime = event.end?.date
   if (!hasStartTime) {
-    // All-day event
     return 'All day'
   }
 
@@ -38,7 +42,6 @@ const formatEventTime = (event: IcsEvent): string => {
   const startTime = startDate.toLocaleTimeString('en-US', timeOptions)
 
   if (!event.end || !hasEndTime) {
-    // Only start time available
     return startTime
   }
 
@@ -54,6 +57,18 @@ type IcalData = IcsCalendar | { raw: string; parseError: string } | null
 export default function Ical({ url }: { url: string }) {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<IcalData>(null)
+  const [eventIds, setEventIds] = useAtom(savedEventIdsAtom)
+  const tm = Toast.useToastManager()
+
+  const saveEventId = (uid: string) => {
+    if (eventIds.includes(uid)) {
+      setEventIds(eventIds.filter((id) => id !== uid))
+      tm.add({ title: '🗑️ Removed' })
+    } else {
+      setEventIds([...eventIds, uid])
+      tm.add({ title: '✅ Saved!' })
+    }
+  }
 
   useEffect(() => {
     const fetchIcalData = async () => {
@@ -134,7 +149,6 @@ export default function Ical({ url }: { url: string }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {loading && <div className="text-center text-muted text-sm">Loading calendar events...</div>}
       {!loading && sortedAndGroupedEvents.length > 0 && (
         <>
           {/* Horizontal scrollable date header */}
@@ -165,23 +179,46 @@ export default function Ical({ url }: { url: string }) {
                 <h2 className="flex items-center gap-2 px-4 py-3 font-bold content-blur">
                   <CalendarDotIcon size={24} />
                   {new Date(date).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    month: 'long',
+                    weekday: 'short',
+                    month: 'short',
                     day: 'numeric',
                     year: 'numeric'
                   })}
                 </h2>
                 <div className="px-4 pb-4">
                   {events.map((event: IcsEvent) => (
-                    <div key={event.uid} className="mb-2 overflow-hidden rounded-lg border border-muted p-4">
-                      <h3 className="flex items-center pb-1">{parseHtmlContent(event.summary)}</h3>
+                    <div
+                      key={event.uid}
+                      className="relative mb-2 overflow-hidden rounded-lg border border-muted p-4"
+                    >
+                      <h3 className="flex items-center pr-6 pb-1">{parseHtmlContent(event.summary)}</h3>
                       <p className="line-clamp-2 pl-1 text-muted text-sm">
                         {parseHtmlContent(event.description)}
                       </p>
-                      <span className="flex items-center gap-1 pt-2 text-xs">
-                        <ClockIcon size={18} />
-                        {formatEventTime(event)}
-                      </span>
+                      <div className="flex flex-col gap-0.5 pt-2">
+                        {event?.location && (
+                          <div className="flex items-center gap-1 overflow-x-scroll text-nowrap text-xs">
+                            <MapPinSimpleIcon />
+                            {event.location}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1 text-right text-xs">
+                          <ClockIcon size={18} />
+                          {formatEventTime(event)}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className={`absolute top-3.5 right-3.5 ${
+                          eventIds.includes(event.uid) ? 'text-main' : 'text-muted hover:text-main'
+                        }`}
+                        onClick={() => saveEventId(event.uid)}
+                      >
+                        <BookmarkSimpleIcon
+                          size={22}
+                          weight={eventIds.includes(event.uid) ? 'duotone' : 'regular'}
+                        />
+                      </button>
                     </div>
                   ))}
                 </div>
