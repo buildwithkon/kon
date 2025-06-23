@@ -15,7 +15,7 @@ export default function TopPage({ appConfig }: { appConfig: AppConfig }) {
                 src={appConfig?.icons?.logoBgTransparent ?? appConfig?.icons?.logo}
                 className={cn(
                   'mx-auto mb-10 max-h-48 max-w-48',
-                  appConfig?.icons?.logoBgTransparent ? 'rounded-full' : 'rounded-4xl'
+                  appConfig?.icons?.logoBgTransparent ? 'rounded-xl' : 'rounded-full'
                 )}
                 alt={appConfig?.name ?? ''}
               />

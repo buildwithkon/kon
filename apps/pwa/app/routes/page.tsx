@@ -1,4 +1,5 @@
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
+import IcalConfigDialog from '@konxyz/shared-react/components/IcalConfigDialog'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
@@ -10,6 +11,7 @@ import Rewards from '@konxyz/shared-react/components/modules/Rewards'
 import { loadAppConfig } from '@konxyz/shared/lib/app'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
+import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
 
@@ -68,13 +70,11 @@ export default function Page() {
         'wrapper',
         contentType === 'iframe'
           ? 'px-0 pt-0'
-          : contentType === 'xmtp'
+          : contentType === 'xmtp' || contentType === 'ical'
             ? 'px-0 pt-16'
-            : contentType === 'ical'
-              ? 'flex h-full flex-col px-6 pt-16'
-              : isFirstTab
-                ? 'px-6 pt-6'
-                : 'px-6 pt-16',
+            : isFirstTab
+              ? 'px-6 pt-6'
+              : 'px-6 pt-16',
         isStandalone() ? 'pb-22' : 'pb-16'
       )}
     >
@@ -82,13 +82,15 @@ export default function Page() {
         <TopBar
           title={tabData?.title ?? ''}
           rightBtn={
-            isLastTab
-              ? 'config'
-              : contentType === 'xmtp'
-                ? 'xmtp'
-                : contentType === 'ical'
-                  ? 'ical'
-                  : undefined
+            isLastTab ? (
+              'config'
+            ) : contentType === 'xmtp' ? (
+              'xmtp'
+            ) : contentType === 'ical' ? (
+              <IcalConfigDialog icalUrl={content}>
+                <DotsThreeVerticalIcon size={32} weight="bold" />
+              </IcalConfigDialog>
+            ) : undefined
           }
           backBtn
         />

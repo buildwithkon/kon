@@ -1,4 +1,4 @@
-import { CalendarPlusIcon, CaretCircleLeftIcon } from '@phosphor-icons/react'
+import { CaretCircleLeftIcon } from '@phosphor-icons/react'
 import { Link } from 'react-router'
 import ConfigDialog from '~/components/ConfigDialog'
 import XMTPConfigDialog from '~/components/XMTPConfigDialog'
@@ -10,7 +10,7 @@ export default function TopBar({
 }: {
   backBtn?: string | true
   title?: string | React.ReactNode
-  rightBtn?: 'config' | 'xmtp' | 'ical' | undefined
+  rightBtn?: 'config' | 'xmtp' | React.ReactNode | undefined
 }) {
   return (
     <nav className="topbar content fixed top-0 right-0 left-0 z-40 h-16 shadow-gray-400/10 shadow-lg">
@@ -26,11 +26,7 @@ export default function TopBar({
           </span>
           {rightBtn === 'config' && <ConfigDialog />}
           {rightBtn === 'xmtp' && <XMTPConfigDialog />}
-          {rightBtn === 'ical' && (
-            <button type="button">
-              <CalendarPlusIcon />
-            </button>
-          )}
+          {rightBtn && typeof rightBtn !== 'string' && rightBtn}
         </div>
       </div>
     </nav>
