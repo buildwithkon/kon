@@ -92,6 +92,7 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
           </>
         )}
         <Collapsible
+          disabled={isStandalone()}
           trigger={
             <DialogTitle className="flex items-center justify-center font-bold text-2xl">
               <SignInIcon size={28} className="-ml-5 mr-3" />
