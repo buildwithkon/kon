@@ -12,6 +12,7 @@ import {
 import isMobile from 'is-mobile'
 import FaceIdIcon from '~/components/svg/FaceId'
 import WalletConnectIcon from '~/components/svg/WalletConnect'
+import Collapsible from '~/components/ui/Collapsible'
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
 import { useLogin } from '~/hooks/useWallet'
 
@@ -90,42 +91,47 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
             </div>
           </>
         )}
-        <DialogTitle className="flex items-center justify-center pb-6 font-bold text-2xl">
-          <SignInIcon size={28} className="-ml-5 mr-3" />
-          Login
-        </DialogTitle>
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
-            onClick={() => login('coinbaseWalletSDK')}
-          >
-            <FaceIdIcon className="h-7 w-7" />
-            Smart Wallet
-          </button>
-          {!isMobile() && (
+        <Collapsible
+          trigger={
+            <DialogTitle className="flex items-center justify-center font-bold text-2xl">
+              <SignInIcon size={28} className="-ml-5 mr-3" />
+              Login
+            </DialogTitle>
+          }
+        >
+          <div className="flex flex-col gap-4 pt-6">
             <button
               type="button"
               className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
-              onClick={() => login('injected')}
+              onClick={() => login('coinbaseWalletSDK')}
             >
-              <CompassIcon size={28} />
-              Browser Wallet
+              <FaceIdIcon className="h-7 w-7" />
+              Smart Wallet
             </button>
-          )}
-          <button
-            type="button"
-            className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
-            onClick={() => login('walletConnect')}
-          >
-            <WalletConnectIcon className="h-7 w-7" />
-            WalletConnect
-          </button>
-        </div>
-        <p className="px-2 pt-4 text-sm">
-          A wallet with Basenames or ENS is recommended.
-          <br /> We'll also adopt original ENS Subnames soon.
-        </p>
+            {!isMobile() && (
+              <button
+                type="button"
+                className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
+                onClick={() => login('injected')}
+              >
+                <CompassIcon size={28} />
+                Browser Wallet
+              </button>
+            )}
+            <button
+              type="button"
+              className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
+              onClick={() => login('walletConnect')}
+            >
+              <WalletConnectIcon className="h-7 w-7" />
+              WalletConnect
+            </button>
+          </div>
+          <p className="px-2 pt-4 text-sm">
+            A wallet with Basenames or ENS is recommended.
+            <br /> We'll also adopt original ENS Subnames soon.
+          </p>
+        </Collapsible>
       </DialogContent>
     </Dialog>
   )
