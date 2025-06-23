@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 
 const ical = new Hono()
@@ -6,10 +7,23 @@ const ical = new Hono()
 // Enable CORS for this endpoint
 ical.use('/*', cors())
 
+ical.use('*', async (c, next) => {
+  const noCache = c.req.header('x-no-cache')
+
+  if (noCache) {
+    return next()
+  }
+
+  return cache({
+    cacheName: 'kon-api',
+    cacheControl: 'max-age=600'
+  })(c, next)
+})
+
 // Proxy endpoint for fetching iCal data
 ical.get('/proxy', async (c) => {
   const url = c.req.query('url')
-  
+
   if (!url) {
     return c.json({ error: 'URL parameter is required' }, 400)
   }
@@ -17,13 +31,13 @@ ical.get('/proxy', async (c) => {
   try {
     // Fetch the iCal data from the provided URL
     const response = await fetch(url)
-    
+
     if (!response.ok) {
       return c.json({ error: `Failed to fetch iCal data: ${response.statusText}` }, response.status)
     }
-    
+
     const icalData = await response.text()
-    
+
     // Return the iCal data with appropriate headers
     return c.text(icalData, 200, {
       'Content-Type': 'text/calendar',

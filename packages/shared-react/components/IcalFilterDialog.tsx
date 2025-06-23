@@ -20,13 +20,13 @@ import {
 } from '~/components/ui/Dialog'
 import { selectedLocationsAtom, showSavedOnlyAtom } from './modules/Ical'
 
-interface FilterIcalDialogProps {
+interface Props {
   children: React.ReactNode
   locations: string[]
   filteredEventCount: number
 }
 
-export default function FilterIcalDialog({ children, locations, filteredEventCount }: FilterIcalDialogProps) {
+export default function FilterIcalDialog({ children, locations, filteredEventCount }: Props) {
   const [selectedLocations, setSelectedLocations] = useAtom(selectedLocationsAtom)
   const [showSavedOnly, setShowSavedOnly] = useAtom(showSavedOnlyAtom)
   return (

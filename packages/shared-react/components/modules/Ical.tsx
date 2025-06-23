@@ -212,7 +212,7 @@ export default function Ical({ url }: { url: string }) {
 
   return (
     <div className="">
-      {totalEventCount >= 1 && (
+      {totalEventCount >= 5 && (
         <div className="flex items-center gap-3 px-4 pt-4">
           <div className="relative flex w-full items-center">
             <input
@@ -225,7 +225,7 @@ export default function Ical({ url }: { url: string }) {
               <MagnifyingGlassIcon size={24} />
             </button>
           </div>
-          <IcalFilterDialog locations={uniqueLocations} filteredEventCount={filteredEventCount} icalUrl={url}>
+          <IcalFilterDialog locations={uniqueLocations} filteredEventCount={filteredEventCount}>
             <button type="button" className="btn-main rounded-lg">
               <SlidersHorizontalIcon size={24} />
             </button>
@@ -293,18 +293,20 @@ export default function Ical({ url }: { url: string }) {
                             {formatEventTime(event)}
                           </div>
                         </div>
-                        <button
-                          type="button"
-                          className={`absolute top-3.5 right-3.5 ${
-                            eventIds.includes(event.uid) ? 'text-main' : 'text-muted hover:text-main'
-                          }`}
-                          onClick={() => saveEventId(event.uid)}
-                        >
-                          <BookmarkSimpleIcon
-                            size={22}
-                            weight={eventIds.includes(event.uid) ? 'duotone' : 'regular'}
-                          />
-                        </button>
+                        {totalEventCount >= 5 && (
+                          <button
+                            type="button"
+                            className={`absolute top-3.5 right-3.5 ${
+                              eventIds.includes(event.uid) ? 'text-main' : 'text-muted hover:text-main'
+                            }`}
+                            onClick={() => saveEventId(event.uid)}
+                          >
+                            <BookmarkSimpleIcon
+                              size={22}
+                              weight={eventIds.includes(event.uid) ? 'duotone' : 'regular'}
+                            />
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>
