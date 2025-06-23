@@ -1,5 +1,4 @@
 import { Toast } from '@base-ui-components/react'
-import { getIcalData } from '@konxyz/shared/lib/ical'
 import {
   BookmarkSimpleIcon,
   CalendarBlankIcon,
@@ -11,7 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import type { IcsCalendar, IcsEvent } from 'ts-ics'
 import IcalFilterDialog from '~/components/IcalFilterDialog'
 
@@ -66,9 +65,7 @@ const formatEventTime = (event: IcsEvent): string => {
 
 type IcalData = IcsCalendar | { raw: string; parseError: string } | null
 
-export default function Ical({ url }: { url: string }) {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<IcalData>(null)
+export default function Ical({ data }: { url: string; data?: IcalData }) {
   const [eventIds, setEventIds] = useAtom(savedEventIdsAtom)
   const showSavedOnly = useAtomValue(showSavedOnlyAtom)
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
@@ -85,50 +82,18 @@ export default function Ical({ url }: { url: string }) {
     }
   }
 
-  useEffect(() => {
-    const fetchIcalData = async () => {
-      setLoading(true)
-
-      try {
-        // Determine API URL based on environment
-        const apiUrl =
-          window.location.hostname === 'localhost' ? 'http://localhost:8787' : 'https://api.kon.xyz' // Update with your production API URL
-
-        const data = await getIcalData(url, { apiUrl })
-        console.log('Fetched iCal data:', data)
-        setData(data)
-
-        // Check if parsing failed
-        if ('parseError' in data) {
-          console.warn('iCal parsing failed, using raw data:', data.parseError)
-          // You can still use the raw data if needed
-          // For now, we'll just log it
-        } else {
-          // Successfully parsed iCal data
-          console.log('Successfully parsed iCal calendar with', data.events?.length || 0, 'events')
-        }
-      } catch (err) {
-        console.error('Failed to fetch iCal data:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (url) {
-      fetchIcalData()
-    }
-  }, [url])
+  const loading = !data
 
   // Extract unique locations from all events and get total event count
   const { uniqueLocations, totalEventCount } = (() => {
     if (!data || !('events' in data) || !data.events) return { uniqueLocations: [], totalEventCount: 0 }
 
     const locations = new Set<string>()
-    data.events.forEach((event) => {
-      if (event.location && event.location.trim()) {
+    for (const event of data.events) {
+      if (event.location?.trim()) {
         locations.add(event.location.trim())
       }
-    })
+    }
 
     return {
       uniqueLocations: Array.from(locations).sort(),

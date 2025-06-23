@@ -9,6 +9,7 @@ import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import Rewards from '@konxyz/shared-react/components/modules/Rewards'
 import { loadAppConfig } from '@konxyz/shared/lib/app'
+import { getIcalData } from '@konxyz/shared/lib/ical'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
@@ -36,6 +37,7 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
   })()
 
   let content = undefined
+  let icalData = undefined
 
   const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/) || []
 
@@ -43,8 +45,17 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     const res = await fetch(contentBody)
     content = await res.text()
   }
-  if (contentType === 'iframe' || contentType === 'ical') {
+  if (contentType === 'iframe') {
     content = contentBody
+  }
+  if (contentType === 'ical') {
+    content = contentBody
+    try {
+      icalData = await getIcalData(contentBody, request.url, env)
+    } catch (error) {
+      console.error('Failed to fetch iCal data in loader:', error)
+      icalData = null
+    }
   }
 
   return {
@@ -53,12 +64,13 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     isFirstTab,
     isLastTab,
     contentType,
-    content
+    content,
+    icalData
   }
 }
 
 export default function Page() {
-  const { tabData, content, appConfig, isFirstTab, isLastTab, contentType } = useLoaderData()
+  const { tabData, content, appConfig, isFirstTab, isLastTab, contentType, icalData } = useLoaderData()
 
   if (!tabData) return <NotFound />
 
@@ -104,7 +116,7 @@ export default function Page() {
       )}
       {contentType === 'ical' && (
         <div className="min-h-0 flex-1">
-          <Ical url={content} />
+          <Ical url={content} data={icalData} />
         </div>
       )}
       {contentType === 'md' && <Markdown content={content} />}

@@ -1,35 +1,29 @@
+import type { Env } from 'hono/types'
 import { type IcsCalendar, convertIcsCalendar } from 'ts-ics'
-
-interface IcalOptions {
-  apiUrl?: string
-}
+import { client, prepare } from '~/lib/app'
 
 type IcalResult = IcsCalendar | { raw: string; parseError: string }
 
-export const getIcalData = async (url: string, options?: IcalOptions): Promise<IcalResult> => {
-  // Use the API proxy to fetch iCal data to avoid CORS issues
-  // Default to localhost for development, can be overridden via options
-  const apiUrl = options?.apiUrl || 'http://localhost:8787'
+export const getIcalData = async (url: string, requestUrl: string, env: Env): Promise<IcalResult> => {
+  const { origin } = prepare(requestUrl)
 
-  const proxyUrl = `${apiUrl}/ical/proxy?url=${encodeURIComponent(url)}`
+  console.log('****origin', origin, client)
 
   try {
-    const response = await fetch(proxyUrl)
+    const res = (await client(origin, env).ical.proxy.$get({
+      query: { url }
+    })) as Response
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch iCal data: ${response.statusText}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch iCal data: ${res.statusText}`)
     }
 
-    const icalData = await response.text()
-    console.log('Raw iCal data (first 500 chars):', icalData.substring(0, 500))
+    const icalData = await res.text()
 
     try {
       const ical: IcsCalendar = convertIcsCalendar(undefined, icalData)
-      console.log('Parsed iCal calendar:', ical)
       return ical
     } catch (parseError) {
-      console.error('Failed to parse iCal data:', parseError)
-
       // Log more details about the parsing error
       if (parseError instanceof Error && 'issues' in parseError) {
         console.log('Parsing issues:', JSON.stringify(parseError, null, 2))

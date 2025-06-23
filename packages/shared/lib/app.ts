@@ -14,7 +14,7 @@ import { hc } from 'hono/client'
 import type { Env } from 'hono/types'
 
 export const client = (origin: string, env: Env, noCache = false) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     return hc<ApiType>('http://localhost:8787')
   }
   return hc<ApiType>(origin, {
@@ -40,7 +40,7 @@ export const resolveEnv = async (env: Env) => {
   return result
 }
 
-const prepare = (_url: string) => {
+export const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')
   const subdomain = urlArr.length > 1 ? urlArr[0] : null
