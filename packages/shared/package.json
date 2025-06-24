@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +16,7 @@
     "@konxyz/api": "workspace:*",
     "@konxyz/shared": "workspace:*",
     "@konxyz/site": "workspace:*",
+    "@ts-ics/schema-zod": "^2.1.7",
     "@wagmi/core": "^2.16.0",
     "@xmtp/browser-sdk": "^2.1.1",
     "@xmtp/node-sdk": "^2.1.0",
@@ -24,6 +24,7 @@
     "hono": "^4.7.11",
     "porto": "^0.0.3",
     "secure-random": "^1.1.2",
+    "ts-ics": "^2.1.7",
     "uint8arrays": "^5.1.0",
     "viem": "^2.30.5",
     "wagmi": "^2.15.4",

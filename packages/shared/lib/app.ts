@@ -1,4 +1,3 @@
-import type { ApiType } from '@konxyz/api/src'
 import { devConfig } from '@konxyz/shared/data/devConfig'
 import {
   APP_FALLBACK_DESCRIPTION,
@@ -9,38 +8,11 @@ import {
   DEFAULT_LOGO_URL,
   getEnsAppConfigUser
 } from '@konxyz/shared/lib/const'
+import { apiClient } from '@konxyz/shared/lib/hono'
 import type { AppConfig } from '@konxyz/shared/types'
-import { hc } from 'hono/client'
 import type { Env } from 'hono/types'
 
-export const client = (origin: string, env: Env, noCache = false) => {
-  if (process.env.NODE_ENV === 'development') {
-    return hc<ApiType>('http://localhost:8787')
-  }
-  return hc<ApiType>(origin, {
-    fetch: env.API_WORKER.fetch.bind(env.API_WORKER),
-    ...(noCache && { headers: { 'x-no-cache': 'true' } })
-  })
-}
-
-export const resolveEnv = async (env: Env) => {
-  const result = {}
-  for (const key of Object.keys(env)) {
-    const value = env[key]
-    if (typeof value === 'string') {
-      result[key] = value
-    } else if (value && typeof value.get === 'function') {
-      // Cloudflare SecretStore binding
-      result[key] = await value.get()
-    } else {
-      // fallback: toString or undefined
-      result[key] = value?.toString?.() ?? ''
-    }
-  }
-  return result
-}
-
-const prepare = (_url: string) => {
+export const prepare = (_url: string) => {
   const url = new URL(_url)
   const urlArr = url.hostname.split('.')
   const subdomain = urlArr.length > 1 ? urlArr[0] : null
@@ -63,13 +35,13 @@ export const loadAppConfig = async (_url: string, env: Env) => {
 
   let appConfig = null
   try {
-    const res = await client(origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
+    const res = await apiClient(origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
       param: {
         subdomain,
         chain: 'sepolia'
       }
     })
-    appConfig = await res.json()
+    appConfig = await (res as Response).json()
   } catch (error) {
     console.error('Error fetching appConfig:', error)
   }
@@ -113,13 +85,13 @@ export const generateRootMeta = (appConfig: AppConfig) => [
 export const checkId = async (id: string, url: string, env: Env) => {
   const { origin } = prepare(url)
   try {
-    const res = await client(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
+    const res = await apiClient(origin, env).ens[':chain'].getSubnameAddress[':id'].$get({
       param: {
         id: `${id}.${getEnsAppConfigUser()}`,
         chain: 'sepolia'
       }
     })
-    return await res.json()
+    return await (res as Response).json()
   } catch (error) {
     console.error('Error fetching subnameAddress:', error)
   }
@@ -128,14 +100,13 @@ export const checkId = async (id: string, url: string, env: Env) => {
 export const checkName = async (address: `0x${string}`, url: string, env: Env) => {
   const { origin } = prepare(url)
   try {
-    const res = await client(origin, env).ens[':chain'].getSubname[':address'].$get({
+    const res = await apiClient(origin, env).ens[':chain'].getSubname[':address'].$get({
       param: {
         address,
         chain: 'sepolia'
       }
     })
-    console.log('----checkname', res)
-    return await res.json()
+    return await (res as Response).json()
   } catch (error) {
     console.error('Error fetching subname:', error)
   }

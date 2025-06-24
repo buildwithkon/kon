@@ -1,14 +1,18 @@
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
+import IcalConfigDialog from '@konxyz/shared-react/components/IcalConfigDialog'
 import NotFound from '@konxyz/shared-react/components/NotFound'
 import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
+import Ical from '@konxyz/shared-react/components/modules/Ical'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import Rewards from '@konxyz/shared-react/components/modules/Rewards'
 import { loadAppConfig } from '@konxyz/shared/lib/app'
+import { getIcalData } from '@konxyz/shared/lib/ical'
 import { mergeMeta } from '@konxyz/shared/lib/remix'
 import { cn, isStandalone } from '@konxyz/shared/lib/utils'
+import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
 
@@ -43,6 +47,17 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
   if (contentType === 'iframe') {
     content = contentBody
   }
+  if (contentType === 'ical') {
+    try {
+      const icalData = await getIcalData(contentBody, request.url, env)
+      content = {
+        url: contentBody,
+        ical: icalData
+      }
+    } catch (error) {
+      console.error('Failed to fetch iCal data in loader:', error)
+    }
+  }
 
   return {
     appConfig,
@@ -67,7 +82,7 @@ export default function Page() {
         'wrapper',
         contentType === 'iframe'
           ? 'px-0 pt-0'
-          : contentType === 'xmtp'
+          : contentType === 'xmtp' || contentType === 'ical'
             ? 'px-0 pt-16'
             : isFirstTab
               ? 'px-6 pt-6'
@@ -78,8 +93,17 @@ export default function Page() {
       {showHeader && (
         <TopBar
           title={tabData?.title ?? ''}
-          rightBtn={isLastTab ? 'config' : contentType === 'xmtp' ? 'xmtp' : undefined}
-          backBtn
+          rightBtn={
+            isLastTab ? (
+              'config'
+            ) : contentType === 'xmtp' ? (
+              'xmtp'
+            ) : contentType === 'ical' ? (
+              <IcalConfigDialog icalUrl={content?.url}>
+                <DotsThreeVerticalIcon size={32} weight="bold" />
+              </IcalConfigDialog>
+            ) : undefined
+          }
         />
       )}
       {isFirstTab && <ProfileCard appConfig={appConfig} isSticky showQr />}
@@ -89,6 +113,7 @@ export default function Page() {
           <Rewards appConfig={appConfig} />
         </div>
       )}
+      {contentType === 'ical' && <Ical url={content?.url} data={content?.ical} />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
       {contentType === 'xmtp' && <Forum />}
