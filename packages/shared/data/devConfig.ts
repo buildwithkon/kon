@@ -198,4 +198,13 @@ export const baseConfig = {
   }
 }
 
+export const dummyRoles = {
+  schema: 'eas:0x0000000000000000000000000000000000000000',
+  lists: [
+    { id: 'admin', label: '🛡️ Admin' },
+    { id: 'stuff', label: '✏️ Stuff' },
+    { id: 'dev', label: '👤 Developer' }
+  ]
+}
+
 export const devConfig = devConfig3

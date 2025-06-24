@@ -1,3 +1,3 @@
-import { devConfig } from '@konxyz/shared/data/devConfig'
+import { dummyRoles } from '@konxyz/shared/data/devConfig'
 
-console.log(JSON.stringify(devConfig))
+console.log(JSON.stringify(dummyRoles))
