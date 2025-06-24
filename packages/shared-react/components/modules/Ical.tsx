@@ -248,7 +248,7 @@ export default function Ical({ data }: { url: string; data?: IcalData }) {
                         </p>
                         <div className="flex flex-col gap-0.5 pt-2">
                           {event?.location && (
-                            <div className="flex items-center gap-1 overflow-x-scroll text-nowrap text-xs">
+                            <div className="flex items-center gap-1 overflow-x-hidden truncate text-nowrap text-xs">
                               <MapPinSimpleIcon />
                               {event.location}
                             </div>

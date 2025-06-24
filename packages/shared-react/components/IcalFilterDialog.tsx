@@ -35,7 +35,7 @@ export default function FilterIcalDialog({ children, locations, filteredEventCou
       <DialogContent className="content">
         <DialogTitle className="flex items-center justify-center text-center font-bold text-xl">
           <SlidersHorizontalIcon size={24} weight="bold" className="-mt-0.5 -ml-2 mr-1.5" />
-          Filter events
+          Filter Events
         </DialogTitle>
         <DialogDescription className="hidden text-center">
           Filter events by saved or location

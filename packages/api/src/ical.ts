@@ -30,13 +30,13 @@ ical.get('/proxy', async (c) => {
 
   try {
     // Fetch the iCal data from the provided URL
-    const response = await fetch(url)
+    const res = await fetch(url)
 
-    if (!response.ok) {
-      return c.json({ error: `Failed to fetch iCal data: ${response.statusText}` }, response.status)
+    if (!res.ok) {
+      return c.json({ error: `Failed to fetch iCal data: ${res.statusText}` }, res.status)
     }
 
-    const icalData = await response.text()
+    const icalData = await res.text()
 
     // Return the iCal data with appropriate headers
     return c.text(icalData, 200, {

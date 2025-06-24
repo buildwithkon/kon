@@ -90,28 +90,16 @@ export const devConfig3 = {
         content: 'md:https://hackmd.io/@yujiym/BkWsINrp1e/download'
       },
       {
-        id: 'conf',
-        title: 'Conference',
-        icon: 'ph-megaphone',
-        content: 'md:https://hackmd.io/@yujiym/SkvoWc86yx/download'
-      },
-      {
-        id: 'hackathon',
-        title: 'Hackathon',
-        icon: 'ph-laptop',
-        content: 'md:https://hackmd.io/@yujiym/rkVGH9UTkx/download'
-      },
-      {
         id: 'agenda',
         title: 'Agenda',
         icon: 'ph-calendar-dots',
         content:
-          'ical:https://calendar.google.com/calendar/ical/c_59c730ff62a448e3f51ec962649df4d21f9727835fe7e116c291a3cde3dff1da%40group.calendar.google.com/public/basic.ics'
+          'ical:https://calendar.google.com/calendar/ical/c_14dfbc731f48db1e6b25a6603fb2a34eed7d6d7d8828ea82d5ea7c96c695bd57%40group.calendar.google.com/public/basic.ics'
       },
       {
         id: 'forum',
         title: 'Forum',
-        content: 'xmtp:1111'
+        content: 'xmtp:7c8f2a71a8baa86cf73cef61c9b0df55'
       },
       {
         id: 'info',
@@ -150,7 +138,7 @@ export const devConfig4 = {
       {
         id: 'forum',
         title: 'Forum',
-        content: 'xmtp:c1b9bfa71d0f743aaa9bd838d1e5b946'
+        content: 'xmtp:7c8f2a71a8baa86cf73cef61c9b0df55'
       },
       {
         id: 'misc',
@@ -169,7 +157,7 @@ export const devConfig4 = {
   },
   coin: {
     chainId: 8453,
-    address: '0x036cbd53842c5426634e7929541ec2318f3dcf7e'
+    address: '0xe1310e9ba4b0ce0665834bdfdc96cf7efb68bfd5'
   },
   rewards: DUMMY_REWARDS
 }

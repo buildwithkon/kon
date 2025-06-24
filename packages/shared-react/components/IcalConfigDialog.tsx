@@ -44,12 +44,12 @@ export default function IcalConfigDialog({ children, icalUrl }: Props) {
             </div>
           </li>
           <li>
-            <label htmlFor="cal-import">Import events to calendar</label>
+            <label htmlFor="cal-import">Add Events to Calendar</label>
             <a
               href={icalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-main mt-1.5 items-center justify-center"
+              className="btn-main mt-1.5 items-center justify-center gap-2"
             >
               <CalendarPlusIcon size={24} weight="bold" />
               Import

@@ -45,8 +45,8 @@ importers:
         specifier: ^5.66.0
         version: 5.77.2(react@19.1.0)
       '@xmtp/browser-sdk':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^2.2.1
+        version: 2.2.1
       '@xmtp/proto':
         specifier: ^3.82.0
         version: 3.82.0
@@ -3205,6 +3205,10 @@ packages:
     resolution: {integrity: sha512-OvpLBY4EyUl07rtDC1dd+8jD7cQfwcRFYvD6VokRGvaUEnCWp6zmZDO+WOl0sm64UqgOIEFkWl80ZZfAL3g18g==}
     engines: {node: '>=20'}
 
+  '@xmtp/browser-sdk@2.2.1':
+    resolution: {integrity: sha512-m8c3h4Jn7be4UtRbfex0LIJp9fRtlRTi0Rsb+BPho2yXZiR/HoeTxUIiMRcXNaUJVhXJsnjgvIFPA3kfKj8siw==}
+    engines: {node: '>=20'}
+
   '@xmtp/content-type-group-updated@2.0.2':
     resolution: {integrity: sha512-ZUGLtzWALo5jimk5hYBVXjbdaKT6zP6a9wK0Urzl9H+Xv2w+H3fYDhwAidU0PXTcLL81qlUM6joxKVlsF5udvA==}
 
@@ -3245,6 +3249,10 @@ packages:
 
   '@xmtp/wasm-bindings@1.2.1':
     resolution: {integrity: sha512-25LPtsDp6fWkvlEkuNSVY7L9TJr7Ic1SdtLamhfdqLgGUo4XdBWusRt6dsZhZsD513xrMTm/kxjlrF9FHVLZbQ==}
+    engines: {node: '>=20'}
+
+  '@xmtp/wasm-bindings@1.2.2':
+    resolution: {integrity: sha512-YjlhT5LrHHb3KE42QsJdJTfSd82RhlHuivrqvw1nd/B5jDiDqq/ldLyFSV2DtpramvTOBUVjzuzdCYtBqrXjdw==}
     engines: {node: '>=20'}
 
   '@zerodev/ecdsa-validator@5.4.9':
@@ -10844,6 +10852,14 @@ snapshots:
       '@xmtp/wasm-bindings': 1.2.1
       uuid: 11.1.0
 
+  '@xmtp/browser-sdk@2.2.1':
+    dependencies:
+      '@xmtp/content-type-group-updated': 2.0.2
+      '@xmtp/content-type-primitives': 2.0.2
+      '@xmtp/content-type-text': 2.0.2
+      '@xmtp/wasm-bindings': 1.2.2
+      uuid: 11.1.0
+
   '@xmtp/content-type-group-updated@2.0.2':
     dependencies:
       '@xmtp/content-type-primitives': 2.0.2
@@ -10901,6 +10917,8 @@ snapshots:
       undici: 5.29.0
 
   '@xmtp/wasm-bindings@1.2.1': {}
+
+  '@xmtp/wasm-bindings@1.2.2': {}
 
   '@zerodev/ecdsa-validator@5.4.9(@zerodev/sdk@5.4.36(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))':
     dependencies:

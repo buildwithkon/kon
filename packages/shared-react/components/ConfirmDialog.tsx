@@ -7,8 +7,8 @@ type Props = {
   children: React.ReactNode
   initialFocus?: React.RefObject<HTMLElement>
   finalFocus?: React.RefObject<HTMLElement>
-  title?: string | JSX.Element
-  description?: string | JSX.Element
+  title?: string | React.ReactNode
+  description?: string | React.ReactNode
 }
 
 export default function ConfirmDialog({

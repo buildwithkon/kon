@@ -37,7 +37,6 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
   })()
 
   let content = undefined
-  let icalData = undefined
 
   const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/) || []
 
@@ -49,12 +48,14 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     content = contentBody
   }
   if (contentType === 'ical') {
-    content = contentBody
     try {
-      icalData = await getIcalData(contentBody, request.url, env)
+      const icalData = await getIcalData(contentBody, request.url, env)
+      content = {
+        url: contentBody,
+        ical: icalData
+      }
     } catch (error) {
       console.error('Failed to fetch iCal data in loader:', error)
-      icalData = null
     }
   }
 
@@ -64,13 +65,12 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     isFirstTab,
     isLastTab,
     contentType,
-    content,
-    icalData
+    content
   }
 }
 
 export default function Page() {
-  const { tabData, content, appConfig, isFirstTab, isLastTab, contentType, icalData } = useLoaderData()
+  const { tabData, content, appConfig, isFirstTab, isLastTab, contentType } = useLoaderData()
 
   if (!tabData) return <NotFound />
 
@@ -99,12 +99,11 @@ export default function Page() {
             ) : contentType === 'xmtp' ? (
               'xmtp'
             ) : contentType === 'ical' ? (
-              <IcalConfigDialog icalUrl={content}>
+              <IcalConfigDialog icalUrl={content?.url}>
                 <DotsThreeVerticalIcon size={32} weight="bold" />
               </IcalConfigDialog>
             ) : undefined
           }
-          backBtn
         />
       )}
       {isFirstTab && <ProfileCard appConfig={appConfig} isSticky showQr />}
@@ -114,11 +113,7 @@ export default function Page() {
           <Rewards appConfig={appConfig} />
         </div>
       )}
-      {contentType === 'ical' && (
-        <div className="min-h-0 flex-1">
-          <Ical url={content} data={icalData} />
-        </div>
-      )}
+      {contentType === 'ical' && <Ical url={content?.url} data={content?.ical} />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
       {contentType === 'xmtp' && <Forum />}

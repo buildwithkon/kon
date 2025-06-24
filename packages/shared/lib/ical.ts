@@ -1,24 +1,23 @@
-import type { Env } from 'hono/types'
 import { type IcsCalendar, convertIcsCalendar } from 'ts-ics'
-import { client, prepare } from '~/lib/app'
+import { prepare } from '~/lib/app'
+import { apiClient } from '~/lib/hono'
 
 type IcalResult = IcsCalendar | { raw: string; parseError: string }
 
 export const getIcalData = async (url: string, requestUrl: string, env: Env): Promise<IcalResult> => {
   const { origin } = prepare(requestUrl)
 
-  console.log('****origin', origin, client)
-
   try {
-    const res = (await client(origin, env).ical.proxy.$get({
+    const response = (await apiClient(origin, env).ical.proxy.$get({
       query: { url }
     })) as Response
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch iCal data: ${res.statusText}`)
+    // The response from hono client needs to be handled differently
+    if (!response.ok) {
+      throw new Error('Failed to fetch iCal data')
     }
 
-    const icalData = await res.text()
+    const icalData = await response.text()
 
     try {
       const ical: IcsCalendar = convertIcsCalendar(undefined, icalData)
