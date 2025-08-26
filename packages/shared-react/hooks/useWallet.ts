@@ -63,6 +63,12 @@ export const useCurrentConnector = () => {
   return {
     connection: connections?.[0],
     connector: connections?.[0]?.connector.id,
-    isSCW: connections?.[0]?.connector.id === 'coinbaseWalletSDK'
+    isSCW: connections?.[0]?.connector.id === 'baseAccount'
   }
+}
+
+export const useConnectors = () => {
+  const { connectors } = useConnect()
+
+  return connectors
 }

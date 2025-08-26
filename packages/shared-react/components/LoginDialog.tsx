@@ -49,7 +49,7 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
 
   const getPwasteps = () => (platform === 'android' ? PWA_STEPS.android : PWA_STEPS.ios)
 
-  const login = async (connectorId = 'coinbaseWalletSDK') => {
+  const login = async (connectorId = 'baseAccount') => {
     try {
       await loginAsync(connectorId)
     } catch (error) {
@@ -104,10 +104,10 @@ export default function LoginDialog({ name, className = '' }: { name: string; cl
             <button
               type="button"
               className="btn-main justify-start! w-full gap-4 px-6! font-normal!"
-              onClick={() => login('coinbaseWalletSDK')}
+              onClick={() => login('baseAccount')}
             >
               <FaceIdIcon className="h-7 w-7" />
-              Smart Wallet
+              Passkey Wallet
             </button>
             {!isMobile() && (
               <button
