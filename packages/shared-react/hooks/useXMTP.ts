@@ -1,132 +1,302 @@
-import { Client, type Conversation, type InboxState, type Signer } from '@xmtp/browser-sdk'
-import { atom, useAtom, useSetAtom } from 'jotai'
-import { useCallback, useRef } from 'react'
-import { hexToUint8Array } from 'uint8array-extras'
-import { isLoadingAtom } from '~/components/AppHandler'
+import {
+  type ContentTypeId,
+  type ContentTypes,
+  createEOASigner,
+  createSCWSigner,
+  initialize
+} from '@konxyz/shared/lib/xmtp'
+import type {
+  Client,
+  Conversation,
+  DecodedMessage,
+  Identifier,
+  SafeCreateGroupOptions,
+  SafeListConversationsOptions,
+  SafeListMessagesOptions
+} from '@xmtp/browser-sdk'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { useCallback, useState } from 'react'
+import { useAccount, useSignMessage } from 'wagmi'
+import { useCurrentConnector } from '~/hooks/useWallet'
 
 // Atoms for XMTP state
 export const xmtpClientAtom = atom<Client | undefined>(undefined)
-export const xmtpInboxStateAtom = atom<InboxState | undefined>(undefined)
-export const xmtpConversationsAtom = atom<Conversation[]>([])
-export const xmtpConversationAtom = atom<Conversation>({} as Conversation)
-export const xmtpErrorAtom = atom<string | undefined>(undefined)
+export const xmtpConvAtom = atom<Conversation<ContentTypes>[] | undefined>([])
 
 export function useXMTP() {
   const [client, setClient] = useAtom(xmtpClientAtom)
-  const [inboxState, setInboxState] = useAtom(xmtpInboxStateAtom)
-  const [conversation, setConversation] = useAtom(xmtpConversationAtom)
-  const [conversations, setConversations] = useAtom(xmtpConversationsAtom)
-  const setIsLoading = useSetAtom(isLoadingAtom)
-  const setError = useSetAtom(xmtpErrorAtom)
-  // client is initializing
-  const initializingRef = useRef<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { isSCW } = useCurrentConnector()
+  const { address, chainId } = useAccount()
+  const { signMessageAsync } = useSignMessage()
 
-  // Initialize XMTP clxmtp
-  const initialize = useCallback(
-    async (signer: Signer, env = 'production') => {
-      // only initialize a client if one doesn't already exist
-      console.log('xmtp----0', signer, client)
-      if (!client) {
-        // if the client is already initializing, don't do anything
-        if (initializingRef.current) {
-          return undefined
-        }
-        console.log('xmtp----1', signer, client)
-        // flag the client as initializing
-        initializingRef.current = true
-        setError(undefined)
-        setIsLoading(true)
-
-        console.log('xmtp----2')
-        try {
-          console.log('xmtp----3')
-          const xmtpClient = await Client.create(signer, {
-            env,
-            loggingLevel: 'warn',
-            dbEncryptionKey: hexToUint8Array(
-              'f1f3868e413636f7e5940865fbb2cbd5a0e4b95904fc83588a65d8ec5aa157a7'
-            )
-            // codecs: [
-            //   new ReactionCodec(),
-            //   new ReplyCodec(),
-            //   new RemoteAttachmentCodec(),
-            //   new TransactionReferenceCodec(),
-            //   new WalletSendCallsCodec()
-            // ]
-          })
-          console.log('xmtp----4', xmtpClient)
-          setClient(xmtpClient)
-        } catch (e: any) {
-          console.log('xmtp----99')
-          return setClient(true)
-          console.log(e)
-          setError(e.message || 'Failed to initialize XMTP')
-          setClient(undefined)
-        } finally {
-          initializingRef.current = false
-          setIsLoading(false)
-        }
-      }
-      return client
-    },
-    [client]
-  )
+  const connect = useCallback(async () => {
+    if (client) {
+      return
+    }
+    // if wallet is not connected or SCW is enabled but chain is not set, return
+    if (!address || (isSCW && !chainId)) {
+      return
+    }
+    try {
+      setIsLoading(true)
+      const client = await initialize(
+        isSCW
+          ? createSCWSigner(address, (message: string) => signMessageAsync({ message }), BigInt(chainId ?? 1))
+          : createEOASigner(address, (message: string) => signMessageAsync({ message }))
+      )
+      setClient(client)
+    } catch (error) {
+      console.error('Error initializing XMTP client:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [address, chainId, isSCW, client, signMessageAsync, setClient])
 
   const disconnect = useCallback(() => {
     if (client) {
       client.close()
       setClient(undefined)
     }
-  }, [setClient, client])
+  }, [client, setClient])
 
-  const getInboxState = async () => {
-    console.log('getInboxState:----', client)
-    const res = await client?.preferences.inboxState()
-    console.log('getInboxState:----', client, res)
-    setInboxState(res)
+  return {
+    client,
+    connect,
+    disconnect,
+    isLoading
+  }
+}
+
+export const useXMTPConversations = () => {
+  const client = useAtomValue(xmtpClientAtom)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isSyncing, setIsSyncing] = useState<boolean>(false)
+  const [conversations, setConversations] = useAtom(xmtpConvAtom)
+
+  if (!client) {
+    throw new Error('XMTP client not initialized')
   }
 
-  const getConversations = async () => {
-    await client?.conversations.syncAll()
-    const res = await client?.conversations.list()
-    console.log('getConversations:----', client, res)
-    setConversations(res) // Reset conversations before fetching
-  }
-
-  const getConversation = async (conversationId: string) => {
-    '---getConversation---0'
-    if (!client) {
-      return
+  const list = async (options?: SafeListConversationsOptions, syncFromNetwork: boolean = false) => {
+    if (syncFromNetwork) {
+      await sync()
     }
-    try {
-      ;('---getConversation---1')
-      const conversation = await client.conversations.getConversationById(conversationId)
-      await conversation?.sync()
-      const msgs = await conversation?.messages()
 
-      console.log('getConversation:----', conversation, msgs)
-      if (conversation) {
-        setConversation(conversation)
-      } else {
-        throw new Error('Conversation not found')
+    setIsLoading(true)
+
+    try {
+      const convos = await client.conversations.list(options)
+      setConversations(convos)
+      return convos
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const sync = async () => {
+    setIsSyncing(true)
+
+    try {
+      await client.conversations.sync()
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const syncAll = async () => {
+    setIsSyncing(true)
+
+    try {
+      await client.conversations.syncAll()
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const getConversationById = async (conversationId: string) => {
+    setIsLoading(true)
+
+    try {
+      const conversation = await client.conversations.getConversationById(conversationId)
+      return conversation
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const getMessageById = async (messageId: string) => {
+    setIsLoading(true)
+
+    try {
+      const message = await client.conversations.getMessageById(messageId)
+      return message
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const newGroup = async (inboxIds: string[], options?: SafeCreateGroupOptions) => {
+    setIsLoading(true)
+
+    try {
+      const conversation = await client.conversations.newGroup(inboxIds, options)
+      return conversation
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const newGroupWithIdentifiers = async (identifiers: Identifier[], options?: SafeCreateGroupOptions) => {
+    setIsLoading(true)
+
+    try {
+      const conversation = await client.conversations.newGroupWithIdentifiers(identifiers, options)
+      return conversation
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const newDm = async (inboxId: string) => {
+    setIsLoading(true)
+
+    try {
+      const conversation = await client.conversations.newDm(inboxId)
+      return conversation
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const newDmWithIdentifier = async (identifier: Identifier) => {
+    setIsLoading(true)
+
+    try {
+      const conversation = await client.conversations.newDmWithIdentifier(identifier)
+      return conversation
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const stream = async () => {
+    const onValue = (conversation: Conversation<ContentTypes>) => {
+      const shouldAdd =
+        conversation.metadata?.conversationType === 'dm' ||
+        conversation.metadata?.conversationType === 'group'
+      if (shouldAdd) {
+        setConversations((prev) => [conversation, ...prev])
       }
-    } catch (error: any) {
-      console.error('Error fetching conversation:', error)
-      setError(error.message || 'Failed to fetch conversation')
-      throw error
+    }
+
+    const stream = await client.conversations.stream({
+      onValue
+    })
+
+    return () => {
+      void stream.end()
     }
   }
 
   return {
-    client,
-    conversation,
     conversations,
-    getConversation,
-    getConversations,
-    getInboxState,
-    initialize,
-    disconnect
+    getConversationById,
+    getMessageById,
+    list,
+    isLoading,
+    newDm,
+    newDmWithIdentifier,
+    newGroup,
+    newGroupWithIdentifiers,
+    stream,
+    sync,
+    syncAll,
+    isSyncing
   }
 }
 
-export type { Client }
+export const useXMTPConversation = (conversation: Conversation<ContentTypes>) => {
+  const { client } = useXMTP()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isSyncing, setIsSyncing] = useState<boolean>(false)
+  const [isSending, setIsSending] = useState<boolean>(false)
+  const [messages, setMessages] = useState<DecodedMessage<ContentTypes>[]>([])
+
+  const getMessages = async (options?: SafeListMessagesOptions, syncFromNetwork: boolean = false) => {
+    if (!client) {
+      return
+    }
+
+    setMessages([])
+    setIsLoading(true)
+
+    if (syncFromNetwork) {
+      await sync()
+    }
+
+    try {
+      const msgs = await conversation.messages(options)
+      setMessages(msgs)
+      return msgs
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const sync = async () => {
+    if (!client) {
+      return
+    }
+
+    setIsSyncing(true)
+
+    try {
+      await conversation.sync()
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const send = async (message: ContentTypes, contentType?: ContentTypeId) => {
+    if (!client) {
+      return
+    }
+
+    setIsSending(true)
+
+    try {
+      await conversation.send(message, contentType)
+    } finally {
+      setIsSending(false)
+    }
+  }
+
+  const streamMessages = async () => {
+    const noop = () => {}
+    if (!client) {
+      return noop
+    }
+
+    const onValue = (message: DecodedMessage<ContentTypes>) => {
+      setMessages((prev) => [...prev, message])
+    }
+
+    const stream = await conversation.stream({
+      onValue
+    })
+
+    return () => stream.end()
+  }
+
+  return {
+    getMessages,
+    isLoading,
+    messages,
+    send,
+    isSending,
+    streamMessages,
+    sync,
+    isSyncing
+  }
+}
