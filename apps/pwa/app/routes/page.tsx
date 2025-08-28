@@ -1,17 +1,17 @@
+import { loadAppConfig } from '@konxyz/shared/lib/app'
+import { getIcalData } from '@konxyz/shared/lib/ical'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import IcalConfigDialog from '@konxyz/shared-react/components/IcalConfigDialog'
-import NotFound from '@konxyz/shared-react/components/NotFound'
-import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
 import Ical from '@konxyz/shared-react/components/modules/Ical'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import Rewards from '@konxyz/shared-react/components/modules/Rewards'
-import { loadAppConfig } from '@konxyz/shared/lib/app'
-import { getIcalData } from '@konxyz/shared/lib/ical'
-import { mergeMeta } from '@konxyz/shared/lib/remix'
-import { cn, isStandalone } from '@konxyz/shared/lib/utils'
+import NotFound from '@konxyz/shared-react/components/NotFound'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
@@ -36,7 +36,7 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     }
   })()
 
-  let content = undefined
+  let content: string | undefined | { url: string; ical: any }
 
   const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/) || []
 
@@ -45,6 +45,9 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     content = await res.text()
   }
   if (contentType === 'iframe') {
+    content = contentBody
+  }
+  if (contentType === 'xmtp') {
     content = contentBody
   }
   if (contentType === 'ical') {
@@ -116,7 +119,7 @@ export default function Page() {
       {contentType === 'ical' && <Ical url={content?.url} data={content?.ical} />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
-      {contentType === 'xmtp' && <Forum />}
+      {contentType === 'xmtp' && <Forum conversationId={content} />}
       <BottomBar appConfig={appConfig} />
     </div>
   )

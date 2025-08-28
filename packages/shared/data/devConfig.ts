@@ -99,7 +99,7 @@ export const devConfig3 = {
       {
         id: 'forum',
         title: 'Forum',
-        content: 'xmtp:7c8f2a71a8baa86cf73cef61c9b0df55'
+        content: 'xmtp:8783dcbd628b7a67af5875415aefc89d'
       },
       {
         id: 'info',

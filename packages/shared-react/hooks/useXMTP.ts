@@ -42,7 +42,7 @@ export function useXMTP() {
       setIsLoading(true)
       const client = await initialize(
         isSCW
-          ? createSCWSigner(address, (message: string) => signMessageAsync({ message }), BigInt(chainId ?? 1))
+          ? createSCWSigner(address, (message: string) => signMessageAsync({ message }))
           : createEOASigner(address, (message: string) => signMessageAsync({ message }))
       )
       setClient(client)

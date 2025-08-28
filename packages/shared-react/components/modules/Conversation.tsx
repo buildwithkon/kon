@@ -2,7 +2,7 @@ import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import { useEffect } from 'react'
 import Avatar from '~/components/Avatar'
 import ChatInput from '~/components/ChatInput'
-import { type Client, useXMTP } from '~/hooks/useXMTP'
+import { useXMTPConversations } from '~/hooks/useXMTP'
 
 const CHATS = [
   {
@@ -15,15 +15,17 @@ const CHATS = [
   }
 ]
 
-export default function Conversation({ client, children }: { client: Client; children?: React.ReactNode }) {
-  const { conversation, conversations, getConversation, getConversations } = useXMTP()
-
+export default function Conversation({ conversationId }: { conversationId: string }) {
+  const { conversations, getConversationById } = useXMTPConversations()
   useEffect(() => {
-    getConversation('8393bf5556b020d0feb28301ea231423')
-    getConversations()
-  }, [getConversation, getConversations])
+    const loadConversation = async () => {
+      const conversation = await getConversationById(conversationId)
+      console.log('conversation----', conversation)
+    }
+    loadConversation()
+  }, [getConversationById, conversationId])
 
-  console.log('conv----', conversations, conversation)
+  console.log('conv----', conversationId, conversations)
 
   return (
     <div
@@ -33,7 +35,6 @@ export default function Conversation({ client, children }: { client: Client; chi
       )}
     >
       <Chats />
-      {children}
       <ChatInput />
     </div>
   )
