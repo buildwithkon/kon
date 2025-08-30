@@ -1,17 +1,17 @@
-import { loadAppConfig } from '@konxyz/shared/lib/app'
-import { getIcalData } from '@konxyz/shared/lib/ical'
-import { mergeMeta } from '@konxyz/shared/lib/remix'
-import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import IcalConfigDialog from '@konxyz/shared-react/components/IcalConfigDialog'
+import NotFound from '@konxyz/shared-react/components/NotFound'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
 import Ical from '@konxyz/shared-react/components/modules/Ical'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import Rewards from '@konxyz/shared-react/components/modules/Rewards'
-import NotFound from '@konxyz/shared-react/components/NotFound'
-import TopBar from '@konxyz/shared-react/components/TopBar'
+import { loadAppConfig } from '@konxyz/shared/lib/app'
+import { getIcalData } from '@konxyz/shared/lib/ical'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
@@ -37,28 +37,62 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
   })()
 
   let content: string | undefined | { url: string; ical: any }
+  let contentType: string | undefined
 
-  const [_, contentType, contentBody] = tabData?.content.match(/^([^:]+):(.+)$/) || []
+  if (typeof tabData?.content === 'string') {
+    const [_, type, body] = tabData.content.match(/^([^:]+):(.+)$/) || []
+    contentType = type
+    if (type === 'md') {
+      const res = await fetch(body)
+      content = await res.text()
+    }
+    if (type === 'iframe') {
+      content = body
+    }
+    if (type === 'xmtp') {
+      content = body
+    }
+    if (type === 'ical') {
+      try {
+        // Support multiple URLs separated by commas in string content
+        const urls = body
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
 
-  if (contentType === 'md') {
-    const res = await fetch(contentBody)
-    content = await res.text()
-  }
-  if (contentType === 'iframe') {
-    content = contentBody
-  }
-  if (contentType === 'xmtp') {
-    content = contentBody
-  }
-  if (contentType === 'ical') {
-    try {
-      const icalData = await getIcalData(contentBody, request.url, env)
-      content = {
-        url: contentBody,
-        ical: icalData
+        // Optional date range from tab options (compact YYYYMMDDHHmm)
+        const opt = (tabData as any)?.options
+        const parseCompact = (v?: string) => {
+          if (!v) return undefined
+          const m = v.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/)
+          if (!m) return undefined
+          const [, Y, M, D, h, mnt] = m
+          return new Date(Date.UTC(Number(Y), Number(M) - 1, Number(D), Number(h), Number(mnt)))
+        }
+        const icalData = await getIcalData(urls, request.url, env, {
+          startDate: parseCompact(opt?.startDate),
+          endDate: parseCompact(opt?.endDate)
+        })
+        content = { url: urls[0] || '', ical: icalData }
+      } catch (error) {
+        console.error('Failed to fetch iCal data in loader:', error)
       }
-    } catch (error) {
-      console.error('Failed to fetch iCal data in loader:', error)
+    }
+  } else if (tabData?.content && typeof tabData.content === 'object') {
+    // Advanced object content configuration
+    const c: any = tabData.content
+    contentType = c.type
+    if (c.type === 'ical') {
+      const urls: string[] = Array.isArray(c.urls) ? c.urls : c.url ? [c.url] : []
+      try {
+        const icalData = await getIcalData(urls, request.url, env, {
+          startDate: c.startDate,
+          endDate: c.endDate
+        })
+        content = { url: urls[0] || '', ical: icalData }
+      } catch (error) {
+        console.error('Failed to fetch iCal data in loader:', error)
+      }
     }
   }
 
