@@ -2,6 +2,10 @@ import { cn } from '@konxyz/shared/lib/utils'
 import Markdown from 'markdown-to-jsx'
 
 export default function MD({ className, content }: { className?: string; content: string }) {
+  // Treat a trailing backslash at end-of-line as an explicit <br/>
+  // Example: "Line one\n\\\nLine two" => "Line one<br/>\nLine two"
+  const processedContent = content.replace(/\\\r?\n/g, '<br/>\n')
+
   return (
     <Markdown
       options={{
@@ -32,7 +36,7 @@ export default function MD({ className, content }: { className?: string; content
       }}
       className={cn('md', className)}
     >
-      {content}
+      {processedContent}
     </Markdown>
   )
 }
