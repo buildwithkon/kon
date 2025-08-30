@@ -40,3 +40,30 @@ export const getMobileOS = (): 'windowsPhone' | 'android' | 'ios' | undefined =>
   }
   return undefined
 }
+
+export const isUrl = (value: string | undefined): boolean => {
+  if (!value) return false
+  return /^https?:\/\//i.test(value.trim())
+}
+
+// Heuristic for address-like strings; avoids linking generic terms
+export const isProbablyAddress = (value: string | undefined): boolean => {
+  if (!value) return false
+  const v = value.trim()
+  if (!v || v.length < 3) return false
+  if (isUrl(v)) return false
+  const lower = v.toLowerCase()
+  const nonAddresses = ['online', 'virtual', 'remote', 'tbd', 'tba', 'zoom', 'discord']
+  if (nonAddresses.includes(lower)) return false
+  const hasDigit = /\d/.test(v)
+  const streetKeywords =
+    /(street|st\.?|ave(nue)?|blvd|road|rd\.?|hwy|drive|dr\.?|ln|lane|way|pl|place|ct|court|cir|circle|pkwy|parkway|sq|square|terrace|ter|plaza|plz|suite|ste\.?|apt|unit|fl|floor)/i
+  const cityState = /,\s*[A-Z]{2}\b/
+  const latlng = /^-?\d{1,3}\.\d+\s*,\s*-?\d{1,3}\.\d+$/
+  return (
+    streetKeywords.test(v) || cityState.test(v) || latlng.test(v) || (hasDigit && /\b[A-Za-z]{2,}\b/.test(v))
+  )
+}
+
+export const mapSearchUrl = (value: string): string =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value.trim())}`

@@ -1,4 +1,5 @@
 import { Toast } from '@base-ui-components/react'
+import { isProbablyAddress, isUrl, mapSearchUrl } from '@konxyz/shared/lib/utils'
 import {
   BookmarkSimpleIcon,
   CalendarBlankIcon,
@@ -249,8 +250,28 @@ export default function Ical({ data }: { url: string; data?: IcalData }) {
                         <div className="flex flex-col gap-0.5 pt-2">
                           {event?.location && (
                             <div className="flex items-center gap-1 overflow-x-hidden truncate text-nowrap text-xs">
-                              <MapPinSimpleIcon />
-                              {event.location}
+                              <MapPinSimpleIcon size={14} className="shrink-0" />
+                              {isUrl(event.location) ? (
+                                <a
+                                  href={event.location.trim()}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="truncate underline"
+                                >
+                                  {event.location}
+                                </a>
+                              ) : isProbablyAddress(event.location) ? (
+                                <a
+                                  href={mapSearchUrl(event.location)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="truncate underline"
+                                >
+                                  {event.location}
+                                </a>
+                              ) : (
+                                event.location
+                              )}
                             </div>
                           )}
                           <div className="flex items-center gap-1 text-right text-xs">
