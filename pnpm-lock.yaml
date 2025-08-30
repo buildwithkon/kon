@@ -18,8 +18,8 @@ importers:
         specifier: ^8.0.4
         version: 8.0.4
       wrangler:
-        specifier: ^4.32.0
-        version: 4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+        specifier: ^4.33.1
+        version: 4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   apps/pwa:
     dependencies:
@@ -74,13 +74,13 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: ^1.11.7
-        version: 1.11.7(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250816.0)(wrangler@4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        version: 1.11.7(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250823.0)(wrangler@4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@cloudflare/workers-types':
         specifier: ^4.20250826.0
         version: 4.20250826.0
       '@react-router/dev':
         specifier: ^7.8.2
-        version: 7.8.2(@react-router/serve@7.8.2(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3))(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(react-dom@19.1.0(react@19.1.0))(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(terser@5.43.1)(tsx@4.19.4)(typescript@5.8.3)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(wrangler@4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.6.0)
+        version: 7.8.2(@react-router/serve@7.8.2(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3))(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(react-dom@19.1.0(react@19.1.0))(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(terser@5.43.1)(tsx@4.19.4)(typescript@5.8.3)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(wrangler@4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.6.0)
       '@tailwindcss/vite':
         specifier: ^4.1.12
         version: 4.1.12(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))
@@ -220,16 +220,16 @@ importers:
     dependencies:
       '@base-org/account':
         specifier: ^2.0.2
-        version: 2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
+        version: 2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
       '@base-org/account-ui':
         specifier: ^1.0.1
-        version: 1.0.1(@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34))(clsx@2.1.1)(preact@10.27.1)(react@19.1.0)
+        version: 1.0.1(@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34))(clsx@2.1.1)(preact@10.27.1)(react@19.1.0)
       '@base-ui-components/react':
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@coinbase/onchainkit':
         specifier: ^0.38.19
-        version: 0.38.19(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(bufferutil@4.0.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
+        version: 0.38.19(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(bufferutil@4.0.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
       '@conform-to/react':
         specifier: ^1.2.2
         version: 1.6.0(react@19.1.0)
@@ -335,7 +335,7 @@ importers:
         version: 4.7.11
       honox:
         specifier: ^0.1.27
-        version: 0.1.40(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        version: 0.1.40(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20240529.0
@@ -345,7 +345,7 @@ importers:
         version: 1.6.2(hono@4.7.11)
       '@hono/vite-dev-server':
         specifier: ^0.16.0
-        version: 0.16.0(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        version: 0.16.0(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@konxyz/shared':
         specifier: workspace:*
         version: link:../shared
@@ -381,16 +381,16 @@ importers:
         version: 0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@coinbase/agentkit-langchain':
         specifier: ^0.3.0
-        version: 0.3.0(@coinbase/agentkit@0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10))(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+        version: 0.3.0(@coinbase/agentkit@0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10))(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       '@langchain/core':
         specifier: ^0.3.57
-        version: 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+        version: 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       '@langchain/langgraph':
         specifier: ^0.3.0
-        version: 0.3.0(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)(zod-to-json-schema@3.24.5(zod@3.25.34))
+        version: 0.3.0(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)(zod-to-json-schema@3.24.5(zod@3.25.34))
       '@langchain/openai':
         specifier: ^0.5.12
-        version: 0.5.12(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        version: 0.5.12(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@xmtp/content-type-transaction-reference':
         specifier: ^2.0.2
         version: 2.0.2
@@ -1163,6 +1163,15 @@ packages:
       workerd:
         optional: true
 
+  '@cloudflare/unenv-preset@2.7.0':
+    resolution: {integrity: sha512-0JbEj+KTCQ4nTIWg2q8Bou+fPxzG6/zwU5O/w6Cld6WEjLl+716foT+2bjg48h09hMtjTKkJdAh1m4LybBKGCg==}
+    peerDependencies:
+      unenv: 2.0.0-rc.19
+      workerd: ^1.20250816.0
+    peerDependenciesMeta:
+      workerd:
+        optional: true
+
   '@cloudflare/vite-plugin@1.11.7':
     resolution: {integrity: sha512-8CN3B/TTeOJmfququLvBIUdE8Fh6O+6afI2u/AsUYyAiPddEcVF5w3B1OSSn2v+b/uBJX0s3SrGbJ1TXFPT7MA==}
     peerDependencies:
@@ -1188,6 +1197,12 @@ packages:
     cpu: [x64]
     os: [darwin]
 
+  '@cloudflare/workerd-darwin-64@1.20250823.0':
+    resolution: {integrity: sha512-yRLJc1cQNqQYcDViOk7kpTXnR5XuBP7B/Ms5KBdlQ6eTr2Vsg9mfKqWKInjzY8/Cx+p+Sic2Tbld42gcYkiM2A==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [darwin]
+
   '@cloudflare/workerd-darwin-arm64@1.20250525.0':
     resolution: {integrity: sha512-Y3IbIdrF/vJWh/WBvshwcSyUh175VAiLRW7963S1dXChrZ1N5wuKGQm9xY69cIGVtitpMJWWW3jLq7J/Xxwm0Q==}
     engines: {node: '>=16'}
@@ -1196,6 +1211,12 @@ packages:
 
   '@cloudflare/workerd-darwin-arm64@1.20250816.0':
     resolution: {integrity: sha512-WyKPMQhbU+TTf4uDz3SA7ZObspg7WzyJMv/7J4grSddpdx2A4Y4SfPu3wsZleAOIMOAEVi0A1sYDhdltKM7Mxg==}
+    engines: {node: '>=16'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@cloudflare/workerd-darwin-arm64@1.20250823.0':
+    resolution: {integrity: sha512-KJnikUe6J29Ga1QMPKNCc8eHD56DdBlu5XE5LoBH/AYRrbS5UI1d5F844hUWoFKJb8KRaPIH9F849HZWfNa1vw==}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [darwin]
@@ -1212,6 +1233,12 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@cloudflare/workerd-linux-64@1.20250823.0':
+    resolution: {integrity: sha512-4QFXq4eDWEAK5QjGxRe0XUTBax1Fgarc08HETL6q0y/KPZp2nOTLfjLjklTn/qEiztafNFoJEIwhkiknHeOi/g==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [linux]
+
   '@cloudflare/workerd-linux-arm64@1.20250525.0':
     resolution: {integrity: sha512-Nt0FUxS2kQhJUea4hMCNPaetkrAFDhPnNX/ntwcqVlGgnGt75iaAhupWJbU0GB+gIWlKeuClUUnDZqKbicoKyg==}
     engines: {node: '>=16'}
@@ -1224,6 +1251,12 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@cloudflare/workerd-linux-arm64@1.20250823.0':
+    resolution: {integrity: sha512-sODSrSVe4W/maoBu76qb0sJGBhxhSM2Q2tg/+G7q1IPgRZSzArMKIPrW6nBnmBrrG1O0X6aoAdID6w5hfuEM4g==}
+    engines: {node: '>=16'}
+    cpu: [arm64]
+    os: [linux]
+
   '@cloudflare/workerd-windows-64@1.20250525.0':
     resolution: {integrity: sha512-mwTj+9f3uIa4NEXR1cOa82PjLa6dbrb3J+KCVJFYIaq7e63VxEzOchCXS4tublT2pmOhmFqkgBMXrxozxNkR2Q==}
     engines: {node: '>=16'}
@@ -1232,6 +1265,12 @@ packages:
 
   '@cloudflare/workerd-windows-64@1.20250816.0':
     resolution: {integrity: sha512-0lqClj2UMhFa8tCBiiX7Zhd5Bjp0V+X8oNBG6V6WsR9p9/HlIHAGgwRAM7aYkyG+8KC8xlbC89O2AXUXLpHx0g==}
+    engines: {node: '>=16'}
+    cpu: [x64]
+    os: [win32]
+
+  '@cloudflare/workerd-windows-64@1.20250823.0':
+    resolution: {integrity: sha512-WaNqUOXUnrcEI+i2NI4+okA9CrJMI9n2XTfVtDg/pLvcA/ZPTz23MEFMZU1splr4SslS1th1NBO38RMPnDB4rA==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
@@ -5422,6 +5461,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  miniflare@4.20250823.1:
+    resolution: {integrity: sha512-qjbF69XXyHXk4R//q0a9MLraKE9MLKZ/94k6jKcfouJ0g+se7VyMzCBryeWA534+ZAlNM4Ay5gqYr1v3Wk6ctQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   minimalistic-assert@1.0.1:
     resolution: {integrity: sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==}
 
@@ -7295,6 +7339,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  workerd@1.20250823.0:
+    resolution: {integrity: sha512-95lToK9zeaC7bX5ZmlP/wz6zqoUPBk3hhec1JjEMGZrxsXY9cPRkjWNCcjDctQ17U97vjMcY/ymchgx7w8Cfmg==}
+    engines: {node: '>=16'}
+    hasBin: true
+
   wrangler@4.19.1:
     resolution: {integrity: sha512-b+ed2SJKauHgndl4Im1wHE+FeSSlrdlEZNuvpc8q/94k4EmRxRkXnwBAsVWuicBxG3HStFLQPGGlvL8wGKTtHw==}
     engines: {node: '>=18.0.0'}
@@ -7305,12 +7354,12 @@ packages:
       '@cloudflare/workers-types':
         optional: true
 
-  wrangler@4.32.0:
-    resolution: {integrity: sha512-q7TRSavBW3Eg3pp4rxqKJwSK+u/ieFOBdNvUsq1P1EMmyj3//tN/iXDokFak+dkW0vDYjsVG3PfOfHxU92OS6w==}
+  wrangler@4.33.1:
+    resolution: {integrity: sha512-8x/3Tbt+/raBMm0+vRyAHSGu2kF1QjeiSrx47apgPk/AzSBcXI9YuUUdGrKnozMYZlEbOxdBQOMyuRRDTyNmOg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20250816.0
+      '@cloudflare/workers-types': ^4.20250823.0
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
@@ -8328,9 +8377,9 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@base-org/account-ui@1.0.1(@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34))(clsx@2.1.1)(preact@10.27.1)(react@19.1.0)':
+  '@base-org/account-ui@1.0.1(@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34))(clsx@2.1.1)(preact@10.27.1)(react@19.1.0)':
     dependencies:
-      '@base-org/account': 2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
+      '@base-org/account': 2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)
       clsx: 2.1.1
       preact: 10.27.1
     optionalDependencies:
@@ -8376,7 +8425,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)':
+  '@base-org/account@2.0.2(@types/react@19.1.6)(bufferutil@4.0.9)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)':
     dependencies:
       '@noble/hashes': 1.4.0
       clsx: 1.2.1
@@ -8385,7 +8434,7 @@ snapshots:
       ox: 0.6.9(typescript@5.8.3)(zod@3.25.34)
       preact: 10.24.2
       viem: 2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
-      zustand: 5.0.3(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.4.0(react@19.1.0))
+      zustand: 5.0.3(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
     transitivePeerDependencies:
       - '@types/react'
       - bufferutil
@@ -8468,15 +8517,21 @@ snapshots:
     optionalDependencies:
       workerd: 1.20250525.0
 
-  '@cloudflare/unenv-preset@2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250816.0)':
+  '@cloudflare/unenv-preset@2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250823.0)':
     dependencies:
       unenv: 2.0.0-rc.19
     optionalDependencies:
-      workerd: 1.20250816.0
+      workerd: 1.20250823.0
 
-  '@cloudflare/vite-plugin@1.11.7(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250816.0)(wrangler@4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@cloudflare/unenv-preset@2.7.0(unenv@2.0.0-rc.19)(workerd@1.20250823.0)':
     dependencies:
-      '@cloudflare/unenv-preset': 2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250816.0)
+      unenv: 2.0.0-rc.19
+    optionalDependencies:
+      workerd: 1.20250823.0
+
+  '@cloudflare/vite-plugin@1.11.7(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250823.0)(wrangler@4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+    dependencies:
+      '@cloudflare/unenv-preset': 2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250823.0)
       '@mjackson/node-fetch-server': 0.6.1
       '@rollup/plugin-replace': 6.0.2(rollup@2.79.2)
       get-port: 7.1.0
@@ -8485,7 +8540,7 @@ snapshots:
       tinyglobby: 0.2.14
       unenv: 2.0.0-rc.19
       vite: 6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0)
-      wrangler: 4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      wrangler: 4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
@@ -8516,10 +8571,16 @@ snapshots:
   '@cloudflare/workerd-darwin-64@1.20250816.0':
     optional: true
 
+  '@cloudflare/workerd-darwin-64@1.20250823.0':
+    optional: true
+
   '@cloudflare/workerd-darwin-arm64@1.20250525.0':
     optional: true
 
   '@cloudflare/workerd-darwin-arm64@1.20250816.0':
+    optional: true
+
+  '@cloudflare/workerd-darwin-arm64@1.20250823.0':
     optional: true
 
   '@cloudflare/workerd-linux-64@1.20250525.0':
@@ -8528,10 +8589,16 @@ snapshots:
   '@cloudflare/workerd-linux-64@1.20250816.0':
     optional: true
 
+  '@cloudflare/workerd-linux-64@1.20250823.0':
+    optional: true
+
   '@cloudflare/workerd-linux-arm64@1.20250525.0':
     optional: true
 
   '@cloudflare/workerd-linux-arm64@1.20250816.0':
+    optional: true
+
+  '@cloudflare/workerd-linux-arm64@1.20250823.0':
     optional: true
 
   '@cloudflare/workerd-windows-64@1.20250525.0':
@@ -8540,14 +8607,17 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20250816.0':
     optional: true
 
+  '@cloudflare/workerd-windows-64@1.20250823.0':
+    optional: true
+
   '@cloudflare/workers-types@4.20250601.0': {}
 
   '@cloudflare/workers-types@4.20250826.0': {}
 
-  '@coinbase/agentkit-langchain@0.3.0(@coinbase/agentkit@0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10))(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))':
+  '@coinbase/agentkit-langchain@0.3.0(@coinbase/agentkit@0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10))(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))':
     dependencies:
       '@coinbase/agentkit': 0.8.0(@zerodev/webauthn-key@5.4.4(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      '@langchain/core': 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      '@langchain/core': 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       zod: 3.25.34
     transitivePeerDependencies:
       - openai
@@ -8626,12 +8696,12 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@coinbase/onchainkit@0.38.19(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(bufferutil@4.0.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)':
+  '@coinbase/onchainkit@0.38.19(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(bufferutil@4.0.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(zod@3.25.34)':
     dependencies:
       '@farcaster/frame-sdk': 0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
-      '@farcaster/miniapp-wagmi-connector': 1.0.0(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
+      '@farcaster/miniapp-wagmi-connector': 1.0.0(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
       '@tanstack/react-query': 5.77.2(react@19.1.0)
-      '@wagmi/core': 2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
+      '@wagmi/core': 2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
       clsx: 2.1.1
       graphql: 16.10.0
       graphql-request: 6.1.0(graphql@16.10.0)
@@ -9042,10 +9112,10 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@farcaster/miniapp-wagmi-connector@1.0.0(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))':
+  '@farcaster/miniapp-wagmi-connector@1.0.0(@farcaster/miniapp-sdk@0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))(@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))':
     dependencies:
       '@farcaster/miniapp-sdk': 0.1.9(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
-      '@wagmi/core': 2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
+      '@wagmi/core': 2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))
       viem: 2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
 
   '@farcaster/quick-auth@0.0.6(typescript@5.8.3)':
@@ -9114,23 +9184,23 @@ snapshots:
     dependencies:
       hono: 4.7.11
 
-  '@hono/vite-dev-server@0.16.0(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@hono/vite-dev-server@0.16.0(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@hono/node-server': 1.13.7(hono@4.7.11)
       hono: 4.7.11
       minimatch: 9.0.5
     optionalDependencies:
-      miniflare: 4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      wrangler: 4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      miniflare: 4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      wrangler: 4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
-  '@hono/vite-dev-server@0.19.0(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@hono/vite-dev-server@0.19.0(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@hono/node-server': 1.14.3(hono@4.7.11)
       hono: 4.7.11
       minimatch: 9.0.5
     optionalDependencies:
-      miniflare: 4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      wrangler: 4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      miniflare: 4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      wrangler: 4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   '@hpke/chacha20poly1305@1.6.2':
     dependencies:
@@ -9397,14 +9467,14 @@ snapshots:
 
   '@jup-ag/api@6.0.42': {}
 
-  '@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))':
+  '@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.20
-      langsmith: 0.3.30(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      langsmith: 0.3.30(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
@@ -9414,26 +9484,26 @@ snapshots:
     transitivePeerDependencies:
       - openai
 
-  '@langchain/langgraph-checkpoint@0.0.18(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))':
+  '@langchain/langgraph-checkpoint@0.0.18(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))':
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      '@langchain/core': 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@0.0.83(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)':
+  '@langchain/langgraph-sdk@0.0.83(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)':
     dependencies:
       '@types/json-schema': 7.0.15
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 9.0.1
     optionalDependencies:
-      '@langchain/core': 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      '@langchain/core': 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       react: 19.1.0
 
-  '@langchain/langgraph@0.3.0(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)(zod-to-json-schema@3.24.5(zod@3.25.34))':
+  '@langchain/langgraph@0.3.0(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)(zod-to-json-schema@3.24.5(zod@3.25.34))':
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
-      '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))
-      '@langchain/langgraph-sdk': 0.0.83(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)
+      '@langchain/core': 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      '@langchain/langgraph-checkpoint': 0.0.18(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))
+      '@langchain/langgraph-sdk': 0.0.83(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(react@19.1.0)
       uuid: 10.0.0
       zod: 3.25.34
     optionalDependencies:
@@ -9441,11 +9511,11 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  '@langchain/openai@0.5.12(@langchain/core@0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@langchain/openai@0.5.12(@langchain/core@0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)))(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
-      '@langchain/core': 0.3.57(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
+      '@langchain/core': 0.3.57(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34))
       js-tiktoken: 1.0.20
-      openai: 4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)
+      openai: 4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)
       zod: 3.25.34
       zod-to-json-schema: 3.24.5(zod@3.25.34)
     transitivePeerDependencies:
@@ -9829,7 +9899,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.3
 
-  '@react-router/dev@7.8.2(@react-router/serve@7.8.2(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3))(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(react-dom@19.1.0(react@19.1.0))(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(terser@5.43.1)(tsx@4.19.4)(typescript@5.8.3)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(wrangler@4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.6.0)':
+  '@react-router/dev@7.8.2(@react-router/serve@7.8.2(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3))(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(react-dom@19.1.0(react@19.1.0))(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(terser@5.43.1)(tsx@4.19.4)(typescript@5.8.3)(vite@6.3.5(@types/node@20.17.52)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.19.4)(yaml@2.6.0))(wrangler@4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(yaml@2.6.0)':
     dependencies:
       '@babel/core': 7.28.3
       '@babel/generator': 7.27.5
@@ -9864,7 +9934,7 @@ snapshots:
     optionalDependencies:
       '@react-router/serve': 7.8.2(react-router@7.8.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3)
       typescript: 5.8.3
-      wrangler: 4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      wrangler: 4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -11330,12 +11400,12 @@ snapshots:
       - react
       - use-sync-external-store
 
-  '@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))':
+  '@wagmi/core@2.20.1(@tanstack/query-core@5.77.2)(@types/react@19.1.6)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(viem@2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34))':
     dependencies:
       eventemitter3: 5.0.1
       mipd: 0.0.7(typescript@5.8.3)
       viem: 2.35.1(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.34)
-      zustand: 5.0.0(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.4.0(react@19.1.0))
+      zustand: 5.0.0(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
     optionalDependencies:
       '@tanstack/query-core': 5.77.2
       typescript: 5.8.3
@@ -13477,13 +13547,13 @@ snapshots:
 
   hono@4.7.11: {}
 
-  honox@0.1.40(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
+  honox@0.1.40(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
     dependencies:
       '@babel/generator': 7.25.6
       '@babel/parser': 7.25.6
       '@babel/traverse': 7.25.6
       '@babel/types': 7.25.6
-      '@hono/vite-dev-server': 0.19.0(hono@4.7.11)(miniflare@4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@hono/vite-dev-server': 0.19.0(hono@4.7.11)(miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       hono: 4.7.11
       jsonc-parser: 3.3.1
       precinct: 12.1.2
@@ -13837,7 +13907,7 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  langsmith@0.3.30(openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)):
+  langsmith@0.3.30(openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -13847,7 +13917,7 @@ snapshots:
       semver: 7.7.2
       uuid: 10.0.0
     optionalDependencies:
-      openai: 4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)
+      openai: 4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34)
 
   leven@3.1.0: {}
 
@@ -14053,6 +14123,24 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  miniflare@4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      acorn: 8.14.0
+      acorn-walk: 8.3.2
+      exit-hook: 2.2.1
+      glob-to-regexp: 0.4.1
+      sharp: 0.33.5
+      stoppable: 1.1.0
+      undici: 7.15.0
+      workerd: 1.20250823.0
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      youch: 4.1.0-beta.10
+      zod: 3.22.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   minimalistic-assert@1.0.1: {}
 
   minimalistic-crypto-utils@1.0.1: {}
@@ -14233,7 +14321,7 @@ snapshots:
     dependencies:
       wrappy: 1.0.2
 
-  openai@4.104.0(ws@8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34):
+  openai@4.104.0(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))(zod@3.25.34):
     dependencies:
       '@types/node': 18.19.110
       '@types/node-fetch': 2.6.12
@@ -14243,7 +14331,7 @@ snapshots:
       formdata-node: 4.4.1
       node-fetch: 2.7.0
     optionalDependencies:
-      ws: 8.18.2(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      ws: 7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       zod: 3.25.34
     transitivePeerDependencies:
       - encoding
@@ -16314,6 +16402,14 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250816.0
       '@cloudflare/workerd-windows-64': 1.20250816.0
 
+  workerd@1.20250823.0:
+    optionalDependencies:
+      '@cloudflare/workerd-darwin-64': 1.20250823.0
+      '@cloudflare/workerd-darwin-arm64': 1.20250823.0
+      '@cloudflare/workerd-linux-64': 1.20250823.0
+      '@cloudflare/workerd-linux-arm64': 1.20250823.0
+      '@cloudflare/workerd-windows-64': 1.20250823.0
+
   wrangler@4.19.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
@@ -16331,16 +16427,16 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.32.0(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10):
+  wrangler@4.33.1(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
-      '@cloudflare/unenv-preset': 2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250816.0)
+      '@cloudflare/unenv-preset': 2.7.0(unenv@2.0.0-rc.19)(workerd@1.20250823.0)
       blake3-wasm: 2.1.5
       esbuild: 0.25.4
-      miniflare: 4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      miniflare: 4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.19
-      workerd: 1.20250816.0
+      workerd: 1.20250823.0
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250601.0
       fsevents: 2.3.3
@@ -16349,16 +16445,16 @@ snapshots:
       - utf-8-validate
     optional: true
 
-  wrangler@4.32.0(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10):
+  wrangler@4.33.1(@cloudflare/workers-types@4.20250826.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
-      '@cloudflare/unenv-preset': 2.6.2(unenv@2.0.0-rc.19)(workerd@1.20250816.0)
+      '@cloudflare/unenv-preset': 2.7.0(unenv@2.0.0-rc.19)(workerd@1.20250823.0)
       blake3-wasm: 2.1.5
       esbuild: 0.25.4
-      miniflare: 4.20250816.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      miniflare: 4.20250823.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.19
-      workerd: 1.20250816.0
+      workerd: 1.20250823.0
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250826.0
       fsevents: 2.3.3
@@ -16507,6 +16603,12 @@ snapshots:
       react: 19.1.0
       use-sync-external-store: 1.4.0(react@19.1.0)
 
+  zustand@5.0.0(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
+    optionalDependencies:
+      '@types/react': 19.1.6
+      react: 19.1.0
+      use-sync-external-store: 1.5.0(react@19.1.0)
+
   zustand@5.0.2(@types/react@19.1.11)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
     optionalDependencies:
       '@types/react': 19.1.11
@@ -16524,3 +16626,9 @@ snapshots:
       '@types/react': 19.1.6
       react: 19.1.0
       use-sync-external-store: 1.4.0(react@19.1.0)
+
+  zustand@5.0.3(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
+    optionalDependencies:
+      '@types/react': 19.1.6
+      react: 19.1.0
+      use-sync-external-store: 1.5.0(react@19.1.0)
