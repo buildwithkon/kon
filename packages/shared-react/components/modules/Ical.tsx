@@ -212,7 +212,7 @@ export default function Ical({ data }: { url: string; data?: IcalData }) {
                         key={date}
                         type="button"
                         onClick={() => scrollToDate(date)}
-                        className="flex w-16 flex-col items-center rounded-lg bg-main px-4 py-2 text-main-fg"
+                        className="flex w-14 max-w-14 flex-col items-center rounded-lg bg-main px-4 py-2 text-main-fg"
                       >
                         <span className="font-bold text-2xl">{dateObj.getDate()}</span>
                         <span className="text-xs uppercase">
