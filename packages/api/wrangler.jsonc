@@ -12,6 +12,14 @@
       "vars": {
         "ENV": "production"
       },
+      // Configure a D1 binding for the API (example)
+      // "d1_databases": [
+      //   {
+      //     "binding": "APP_DB",
+      //     "database_name": "kon-app-db",
+      //     "database_id": "<your-d1-database-id>"
+      //   }
+      // ],
       "routes": [
         {
           "pattern": "api.kon.xyz",
@@ -30,6 +38,14 @@
       "vars": {
         "ENV": "staging"
       },
+      // Configure a D1 binding for the API (example)
+      // "d1_databases": [
+      //   {
+      //     "binding": "APP_DB",
+      //     "database_name": "kon-app-db",
+      //     "database_id": "<your-d1-database-id>"
+      //   }
+      // ],
       "routes": [
         {
           "pattern": "api.kon.wtf",

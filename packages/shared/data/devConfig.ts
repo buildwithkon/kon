@@ -87,14 +87,27 @@ export const devConfig3 = {
         id: 'home',
         title: 'Home',
         icon: 'ph-house',
-        content: 'md:https://hackmd.io/@yujiym/BkWsINrp1e/download'
+        content: 'md:https://ethtokyo.org/2025/docs/general-info.md'
+      },
+      {
+        id: 'conference',
+        title: 'Conference',
+        icon: 'ph-lectern',
+        content: 'md:https://ethtokyo.org/2025/docs/conference-info.md'
+      },
+      {
+        id: 'hackathon',
+        title: 'Hackathon',
+        icon: 'ph-code',
+        content: 'md:https://ethtokyo.org/2025/docs/hackathon-info.md'
       },
       {
         id: 'agenda',
-        title: 'Agenda',
+        title: 'All Events',
         icon: 'ph-calendar-dots',
         content:
-          'ical:https://calendar.google.com/calendar/ical/c_14dfbc731f48db1e6b25a6603fb2a34eed7d6d7d8828ea82d5ea7c96c695bd57%40group.calendar.google.com/public/basic.ics'
+          'ical:https://api.luma.com/ics/get?entity=calendar&id=cal-FMaPKHYZLXA2VzT,https://ethtokyo.org/2025/timetable/conference.ics,https://calendar.google.com/calendar/ical/c_45b1a5c314674cd0e27f6105094956932bea7450e00febbcf31a369fa50e36b5%40group.calendar.google.com/public/basic.ics',
+        options: { startDate: '202508010000', endDate: '202510010000' }
       },
       {
         id: 'forum',

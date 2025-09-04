@@ -2,7 +2,7 @@ import Loading from '~/components/Loading'
 import Conversation from '~/components/modules/Conversation'
 import { useXMTP } from '~/hooks/useXMTP'
 
-export default function Forum({ conversationId }: { conversationId: string }) {
+export default function Forum({ conversationId, inviteUrl }: { conversationId: string; inviteUrl?: string }) {
   const { connect, isLoading, client } = useXMTP()
 
   console.log('client----', client)
@@ -17,9 +17,15 @@ export default function Forum({ conversationId }: { conversationId: string }) {
         )
       ) : (
         <div className="flex w-full flex-col items-center justify-center px-6">
-          <button type="button" onClick={() => connect()} className="btn-main mt-48 w-full">
-            Join group chat
-          </button>
+          {inviteUrl ? (
+            <a href={inviteUrl} target="_blank" rel="noopener noreferrer" className="btn-main mt-48 w-full">
+              Join group chat
+            </a>
+          ) : (
+            <button type="button" onClick={() => connect()} className="btn-main mt-48 w-full">
+              Join group chat
+            </button>
+          )}
         </div>
       )}
     </>

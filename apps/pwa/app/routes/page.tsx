@@ -36,7 +36,7 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
     }
   })()
 
-  let content: string | undefined | { url: string; ical: any }
+  let content: string | undefined | { url: string; ical: any } | undefined
   let contentType: string | undefined
 
   if (typeof tabData?.content === 'string') {
@@ -92,6 +92,25 @@ export const loader = async ({ context, request }: Route.LoaderArgs) => {
         content = { url: urls[0] || '', ical: icalData }
       } catch (error) {
         console.error('Failed to fetch iCal data in loader:', error)
+      }
+    }
+    if (c.type === 'xmtp') {
+      // Support optional invite slug to render a join link
+      try {
+        const slug = c.options?.inviteSlug as string | undefined
+        if (slug) {
+          const res = (await apiClient(new URL(request.url).origin, env).xmtp.invites[':slug'].$get({
+            param: { slug }
+          })) as Response
+          if (res.ok) {
+            const invite = await res.json()
+            // Reuse `tabData.content` body as conversationId if present
+            content = c.conversationId || ''
+            ;(content as any).inviteUrl = invite.url
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load XMTP invite details:', e)
       }
     }
   }
@@ -153,7 +172,12 @@ export default function Page() {
       {contentType === 'ical' && <Ical url={content?.url} data={content?.ical} />}
       {contentType === 'md' && <Markdown content={content} />}
       {contentType === 'iframe' && <Iframe url={content} />}
-      {contentType === 'xmtp' && <Forum conversationId={content} />}
+      {contentType === 'xmtp' && (
+        <Forum
+          conversationId={typeof content === 'string' ? content : (content as any)?.conversationId || ''}
+          inviteUrl={typeof content === 'object' ? (content as any)?.inviteUrl : undefined}
+        />
+      )}
       <BottomBar appConfig={appConfig} />
     </div>
   )

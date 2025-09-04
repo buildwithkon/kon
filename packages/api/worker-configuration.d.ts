@@ -5,6 +5,7 @@ declare namespace Cloudflare {
   interface Env {
     ENV: 'development' | 'production' | 'staging'
     ALCHEMY_API_KEY: string
+    APP_DB: D1Database
   }
 }
 interface Env extends Cloudflare.Env {}
