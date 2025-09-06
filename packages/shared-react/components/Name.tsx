@@ -1,3 +1,4 @@
+import { shortAddr } from '@konxyz/shared/lib/utils'
 import Skelton from '~/components/Skelton'
 import { useName } from '~/hooks/useWallet'
 
@@ -13,6 +14,6 @@ export default function Name({ address }: { address: `0x${string}` | undefined }
       <span className="opacity-80">.{rest}</span>
     </span>
   ) : (
-    <span>{name ?? <span className="font-normal! opacity-60">-</span>}</span>
+    <span>{name ?? <span className="font-normal! opacity-60">{shortAddr(address, 6, 4)}</span>}</span>
   )
 }
