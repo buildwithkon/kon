@@ -1,10 +1,11 @@
 import { COLOR_HEX_DARK, COLOR_HEX_LIGHT, DEFAULT_LOGO_URL } from '@konxyz/shared/lib/const'
 import type { RootLoader } from '@konxyz/shared/types'
-import { WalletIcon } from '@phosphor-icons/react'
+import { GearSixIcon, WalletIcon } from '@phosphor-icons/react'
 import { QRCode } from 'react-qrcode-logo'
 import { useRouteLoaderData } from 'react-router'
 import { useAccount } from 'wagmi'
 import AddressInput from '~/components/AddressInput'
+import ConfigDialog from '~/components/ConfigDialog'
 import Name from '~/components/Name'
 import FaceIdIcon from '~/components/svg/FaceId'
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from '~/components/ui/Dialog'
@@ -16,9 +17,6 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
   const ld = useRouteLoaderData<RootLoader>('root')
   const { isDark } = useDarkMode()
   const { isSCW } = useCurrentConnector()
-
-  const name = ''
-  const id = ''
 
   return (
     <Dialog>
@@ -65,10 +63,15 @@ export default function QrDialog({ children }: { children: React.ReactNode }) {
                 )}
               </span>
             </label>
-
             <AddressInput />
           </li>
         </ul>
+        <ConfigDialog>
+          <button type="button" className="btn-main mt-8 w-full">
+            <GearSixIcon size={32} className="-ml-3 mr-2" />
+            Settings
+          </button>
+        </ConfigDialog>
       </DialogContent>
     </Dialog>
   )

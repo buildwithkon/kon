@@ -50,6 +50,7 @@ const DialogContent = React.forwardRef<
       <DialogPopup
         className={cn(
           'data-[closed]:slide-out-to-bottom content data-[open]:slide-in-to-top fixed inset-x-0 bottom-0 z-40 mx-auto flex h-auto max-w-screen-xs flex-col rounded-t-2xl px-6 py-8 shadow-black/5 shadow-lg duration-200 data-[closed]:animate-out data-[open]:animate-in sm:bottom-auto sm:rounded-2xl dark:shadow-white/5',
+          '-bottom-[calc(1.25rem*var(--nested-dialogs))] scale-[calc(1-0.1*var(--nested-dialogs))]',
           isStandalone() ? 'pt-8 pb-12' : 'py-8',
           className
         )}

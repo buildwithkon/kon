@@ -1,17 +1,17 @@
+import { loadAppConfig } from '@konxyz/shared/lib/app'
+import { getIcalData } from '@konxyz/shared/lib/ical'
+import { mergeMeta } from '@konxyz/shared/lib/remix'
+import { cn, isStandalone } from '@konxyz/shared/lib/utils'
 import BottomBar from '@konxyz/shared-react/components/BottomBar'
 import IcalConfigDialog from '@konxyz/shared-react/components/IcalConfigDialog'
-import NotFound from '@konxyz/shared-react/components/NotFound'
-import TopBar from '@konxyz/shared-react/components/TopBar'
 import Forum from '@konxyz/shared-react/components/modules/Forum'
 import Ical from '@konxyz/shared-react/components/modules/Ical'
 import Iframe from '@konxyz/shared-react/components/modules/Iframe'
 import Markdown from '@konxyz/shared-react/components/modules/Markdown'
 import ProfileCard from '@konxyz/shared-react/components/modules/ProfileCard'
 import Rewards from '@konxyz/shared-react/components/modules/Rewards'
-import { loadAppConfig } from '@konxyz/shared/lib/app'
-import { getIcalData } from '@konxyz/shared/lib/ical'
-import { mergeMeta } from '@konxyz/shared/lib/remix'
-import { cn, isStandalone } from '@konxyz/shared/lib/utils'
+import NotFound from '@konxyz/shared-react/components/NotFound'
+import TopBar from '@konxyz/shared-react/components/TopBar'
 import { DotsThreeVerticalIcon } from '@phosphor-icons/react'
 import { useLoaderData } from 'react-router'
 import type { Route } from './+types/page'
@@ -150,9 +150,7 @@ export default function Page() {
         <TopBar
           title={tabData?.title ?? ''}
           rightBtn={
-            isLastTab ? (
-              'config'
-            ) : contentType === 'xmtp' ? (
+            contentType === 'xmtp' ? (
               'xmtp'
             ) : contentType === 'ical' ? (
               <IcalConfigDialog icalUrl={content?.url}>

@@ -3,8 +3,8 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useDisconnect } from 'wagmi'
 import AddressInput from '~/components/AddressInput'
-import ThemeChanger from '~/components/ThemeChanger'
 import FaceIdIcon from '~/components/svg/FaceId'
+import ThemeChanger from '~/components/ThemeChanger'
 import {
   AlertDialog,
   AlertDialogClose,
@@ -16,7 +16,7 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '~/components/ui/Dialog'
 import { useCurrentConnector } from '~/hooks/useWallet'
 
-export default function ConfigDialog() {
+export default function ConfigDialog({ children }: { children?: React.ReactNode }) {
   const { disconnectAsync } = useDisconnect()
   const navigate = useNavigate()
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -31,9 +31,7 @@ export default function ConfigDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <GearSixIcon size={32} weight="duotone" />
-      </DialogTrigger>
+      <DialogTrigger>{children ?? <GearSixIcon size={32} weight="duotone" />}</DialogTrigger>
       <DialogContent>
         <DialogTitle className="flex items-center justify-center text-center font-bold text-xl">
           <GearSixIcon size={24} weight="bold" className="-mt-0.5 -ml-2 mr-1.5" />
@@ -83,7 +81,7 @@ export default function ConfigDialog() {
                 <XIcon weight="bold" className="mr-1.5" />
                 Cancel
               </AlertDialogClose>
-              <AlertDialogClose type="button" className=" text-blue-600" onClick={() => logout()}>
+              <AlertDialogClose type="button" className="text-blue-600" onClick={() => logout()}>
                 <CheckIcon weight="bold" className="mr-1.5 text-blue-400" />
                 OK
               </AlertDialogClose>
