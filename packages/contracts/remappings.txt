@@ -1,5 +1,5 @@
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+@ensdomains/ens-contracts/=lib//durin/lib/ens-contracts/contracts/
 @arachnid/string-utils/=lib/solidity-stringutils/src/
 forge-std/=lib/forge-std/src/
-@ensdomains/ens-contracts/=lib/ens-contracts/contracts/
-@namestonehq/durin/=lib/namestonehq/durin/src/
+@namestonehq/durin/=lib/durin/src/
