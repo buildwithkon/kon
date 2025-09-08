@@ -12,7 +12,7 @@ contract L2RegistrarTest is Test {
     L2Registry public registry;
     L2RegistryFactory public factory;
     
-    address public admin;
+    address public owner;
     address public user1;
     address public user2;
     address public user3;
@@ -22,12 +22,12 @@ contract L2RegistrarTest is Test {
     event NameRegistered(string indexed label, address indexed owner);
     
     function setUp() public {
-        admin = makeAddr("admin");
+        owner = makeAddr("owner");
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
         user3 = makeAddr("user3");
         
-        vm.startPrank(admin);
+        vm.startPrank(owner);
         
         // Deploy L2Registry factory and registry
         factory = new L2RegistryFactory(address(new L2Registry()));
@@ -39,6 +39,11 @@ contract L2RegistrarTest is Test {
         // Add registrar to registry
         registry.addRegistrar(address(registrar));
         
+        // Add test users to allowlist since it's enabled by default
+        registrar.addToAllowlist(user1);
+        registrar.addToAllowlist(user2);
+        registrar.addToAllowlist(user3);
+        
         vm.stopPrank();
     }
     
@@ -46,6 +51,7 @@ contract L2RegistrarTest is Test {
         assertEq(address(registrar.registry()), address(registry));
         assertEq(registrar.coinType(), (0x80000000 | block.chainid) >> 0);
         assertEq(registrar.chainId(), block.chainid);
+        assertTrue(registrar.allowlistEnabled()); // Allowlist is enabled by default
     }
     
     function test_Register() public {
@@ -144,13 +150,13 @@ contract L2RegistrarTest is Test {
         registrar.register(label, user2);
     }
     
-    function testFuzz_Register(string calldata label, address owner) public {
+    function testFuzz_Register(string calldata label, address nameOwner) public {
         // Filter out invalid inputs
         vm.assume(bytes(label).length >= 3 && bytes(label).length < 255);
-        vm.assume(owner != address(0));
-        // Ensure owner is not a contract (or is a contract that can receive ERC721)
+        vm.assume(nameOwner != address(0));
+        // Ensure nameOwner is not a contract (or is a contract that can receive ERC721)
         // This prevents ERC721InvalidReceiver errors
-        vm.assume(owner.code.length == 0);
+        vm.assume(nameOwner.code.length == 0);
         
         // Check availability before registration
         bool availableBefore = registrar.available(label);
@@ -160,11 +166,11 @@ contract L2RegistrarTest is Test {
             // as indexed string parameters can behave unexpectedly
             
             vm.prank(user1);
-            registrar.register(label, owner);
+            registrar.register(label, nameOwner);
             
             // Verify registration
             bytes32 node = registry.makeNode(registry.baseNode(), label);
-            assertEq(registry.ownerOf(uint256(node)), owner);
+            assertEq(registry.ownerOf(uint256(node)), nameOwner);
             
             // Check it's no longer available
             assertFalse(registrar.available(label));
@@ -228,5 +234,146 @@ contract L2RegistrarTest is Test {
         assertEq(coinTypeAddr, abi.encodePacked(expectedOwner));
         assertEq(ethAddr, abi.encodePacked(expectedOwner));
         assertEq(coinTypeAddr, ethAddr);
+    }
+    
+    // Allowlist tests
+    function test_AllowlistEnabled_BlocksNonAllowlisted() public {
+        string memory label = "allowlisttest";
+        
+        // Allowlist is already enabled by default
+        assertTrue(registrar.allowlistEnabled());
+        
+        // Create a new address that's not in the allowlist
+        address nonAllowlistedUser = makeAddr("nonAllowlistedUser");
+        assertFalse(registrar.isAllowlisted(nonAllowlistedUser));
+        
+        // Try to register without being allowlisted
+        vm.prank(nonAllowlistedUser);
+        vm.expectRevert("L2Registrar: caller not allowlisted");
+        registrar.register(label, nonAllowlistedUser);
+    }
+    
+    function test_AllowlistEnabled_AllowsAllowlisted() public {
+        string memory label = "allowlisttest";
+        
+        // Enable allowlist and add user1
+        vm.startPrank(owner);
+        registrar.setAllowlistEnabled(true);
+        registrar.addToAllowlist(user1);
+        vm.stopPrank();
+        
+        // Now user1 should be able to register
+        vm.prank(user1);
+        registrar.register(label, user1);
+        
+        bytes32 node = registry.makeNode(registry.baseNode(), label);
+        assertEq(registry.ownerOf(uint256(node)), user1);
+    }
+    
+    function test_AllowlistDisabled_AllowsAnyone() public {
+        string memory label = "noallowlist";
+        
+        // Disable allowlist (it's enabled by default now)
+        vm.prank(owner);
+        registrar.setAllowlistEnabled(false);
+        assertFalse(registrar.allowlistEnabled());
+        
+        // Any user can register when allowlist is disabled
+        vm.prank(user2);
+        registrar.register(label, user2);
+        
+        bytes32 node = registry.makeNode(registry.baseNode(), label);
+        assertEq(registry.ownerOf(uint256(node)), user2);
+    }
+    
+    function test_AddToAllowlist() public {
+        // Create a new address that's not in the allowlist
+        address newUser = makeAddr("newUser");
+        assertFalse(registrar.isAllowlisted(newUser));
+        
+        vm.prank(owner);
+        registrar.addToAllowlist(newUser);
+        
+        assertTrue(registrar.isAllowlisted(newUser));
+    }
+    
+    function test_AddToAllowlistBatch() public {
+        address[] memory users = new address[](3);
+        users[0] = user1;
+        users[1] = user2;
+        users[2] = user3;
+        
+        vm.prank(owner);
+        registrar.addToAllowlistBatch(users);
+        
+        assertTrue(registrar.isAllowlisted(user1));
+        assertTrue(registrar.isAllowlisted(user2));
+        assertTrue(registrar.isAllowlisted(user3));
+    }
+    
+    function test_RemoveFromAllowlist() public {
+        vm.startPrank(owner);
+        registrar.addToAllowlist(user1);
+        assertTrue(registrar.isAllowlisted(user1));
+        
+        registrar.removeFromAllowlist(user1);
+        assertFalse(registrar.isAllowlisted(user1));
+        vm.stopPrank();
+    }
+    
+    function test_RemoveFromAllowlistBatch() public {
+        address[] memory users = new address[](2);
+        users[0] = user1;
+        users[1] = user2;
+        
+        vm.startPrank(owner);
+        registrar.addToAllowlistBatch(users);
+        assertTrue(registrar.isAllowlisted(user1));
+        assertTrue(registrar.isAllowlisted(user2));
+        
+        registrar.removeFromAllowlistBatch(users);
+        assertFalse(registrar.isAllowlisted(user1));
+        assertFalse(registrar.isAllowlisted(user2));
+        vm.stopPrank();
+    }
+    
+    function test_OnlyOwnerCanManageAllowlist() public {
+        vm.prank(user1);
+        vm.expectRevert("L2Registrar: caller is not owner");
+        registrar.setAllowlistEnabled(true);
+        
+        vm.prank(user1);
+        vm.expectRevert("L2Registrar: caller is not owner");
+        registrar.addToAllowlist(user2);
+        
+        vm.prank(user1);
+        vm.expectRevert("L2Registrar: caller is not owner");
+        registrar.removeFromAllowlist(user2);
+    }
+    
+    function test_TransferOwnership() public {
+        assertEq(registrar.owner(), owner);
+        
+        vm.prank(owner);
+        registrar.transferOwnership(user1);
+        
+        assertEq(registrar.owner(), user1);
+        
+        // New owner can manage allowlist
+        vm.prank(user1);
+        registrar.setAllowlistEnabled(true);
+        assertTrue(registrar.allowlistEnabled());
+    }
+    
+    function test_CannotTransferOwnershipToZeroAddress() public {
+        vm.prank(owner);
+        vm.expectRevert("L2Registrar: zero address");
+        registrar.transferOwnership(address(0));
+    }
+    
+    function test_CannotAddZeroAddressToAllowlist() public {
+        vm.prank(owner);
+        vm.expectRevert("L2Registrar: zero address");
+        registrar.addToAllowlist(address(0));
     }
 }
