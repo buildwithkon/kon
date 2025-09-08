@@ -9,6 +9,7 @@
     "deploy:staging": "CLOUDFLARE_ENV=staging $npm_execpath run build && wrangler deploy",
     "dev": "react-router dev",
     "dev:config": "tsx ./scripts/devConfig",
+    "dev:ens": "tsx ./scripts/ens",
     "cf-typegen": "wrangler types",
     "start": "$npm_execpath run start:staging",
     "start:production": "CLOUDFLARE_ENV=production wrangler dev",
