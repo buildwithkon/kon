@@ -7,3 +7,9 @@
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "packages/contracts/lib/ens-contracts"]
+	path = packages/contracts/lib/ens-contracts
+	url = https://github.com/ensdomains/ens-contracts
+[submodule "packages/contracts/lib/durin"]
+	path = packages/contracts/lib/durin
+	url = https://github.com/namestonehq/durin
