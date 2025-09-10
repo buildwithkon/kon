@@ -15,13 +15,15 @@
   },
   "vars": {
     "ENV": "development",
-    "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+    "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081",
+    "ENS_CHAIN": "sepolia"
   },
   "env": {
     "production": {
       "vars": {
         "ENV": "production",
-        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081",
+        "ENS_CHAIN": "mainnet"
       },
       "secrets_store_secrets": [
         {
@@ -45,7 +47,8 @@
     "staging": {
       "vars": {
         "ENV": "staging",
-        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081"
+        "WC_PROJECT_ID": "e0c2d587ca7036332182c51b1b5b0081",
+        "ENS_CHAIN": "sepolia"
       },
       "secrets_store_secrets": [
         {

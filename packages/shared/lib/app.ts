@@ -38,7 +38,7 @@ export const loadAppConfig = async (_url: string, env: Env) => {
     const res = await apiClient(origin, env).ens[':chain'].getAppConfig[':subdomain'].$get({
       param: {
         subdomain,
-        chain: 'sepolia'
+        chain: env?.ENS_CHAIN ?? 'sepolia'
       }
     })
     appConfig = await (res as Response).json()

@@ -26,7 +26,7 @@
     "@biomejs/biome": "^2.2.2",
     "concurrently": "^9.1.2",
     "wait-on": "^8.0.4",
-    "wrangler": "^4.33.1"
+    "wrangler": "^4.35.0"
   },
-  "packageManager": "pnpm@10.15.0+sha256.84c19e788d7d7ee248e4a6b7152f8ebba0f4fe7380a5f443ca17d76c030052d2"
+  "packageManager": "pnpm@10.15.1+sha512.34e538c329b5553014ca8e8f4535997f96180a1d0f614339357449935350d924e22f8614682191264ec33d1462ac21561aff97f6bb18065351c162c7e8f6de67"
 }

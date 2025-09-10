@@ -10,7 +10,7 @@ export const getWagmiConfig = (ld: RootLoader) =>
     connectors: [
       baseAccount({
         appName: ld?.appConfig?.name ?? APP_FALLBACK_NAME,
-        appLogoUrl: ld?.appConfig?.icons?.logo ?? DEFAULT_LOGO_URL,
+        appLogoUrl: ld?.appConfig?.icons?.logo ?? DEFAULT_LOGO_URL
       }),
       injected(),
       walletConnect({ projectId: ld?.ENV?.WC_PROJECT_ID })

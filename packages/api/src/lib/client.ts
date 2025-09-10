@@ -1,4 +1,4 @@
-import { http, createPublicClient } from 'viem'
+import { createPublicClient, http } from 'viem'
 import { mainnet, sepolia } from 'viem/chains'
 
 const client = (ALCHEMY_API_KEY: string) =>
