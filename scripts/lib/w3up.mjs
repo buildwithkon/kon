@@ -47,3 +47,34 @@ export async function uploadDirectory(client, entries) {
   const cid = await client.uploadDirectory(files)
   return cid.toString()
 }
+
+// Walk a directory on disk and upload every file as a UnixFS directory.
+// Used for the site build (entire dist/), the runtime build, and any
+// other situation where the publish target is a static folder tree
+// rather than a single file.
+export async function uploadDirFromDisk(client, dirPath) {
+  const { readdir, readFile } = await import('node:fs/promises')
+  const { join, relative } = await import('node:path')
+
+  async function* walk(dir) {
+    const items = await readdir(dir, { withFileTypes: true })
+    for (const item of items) {
+      const full = join(dir, item.name)
+      if (item.isDirectory()) yield* walk(full)
+      else if (item.isFile()) yield full
+    }
+  }
+
+  const files = []
+  for await (const full of walk(dirPath)) {
+    const bytes = await readFile(full)
+    // Force forward slashes so IPFS directory layout is stable cross-OS.
+    const rel = relative(dirPath, full).split('\\').join('/')
+    files.push(new File([new Blob([bytes])], rel))
+  }
+  if (files.length === 0) {
+    throw new Error('uploadDirFromDisk: no files found under ' + dirPath)
+  }
+  const cid = await client.uploadDirectory(files)
+  return { cid: cid.toString(), count: files.length }
+}

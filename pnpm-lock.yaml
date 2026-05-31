@@ -89,7 +89,7 @@ importers:
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: ^1.7.4
-        version: 1.7.4(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250617.0)(wrangler@4.20.5(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+        version: 1.7.4(bufferutil@4.0.9)(rollup@4.41.1)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250617.0)(wrangler@4.20.5(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@cloudflare/workers-types':
         specifier: ^4.20250529.0
         version: 4.20250601.0
@@ -193,7 +193,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.9.1
-        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@2.79.2)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
@@ -279,6 +279,15 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3(@types/debug@4.1.12)(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
+  packages/plugins/_shared:
+    devDependencies:
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
+
   packages/plugins/badge:
     dependencies:
       '@konxyz/runtime-core':
@@ -288,9 +297,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/build-with:
     dependencies:
@@ -301,9 +319,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/forum:
     dependencies:
@@ -317,9 +344,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/ical:
     dependencies:
@@ -330,9 +366,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/iframe:
     dependencies:
@@ -343,9 +388,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/markdown:
     dependencies:
@@ -359,9 +413,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/plugins/profile-card:
     dependencies:
@@ -372,9 +435,18 @@ importers:
         specifier: ^10.24.0
         version: 10.26.7
     devDependencies:
+      '@konxyz/plugin-shared':
+        specifier: workspace:*
+        version: link:../_shared
+      '@preact/preset-vite':
+        specifier: ^2.9.1
+        version: 2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
       typescript:
         specifier: ^5.6.3
         version: 5.8.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
 
   packages/runtime-core:
     devDependencies:
@@ -9064,11 +9136,11 @@ snapshots:
     optionalDependencies:
       workerd: 1.20250617.0
 
-  '@cloudflare/vite-plugin@1.7.4(bufferutil@4.0.9)(rollup@2.79.2)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250617.0)(wrangler@4.20.5(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@cloudflare/vite-plugin@1.7.4(bufferutil@4.0.9)(rollup@4.41.1)(utf-8-validate@5.0.10)(vite@6.3.5(@types/node@20.17.52)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)(yaml@2.6.0))(workerd@1.20250617.0)(wrangler@4.20.5(@cloudflare/workers-types@4.20250601.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@cloudflare/unenv-preset': 2.3.3(unenv@2.0.0-rc.17)(workerd@1.20250617.0)
       '@mjackson/node-fetch-server': 0.6.1
-      '@rollup/plugin-replace': 6.0.2(rollup@2.79.2)
+      '@rollup/plugin-replace': 6.0.2(rollup@4.41.1)
       get-port: 7.1.0
       miniflare: 4.20250617.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       picocolors: 1.1.1
@@ -10518,6 +10590,25 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
+  '@preact/preset-vite@2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@2.79.2)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))':
+    dependencies:
+      '@babel/core': 7.27.4
+      '@babel/plugin-transform-react-jsx': 7.29.7(@babel/core@7.27.4)
+      '@babel/plugin-transform-react-jsx-development': 7.29.7(@babel/core@7.27.4)
+      '@prefresh/vite': 2.4.12(preact@10.26.7)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
+      '@rollup/pluginutils': 5.1.4(rollup@2.79.2)
+      babel-plugin-transform-hook-names: 1.0.2(@babel/core@7.27.4)
+      debug: 4.4.3
+      magic-string: 0.30.21
+      picocolors: 1.1.1
+      vite: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
+      vite-prerender-plugin: 0.5.13(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))
+      zimmerframe: 1.1.4
+    transitivePeerDependencies:
+      - preact
+      - rollup
+      - supports-color
+
   '@preact/preset-vite@2.10.5(@babel/core@7.27.4)(preact@10.26.7)(rollup@4.41.1)(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))':
     dependencies:
       '@babel/core': 7.27.4
@@ -10960,12 +11051,12 @@ snapshots:
       magic-string: 0.25.9
       rollup: 2.79.2
 
-  '@rollup/plugin-replace@6.0.2(rollup@2.79.2)':
+  '@rollup/plugin-replace@6.0.2(rollup@4.41.1)':
     dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@2.79.2)
+      '@rollup/pluginutils': 5.1.4(rollup@4.41.1)
       magic-string: 0.30.17
     optionalDependencies:
-      rollup: 2.79.2
+      rollup: 4.41.1
 
   '@rollup/plugin-terser@0.4.4(rollup@2.79.2)':
     dependencies:

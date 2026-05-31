@@ -27,6 +27,9 @@
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "publish:app": "node scripts/publish.mjs",
+    "publish:site": "node scripts/publish-site.mjs",
+    "publish:runtime": "node scripts/publish-runtime.mjs",
+    "publish:plugin": "node scripts/publish-plugin.mjs",
     "typecheck:v2": "pnpm --filter @konxyz/runtime-core typecheck && pnpm --filter @konxyz/schemas typecheck"
   },
   "devDependencies": {
