@@ -18,7 +18,14 @@ import { canonicalize, type KonEntryV1, type KonManifestV1 } from '@konxyz/runti
 import { KonManifestV1Schema } from '@konxyz/schemas'
 import { renderIndex } from './html'
 
-export const MANIFEST_CID_PLACEHOLDER = 'ipfs://__REPLACE_ME_MANIFEST_CID__' as const
+/**
+ * In the directory-upload pattern (default), the entry, manifest, and
+ * index.html ship together as a single UnixFS directory. The entry
+ * references the manifest by relative path; the bootstrap in index.html
+ * follows the same relative path. Only the runtime is referenced by
+ * separate IPFS CID (it is shared across apps).
+ */
+export const MANIFEST_RELATIVE_REF = './manifest.json' as const
 
 export interface BuildOptions {
   input: string
@@ -51,20 +58,21 @@ export async function build(opts: BuildOptions): Promise<BuildResult> {
   // Canonicalize for stable hashing / signing.
   const canonical = canonicalize(manifest)
 
-  // Entry template — the pipeline will substitute the manifest CID placeholder
-  // after uploading manifest.json to IPFS.
+  // Entry template — uses the relative-path manifest reference (directory
+  // upload pattern). The publish pipeline substitutes the runtime CID,
+  // then uploads the whole folder as one UnixFS directory.
   const entryTemplate: KonEntryV1 = {
     schema: 'kon-entry-v1',
     name: manifest.app.id,
     runtime: opts.runtimeCid ?? 'ipfs://__REPLACE_ME_RUNTIME_CID__',
-    manifest: MANIFEST_CID_PLACEHOLDER,
+    manifest: MANIFEST_RELATIVE_REF,
     version: manifest.app.version,
     publishedAt: manifest.publishedAt
   }
 
   const html = renderIndex({
     name: manifest.app.name,
-    entryCidPlaceholder: 'ipfs://__REPLACE_ME_ENTRY_CID__'
+    bootstrapGateways: manifest.deployment?.ipfs_gateways
   })
 
   await mkdir(opts.output, { recursive: true })

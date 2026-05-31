@@ -72,6 +72,15 @@ export default defineConfig({
     reportCompressedSize: true,
     rollupOptions: {
       output: {
+        // Stable entry filename. The runtime is uploaded by-CID to IPFS;
+        // CIDs already act as cache keys so we don't need hashed filenames.
+        // Apps load this via `<gateway>/ipfs/<runtime-cid>/runtime.js`,
+        // a stable path that doesn't change across rebuilds with the
+        // same source — only the CID changes, which is the right unit
+        // of versioning here.
+        entryFileNames: 'runtime.js',
+        chunkFileNames: 'chunks/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
         manualChunks: (id) => {
           if (id.includes('node_modules/viem')) return 'viem'
           if (id.includes('node_modules/preact') || id.includes('@preact/signals')) return 'preact'

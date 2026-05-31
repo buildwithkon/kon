@@ -15,6 +15,17 @@
 export type IpfsUri = `ipfs://${string}`
 
 /**
+ * Relative path within a published directory (e.g. './manifest.json').
+ * Used when the publish flow uploads multiple files as a single UnixFS
+ * directory so siblings refer to each other without needing a separate
+ * CID per file.
+ */
+export type RelativePath = `./${string}` | `/${string}`
+
+/** Either an absolute IPFS CID URI or a path relative to the containing directory. */
+export type ContentRef = IpfsUri | RelativePath
+
+/**
  * Identifier for any DID. We use did:pkh:eip155:<chain>:<address> for Safe accounts
  * and did:key:<multibase> for ephemeral SEA / passkey-derived identities.
  */
@@ -53,8 +64,13 @@ export interface KonEntryV1 {
   name: string
   /** CID of the shared KON runtime to load. */
   runtime: IpfsUri
-  /** CID of the app-specific manifest for this release. */
-  manifest: IpfsUri
+  /**
+   * Reference to the app-specific manifest. Either an `ipfs://CID` (separate
+   * upload) or a relative path like `./manifest.json` (when the directory
+   * upload pattern is used — manifest, entry, and index.html ship in one
+   * UnixFS dir). The bootstrap loader handles both forms.
+   */
+  manifest: ContentRef
   /** Monotonic release counter, bumped per publish. */
   version: number
   /** ISO 8601 timestamp of publish. */

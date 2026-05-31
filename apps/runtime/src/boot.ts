@@ -42,6 +42,41 @@ async function bootDevPreset() {
   setStage('ready')
 }
 
+// Bootstrap script in apps/renderer's index.html pre-fetches the entry +
+// manifest and stashes them on window before importing the runtime. The
+// runtime prefers that data over re-fetching from IPFS.
+interface KonBootData {
+  entry: unknown
+  manifest: unknown
+  gateways?: string[]
+  runtimeCid?: string
+}
+function readBootstrapData(): KonBootData | null {
+  // biome-ignore lint/suspicious/noExplicitAny: window augmentation by bootstrap
+  const data = (window as any).__KON_BOOT__ as KonBootData | undefined
+  if (!data || typeof data !== 'object') return null
+  if (!data.entry || !data.manifest) return null
+  return data
+}
+
+async function bootFromBootstrap(data: KonBootData): Promise<boolean> {
+  setStage('reading-entry-ref', 'using window.__KON_BOOT__ from bootstrap')
+  const entryParsed = KonEntryV1Schema.safeParse(data.entry)
+  if (!entryParsed.success) {
+    throw new Error(`bootstrap entry invalid: ${formatIssues(entryParsed.error.issues)}`)
+  }
+  entry.value = entryParsed.data as unknown as typeof entry.value
+
+  const manifestParsed = KonManifestV1Schema.safeParse(data.manifest)
+  if (!manifestParsed.success) {
+    throw new Error(`bootstrap manifest invalid: ${formatIssues(manifestParsed.error.issues)}`)
+  }
+  manifest.value = manifestParsed.data as unknown as typeof manifest.value
+  deployment.value = resolveDeployment(manifestParsed.data.deployment)
+  setStage('ready')
+  return true
+}
+
 export async function boot() {
   try {
     // Dev override: ?dev=1 (or default in dev mode with no entry param) loads
@@ -55,6 +90,14 @@ export async function boot() {
         await bootDevPreset()
         return
       }
+    }
+
+    // Fast path: bootstrap script in apps/renderer's index.html already
+    // fetched entry + manifest. Skip the IPFS round-trips.
+    const bootstrap = readBootstrapData()
+    if (bootstrap) {
+      await bootFromBootstrap(bootstrap)
+      return
     }
 
     setStage('reading-entry-ref')

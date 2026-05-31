@@ -138,48 +138,47 @@ async function main() {
     process.exit(2)
   }
 
-  console.log('\n[publish] step 2: upload manifest (via ' + pin.kind + ')')
-  const manifestBytes = await readFile(manifestPath)
-  const { cid: manifestCid } = await pin.uploadFile('manifest.json', manifestBytes)
-  console.log('[publish]   manifest CID: ' + manifestCid)
-
-  console.log('\n[publish] step 3: substitute CIDs in entry')
+  // Directory-upload pattern: substitute the runtime CID into the entry,
+  // rename entry.template.json -> entry.json, then upload the whole folder
+  // as one UnixFS directory. The dir CID becomes the ENS contenthash; the
+  // browser gateway serves index.html which uses the inline bootstrap to
+  // fetch ./entry.json + ./manifest.json + load the runtime by CID.
+  console.log('\n[publish] step 2: assemble release directory')
   const entryTemplate = JSON.parse(await readFile(entryTemplatePath, 'utf8'))
-  entryTemplate.manifest = 'ipfs://' + manifestCid
   if (runtime.cid) {
     entryTemplate.runtime = 'ipfs://' + runtime.cid
   }
   const entryPath = join(output, 'entry.json')
   await writeFile(entryPath, JSON.stringify(entryTemplate, null, 2) + '\n')
 
-  console.log('\n[publish] step 4: upload entry')
-  const entryBytes = await readFile(entryPath)
-  const { cid: entryCid } = await pin.uploadFile('entry.json', entryBytes)
-  console.log('[publish]   entry CID: ' + entryCid)
+  console.log('[publish]   files in ' + output + ': index.html + entry.json + manifest.json')
 
-  console.log('\n[publish] step 5: substitute entry CID in index.html')
-  const htmlSrc = await readFile(htmlPath, 'utf8')
-  const htmlOut = htmlSrc.replaceAll('__REPLACE_ME_ENTRY_CID__', entryCid)
-  await writeFile(htmlPath, htmlOut)
+  console.log('\n[publish] step 3: upload release directory (via ' + pin.kind + ')')
+  // Upload only the published-release files (not the .template). The pin
+  // service treats entry.template.json as part of the dir; we remove it
+  // first to keep the published layout clean.
+  await (await import('node:fs/promises')).unlink(entryTemplatePath).catch(() => {})
+  const { cid: dirCid, count } = await pin.uploadDirFromDisk(output)
+  console.log('[publish]   uploaded ' + count + ' files; release dir CID: ' + dirCid)
 
   if (!args.publish) {
     console.log('\n[publish] upload complete. Pass --publish to update ENS contenthash.')
     console.log(
-      '[publish] manual ENS update: set contenthash on ' + args.app + '.kon.xyz to ipfs://' + entryCid
+      '[publish] manual ENS update: set contenthash on ' + args.app + '.kon.xyz to ipfs://' + dirCid
     )
     return
   }
 
-  console.log('\n[publish] step 6: update ENS contenthash')
+  console.log('\n[publish] step 4: update ENS contenthash')
   const result = await publishContenthash({
     ensName: args.app + '.kon.xyz',
-    contenthash: 'ipfs://' + entryCid
+    contenthash: 'ipfs://' + dirCid
   })
   if (result.applied) {
     console.log('[publish]   + ENS contenthash updated. tx: ' + result.txHash)
   } else {
     console.log('[publish]   ! ENS contenthash NOT updated: ' + result.reason)
-    console.log('[publish]   manual: set contenthash on ' + args.app + '.kon.xyz to ipfs://' + entryCid)
+    console.log('[publish]   manual: set contenthash on ' + args.app + '.kon.xyz to ipfs://' + dirCid)
   }
 
   console.log('\n[publish] + done')
