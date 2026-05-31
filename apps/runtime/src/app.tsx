@@ -1,6 +1,7 @@
 /** @jsxImportSource preact */
 import { signal } from '@preact/signals'
-import type { KonPageV1, KonPluginV1 } from '@konxyz/runtime-core'
+import { useEffect, useState } from 'preact/hooks'
+import type { KonPageV1, KonPluginComponent, KonPluginV1 } from '@konxyz/runtime-core'
 import { deployment, entry, errorMessage, manifest, stage, stageDetail } from './state'
 import { resolvePlugin } from './plugin-registry'
 import { ensureWallet } from './wallet-singleton'
@@ -12,29 +13,74 @@ function fmtIpfs(uri: string | undefined): string {
   return uri.length > 36 ? `${uri.slice(0, 24)}…${uri.slice(-8)}` : uri
 }
 
+function unknownPluginCard(plugin: KonPluginV1, reason: string) {
+  return (
+    <div
+      style={{
+        padding: '1rem',
+        border: '1px dashed #c0392b',
+        borderRadius: '8px',
+        background: '#fef0f0',
+        fontFamily: 'ui-monospace, monospace',
+        fontSize: '0.85rem',
+        margin: '1rem 0'
+      }}
+    >
+      <div>
+        <strong>{plugin.id}</strong> @ {plugin.version} — {reason}
+      </div>
+      <div style={{ color: '#888' }}>source: {fmtIpfs(plugin.source)}</div>
+    </div>
+  )
+}
+
+function loadingPluginCard(plugin: KonPluginV1) {
+  return (
+    <div style={{ padding: '0.75rem 1rem', color: '#888', fontStyle: 'italic', fontSize: '0.85rem' }}>
+      loading plugin <code>{plugin.id}</code>…
+    </div>
+  )
+}
+
 function PluginRenderer({ plugin }: { plugin: KonPluginV1 }) {
   const m = manifest.value
   const d = deployment.value
-  if (!m || !d) return null
+  const [dynamicComponent, setDynamicComponent] = useState<KonPluginComponent | null>(null)
+  const [dynamicError, setDynamicError] = useState<string | null>(null)
 
-  const Component = resolvePlugin(plugin.id)
-  if (!Component) {
-    return (
-      <div
-        style={{
-          padding: '1rem',
-          border: '1px dashed #c0392b',
-          borderRadius: '8px',
-          background: '#fef0f0',
-          fontFamily: 'ui-monospace, monospace',
-          fontSize: '0.85rem',
-          margin: '1rem 0'
-        }}
-      >
-        unknown plugin: <strong>{plugin.id}</strong> @ {plugin.version} ({fmtIpfs(plugin.source)})
-      </div>
+  const resolution = m && d ? resolvePlugin(plugin, d) : null
+
+  useEffect(() => {
+    if (resolution?.kind !== 'dynamic') return
+    let cancelled = false
+    resolution.promise.then(
+      (component) => {
+        if (!cancelled) setDynamicComponent(() => component)
+      },
+      (e) => {
+        if (!cancelled) setDynamicError(e instanceof Error ? e.message : String(e))
+      }
     )
+    return () => {
+      cancelled = true
+    }
+  }, [resolution?.kind === 'dynamic' ? resolution.source : null])
+
+  if (!m || !d || !resolution) return null
+
+  if (resolution.kind === 'unknown') {
+    return unknownPluginCard(plugin, resolution.reason)
   }
+
+  let Component: KonPluginComponent | null = null
+  if (resolution.kind === 'builtin') {
+    Component = resolution.component
+  } else if (resolution.kind === 'dynamic') {
+    if (dynamicError) return unknownPluginCard(plugin, `load failed: ${dynamicError}`)
+    if (!dynamicComponent) return loadingPluginCard(plugin)
+    Component = dynamicComponent
+  }
+  if (!Component) return null
 
   const wallet = ensureWallet(d.wallet_origin)
   // biome-ignore lint/suspicious/noExplicitAny: plugin contract erases prop shape

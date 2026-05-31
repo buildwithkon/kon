@@ -14,6 +14,28 @@
     <meta name="kon:schema" content="kon-entry-v1" />
     <meta name="kon:entry" content="ipfs://__REPLACE_ME_ENTRY_CID__" />
     <link rel="icon" href="data:," />
+    <!--
+      Import map for dynamic plugin loading. Dynamically-imported plugin
+      bundles use bare imports like `import { h } from 'preact'`; the
+      browser resolves them via this map. The runtime's own bundle is
+      Vite-bundled separately and does not use these URLs.
+
+      Self-hosted deployments can substitute different CDN URLs (e.g.
+      pin specific versions, host on their own CDN). The default
+      points at esm.sh which serves ESM-flavored builds of npm
+      packages with semver redirection.
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "preact": "https://esm.sh/preact@10.24.0",
+          "preact/": "https://esm.sh/preact@10.24.0/",
+          "preact/hooks": "https://esm.sh/preact@10.24.0/hooks",
+          "preact/jsx-runtime": "https://esm.sh/preact@10.24.0/jsx-runtime",
+          "@preact/signals": "https://esm.sh/@preact/signals@1.3.0?deps=preact@10.24.0"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="kon-root"></div>
