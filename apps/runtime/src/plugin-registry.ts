@@ -13,13 +13,19 @@ import type { KonPluginComponent } from '@konxyz/runtime-core'
 import Badge from '@konxyz/plugin-badge'
 import BuildWith from '@konxyz/plugin-build-with'
 import Forum from '@konxyz/plugin-forum'
+import Ical from '@konxyz/plugin-ical'
 import Iframe from '@konxyz/plugin-iframe'
+import Markdown from '@konxyz/plugin-markdown'
+import ProfileCard from '@konxyz/plugin-profile-card'
 
 export const BUILTIN_PLUGINS: Record<string, KonPluginComponent> = {
   badge: Badge as KonPluginComponent,
   'build-with': BuildWith as KonPluginComponent,
   forum: Forum as KonPluginComponent,
-  iframe: Iframe as KonPluginComponent
+  ical: Ical as KonPluginComponent,
+  iframe: Iframe as KonPluginComponent,
+  markdown: Markdown as KonPluginComponent,
+  'profile-card': ProfileCard as KonPluginComponent
 }
 
 export function resolvePlugin(id: string): KonPluginComponent | null {
