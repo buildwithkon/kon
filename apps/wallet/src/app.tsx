@@ -10,7 +10,8 @@ import type {
 } from '@konxyz/wallet-sdk/protocol'
 import { isAllowedAppOrigin } from './origin-allowlist'
 import { createPasskey, describePasskey, loadAccount, loadStoredCredential } from './passkey'
-import { safeAddressFromAccount } from './safe'
+import { safeAddressFromAccount, verifyAddressAcrossChains } from './safe'
+import { listChains } from './chains'
 
 type PendingRequest =
   | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
@@ -65,6 +66,14 @@ const cachedSafeAddress = signal<`0x${string}` | null>(null)
 async function ensureSafeAddress(): Promise<`0x${string}`> {
   if (cachedSafeAddress.value) return cachedSafeAddress.value
   const account = loadAccount()
+  // If multiple chains are configured, verify the invariant that the address
+  // is identical across all of them (Safe v1.4.1 predeterministic deploy).
+  // With a single chain, fall through to the cheap path.
+  if (listChains().length > 1) {
+    const { address } = await verifyAddressAcrossChains(account)
+    cachedSafeAddress.value = address
+    return address
+  }
   const address = await safeAddressFromAccount(account)
   cachedSafeAddress.value = address
   return address
