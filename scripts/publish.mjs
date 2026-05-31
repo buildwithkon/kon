@@ -182,6 +182,7 @@ async function main() {
   }
 
   console.log('\n[publish] + done')
+  await pin.close()
 }
 
 main().catch((e) => {

@@ -90,6 +90,7 @@ async function main() {
   }
 
   console.log('\n[publish:site] + done')
+  await pin.close()
 }
 
 main().catch((e) => {

@@ -601,3 +601,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,windows,linux,vercel,remix+cloudflarepages,remix+cloudflareworkers,remix,react,reactnative,go,python,rust
+# KON v2: Helia local blockstore for self-hosted pin service
+.kon/blockstore/
+

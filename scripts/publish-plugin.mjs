@@ -103,6 +103,7 @@ async function main() {
   for (const { name, cid } of cids) {
     console.log('  ' + name + ': ipfs://' + cid)
   }
+  await pin.close()
 }
 
 main().catch((e) => {

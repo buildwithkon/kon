@@ -80,6 +80,7 @@ async function main() {
   console.log('[publish:runtime]   pinned -> .kon/runtime-cid.txt')
 
   console.log('\n[publish:runtime] + done.')
+  await pin.close()
 }
 
 main().catch((e) => {
