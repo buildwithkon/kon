@@ -1,0 +1,24 @@
+{
+  "name": "@konxyz/site-v2",
+  "version": "0.0.0",
+  "private": true,
+  "description": "KON v2 marketing site (kon.xyz apex). Vite + Preact SPA pre-rendered to static HTML at build time, published to IPFS via scripts/publish.mjs and pointed at by the kon.xyz DNS-ENS contenthash. Replaces the v1 Honox site under packages/site.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsx scripts/prerender.tsx",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@preact/signals": "^1.3.0",
+    "preact": "^10.24.0"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.1",
+    "preact-render-to-string": "^6.5.11",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
