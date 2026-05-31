@@ -1,0 +1,25 @@
+{
+  "name": "@konxyz/renderer",
+  "version": "0.0.0",
+  "private": true,
+  "description": "KON v2 Static/IPFS Renderer — publish-time CLI that converts an author-friendly manifest source into the canonical KonManifestV1 + minimal entry + index.html ready for IPFS upload. Real CID resolution + ENS contenthash update happens in the Phase 5 publish pipeline; this package is purely deterministic config → output.",
+  "type": "module",
+  "bin": {
+    "kon-render": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsx src/index.ts",
+    "example": "tsx src/index.ts --input examples/ethtokyo/manifest.source.json --output dist/ethtokyo"
+  },
+  "dependencies": {
+    "@konxyz/runtime-core": "workspace:*",
+    "@konxyz/schemas": "workspace:*",
+    "hono": "^4.7.11"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

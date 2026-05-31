@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, v2]
+  pull_request:
+    branches: [main, v2]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Guard against hardcoded KON-managed origins
+        run: node scripts/lint-no-hardcoded-origins.mjs
+
+      - name: Biome check
+        run: pnpm run check
+        continue-on-error: true

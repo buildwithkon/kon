@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KON</title>
+    <!--
+      In a production KON app this file is produced by apps/renderer/ and the
+      kon:entry meta tag is rewritten to the entry CID by the publish
+      pipeline. During local dev we either read the entry from a URL query
+      (?entry=ipfs://CID) or fall back to a development placeholder so the
+      runtime boots even without an entry pinned anywhere.
+    -->
+    <meta name="kon:schema" content="kon-entry-v1" />
+    <meta name="kon:entry" content="ipfs://__REPLACE_ME_ENTRY_CID__" />
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <div id="kon-root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
