@@ -9,7 +9,8 @@ import type {
   WalletResponse
 } from '@konxyz/wallet-sdk/protocol'
 import { isAllowedAppOrigin } from './origin-allowlist'
-import { createPasskey, describePasskey, loadStoredCredential } from './passkey'
+import { createPasskey, describePasskey, loadAccount, loadStoredCredential } from './passkey'
+import { safeAddressFromAccount } from './safe'
 
 type PendingRequest =
   | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
@@ -56,14 +57,18 @@ function handleAppMessage(ev: MessageEvent) {
   }
 }
 
-/** STUB — Safe smart account predicted-address derivation lands in step 8b. */
-function stubAddress(): `0x${string}` {
-  return '0xDEAD000000000000000000000000000000000BEEF'
-}
-
 const passkeyState = signal(describePasskey())
 const busy = signal(false)
 const passkeyError = signal<string | null>(null)
+const cachedSafeAddress = signal<`0x${string}` | null>(null)
+
+async function ensureSafeAddress(): Promise<`0x${string}`> {
+  if (cachedSafeAddress.value) return cachedSafeAddress.value
+  const account = loadAccount()
+  const address = await safeAddressFromAccount(account)
+  cachedSafeAddress.value = address
+  return address
+}
 
 async function ensurePasskey(openerOrigin: string) {
   if (loadStoredCredential()) return
@@ -93,12 +98,18 @@ async function approveSignIn() {
     reject('passkey_unavailable', passkeyError.value ?? 'passkey creation failed')
     return
   }
+  let address: `0x${string}`
+  try {
+    address = await ensureSafeAddress()
+  } catch (e) {
+    reject('internal_error', e instanceof Error ? e.message : String(e))
+    return
+  }
   postToOpener(
     {
       kind: 'kon.signIn.ok',
       requestId: p.req.requestId,
-      address: stubAddress(),
-      ens: 'demo.kon.xyz'
+      address
     },
     p.openerOrigin
   )
@@ -231,7 +242,10 @@ export function App() {
               : `! stored on ${pk.rpId} (origin mismatch)`
             : '(none — will create)'}
           <br />
-          Safe address: STUB (real predicted address lands in step 8b)
+          Safe address:{' '}
+          {cachedSafeAddress.value
+            ? `${cachedSafeAddress.value.slice(0, 10)}…${cachedSafeAddress.value.slice(-6)}`
+            : '(derived after passkey)'}
         </div>
         {passkeyError.value && (
           <div style={{ color: '#c0392b', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
