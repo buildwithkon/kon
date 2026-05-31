@@ -3,6 +3,7 @@ import { signal } from '@preact/signals'
 import type { KonPageV1, KonPluginV1 } from '@konxyz/runtime-core'
 import { deployment, entry, errorMessage, manifest, stage, stageDetail } from './state'
 import { resolvePlugin } from './plugin-registry'
+import { ensureWallet } from './wallet-singleton'
 
 const activePageId = signal<string | null>(null)
 
@@ -35,10 +36,11 @@ function PluginRenderer({ plugin }: { plugin: KonPluginV1 }) {
     )
   }
 
+  const wallet = ensureWallet(d.wallet_origin)
   // biome-ignore lint/suspicious/noExplicitAny: plugin contract erases prop shape
   const rendered = Component({
     props: (plugin.props ?? {}) as any,
-    context: { deployment: d, appId: m.app.id }
+    context: { deployment: d, appId: m.app.id, wallet }
   })
   // biome-ignore lint/suspicious/noExplicitAny: Preact h returns any-shaped vnode
   return rendered as any

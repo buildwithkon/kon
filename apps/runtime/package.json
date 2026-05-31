@@ -13,9 +13,11 @@
   "dependencies": {
     "@konxyz/plugin-badge": "workspace:*",
     "@konxyz/plugin-build-with": "workspace:*",
+    "@konxyz/plugin-forum": "workspace:*",
     "@konxyz/plugin-iframe": "workspace:*",
     "@konxyz/runtime-core": "workspace:*",
     "@konxyz/schemas": "workspace:*",
+    "@konxyz/wallet-sdk": "workspace:*",
     "@preact/signals": "^1.3.0",
     "preact": "^10.24.0",
     "viem": "^2.30.5"

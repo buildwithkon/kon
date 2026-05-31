@@ -4,7 +4,10 @@
     "id": "demo.kon.xyz",
     "name": "KON v2 demo",
     "version": 1,
-    "description": "Minimal demo wiring the three trivial plugins (badge, build-with, iframe) end-to-end."
+    "description": "Dev preset wiring all built-in trivial + forum plugins."
+  },
+  "deployment": {
+    "gun_peers": ["http://localhost:8765/gun", "https://relay.peer.ooo/gun"]
   },
   "pages": [
     {
@@ -23,6 +26,21 @@
           "id": "build-with",
           "version": "1.0.0",
           "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy"
+        }
+      ]
+    },
+    {
+      "id": "forum",
+      "title": "Chat",
+      "plugins": [
+        {
+          "id": "forum",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "gunPath": "demo-kon-xyz-main",
+            "title": "Demo room"
+          }
         }
       ]
     },

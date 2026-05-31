@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM"],
+    "types": [],
+    "baseUrl": ".",
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
+    "isolatedModules": true
+  },
+  "include": ["src"]
+}
