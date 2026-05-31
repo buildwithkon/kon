@@ -5,6 +5,13 @@ import type { KonPageV1, KonPluginComponent, KonPluginV1 } from '@konxyz/runtime
 import { deployment, entry, errorMessage, manifest, stage, stageDetail } from './state'
 import { resolvePlugin } from './plugin-registry'
 import { ensureWallet } from './wallet-singleton'
+import { AdminApp } from './admin/admin-app'
+
+function isAdminPath(): boolean {
+  if (typeof window === 'undefined') return false
+  const p = window.location.pathname
+  return p === '/admin' || p.startsWith('/admin/')
+}
 
 const activePageId = signal<string | null>(null)
 
@@ -183,6 +190,12 @@ export function App() {
   const d = deployment.value
   if (!m || !e || !d) return null
 
+  // /admin route: dashboard UI. Same runtime, same loaded manifest;
+  // the dashboard mutates a local draft and publishes a release.
+  if (isAdminPath()) {
+    return <AdminApp />
+  }
+
   const pages = m.pages
   const currentId = activePageId.value ?? pages[0]?.id
   const currentPage = pages.find((p) => p.id === currentId) ?? pages[0]
@@ -196,11 +209,24 @@ export function App() {
         padding: '2rem 1rem'
       }}
     >
-      <header style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.5rem', margin: 0 }}>{m.app.name}</h1>
-        <div style={{ color: '#666', fontSize: '0.9rem' }}>
-          {m.app.id} · v{m.app.version}
+      <header
+        style={{
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: '1rem'
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: '1.5rem', margin: 0 }}>{m.app.name}</h1>
+          <div style={{ color: '#666', fontSize: '0.9rem' }}>
+            {m.app.id} · v{m.app.version}
+          </div>
         </div>
+        <a href="/admin" style={{ color: '#888', fontSize: '0.85rem', textDecoration: 'none' }}>
+          ⚙ Admin
+        </a>
       </header>
 
       {pages.length > 1 && <Nav pages={pages} activeId={currentPage?.id ?? ''} />}
