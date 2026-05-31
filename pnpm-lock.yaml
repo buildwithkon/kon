@@ -170,6 +170,12 @@ importers:
       vite:
         specifier: ^5.4.10
         version: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
+      vite-plugin-pwa:
+        specifier: ^0.21.1
+        version: 0.21.2(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))(workbox-build@7.3.0)(workbox-window@7.3.0)
+      workbox-window:
+        specifier: ^7.3.0
+        version: 7.3.0
 
   packages/api:
     dependencies:
@@ -14935,6 +14941,17 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  vite-plugin-pwa@0.21.2(vite@5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0))(workbox-build@7.3.0)(workbox-window@7.3.0):
+    dependencies:
+      debug: 4.4.1
+      pretty-bytes: 6.1.1
+      tinyglobby: 0.2.14
+      vite: 5.4.19(@types/node@22.15.24)(lightningcss@1.30.1)(terser@5.40.0)
+      workbox-build: 7.3.0
+      workbox-window: 7.3.0
+    transitivePeerDependencies:
+      - supports-color
 
   vite-plugin-pwa@0.21.2(vite@6.3.5(@types/node@20.17.52)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)(yaml@2.6.0))(workbox-build@7.3.0)(workbox-window@7.3.0):
     dependencies:
