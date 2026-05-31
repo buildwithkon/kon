@@ -20,7 +20,7 @@ import { dirname, join } from 'node:path'
 import { readFile, readdir } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { spawn } from 'node:child_process'
-import { ensureClient, readCredentialsFromEnv, uploadFile } from './lib/w3up.mjs'
+import { createPinService, describeMissingCredentials } from './lib/pin-service.mjs'
 
 function parseArgs(argv) {
   const out = { plugin: '', all: false, upload: false }
@@ -58,10 +58,10 @@ function buildPlugin(name) {
   })
 }
 
-async function uploadPlugin(client, name) {
+async function uploadPlugin(pin, name) {
   const bundlePath = join(PLUGINS_DIR, name, 'dist/plugin.js')
   const bytes = await readFile(bundlePath)
-  const cid = await uploadFile(client, 'plugin.js', bytes)
+  const { cid } = await pin.uploadFile('plugin.js', bytes)
   return cid
 }
 
@@ -85,17 +85,16 @@ async function main() {
     return
   }
 
-  const creds = readCredentialsFromEnv()
-  if (!creds) {
-    console.error('\n[publish:plugin] x W3_PRINCIPAL / W3_PROOF env not set; cannot upload')
+  const pin = await createPinService()
+  if (!pin) {
+    console.error('\n[publish:plugin] x ' + describeMissingCredentials() + '; cannot upload')
     process.exit(2)
   }
 
-  console.log('\n[publish:plugin] step 2: upload')
-  const w3 = await ensureClient(creds)
+  console.log('\n[publish:plugin] step 2: upload (via ' + pin.kind + ')')
   const cids = []
   for (const name of plugins) {
-    const cid = await uploadPlugin(w3, name)
+    const cid = await uploadPlugin(pin, name)
     console.log('[publish:plugin]   ' + name + ' -> ' + cid)
     cids.push({ name, cid })
   }

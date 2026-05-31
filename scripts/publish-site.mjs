@@ -17,7 +17,7 @@
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn } from 'node:child_process'
-import { ensureClient, readCredentialsFromEnv, uploadDirFromDisk } from './lib/w3up.mjs'
+import { createPinService, describeMissingCredentials } from './lib/pin-service.mjs'
 import { publishContenthash } from './lib/ens.mjs'
 
 function parseArgs(argv) {
@@ -61,15 +61,14 @@ async function main() {
     return
   }
 
-  const creds = readCredentialsFromEnv()
-  if (!creds) {
-    console.error('\n[publish:site] x W3_PRINCIPAL / W3_PROOF env not set; cannot upload')
+  const pin = await createPinService()
+  if (!pin) {
+    console.error('\n[publish:site] x ' + describeMissingCredentials() + '; cannot upload')
     process.exit(2)
   }
 
-  console.log('\n[publish:site] step 2: upload dist/ to IPFS')
-  const w3 = await ensureClient(creds)
-  const { cid, count } = await uploadDirFromDisk(w3, SITE_DIST)
+  console.log('\n[publish:site] step 2: upload dist/ to IPFS (via ' + pin.kind + ')')
+  const { cid, count } = await pin.uploadDirFromDisk(SITE_DIST)
   console.log('[publish:site]   uploaded ' + count + ' files; root CID: ' + cid)
 
   if (!args.publish) {

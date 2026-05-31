@@ -19,7 +19,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn } from 'node:child_process'
-import { ensureClient, readCredentialsFromEnv, uploadDirFromDisk } from './lib/w3up.mjs'
+import { createPinService, describeMissingCredentials } from './lib/pin-service.mjs'
 
 function parseArgs(argv) {
   const out = { upload: false }
@@ -58,15 +58,14 @@ async function main() {
     return
   }
 
-  const creds = readCredentialsFromEnv()
-  if (!creds) {
-    console.error('\n[publish:runtime] x W3_PRINCIPAL / W3_PROOF env not set; cannot upload')
+  const pin = await createPinService()
+  if (!pin) {
+    console.error('\n[publish:runtime] x ' + describeMissingCredentials() + '; cannot upload')
     process.exit(2)
   }
 
-  console.log('\n[publish:runtime] step 2: upload dist/ to IPFS')
-  const w3 = await ensureClient(creds)
-  const { cid, count } = await uploadDirFromDisk(w3, RUNTIME_DIST)
+  console.log('\n[publish:runtime] step 2: upload dist/ to IPFS (via ' + pin.kind + ')')
+  const { cid, count } = await pin.uploadDirFromDisk(RUNTIME_DIST)
   console.log('[publish:runtime]   uploaded ' + count + ' files; runtime CID: ' + cid)
 
   // Persist the CID so publish:app picks it up automatically. The file

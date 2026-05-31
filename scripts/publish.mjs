@@ -31,7 +31,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn } from 'node:child_process'
-import { ensureClient, readCredentialsFromEnv, uploadFile } from './lib/w3up.mjs'
+import { createPinService, describeMissingCredentials } from './lib/pin-service.mjs'
 import { publishContenthash } from './lib/ens.mjs'
 
 function parseArgs(argv) {
@@ -132,16 +132,15 @@ async function main() {
     return
   }
 
-  const creds = readCredentialsFromEnv()
-  if (!creds) {
-    console.error('\n[publish] x W3_PRINCIPAL / W3_PROOF env not set; cannot upload')
+  const pin = await createPinService()
+  if (!pin) {
+    console.error('\n[publish] x ' + describeMissingCredentials() + '; cannot upload')
     process.exit(2)
   }
 
-  console.log('\n[publish] step 2: upload manifest')
-  const w3 = await ensureClient(creds)
+  console.log('\n[publish] step 2: upload manifest (via ' + pin.kind + ')')
   const manifestBytes = await readFile(manifestPath)
-  const manifestCid = await uploadFile(w3, 'manifest.json', manifestBytes)
+  const { cid: manifestCid } = await pin.uploadFile('manifest.json', manifestBytes)
   console.log('[publish]   manifest CID: ' + manifestCid)
 
   console.log('\n[publish] step 3: substitute CIDs in entry')
@@ -155,7 +154,7 @@ async function main() {
 
   console.log('\n[publish] step 4: upload entry')
   const entryBytes = await readFile(entryPath)
-  const entryCid = await uploadFile(w3, 'entry.json', entryBytes)
+  const { cid: entryCid } = await pin.uploadFile('entry.json', entryBytes)
   console.log('[publish]   entry CID: ' + entryCid)
 
   console.log('\n[publish] step 5: substitute entry CID in index.html')
