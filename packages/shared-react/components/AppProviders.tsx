@@ -7,13 +7,7 @@ import { type ReactNode, useState } from 'react'
 import { WagmiProvider, cookieToInitialState } from 'wagmi'
 import Toast from '~/components/ui/Toast'
 
-export default function AppProviders({
-  children,
-  ld
-}: {
-  children: ReactNode
-  ld: RootLoader
-}) {
+export default function AppProviders({ children, ld }: { children: ReactNode; ld: RootLoader }) {
   const [wagmiConfig] = useState(() => getWagmiConfig(ld))
   const [cdpConfig] = useState(() => getCdpConfig(ld))
 

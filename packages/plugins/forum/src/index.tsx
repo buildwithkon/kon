@@ -103,7 +103,7 @@ const Forum: KonPluginComponent<ForumPluginProps> = ({ props, context }) => {
           setMessages((prev) => {
             const exists = prev.some((m) => m.pub === msg.pub && m.ts === msg.ts)
             if (exists) return prev
-            return [...prev, msg].sort((a, b) => a.ts - b.ts)
+            return [...prev, msg].toSorted((a, b) => a.ts - b.ts)
           })
         })
       } catch (e) {
@@ -138,7 +138,12 @@ const Forum: KonPluginComponent<ForumPluginProps> = ({ props, context }) => {
     <div style={containerStyle}>
       <div style={headerStyle}>
         {props?.title ?? 'forum'} · path: <code>{props?.gunPath ?? '?'}</code>
-        {myPub && <> · me: <code>{myPub.slice(0, 12)}…</code></>}
+        {myPub && (
+          <>
+            {' '}
+            · me: <code>{myPub.slice(0, 12)}…</code>
+          </>
+        )}
       </div>
       <div style={messagesStyle}>
         {messages.length === 0 && (

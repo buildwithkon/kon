@@ -52,6 +52,4 @@ cp ./packages/xmtp-agent/.env.example ./packages/xmtp-agent/.env
 pnpm @agent run dev
 ```
 
-
 _TBU_
-

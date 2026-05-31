@@ -4,7 +4,11 @@ export default function CustomCollapsible({
   disabled = false,
   trigger,
   children
-}: { disabled: boolean; trigger: React.ReactNode; children: React.ReactNode }) {
+}: {
+  disabled: boolean
+  trigger: React.ReactNode
+  children: React.ReactNode
+}) {
   return (
     <Collapsible.Root disabled={disabled} defaultOpen={disabled}>
       <Collapsible.Trigger className="group flex w-full cursor-pointer items-center justify-center">

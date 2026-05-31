@@ -13,7 +13,7 @@
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 import { canonicalize, type KonEntryV1, type KonManifestV1 } from '@konxyz/runtime-core'
 import { KonManifestV1Schema } from '@konxyz/schemas'
 import { renderIndex } from './html'
@@ -42,9 +42,7 @@ export async function build(opts: BuildOptions): Promise<BuildResult> {
 
   const parsed = KonManifestV1Schema.safeParse(source)
   if (!parsed.success) {
-    const issues = parsed.error.issues
-      .map((i) => `  - ${i.path.join('.')}: ${i.message}`)
-      .join('\n')
+    const issues = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n')
     throw new Error(`manifest source failed schema validation:\n${issues}`)
   }
   // Cast: schema validates structurally identical types from runtime-core.

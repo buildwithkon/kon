@@ -24,8 +24,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Guard against hardcoded KON-managed origins
-        run: node scripts/lint-no-hardcoded-origins.mjs
+        run: pnpm run lint:origins
 
-      - name: Biome check
-        run: pnpm run check
-        continue-on-error: true
+      - name: oxlint
+        run: pnpm run lint
+
+      - name: oxfmt (formatting)
+        run: pnpm exec oxfmt --check .

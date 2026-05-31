@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 110,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "quoteProps": "as-needed",
+  "trailingComma": "none",
+  "semi": false,
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "singleAttributePerLine": false,
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "build",
+    ".wrangler",
+    "out",
+    "coverage",
+    "**/*.d.ts",
+    "experiments/**/dist",
+    "packages/contracts/lib/**",
+    "packages/contracts/out/**",
+    "packages/contracts/cache/**",
+    "pnpm-lock.yaml",
+    "apps/pwa/app/routes/admin.config.tsx"
+  ]
+}

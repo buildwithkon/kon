@@ -9,14 +9,11 @@
  *           (also runs in CI; see .github/workflows/lint.yml)
  */
 
-import { readdir, readFile, stat } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import { join, relative, sep } from 'node:path'
 
 const ROOT = process.cwd()
-const ALLOWED = new Set([
-  'packages/runtime-core/src/defaults.ts',
-  'scripts/lint-no-hardcoded-origins.mjs'
-])
+const ALLOWED = new Set(['packages/runtime-core/src/defaults.ts', 'scripts/lint-no-hardcoded-origins.mjs'])
 
 // Directories to skip entirely
 const SKIP_DIRS = new Set([
@@ -36,10 +33,7 @@ const LINT_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'])
 // The literal we forbid (quoted forms only — bare references in comments or
 // docs are fine). We check single-quoted, double-quoted, and template-literal
 // forms.
-const FORBIDDEN_PATTERNS = [
-  /(["'`])id\.kon\.xyz\1/g,
-  /(["'`])https?:\/\/id\.kon\.xyz[^"'`]*\1/g
-]
+const FORBIDDEN_PATTERNS = [/(["'`])id\.kon\.xyz\1/g, /(["'`])https?:\/\/id\.kon\.xyz[^"'`]*\1/g]
 
 async function* walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true })

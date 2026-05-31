@@ -8,10 +8,7 @@
     "icon": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy"
   },
   "deployment": {
-    "gun_peers": [
-      "https://relay.kon.xyz/gun",
-      "https://relay.peer.ooo/gun"
-    ]
+    "gun_peers": ["https://relay.kon.xyz/gun", "https://relay.peer.ooo/gun"]
   },
   "pages": [
     {

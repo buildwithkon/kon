@@ -13,7 +13,12 @@ export default function Avatar({
   variant = 'beam',
   size = 52,
   className
-}: { address?: `0x${string}` | undefined; size?: number; className?: string; variant?: Variant }) {
+}: {
+  address?: `0x${string}` | undefined
+  size?: number
+  className?: string
+  variant?: Variant
+}) {
   const { name, isLoading: isLoadingName } = useName(address)
   const { avatar, isLoading: isLoadingAvatar } = useAvatar(name)
 

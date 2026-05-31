@@ -4,7 +4,10 @@ import { useCoinBalance } from '~/hooks/useWallet'
 export default function Point({
   address,
   coin
-}: { address: `0x${string}` | undefined; coin: { chainId: number; address: `0x${string}` } }) {
+}: {
+  address: `0x${string}` | undefined
+  coin: { chainId: number; address: `0x${string}` }
+}) {
   const { data, isLoading } = useCoinBalance(address, coin?.chainId, coin?.address)
 
   return (

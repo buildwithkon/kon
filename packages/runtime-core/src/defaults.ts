@@ -15,16 +15,8 @@ import type { KonDeploymentV1 } from './types'
 export const KON_DEFAULTS = {
   wallet_origin: 'https://id.kon.xyz',
   ens_domain: 'kon.xyz',
-  gun_peers: [
-    'https://relay.kon.xyz/gun',
-    'https://relay.peer.ooo/gun'
-  ],
-  ipfs_gateways: [
-    'https://kon.xyz',
-    'https://w3s.link',
-    'https://ipfs.io',
-    'https://cloudflare-ipfs.com'
-  ]
+  gun_peers: ['https://relay.kon.xyz/gun', 'https://relay.peer.ooo/gun'],
+  ipfs_gateways: ['https://kon.xyz', 'https://w3s.link', 'https://ipfs.io', 'https://cloudflare-ipfs.com']
 } as const satisfies Required<KonDeploymentV1>
 
 export type ResolvedDeployment = {

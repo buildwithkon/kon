@@ -1,5 +1,4 @@
 /** @jsxImportSource hono/jsx */
-import { jsx } from 'hono/jsx'
 
 export interface RenderIndexOpts {
   name: string

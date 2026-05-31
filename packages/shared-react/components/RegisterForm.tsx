@@ -27,7 +27,11 @@ export default function RegisterForm({
   appConfig,
   lastResult,
   children
-}: { appConfig: AppConfig; lastResult: any; children?: React.ReactNode }) {
+}: {
+  appConfig: AppConfig
+  lastResult: any
+  children?: React.ReactNode
+}) {
   const [form, fields] = useForm({
     defaultValue: {
       id: '',

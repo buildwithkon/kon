@@ -182,7 +182,11 @@ export function App() {
         <button type="button" style={buttonStyle('primary')} onClick={approveSignIn}>
           Approve (stub sign-in)
         </button>
-        <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+        <button
+          type="button"
+          style={buttonStyle('ghost')}
+          onClick={() => reject('user_cancelled', 'rejected by user')}
+        >
           Cancel
         </button>
       </div>
@@ -213,7 +217,11 @@ export function App() {
         <button type="button" style={buttonStyle('primary')} onClick={approveSignTx}>
           Approve (stub sign-tx)
         </button>
-        <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+        <button
+          type="button"
+          style={buttonStyle('ghost')}
+          onClick={() => reject('user_cancelled', 'rejected by user')}
+        >
           Cancel
         </button>
       </div>
@@ -232,7 +240,11 @@ export function App() {
       <button type="button" style={buttonStyle('primary')} onClick={approveDeriveKey}>
         Approve (stub derive)
       </button>
-      <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+      <button
+        type="button"
+        style={buttonStyle('ghost')}
+        onClick={() => reject('user_cancelled', 'rejected by user')}
+      >
         Cancel
       </button>
     </div>

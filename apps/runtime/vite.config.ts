@@ -17,7 +17,8 @@ export default defineConfig({
         runtimeCaching: [
           {
             // Any IPFS gateway path. The CID in the URL is the cache key.
-            urlPattern: ({ url }) => url.pathname.startsWith('/ipfs/') || url.hostname.endsWith('.ipfs.dweb.link'),
+            urlPattern: ({ url }) =>
+              url.pathname.startsWith('/ipfs/') || url.hostname.endsWith('.ipfs.dweb.link'),
             handler: 'CacheFirst',
             options: {
               cacheName: 'kon-ipfs',

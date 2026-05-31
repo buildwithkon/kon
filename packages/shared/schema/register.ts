@@ -26,39 +26,35 @@ export const RegisterSchema = z.object({
 })
 
 // Instead of sharing a schema, prepare a schema creator
-export const createRegisterSchema = (options?: {
-  isIdUnique: (id: string) => Promise<boolean>
-}) =>
+export const createRegisterSchema = (options?: { isIdUnique: (id: string) => Promise<boolean> }) =>
   z.object({
     id: idSchema
       // Pipe the schema so it runs only if the email is valid
       .pipe(
         // Note: The callback cannot be async here
         // As we run zod validation synchronously on the client
-        z
-          .string()
-          .superRefine((id, ctx) => {
-            // This makes Conform to fallback to server validation
-            // by indicating that the validation is not defined
-            if (typeof options?.isIdUnique !== 'function') {
+        z.string().superRefine((id, ctx) => {
+          // This makes Conform to fallback to server validation
+          // by indicating that the validation is not defined
+          if (typeof options?.isIdUnique !== 'function') {
+            ctx.addIssue({
+              code: 'custom',
+              message: conformZodMessage.VALIDATION_UNDEFINED,
+              fatal: true
+            })
+            return
+          }
+          // If it reaches here, then it must be validating on the server
+          // Return the result as a promise so Zod knows it's async instead
+          return options.isIdUnique(id).then((isUnique) => {
+            if (!isUnique) {
               ctx.addIssue({
                 code: 'custom',
-                message: conformZodMessage.VALIDATION_UNDEFINED,
-                fatal: true
+                message: 'Id is already taken.'
               })
-              return
             }
-            // If it reaches here, then it must be validating on the server
-            // Return the result as a promise so Zod knows it's async instead
-            return options.isIdUnique(id).then((isUnique) => {
-              if (!isUnique) {
-                ctx.addIssue({
-                  code: 'custom',
-                  message: 'Id is already taken.'
-                })
-              }
-            })
           })
+        })
       ),
     name: nameSchema
   })

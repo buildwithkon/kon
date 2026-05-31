@@ -1,8 +1,8 @@
 {
   "name": "@konxyz/xmtp-agent",
   "version": "0.0.1",
-  "main": "index.ts",
   "type": "module",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsx --watch --env-file=.env ./src/index.ts",

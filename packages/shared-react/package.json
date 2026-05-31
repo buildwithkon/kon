@@ -2,14 +2,14 @@
   "name": "@konxyz/shared-react",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@base-ui-components/react": "1.0.0-beta.0",
     "@coinbase/onchainkit": "^0.38.13",

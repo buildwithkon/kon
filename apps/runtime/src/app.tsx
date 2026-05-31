@@ -142,7 +142,14 @@ export function App() {
   const currentPage = pages.find((p) => p.id === currentId) ?? pages[0]
 
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', maxWidth: '720px', margin: '0 auto', padding: '2rem 1rem' }}>
+    <div
+      style={{
+        fontFamily: 'system-ui, sans-serif',
+        maxWidth: '720px',
+        margin: '0 auto',
+        padding: '2rem 1rem'
+      }}
+    >
       <header style={{ marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: '1.5rem', margin: 0 }}>{m.app.name}</h1>
         <div style={{ color: '#666', fontSize: '0.9rem' }}>

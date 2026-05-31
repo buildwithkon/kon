@@ -9,11 +9,7 @@
 import { createPublicClient, http, type PublicClient } from 'viem'
 import { mainnet } from 'viem/chains'
 
-const DEFAULT_RPCS = [
-  'https://eth.llamarpc.com',
-  'https://rpc.ankr.com/eth',
-  'https://cloudflare-eth.com'
-]
+const DEFAULT_RPCS = ['https://eth.llamarpc.com', 'https://rpc.ankr.com/eth', 'https://cloudflare-eth.com']
 
 let client: PublicClient | null = null
 
@@ -67,7 +63,5 @@ export async function resolveEntryRef(): Promise<{ ref: string; via: 'query' | '
   const fromEns = await resolveContenthash(host)
   if (fromEns) return { ref: fromEns, via: 'ens' }
 
-  throw new Error(
-    `no entry CID resolved (tried URL ?entry=, meta[kon:entry], ENS contenthash for ${host})`
-  )
+  throw new Error(`no entry CID resolved (tried URL ?entry=, meta[kon:entry], ENS contenthash for ${host})`)
 }

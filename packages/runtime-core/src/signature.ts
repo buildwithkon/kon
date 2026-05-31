@@ -33,7 +33,7 @@ function sortKeys(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sortKeys)
   if (value && typeof value === 'object') {
     const sorted: Record<string, unknown> = {}
-    const keys = Object.keys(value as Record<string, unknown>).sort()
+    const keys = Object.keys(value as Record<string, unknown>).toSorted()
     for (const key of keys) {
       sorted[key] = sortKeys((value as Record<string, unknown>)[key])
     }

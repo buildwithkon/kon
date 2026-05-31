@@ -72,11 +72,7 @@ export interface GunChatHandle {
   pub(): string
 }
 
-export function openGunChat(opts: {
-  peers: string[]
-  path: string
-  pair: SeaPair
-}): GunChatHandle {
+export function openGunChat(opts: { peers: string[]; path: string; pair: SeaPair }): GunChatHandle {
   const gun = Gun({ peers: opts.peers, localStorage: false, radisk: false })
   const room = gun.get(`kon-forum-${opts.path}`)
   let handler: ((msg: VerifiedMessage) => void) | null = null
@@ -125,9 +121,7 @@ async function sign(text: string, pair: { pub: string; priv: string }): Promise<
 
 async function verify(signed: SignedMessage): Promise<VerifiedMessage> {
   try {
-    const result = (await SEA.verify(signed.payload, signed.pub)) as
-      | { text: string; ts: number }
-      | undefined
+    const result = (await SEA.verify(signed.payload, signed.pub)) as { text: string; ts: number } | undefined
     if (!result || typeof result !== 'object') {
       return { pub: signed.pub, text: signed.preview.text, ts: signed.preview.ts, verified: false }
     }

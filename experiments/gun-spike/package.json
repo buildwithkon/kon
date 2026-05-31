@@ -1,9 +1,9 @@
 {
   "name": "kon-gun-spike",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "description": "Phase 0 spike: verify GUN.js + SEA works in a Preact PWA for KON v2 chat layer",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

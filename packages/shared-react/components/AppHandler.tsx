@@ -13,7 +13,12 @@ export default function AppHandler({
   navigate,
   pathname,
   isNavigating
-}: { ld: RootLoader; navigate: (path: string) => void; pathname: string; isNavigating: boolean }) {
+}: {
+  ld: RootLoader
+  navigate: (path: string) => void
+  pathname: string
+  isNavigating: boolean
+}) {
   const { isConnected, isConnecting, address } = useAccount()
   const isLoading = useAtomValue(isLoadingAtom)
   useDarkMode()

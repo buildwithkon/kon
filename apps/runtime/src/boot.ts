@@ -25,7 +25,9 @@ async function bootDevPreset() {
   setStage('reading-entry-ref', 'using dev preset manifest (no IPFS fetch)')
   const manifestParsed = KonManifestV1Schema.safeParse(devPresetManifest)
   if (!manifestParsed.success) {
-    throw new Error(`dev preset manifest invalid: ${manifestParsed.error.issues.map((i) => i.message).join('; ')}`)
+    throw new Error(
+      `dev preset manifest invalid: ${manifestParsed.error.issues.map((i) => i.message).join('; ')}`
+    )
   }
   manifest.value = manifestParsed.data as unknown as KonManifestV1
   entry.value = {

@@ -71,9 +71,7 @@ async function init() {
         firstMessageDelayMs.value = performance.now() - connectStartMs.value
       }
 
-      const existingIndex = messages.value.findIndex(
-        (m) => m.pub === verified.pub && m.ts === verified.ts
-      )
+      const existingIndex = messages.value.findIndex((m) => m.pub === verified.pub && m.ts === verified.ts)
       if (existingIndex === -1) {
         messages.value = [...messages.value, verified].sort((a, b) => a.ts - b.ts)
       }
@@ -103,10 +101,9 @@ async function selfEcho() {
   if (!identityPair) return
   const signed = await signMessage('local SEA test', identityPair)
   const verified = await verifyMessage(signed)
-  messages.value = [
-    ...messages.value,
-    { ...verified, text: `[local-only] ${verified.text}` }
-  ].sort((a, b) => a.ts - b.ts)
+  messages.value = [...messages.value, { ...verified, text: `[local-only] ${verified.text}` }].sort(
+    (a, b) => a.ts - b.ts
+  )
   logEvent({
     ts: Date.now(),
     event: 'put',
@@ -172,8 +169,8 @@ export function App() {
         <div class="messages">
           {messages.value.length === 0 && (
             <div class="meta">
-              No messages yet. Open a second tab to test peer exchange. Use the "Self-echo" button below to verify SEA
-              signing works locally without peers.
+              No messages yet. Open a second tab to test peer exchange. Use the "Self-echo" button below to
+              verify SEA signing works locally without peers.
             </div>
           )}
           {messages.value.map((m) => (
@@ -227,8 +224,8 @@ export function App() {
       <div class="panel">
         <h2>Troubleshooting</h2>
         <p>
-          If the "Connections (hi / bye)" counter stays at 0/0 after a few seconds, no GUN peer is reachable. Most likely
-          cause: the default public peer is down. Fix:
+          If the "Connections (hi / bye)" counter stays at 0/0 after a few seconds, no GUN peer is reachable.
+          Most likely cause: the default public peer is down. Fix:
         </p>
         <ol>
           <li>
@@ -239,12 +236,12 @@ export function App() {
           </li>
         </ol>
         <p>
-          You can also override peers via URL: <code>?peer=http://localhost:8765/gun</code> (repeat the param for multiple
-          peers).
+          You can also override peers via URL: <code>?peer=http://localhost:8765/gun</code> (repeat the param
+          for multiple peers).
         </p>
         <p>
-          <strong>Self-echo</strong> button signs and verifies locally without any peer — use it to confirm SEA works
-          even if no peer is reachable.
+          <strong>Self-echo</strong> button signs and verifies locally without any peer — use it to confirm
+          SEA works even if no peer is reachable.
         </p>
       </div>
     </div>
