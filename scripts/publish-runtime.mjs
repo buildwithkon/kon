@@ -15,6 +15,7 @@
 // Env (only required for --upload):
 //   W3_PRINCIPAL / W3_PROOF     web3.storage delegation
 
+import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn } from 'node:child_process'
@@ -67,9 +68,19 @@ async function main() {
   const w3 = await ensureClient(creds)
   const { cid, count } = await uploadDirFromDisk(w3, RUNTIME_DIST)
   console.log('[publish:runtime]   uploaded ' + count + ' files; runtime CID: ' + cid)
-  console.log(
-    '\n[publish:runtime] + done. Substitute this CID for __REPLACE_ME_RUNTIME_CID__ in app entry.template.json files.'
-  )
+
+  // Persist the CID so publish:app picks it up automatically. The file
+  // is intentionally committed (a versioned pointer to the runtime the
+  // repo currently ships) — running publish:runtime --upload creates a
+  // new commit-ready pointer; CI publish:app then resolves the runtime
+  // placeholder against it without further configuration.
+  const pinDir = join(REPO_ROOT, '.kon')
+  await mkdir(pinDir, { recursive: true })
+  const pinFile = join(pinDir, 'runtime-cid.txt')
+  await writeFile(pinFile, cid + '\n')
+  console.log('[publish:runtime]   pinned -> .kon/runtime-cid.txt')
+
+  console.log('\n[publish:runtime] + done.')
 }
 
 main().catch((e) => {

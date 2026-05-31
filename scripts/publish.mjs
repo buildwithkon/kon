@@ -35,11 +35,12 @@ import { ensureClient, readCredentialsFromEnv, uploadFile } from './lib/w3up.mjs
 import { publishContenthash } from './lib/ens.mjs'
 
 function parseArgs(argv) {
-  const out = { app: '', upload: false, publish: false, help: false }
+  const out = { app: '', upload: false, publish: false, help: false, runtime: '' }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
     if (a === '--help' || a === '-h') out.help = true
     else if (a === '--app') out.app = argv[++i] ?? ''
+    else if (a === '--runtime') out.runtime = argv[++i] ?? ''
     else if (a === '--upload') out.upload = true
     else if (a === '--publish') {
       out.upload = true
@@ -47,6 +48,26 @@ function parseArgs(argv) {
     }
   }
   return out
+}
+
+/**
+ * Resolve the runtime CID for substitution into entry.template.json.
+ * Precedence: --runtime CLI arg > KON_RUNTIME_CID env > .kon/runtime-cid.txt > null.
+ * Returns { cid, source } so the operator sees where the value came from.
+ */
+async function resolveRuntimeCid(cliArg) {
+  if (cliArg) return { cid: cliArg.replace(/^ipfs:\/\//, ''), source: '--runtime arg' }
+  if (process.env.KON_RUNTIME_CID) {
+    return { cid: process.env.KON_RUNTIME_CID.replace(/^ipfs:\/\//, ''), source: 'KON_RUNTIME_CID env' }
+  }
+  try {
+    const raw = await readFile(join(REPO_ROOT, '.kon/runtime-cid.txt'), 'utf8')
+    const cid = raw.trim()
+    if (cid) return { cid, source: '.kon/runtime-cid.txt' }
+  } catch {
+    // file missing; fall through to null
+  }
+  return { cid: null, source: null }
 }
 
 function usage(exit) {
@@ -96,6 +117,15 @@ async function main() {
   const entryTemplatePath = join(output, 'entry.template.json')
   const htmlPath = join(output, 'index.html')
 
+  const runtime = await resolveRuntimeCid(args.runtime)
+  if (runtime.cid) {
+    console.log('[publish]   runtime CID: ' + runtime.cid + ' (from ' + runtime.source + ')')
+  } else {
+    console.log(
+      '[publish]   runtime CID: (none — entry will keep placeholder; run publish:runtime --upload first or pass --runtime <cid>)'
+    )
+  }
+
   if (!args.upload) {
     console.log('\n[publish] dry-run complete. Pass --upload to send to IPFS.')
     console.log('[publish] artifacts in ' + output)
@@ -114,9 +144,12 @@ async function main() {
   const manifestCid = await uploadFile(w3, 'manifest.json', manifestBytes)
   console.log('[publish]   manifest CID: ' + manifestCid)
 
-  console.log('\n[publish] step 3: substitute manifest CID in entry')
+  console.log('\n[publish] step 3: substitute CIDs in entry')
   const entryTemplate = JSON.parse(await readFile(entryTemplatePath, 'utf8'))
   entryTemplate.manifest = 'ipfs://' + manifestCid
+  if (runtime.cid) {
+    entryTemplate.runtime = 'ipfs://' + runtime.cid
+  }
   const entryPath = join(output, 'entry.json')
   await writeFile(entryPath, JSON.stringify(entryTemplate, null, 2) + '\n')
 
