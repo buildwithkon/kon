@@ -57,13 +57,28 @@ To exercise the wallet popup against the dev runtime, run `apps/wallet/` in para
 pnpm --filter @konxyz/wallet dev     # http://127.0.0.1:5175
 ```
 
-## Publishing an app
+## Publishing
+
+Two paths:
+
+### 1. CLI — ops / release automation (current)
 
 ```bash
-pnpm publish:app --app ethtokyo                # dry-run: render-only, files under dist/publish/ethtokyo/
-pnpm publish:app --app ethtokyo --upload       # + upload manifest + entry to IPFS via web3.storage
-pnpm publish:app --app ethtokyo --publish      # + update ENS contenthash on ethtokyo.kon.xyz
+pnpm publish:app --app ethtokyo [--upload | --publish]
+pnpm publish:site                          # builds + ships apps/site to kon.xyz apex
+pnpm publish:runtime                       # builds + ships apps/runtime; prints CID for entry.runtime
+pnpm publish:plugin --plugin badge         # or --all for every plugin
 ```
+
+Uploads use `W3_PRINCIPAL` + `W3_PROOF` env (web3.storage delegation held by the operator). ENS contenthash writes use `KON_DEPLOY_KEY`. Dry-run mode (no flags) works without any credentials.
+
+### 2. Dashboard — user-facing (Phase 8)
+
+The eventual primary path. Organizers publish from the Admin Dashboard with **their own credentials**: their own w3up delegation for IPFS upload, their own Safe smart wallet for the ENS `setContenthash` tx. No KON-held private key is ever in the user-facing loop — that's the positioning ("apps your community owns") taken literally.
+
+Code-share with the CLI: the canonical-JSON, Zod schemas, and `w3up-client` API are identical in browser and Node. Only the auth surface differs (delegation paste UI vs env var; wallet popup vs `KON_DEPLOY_KEY`).
+
+Depends on #8 d/e (real wallet `signTx`) and #11 (Admin Dashboard). See `~/.claude/plans/clever-spinning-sky.md` §Phase 8 for the storage-onboarding model (hybrid: free-tier proxy + BYOK upgrade).
 
 `--upload` requires `W3_PRINCIPAL` + `W3_PROOF` in env (from `w3 key create` + `w3 delegation create`). `--publish` additionally requires `KON_DEPLOY_KEY` and is gated until the ENS DNS-import for `kon.xyz` is finalized — see "Open items" below.
 
