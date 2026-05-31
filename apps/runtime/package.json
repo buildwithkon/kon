@@ -11,6 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@konxyz/plugin-badge": "workspace:*",
+    "@konxyz/plugin-build-with": "workspace:*",
+    "@konxyz/plugin-iframe": "workspace:*",
     "@konxyz/runtime-core": "workspace:*",
     "@konxyz/schemas": "workspace:*",
     "@preact/signals": "^1.3.0",

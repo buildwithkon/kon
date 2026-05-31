@@ -12,14 +12,49 @@
  * so warm boots skip most of this.
  */
 
-import { resolveDeployment } from '@konxyz/runtime-core'
+import { resolveDeployment, type KonEntryV1, type KonManifestV1 } from '@konxyz/runtime-core'
 import { KonEntryV1Schema, KonManifestV1Schema } from '@konxyz/schemas'
 import { resolveEntryRef } from './ens-resolve'
 import { fetchIpfsJson } from './ipfs-fetch'
 import { deployment, entry, manifest, setError, setStage } from './state'
+import devPresetManifest from './dev-preset-manifest.json'
+
+const DEV_PRESET_ENABLED = import.meta.env.DEV
+
+async function bootDevPreset() {
+  setStage('reading-entry-ref', 'using dev preset manifest (no IPFS fetch)')
+  const manifestParsed = KonManifestV1Schema.safeParse(devPresetManifest)
+  if (!manifestParsed.success) {
+    throw new Error(`dev preset manifest invalid: ${manifestParsed.error.issues.map((i) => i.message).join('; ')}`)
+  }
+  manifest.value = manifestParsed.data as unknown as KonManifestV1
+  entry.value = {
+    schema: 'kon-entry-v1',
+    name: manifestParsed.data.app.id,
+    runtime: 'ipfs://dev-preset',
+    manifest: 'ipfs://dev-preset',
+    version: manifestParsed.data.app.version,
+    publishedAt: manifestParsed.data.publishedAt
+  } as KonEntryV1
+  deployment.value = resolveDeployment(manifestParsed.data.deployment)
+  setStage('ready')
+}
 
 export async function boot() {
   try {
+    // Dev override: ?dev=1 (or default in dev mode with no entry param) loads
+    // an inline preset manifest so the runtime is browseable without any IPFS
+    // pin. Production builds skip this path entirely.
+    if (DEV_PRESET_ENABLED) {
+      const url = new URL(window.location.href)
+      const hasOverride = url.searchParams.has('entry')
+      const usePreset = url.searchParams.get('dev') === '1' || !hasOverride
+      if (usePreset) {
+        await bootDevPreset()
+        return
+      }
+    }
+
     setStage('reading-entry-ref')
     const { ref, via } = await resolveEntryRef()
     setStage('reading-entry-ref', `resolved via ${via}: ${ref}`)

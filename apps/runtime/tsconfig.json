@@ -13,6 +13,7 @@
     "jsxImportSource": "preact",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "paths": {
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"]

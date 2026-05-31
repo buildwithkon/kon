@@ -1,0 +1,48 @@
+{
+  "schema": "kon-manifest-v1",
+  "app": {
+    "id": "demo.kon.xyz",
+    "name": "KON v2 demo",
+    "version": 1,
+    "description": "Minimal demo wiring the three trivial plugins (badge, build-with, iframe) end-to-end."
+  },
+  "pages": [
+    {
+      "id": "home",
+      "title": "Home",
+      "plugins": [
+        {
+          "id": "badge",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "badges": ["🐵 Phase 1", "🤠 v2 spike", "🎌 KON"]
+          }
+        },
+        {
+          "id": "build-with",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy"
+        }
+      ]
+    },
+    {
+      "id": "embed",
+      "title": "Embed",
+      "plugins": [
+        {
+          "id": "iframe",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "url": "https://kon.xyz",
+            "title": "kon.xyz",
+            "height": "400px"
+          }
+        }
+      ]
+    }
+  ],
+  "publishedAt": "2026-05-31T00:00:00Z",
+  "publisher": "did:pkh:eip155:8453:0x0000000000000000000000000000000000000000"
+}
