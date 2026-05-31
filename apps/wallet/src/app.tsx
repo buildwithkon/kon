@@ -9,6 +9,7 @@ import type {
   WalletResponse
 } from '@konxyz/wallet-sdk/protocol'
 import { isAllowedAppOrigin } from './origin-allowlist'
+import { createPasskey, describePasskey, loadStoredCredential } from './passkey'
 
 type PendingRequest =
   | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
@@ -55,14 +56,43 @@ function handleAppMessage(ev: MessageEvent) {
   }
 }
 
-/** STUB — real Safe deploy + passkey integration lands once paymaster choice is locked. */
+/** STUB — Safe smart account predicted-address derivation lands in step 8b. */
 function stubAddress(): `0x${string}` {
   return '0xDEAD000000000000000000000000000000000BEEF'
 }
 
-function approveSignIn() {
+const passkeyState = signal(describePasskey())
+const busy = signal(false)
+const passkeyError = signal<string | null>(null)
+
+async function ensurePasskey(openerOrigin: string) {
+  if (loadStoredCredential()) return
+  busy.value = true
+  passkeyError.value = null
+  try {
+    // Use the opener origin's hostname as the human-readable user name so the
+    // OS password manager labels the credential informatively
+    // ("yuji@matsuri.kon.xyz" style).
+    const host = new URL(openerOrigin).hostname
+    await createPasskey({ userName: host, label: host })
+    passkeyState.value = describePasskey()
+  } catch (e) {
+    passkeyError.value = e instanceof Error ? e.message : String(e)
+    throw e
+  } finally {
+    busy.value = false
+  }
+}
+
+async function approveSignIn() {
   const p = pending.value
   if (!p || p.kind !== 'signIn') return
+  try {
+    await ensurePasskey(p.openerOrigin)
+  } catch {
+    reject('passkey_unavailable', passkeyError.value ?? 'passkey creation failed')
+    return
+  }
   postToOpener(
     {
       kind: 'kon.signIn.ok',
@@ -103,7 +133,15 @@ function approveDeriveKey() {
   setTimeout(() => window.close(), 100)
 }
 
-function reject(code: 'user_cancelled' | 'internal_error', message: string) {
+function reject(
+  code:
+    | 'user_cancelled'
+    | 'unsupported_chain'
+    | 'passkey_unavailable'
+    | 'paymaster_rejected'
+    | 'internal_error',
+  message: string
+) {
   const p = pending.value
   if (!p) return
   postToOpener(
@@ -172,15 +210,41 @@ export function App() {
   }
 
   if (p.kind === 'signIn') {
+    const pk = passkeyState.value
+    const action = pk.present && pk.matchesOrigin ? 'Sign in' : 'Create passkey & sign in'
     return (
       <div style={panelStyle}>
         <div style={heroStyle}>Sign in</div>
         <div style={subStyle}>{p.openerOrigin} wants to sign in</div>
-        <div style={{ color: '#888', fontSize: '0.85rem', marginBottom: '1rem' }}>
-          STUB: returns a fixed address. Real flow: passkey unlock → Safe predicted address → return.
+        <div
+          style={{
+            color: '#888',
+            fontSize: '0.8rem',
+            marginBottom: '1rem',
+            fontFamily: 'ui-monospace, monospace'
+          }}
+        >
+          passkey:{' '}
+          {pk.present
+            ? pk.matchesOrigin
+              ? `✓ stored on ${pk.rpId}`
+              : `! stored on ${pk.rpId} (origin mismatch)`
+            : '(none — will create)'}
+          <br />
+          Safe address: STUB (real predicted address lands in step 8b)
         </div>
-        <button type="button" style={buttonStyle('primary')} onClick={approveSignIn}>
-          Approve (stub sign-in)
+        {passkeyError.value && (
+          <div style={{ color: '#c0392b', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
+            passkey error: {passkeyError.value}
+          </div>
+        )}
+        <button
+          type="button"
+          style={buttonStyle('primary')}
+          onClick={() => void approveSignIn()}
+          disabled={busy.value}
+        >
+          {busy.value ? 'creating passkey…' : action}
         </button>
         <button
           type="button"
