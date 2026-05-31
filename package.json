@@ -24,14 +24,19 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:origins": "node scripts/lint-no-hardcoded-origins.mjs",
-    "format": "biome format --write .",
-    "format:check": "biome format .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "publish:app": "node scripts/publish.mjs",
     "typecheck:v2": "pnpm --filter @konxyz/runtime-core typecheck && pnpm --filter @konxyz/schemas typecheck"
   },
   "devDependencies": {
+    "@web3-storage/upload-client": "^17.1.4",
+    "@web3-storage/w3up-client": "^17.3.0",
     "concurrently": "^9.1.2",
     "oxfmt": "^0.52.0",
     "oxlint": "^1.67.0",
+    "tsx": "^4.22.3",
+    "viem": "^2.51.3",
     "wait-on": "^8.0.3",
     "wrangler": "^4.20.5"
   },

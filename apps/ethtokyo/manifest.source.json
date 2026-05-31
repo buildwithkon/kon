@@ -1,0 +1,69 @@
+{
+  "schema": "kon-manifest-v1",
+  "app": {
+    "id": "ethtokyo.kon.xyz",
+    "name": "ETHTokyo 2026",
+    "version": 1,
+    "description": "ETHTokyo 2026 conference app — schedule, sponsors, chat. Built on KON v2."
+  },
+  "deployment": {
+    "gun_peers": ["https://relay.kon.xyz/gun", "https://relay.peer.ooo/gun"]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "title": "Home",
+      "plugins": [
+        {
+          "id": "profile-card",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "title": "ETHTokyo 2026",
+            "subtitle": "September 2026 · Tokyo",
+            "accent": "#1a73e8"
+          }
+        },
+        {
+          "id": "markdown",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "content": "## Welcome to ETHTokyo 2026\n\nAnnouncements, schedule, and chat in one place. Built on KON v2 (Preact + IPFS + ENS + GUN.js)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "title": "Schedule",
+      "plugins": [
+        {
+          "id": "ical",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "events": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "title": "Chat",
+      "plugins": [
+        {
+          "id": "forum",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "gunPath": "ethtokyo-2026-main",
+            "title": "ETHTokyo 2026"
+          }
+        }
+      ]
+    }
+  ],
+  "publishedAt": "2026-09-01T00:00:00Z",
+  "publisher": "did:pkh:eip155:8453:0x0000000000000000000000000000000000000000"
+}

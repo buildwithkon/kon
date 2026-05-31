@@ -1,0 +1,70 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'App name (matches apps/<name>/manifest.source.json)'
+        type: string
+        required: true
+      mode:
+        description: 'Publish mode'
+        type: choice
+        options: [dry-run, upload, publish]
+        default: dry-run
+  push:
+    tags: ['publish/*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Resolve app name + mode
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "app=${{ inputs.app }}" >> "$GITHUB_OUTPUT"
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            # Tag form: publish/<app>
+            APP="${GITHUB_REF##refs/tags/publish/}"
+            echo "app=$APP" >> "$GITHUB_OUTPUT"
+            echo "mode=publish" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build runtime + plugins
+        run: pnpm --filter @konxyz/runtime build
+
+      - name: Publish (dry-run / upload / publish)
+        env:
+          W3_PRINCIPAL: ${{ secrets.W3_PRINCIPAL }}
+          W3_PROOF: ${{ secrets.W3_PROOF }}
+          KON_DEPLOY_KEY: ${{ secrets.KON_DEPLOY_KEY }}
+          ENS_RPC_URL: ${{ secrets.ENS_RPC_URL }}
+        run: |
+          MODE_FLAG=""
+          case "${{ steps.resolve.outputs.mode }}" in
+            upload) MODE_FLAG="--upload" ;;
+            publish) MODE_FLAG="--publish" ;;
+          esac
+          pnpm publish:app --app "${{ steps.resolve.outputs.app }}" $MODE_FLAG
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-${{ steps.resolve.outputs.app }}
+          path: dist/publish/${{ steps.resolve.outputs.app }}/
+          retention-days: 30
