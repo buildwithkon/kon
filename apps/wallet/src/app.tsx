@@ -1,0 +1,240 @@
+/** @jsxImportSource preact */
+import { signal } from '@preact/signals'
+import { useEffect } from 'preact/hooks'
+import type {
+  KeyDerivationRequest,
+  SignInRequest,
+  SignTxRequest,
+  WalletRequest,
+  WalletResponse
+} from '@konxyz/wallet-sdk/protocol'
+import { isAllowedAppOrigin } from './origin-allowlist'
+
+type PendingRequest =
+  | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
+  | { kind: 'signTx'; req: SignTxRequest; openerOrigin: string }
+  | { kind: 'deriveKey'; req: KeyDerivationRequest; openerOrigin: string }
+
+const pending = signal<PendingRequest | null>(null)
+const status = signal<string>('waiting for app to send a request')
+
+function postToOpener(message: WalletResponse, targetOrigin: string) {
+  if (!window.opener) {
+    status.value = 'no opener window (open this from an app, not directly)'
+    return
+  }
+  window.opener.postMessage(message, targetOrigin)
+}
+
+function handleAppMessage(ev: MessageEvent) {
+  if (!isAllowedAppOrigin(ev.origin)) {
+    status.value = `rejected message from disallowed origin: ${ev.origin}`
+    return
+  }
+  const data = ev.data as WalletRequest | undefined
+  if (!data || typeof data !== 'object' || typeof data.kind !== 'string') return
+
+  if (data.kind === 'kon.signIn') {
+    pending.value = { kind: 'signIn', req: data, openerOrigin: ev.origin }
+    status.value = `sign-in request from ${ev.origin}`
+    return
+  }
+  if (data.kind === 'kon.signTx') {
+    pending.value = { kind: 'signTx', req: data, openerOrigin: ev.origin }
+    status.value = `tx-sign request from ${ev.origin}`
+    return
+  }
+  if (data.kind === 'kon.deriveKey') {
+    pending.value = { kind: 'deriveKey', req: data, openerOrigin: ev.origin }
+    status.value = `key-derivation request from ${ev.origin}`
+    return
+  }
+  if (data.kind === 'kon.cancel') {
+    pending.value = null
+    window.close()
+  }
+}
+
+/** STUB — real Safe deploy + passkey integration lands once paymaster choice is locked. */
+function stubAddress(): `0x${string}` {
+  return '0xDEAD000000000000000000000000000000000BEEF'
+}
+
+function approveSignIn() {
+  const p = pending.value
+  if (!p || p.kind !== 'signIn') return
+  postToOpener(
+    {
+      kind: 'kon.signIn.ok',
+      requestId: p.req.requestId,
+      address: stubAddress(),
+      ens: 'demo.kon.xyz'
+    },
+    p.openerOrigin
+  )
+  setTimeout(() => window.close(), 100)
+}
+
+function approveSignTx() {
+  const p = pending.value
+  if (!p || p.kind !== 'signTx') return
+  postToOpener(
+    {
+      kind: 'kon.signTx.ok',
+      requestId: p.req.requestId,
+      userOpHash: '0xSTUB_USEROPHASH_REPLACED_WHEN_PIMLICO_IS_WIRED' as `0x${string}`
+    },
+    p.openerOrigin
+  )
+  setTimeout(() => window.close(), 100)
+}
+
+function approveDeriveKey() {
+  const p = pending.value
+  if (!p || p.kind !== 'deriveKey') return
+  postToOpener(
+    {
+      kind: 'kon.deriveKey.ok',
+      requestId: p.req.requestId,
+      key: '0x0000000000000000000000000000000000000000000000000000000000000001' as `0x${string}`
+    },
+    p.openerOrigin
+  )
+  setTimeout(() => window.close(), 100)
+}
+
+function reject(code: 'user_cancelled' | 'internal_error', message: string) {
+  const p = pending.value
+  if (!p) return
+  postToOpener(
+    {
+      kind: 'kon.error',
+      requestId: p.req.requestId,
+      code,
+      message
+    },
+    p.openerOrigin
+  )
+  setTimeout(() => window.close(), 100)
+}
+
+const panelStyle = {
+  fontFamily: 'system-ui, sans-serif',
+  maxWidth: '380px',
+  margin: '0 auto',
+  padding: '1.5rem'
+}
+
+const heroStyle = {
+  fontSize: '1.25rem',
+  fontWeight: 700,
+  marginBottom: '0.25rem'
+}
+
+const subStyle = {
+  color: '#666',
+  fontSize: '0.85rem',
+  marginBottom: '1.5rem'
+}
+
+const buttonStyle = (variant: 'primary' | 'ghost') => ({
+  display: 'block',
+  width: '100%',
+  padding: '0.7rem 1rem',
+  borderRadius: '8px',
+  border: variant === 'primary' ? '1px solid #1a73e8' : '1px solid #ddd',
+  background: variant === 'primary' ? '#1a73e8' : 'white',
+  color: variant === 'primary' ? 'white' : '#333',
+  cursor: 'pointer',
+  font: 'inherit',
+  marginTop: '0.5rem'
+})
+
+export function App() {
+  useEffect(() => {
+    window.addEventListener('message', handleAppMessage)
+    return () => window.removeEventListener('message', handleAppMessage)
+  }, [])
+
+  const p = pending.value
+
+  if (!p) {
+    return (
+      <div style={panelStyle}>
+        <div style={heroStyle}>KON wallet (stub)</div>
+        <div style={subStyle}>{status.value}</div>
+        <p style={{ color: '#888', fontSize: '0.85rem' }}>
+          Phase 2.6 placeholder. Real passkey + Safe + paymaster integration follows once the Pimlico / CDP
+          paymaster choice and Safe{`{Core}`} v1.4+ predeterministic deploy are wired.
+        </p>
+      </div>
+    )
+  }
+
+  if (p.kind === 'signIn') {
+    return (
+      <div style={panelStyle}>
+        <div style={heroStyle}>Sign in</div>
+        <div style={subStyle}>{p.openerOrigin} wants to sign in</div>
+        <div style={{ color: '#888', fontSize: '0.85rem', marginBottom: '1rem' }}>
+          STUB: returns a fixed address. Real flow: passkey unlock → Safe predicted address → return.
+        </div>
+        <button type="button" style={buttonStyle('primary')} onClick={approveSignIn}>
+          Approve (stub sign-in)
+        </button>
+        <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+          Cancel
+        </button>
+      </div>
+    )
+  }
+
+  if (p.kind === 'signTx') {
+    return (
+      <div style={panelStyle}>
+        <div style={heroStyle}>Confirm transaction</div>
+        <div style={subStyle}>{p.openerOrigin}</div>
+        <dl style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem' }}>
+          <dt style={{ color: '#888' }}>chain</dt>
+          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{p.req.chainId}</dd>
+          <dt style={{ color: '#888' }}>to</dt>
+          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{p.req.to}</dd>
+          <dt style={{ color: '#888' }}>value</dt>
+          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{p.req.value ?? '0x0'}</dd>
+          <dt style={{ color: '#888' }}>data</dt>
+          <dd style={{ margin: '0 0 0.5rem 1rem', wordBreak: 'break-all' }}>{p.req.data}</dd>
+          {p.req.description && (
+            <>
+              <dt style={{ color: '#888' }}>description</dt>
+              <dd style={{ margin: '0 0 0.5rem 1rem' }}>{p.req.description}</dd>
+            </>
+          )}
+        </dl>
+        <button type="button" style={buttonStyle('primary')} onClick={approveSignTx}>
+          Approve (stub sign-tx)
+        </button>
+        <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+          Cancel
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div style={panelStyle}>
+      <div style={heroStyle}>Derive key</div>
+      <div style={subStyle}>
+        {p.openerOrigin} requests label: <code>{p.req.label}</code>
+      </div>
+      <div style={{ color: '#888', fontSize: '0.85rem', marginBottom: '1rem' }}>
+        STUB: returns a fixed 32-byte key. Real flow: passkey PRF extension or wallet-sig fallback.
+      </div>
+      <button type="button" style={buttonStyle('primary')} onClick={approveDeriveKey}>
+        Approve (stub derive)
+      </button>
+      <button type="button" style={buttonStyle('ghost')} onClick={() => reject('user_cancelled', 'rejected by user')}>
+        Cancel
+      </button>
+    </div>
+  )
+}

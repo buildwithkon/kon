@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true
+  },
+  "include": ["src", "vite.config.ts"]
+}
