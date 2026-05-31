@@ -1,0 +1,26 @@
+{
+  "name": "@konxyz/kon-relay",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Helia + libp2p daemon that exposes a local Helia blockstore (the one publish:* writes to) to the public IPFS network. Without this daemon, blocks pinned via KON_PIN_SERVICE=helia are not fetchable from public gateways like w3s.link or .limo — they live only in the local filesystem. kon-relay closes that loop by speaking libp2p Bitswap over TCP and announcing CIDs to the public DHT.",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "start": "node src/index.mjs",
+    "dev": "node --watch src/index.mjs"
+  },
+  "dependencies": {
+    "@chainsafe/libp2p-noise": "^16.0.0",
+    "@chainsafe/libp2p-yamux": "^7.0.0",
+    "@helia/unixfs": "^7.2.1",
+    "@libp2p/bootstrap": "^11.0.0",
+    "@libp2p/identify": "^3.0.0",
+    "@libp2p/kad-dht": "^15.0.0",
+    "@libp2p/ping": "^2.0.0",
+    "@libp2p/tcp": "^10.0.0",
+    "blockstore-fs": "^4.0.1",
+    "helia": "^6.1.4",
+    "libp2p": "^2.0.0",
+    "multiformats": "^14.0.0"
+  }
+}
