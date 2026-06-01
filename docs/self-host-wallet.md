@@ -160,72 +160,117 @@ curl -L https://id.<DOMAIN>/        # should return the wallet bundle's index.ht
 
 The TLS cert is issued automatically by Fleek / 4everland on first request. You don't run an ACME client yourself.
 
-## Pimlico API key handling
+## Bundler + Paymaster setup
+
+The wallet uses two ERC-4337 vendors:
+
+- **Bundler**: Pimlico (submits UserOperations to the EntryPoint). Required.
+- **Paymaster**: Coinbase Developer Platform (CDP) on Base — preferred, since Coinbase subsidizes Base gas. Pimlico paymaster is the fallback.
 
 The wallet bundle is **a static client-side SPA shipped to every user's browser**. Any string in the bundle is readable by anyone who opens devtools. There is no "hide" — only "restrict so the key is useless to anyone but legitimate KON traffic."
 
 The defense-in-depth model is:
 
 ```
-   bundle ships key → key restricted in Pimlico dashboard
-                  └→ sponsorship policy restricts what UserOps the key sponsors
-                       └→ paymaster rejects calls not on the policy allowlist
+   bundle ships keys → each vendor's dashboard restricts its key
+                   └→ sponsorship/contract allowlist gates what UserOps get sponsored
+                        └→ paymaster rejects calls outside the allowlist
 ```
 
-Even if a third party extracts the key, they can only sponsor operations that match the policy, called from an allowed origin. Drains aren't possible; the worst case is they consume your free-tier quota with no-op calls (which the rate-limit + per-origin throttle in Pimlico catches anyway).
+Even if a third party extracts the key, they can only sponsor operations that match the allowlist, called from an allowed origin. Drains aren't possible; the worst case is they consume the configured per-day quota with no-op calls (which both vendors' rate-limiting catches anyway).
 
-### Step 1: Restrict the API key in Pimlico
+### Step 1: Pimlico (bundler) — dashboard setup
 
-In the Pimlico dashboard ([dashboard.pimlico.io](https://dashboard.pimlico.io)), open the key's settings and configure:
+In the Pimlico dashboard ([dashboard.pimlico.io](https://dashboard.pimlico.io)):
 
-| Restriction              | Value for KON-managed deploy                              | Value for self-host        |
-| ------------------------ | --------------------------------------------------------- | -------------------------- |
-| **Allowed origins**      | `https://id.kon.xyz`                                      | `https://id.<your-domain>` |
-| **Allowed chain IDs**    | `8453` (Base mainnet), `84532` (Base Sepolia for staging) | Same                       |
-| **Rate limit (req/min)** | `60` (covers a busy ETHTokyo session)                     | tune to your traffic       |
+1. **API Keys → Create API Key** → name it `kon-mainnet` (or your domain). Copy the resulting `pim_xxxxxxxx` once shown — it's not redisplayed.
+2. Open that key's **Settings** and configure:
+
+   | Restriction              | Value for KON-managed deploy                              | Value for self-host                                        |
+   | ------------------------ | --------------------------------------------------------- | ---------------------------------------------------------- |
+   | **Allowed origins**      | `https://id.kon.xyz` + `http://localhost:5175` (dev)      | `https://id.<your-domain>` + `http://localhost:5175` (dev) |
+   | **Allowed chain IDs**    | `8453` (Base mainnet), `84532` (Base Sepolia for staging) | Same                                                       |
+   | **Rate limit (req/min)** | `60` (covers a busy ETHTokyo session)                     | tune to your traffic                                       |
+
+3. Pimlico's **Sponsorship Policies** can stay empty when you use Coinbase paymaster (next step). If you'd rather have Pimlico sponsor gas, create a policy with the same allowlist as the Coinbase one in Step 2 and set its id as `VITE_PIMLICO_SPONSORSHIP_POLICY_ID`.
 
 Origin restriction is the load-bearing rule. Pimlico verifies the `Origin` header on incoming requests against this list and returns 403 if it doesn't match. Browser-based callers from any other origin (an attacker's page, a `.limo` mirror with a different rpId, a malicious extension) get rejected before the key is honored.
 
-### Step 2: Create a tight sponsorship policy
+### Step 2: Coinbase Developer Platform (paymaster, preferred on Base)
 
-Sponsorship policy controls which UserOps the paymaster will actually pay gas for. In the Pimlico dashboard, create a policy with:
+Coinbase paymaster on Base mainnet is heavily subsidized — Stage 1 ETHTokyo-scale traffic stays free for KON-managed deploys, and self-host operators with a fresh CDP project also get the initial credit.
 
-| Rule                           | Value                                                                                                                                                                                                                     |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Allowed contract targets**   | The exact addresses the wallet calls — typically just the ENS Registry (`0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e`) and Public Resolver (`0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63`). Add more as your app set grows. |
-| **Allowed function selectors** | `setContenthash`, `setSubnodeOwner`, `setText` — the exact methods Phase 8 publish uses. Selectors are computed at policy creation time.                                                                                  |
-| **Max gas per UserOp**         | `1,500,000` — covers Safe deployment + the actual call atomically. Tighter caps reject first-tx-deploys.                                                                                                                  |
-| **Daily UserOp count cap**     | `10,000` — ETHTokyo-scale buffer. Lower for self-host with small user counts.                                                                                                                                             |
+In the CDP portal ([portal.cdp.coinbase.com](https://portal.cdp.coinbase.com)):
 
-The policy is what makes the bundle-exposed key safe in practice. An attacker who extracts the key cannot sponsor anything outside this allowlist — no random ERC-20 transfers, no arbitrary contract calls, nothing.
+1. **Create Project** → name `kon-mainnet` (or your domain). Note the project id.
+2. Open **Paymaster** tab → copy the API key (UUID-shaped). This is `VITE_CDP_API_KEY`.
+3. Configure the paymaster's allowlist (mandatory before going live):
+
+   | Setting               | Value                                                                                                                       |
+   | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+   | **Allowed Contracts** | `0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e` (ENS Registry), `0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63` (Public Resolver) |
+   | **Allowed Selectors** | `0x06ab5923` (setSubnodeOwner), `0x304e6ade` (setContenthash), `0xa22cb465` (setText)                                       |
+   | **Allowed Origins**   | `https://id.kon.xyz` + `http://localhost:5175` (dev) — or `https://id.<your-domain>` for self-host                          |
+   | **Active Chains**     | `8453` (Base mainnet) + `84532` (Base Sepolia)                                                                              |
+
+4. Set spending caps:
+
+   | Setting                                | Value                                                                                                 |
+   | -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+   | **Global Maximum USD**                 | `100` (Stage 1 budget; bump as the deployment grows)                                                  |
+   | **Global Maximum Number of UserOps**   | `1000` (loose ceiling; USD cap is the binding constraint)                                             |
+   | **Global Reset Interval**              | Monthly                                                                                               |
+   | **Per User Maximum USD**               | `5`                                                                                                   |
+   | **Per User Maximum Number of UserOps** | `50`                                                                                                  |
+   | **Per User Reset Interval**            | Daily (so an attacker can't drain the per-user cap once and stay disabled — every day brings a reset) |
+
+   Monthly Global vs Daily Per-User is intentional: the Global cap aligns with billing cycles and your USD budget; the Per-User cap is the abuse ceiling and wants tighter resets.
+
+5. Set up **email alerts** at 50% and 90% of the Global USD cap — Notifications tab.
 
 ### Step 3: Set env at build time
 
-`apps/account/.env` (gitignored):
+`apps/account/.env.local` (gitignored — never committed):
 
 ```bash
+# Bundler — required
 VITE_PIMLICO_API_KEY=pim_xxxxxxxxxxxxxxxxxx
-VITE_PIMLICO_SPONSORSHIP_POLICY_ID=sp_xxxxxxxxxxxx
+
+# Paymaster — pick ONE of the two below:
+#   Coinbase (preferred on Base; uses your CDP credit):
+VITE_CDP_API_KEY=<UUID from CDP dashboard>
+#   OR Pimlico (fallback; uses Pimlico's free tier then $0.50/1K):
+VITE_PIMLICO_SPONSORSHIP_POLICY_ID=
 ```
 
-For CI / production builds, supply these via your CI's secrets store (Fleek build env vars, GitHub Actions secrets, etc.). The build artifact contains the key string literal but, per Steps 1 + 2, the key is harmless without the matching origin + policy on Pimlico's side.
+`chains.ts` auto-detects which paymaster to wire based on which env is present. Coinbase wins when both are set. For CI / production builds, supply these via your CI's secrets store (Fleek build env vars, GitHub Actions secrets, etc.). The build artifact contains the key string literals but, per Steps 1 + 2, the keys are harmless without the matching origin + allowlist + spending caps on each vendor's side.
+
+### Operating cost reality check
+
+For a Stage 1 ETHTokyo-scale deployment (~50 organizers × ~10 publishes each = 500 UserOps):
+
+- **Pimlico bundler**: 500 ops / 100K free tier ≈ free
+- **Coinbase paymaster**: ~$50-100 of gas, fully covered by the $100 CDP credit
+- **Total KON-managed Stage 1 cost**: $6/mo VPS, no other line items
+
+If the deployment outgrows the Coinbase credit, the same allowlist + spending caps survive a switch to Pimlico paymaster — set `VITE_PIMLICO_SPONSORSHIP_POLICY_ID` and clear `VITE_CDP_API_KEY`, the wallet picks the new path on next build with no code change.
 
 ### Optional: serverless proxy (advanced, usually unnecessary)
 
-If you want to keep the key entirely out of the bundle, run a serverless proxy:
+If you want to keep the keys entirely out of the bundle, run a serverless proxy:
 
 ```
-browser → wallet origin's /pimlico-proxy endpoint → Pimlico API
+browser → wallet origin's /paymaster-proxy endpoint → CDP / Pimlico API
               (proxy adds the API key server-side; browser never sees it)
 ```
 
 This requires:
 
-- A Cloudflare Worker (or Vercel function, or whatever) at e.g. `pimlico.id.<DOMAIN>/`
-- The wallet bundle calls the proxy URL instead of `api.pimlico.io` directly
-- The proxy holds the key in its env, forwards to Pimlico, returns the response
+- A Cloudflare Worker (or Vercel function, or whatever) at e.g. `pm.id.<DOMAIN>/`
+- The wallet bundle calls the proxy URL instead of `api.pimlico.io` / `api.developer.coinbase.com` directly
+- The proxy holds the keys in its env, forwards to the vendor, returns the response
 
-When to bother: only if the threat model includes "an attacker uses the bundled key for non-KON operations despite restrictions." With the origin + policy restrictions in Steps 1 + 2, that scenario doesn't exist in practice — the key has no use outside KON. The proxy reintroduces a server dependency the v2 architecture deliberately avoids, so skip it for Stage 1 / 2.
+When to bother: only if the threat model includes "an attacker uses the bundled key for non-KON operations despite restrictions." With the dashboard restrictions in Steps 1 + 2, that scenario doesn't exist in practice — the keys have no use outside KON. The proxy reintroduces a server dependency the v2 architecture deliberately avoids, so skip it for Stage 1 / 2.
 
 ### Cost reality check
 
