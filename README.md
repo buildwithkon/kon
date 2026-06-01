@@ -90,7 +90,7 @@ The CLI pipeline also runs in CI via `.github/workflows/publish.yml` (manual dis
 
 1. Acquire `yourdomain.com` and enable DNSSEC.
 2. Import the domain into ENS at app.ens.domains/dns/yourdomain.com.
-3. Build + publish `apps/wallet` to your own IPFS pin → set `_dnslink` + ENS `contenthash` on `id.yourdomain.com`.
+3. Build + publish `apps/wallet` to your own IPFS pin → set `_dnslink` + ENS `contenthash` on `id.yourdomain.com`. Full runbook: [`docs/self-host-wallet.md`](docs/self-host-wallet.md).
 4. Same for `apps/dashboard` → `my.yourdomain.com`.
 5. Override `manifest.deployment.wallet_origin` to `https://id.yourdomain.com` in your app's manifest source.
 6. Optionally run your own relays — `apps/relay-gun` (chat) + `apps/relay-ipfs` (IPFS pin) — via the root `docker-compose.yml`.
