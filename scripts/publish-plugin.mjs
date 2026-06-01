@@ -2,10 +2,10 @@
 // Publish a single KON v2 plugin (or all of them) to IPFS.
 //
 // Modes:
-//   pnpm publish:plugin --plugin badge           dry-run (build only)
-//   pnpm publish:plugin --plugin badge --upload  build + upload dist/plugin.js
-//   pnpm publish:plugin --all                    build all plugins (dry-run)
-//   pnpm publish:plugin --all --upload           build + upload all
+//   bun run publish:plugin --plugin badge           dry-run (build only)
+//   bun run publish:plugin --plugin badge --upload  build + upload dist/plugin.js
+//   bun run publish:plugin --all                    build all plugins (dry-run)
+//   bun run publish:plugin --all --upload           build + upload all
 //
 // Each plugin builds to packages/plugins/<name>/dist/plugin.js as a
 // single self-contained ES module. Externals (preact / preact/hooks /
@@ -46,7 +46,7 @@ async function listPlugins() {
 
 function buildPlugin(name) {
   return new Promise((resolve, reject) => {
-    const child = spawn('pnpm', ['--filter', '@konxyz/plugin-' + name, 'build'], {
+    const child = spawn('bun', ['--filter=@konxyz/plugin-' + name, 'run', 'build'], {
       cwd: REPO_ROOT,
       stdio: 'inherit'
     })

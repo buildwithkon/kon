@@ -2,9 +2,9 @@
 // KON v2 publish pipeline.
 //
 // Modes:
-//   pnpm publish:app --app ethtokyo                  (dry-run: build + report)
-//   pnpm publish:app --app ethtokyo --upload         (build + IPFS upload)
-//   pnpm publish:app --app ethtokyo --publish        (above + ENS contenthash update)
+//   bun run publish:app --app ethtokyo                  (dry-run: build + report)
+//   bun run publish:app --app ethtokyo --upload         (build + IPFS upload)
+//   bun run publish:app --app ethtokyo --publish        (above + ENS contenthash update)
 //
 // Env (only required for --upload / --publish):
 //   W3_PRINCIPAL     ed25519 signing key from `w3 key create`
@@ -75,9 +75,9 @@ function usage(exit) {
     'kon publish - KON v2 release pipeline',
     '',
     'Usage:',
-    '  pnpm publish:app --app <name>            dry-run (build only)',
-    '  pnpm publish:app --app <name> --upload   build + IPFS upload',
-    '  pnpm publish:app --app <name> --publish  above + ENS contenthash update',
+    '  bun run publish:app --app <name>            dry-run (build only)',
+    '  bun run publish:app --app <name> --upload   build + IPFS upload',
+    '  bun run publish:app --app <name> --publish  above + ENS contenthash update',
     '',
     'Looks for apps/<name>/manifest.source.json as input. Writes release artifacts',
     'under dist/publish/<name>/.'
@@ -91,8 +91,8 @@ const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 function runRendererSubprocess(input, output) {
   return new Promise((resolve, reject) => {
     const child = spawn(
-      'pnpm',
-      ['--filter', '@konxyz/renderer', 'exec', 'tsx', 'src/index.ts', '--input', input, '--output', output],
+      'bun',
+      [join(REPO_ROOT, 'apps/renderer/src/index.ts'), '--input', input, '--output', output],
       { cwd: REPO_ROOT, stdio: 'inherit' }
     )
     child.on('error', reject)

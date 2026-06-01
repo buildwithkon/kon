@@ -12,7 +12,7 @@ KON is a No-code On-chain App Framework for building Progressive Web Apps (PWAs)
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Copy environment files for each package before running
 cp templates/pwa/.dev.vars.example templates/pwa/.dev.vars
@@ -24,16 +24,16 @@ cp packages/xmtp-agent/.env.example packages/xmtp-agent/.env
 
 ```bash
 # Run PWA template
-pnpm @pwa run dev
+bun @pwa run dev
 
 # Run API service
-pnpm @api run dev
+bun @api run dev
 
 # Run XMTP agent
-pnpm @agent run dev
+bun @agent run dev
 
 # Run landing site
-pnpm @site run dev
+bun @site run dev
 ```
 
 ### Smart Contract Development
@@ -59,13 +59,13 @@ forge script script/DeployFactory.s.sol --broadcast --verify
 
 ```bash
 # Format code
-pnpm run format
+bun run format
 
 # Lint code
-pnpm run lint
+bun run lint
 
 # Check formatting
-pnpm run check
+bun run format:check
 ```
 
 ## Architecture

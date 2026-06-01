@@ -229,7 +229,7 @@ export function App() {
         </p>
         <ol>
           <li>
-            Open a second terminal and run <code>pnpm relay</code> in the spike directory.
+            Open a second terminal and run <code>bun run relay</code> in the spike directory.
           </li>
           <li>
             Reload this page. You should see a "hi" event with <code>http://localhost:8765/gun</code>.

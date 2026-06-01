@@ -1,5 +1,5 @@
 // Measure built bundle sizes and write a summary into REPORT.md.
-// Run via `pnpm report` after `pnpm build`.
+// Run via `bun run report` after `bun run build`.
 
 import { readdir, stat, readFile, writeFile } from 'node:fs/promises'
 import { gzipSync } from 'node:zlib'

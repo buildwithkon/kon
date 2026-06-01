@@ -9,8 +9,8 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsx src/index.ts",
-    "example": "tsx src/index.ts --input examples/ethtokyo/manifest.source.json --output dist/ethtokyo"
+    "build": "bun src/index.ts",
+    "example": "bun src/index.ts --input examples/ethtokyo/manifest.source.json --output dist/ethtokyo"
   },
   "dependencies": {
     "@konxyz/runtime-core": "workspace:*",
@@ -19,7 +19,6 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }

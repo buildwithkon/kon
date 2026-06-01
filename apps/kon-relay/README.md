@@ -24,10 +24,10 @@ When a public IPFS gateway gets a request for one of your pinned CIDs, it querie
 
 ```bash
 # 1. publish something to the local blockstore
-KON_PIN_SERVICE=helia pnpm publish:app --app ethtokyo --upload
+KON_PIN_SERVICE=helia bun run publish:app --app ethtokyo --upload
 
 # 2. run the relay
-pnpm --filter @konxyz/kon-relay start
+bun --filter '@konxyz/kon-relay' run start
 # [kon-relay] starting...
 # [kon-relay]   blockstore: .kon/blockstore
 # [kon-relay] libp2p ready
@@ -49,11 +49,11 @@ Minimum: a $5/mo VPS with port 4001 reachable from the public internet.
 ```bash
 # install + start
 git clone <kon repo>
-pnpm install
-pnpm --filter @konxyz/kon-relay start
+bun install
+bun --filter '@konxyz/kon-relay' run start
 
 # behind NAT? announce your public address:
-KON_RELAY_ANNOUNCE=/dns4/relay.kon.xyz/tcp/4001 pnpm --filter @konxyz/kon-relay start
+KON_RELAY_ANNOUNCE=/dns4/relay.kon.xyz/tcp/4001 bun --filter '@konxyz/kon-relay' run start
 
 # behind a reverse proxy for HTTPS gateway:
 # Caddy/nginx terminates TLS on gateway.kon.xyz -> http://localhost:8080
@@ -67,7 +67,7 @@ Description=KON IPFS relay
 After=network-online.target
 
 [Service]
-ExecStart=/usr/bin/pnpm --filter @konxyz/kon-relay start
+ExecStart=/usr/local/bin/bun --filter '@konxyz/kon-relay' run start
 WorkingDirectory=/srv/kon
 Environment=NODE_ENV=production
 Environment=HELIA_BLOCKSTORE_PATH=/srv/kon/.kon/blockstore
@@ -99,7 +99,7 @@ This daemon, plus your own w3up account, plus your own ENS DNS-import, gives you
 
 ## Status
 
-PoC. The daemon boots successfully, joins the libp2p DHT, exposes a peerId + multiaddrs, and serves the HTTP gateway on the configured port. Upload + dry-run end-to-end through `KON_PIN_SERVICE=helia pnpm publish:app --upload && pnpm --filter @konxyz/kon-relay start` works.
+PoC. The daemon boots successfully, joins the libp2p DHT, exposes a peerId + multiaddrs, and serves the HTTP gateway on the configured port. Upload + dry-run end-to-end through `KON_PIN_SERVICE=helia bun run publish:app --upload && bun --filter '@konxyz/kon-relay' run start` works.
 
 Known limitations (production hardening):
 
