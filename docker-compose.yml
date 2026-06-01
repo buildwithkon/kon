@@ -121,6 +121,12 @@ services:
     environment:
       KON_RELAY_DOMAIN: ${KON_RELAY_DOMAIN}
       ACME_EMAIL: ${ACME_EMAIL}
+      # Static SPA bundle CIDs — served via Caddy vhosts that proxy
+      # relay-ipfs's HTTP gateway. Update these when you re-publish a
+      # bundle and `docker compose up -d` to roll out.
+      KON_ACCOUNT_CID: ${KON_ACCOUNT_CID:-}
+      KON_DASHBOARD_CID: ${KON_DASHBOARD_CID:-}
+      KON_SITE_CID: ${KON_SITE_CID:-}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data

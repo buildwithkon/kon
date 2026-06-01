@@ -216,32 +216,41 @@ async function startRelay() {
         }
 
         // ----- GET /ipfs/<cid>[/<path>] -----
+        // Supports arbitrary-depth subpaths via @helia/unixfs cat() with the
+        // `path` option, so nested assets like /ipfs/<CID>/assets/index-abc.js
+        // resolve correctly. Required for serving multi-file SPA bundles
+        // (apps/account, apps/dashboard, apps/site) via Caddy vhosts that
+        // proxy this gateway.
         if (!url.startsWith('/ipfs/')) {
           res.writeHead(404)
-          res.end('not found (POST /api/pin or GET /ipfs/<cid> only)')
+          res.end('not found (POST /api/pin or GET /ipfs/<cid>/<path> only)')
           return
         }
         const rest = url.slice('/ipfs/'.length).split('?')[0]
-        const parts = rest.split('/')
-        const root = CID.parse(parts[0])
-        const subPath = parts.slice(1).join('/')
+        const slash = rest.indexOf('/')
+        const cidStr = slash === -1 ? rest : rest.slice(0, slash)
+        const subPath = slash === -1 ? '' : rest.slice(slash) // includes leading '/'
+        const root = CID.parse(cidStr)
 
         const chunks = []
-        // Walk into the subpath if any
-        let currentCid = root
-        if (subPath) {
-          for await (const entry of fs.ls(currentCid)) {
-            if (entry.name === subPath || entry.path?.endsWith('/' + subPath)) {
-              currentCid = entry.cid
-              break
-            }
+        const catOpts = subPath && subPath !== '/' ? { path: subPath } : undefined
+        try {
+          for await (const chunk of fs.cat(root, catOpts)) {
+            chunks.push(chunk)
+          }
+        } catch (catErr) {
+          // If the path resolves to a directory (common for trailing slash or
+          // SPA root), try the directory's index.html. This matches Kubo's
+          // gateway behavior for UnixFS directory CIDs.
+          const fallbackPath = subPath && subPath !== '/' ? subPath + '/index.html' : '/index.html'
+          for await (const chunk of fs.cat(root, { path: fallbackPath })) {
+            chunks.push(chunk)
           }
         }
-        for await (const chunk of fs.cat(currentCid)) {
-          chunks.push(chunk)
-        }
         const buf = Buffer.concat(chunks)
-        res.writeHead(200, { 'content-type': guessContentType(subPath) })
+        // Strip the leading slash from subPath for content-type guessing
+        const filePath = subPath.replace(/^\//, '') || 'index.html'
+        res.writeHead(200, { 'content-type': guessContentType(filePath) })
         res.end(buf)
       } catch (e) {
         res.writeHead(500)

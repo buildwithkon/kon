@@ -24,14 +24,14 @@ id.kon.xyz                           id.myfestival.com
 
 ## Prerequisites
 
-|                                        | Required             | Notes                                                                                                                                                                                              |
-| -------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A domain with DNSSEC enabled           | ✅                   | Needed for DNS-ENS contenthash resolution. Most registrars support it (Gandi, Cloudflare Registrar, Namecheap, Porkbun).                                                                           |
-| ENS DNS-import done                    | ✅                   | One-time setup at app.ens.domains/dns/`yourdomain.com`.                                                                                                                                            |
-| A static hosting target                | ✅                   | Fleek / 4everland / a Kubo node behind a custom-domain gateway. Any host that can serve a static SPA over HTTPS with the cert under your hostname works.                                           |
-| TLS cert for `id.<your-domain>`        | ✅                   | Required for WebAuthn to issue credentials. Self-signed certs don't work — browsers refuse passkey creation on untrusted origins. Most IPFS hosts (Fleek, 4everland) issue the cert automatically. |
-| A Pimlico API key + sponsorship policy | ✅                   | Free tier covers ~100K UserOps/mo at the time of writing. Sign up at dashboard.pimlico.io.                                                                                                         |
-| Backup owner UX understood             | Strongly recommended | Passkey loss is unrecoverable without a backup owner. See "Recovery model" below.                                                                                                                  |
+|                                           | Required             | Notes                                                                                                                                                                                                  |
+| ----------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A domain with DNSSEC enabled              | ✅                   | Needed for DNS-ENS contenthash resolution. Most registrars support it (Gandi, Cloudflare Registrar, Namecheap, Porkbun).                                                                               |
+| ENS DNS-import done                       | ✅                   | One-time setup at app.ens.domains/dns/`yourdomain.com`.                                                                                                                                                |
+| A hosting target for `apps/account/dist/` | ✅                   | The relay VPS itself (recommended — Caddy vhost serving a pinned CID) or a managed IPFS host like 4everland. See "Hosting" section below.                                                              |
+| TLS cert for `id.<your-domain>`           | ✅                   | Required for WebAuthn to issue credentials. Self-signed certs don't work — browsers refuse passkey creation on untrusted origins. Caddy issues Let's Encrypt automatically; 4everland / Pinata do too. |
+| A Pimlico API key + sponsorship policy    | ✅                   | Free tier covers ~100K UserOps/mo at the time of writing. Sign up at dashboard.pimlico.io.                                                                                                             |
+| Backup owner UX understood                | Strongly recommended | Passkey loss is unrecoverable without a backup owner. See "Recovery model" below.                                                                                                                      |
 
 ## How the rpId is derived
 
@@ -45,19 +45,21 @@ id.kon.xyz                           id.myfestival.com
 
 You don't fork the codebase — you just deploy the same bundle to your hostname.
 
-## Hosting: IPFS, not VPS
+## Hosting: same VPS as the relay (recommended) or a managed IPFS host
 
-The wallet origin is a **static SPA** — no server, no Node process, no persistent state. The only requirement is "serve `apps/account/dist/` over HTTPS at `id.<DOMAIN>`". That fits an IPFS-hosted static site perfectly and is the recommended path for both the KON-managed default (`id.kon.xyz`) and self-host deployments.
+The wallet origin is a **static SPA** — no server, no Node process, no persistent state. The bytes need to be reachable over HTTPS at `id.<DOMAIN>`; how those bytes get served is a deployment choice. Two practical paths in 2026:
 
-| Hosting choice                                         | TLS for custom domain          | Cost           | Self-host operator fit                                                                        | Notes                                                                                               |
-| ------------------------------------------------------ | ------------------------------ | -------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Fleek** ([fleek.xyz](https://fleek.xyz))             | ✅ auto                        | $0 (free tier) | ◎ **recommended default**                                                                     | Add domain in dashboard, paste CID, done. Custom-domain Let's Encrypt issued automatically.         |
-| **4everland** ([4everland.org](https://4everland.org)) | ✅ auto                        | $0 (free tier) | ◎ EU + APAC PoPs if your audience is regional                                                 | Same DX as Fleek.                                                                                   |
-| Your own Caddy + Kubo (VPS)                            | ✅ Let's Encrypt manual        | $5-10/mo       | ○ only if you already operate the relay VPS and want to consolidate                           | Reuses the relay's Caddy. Doesn't simplify anything; pick only if you want one host for everything. |
-| `.limo` gateway fallback                               | ✅ (`.limo`'s cert, not yours) | $0             | ❌ rpId becomes `id-<DOMAIN-with-dashes>.limo` — passkeys created at `id.<DOMAIN>` don't work | Useful as a degraded-mode fallback only.                                                            |
-| Cloudflare Pages                                       | ✅ auto                        | $0             | △ reintroduces CF dependency the v2 architecture deliberately removes                         | Acceptable if you're already CF-deep and don't care.                                                |
+| Hosting choice                                                  | TLS for custom domain       | Cost                                          | Self-host operator fit                                                                        | Notes                                                                                                                                                                                                                                  |
+| --------------------------------------------------------------- | --------------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Same VPS as the relay** (Caddy vhost → relay-ipfs blockstore) | ✅ Caddy auto Let's Encrypt | **$0 additional** (relay VPS already running) | ◎ **recommended default**                                                                     | The docker-compose stack from [`docs/self-host-relay.md`](self-host-relay.md) ships a Caddy vhost for `id.<DOMAIN>` that proxies a pinned bundle CID. Set `KON_ACCOUNT_CID=...` in `.env`, restart, done. One host for everything KON. |
+| **4everland** ([4everland.org](https://4everland.org))          | ✅ auto                     | $0 (free tier)                                | ○ managed alternative                                                                         | Add domain in dashboard, paste CID, done. EU + APAC PoPs. Pick this if you'd rather not maintain the Caddy vhosts yourself. The relay VPS is still required for chat + the IPFS pin endpoint.                                          |
+| **Pinata Picnic plan**                                          | ✅ auto                     | $20/mo                                        | ○ paid managed                                                                                | Industry-mature dedicated-gateway product. Overkill for ETHTokyo-scale; appropriate for ongoing production where SLA matters more than $20/mo.                                                                                         |
+| Storacha (formerly w3up) + `.limo`                              | ✅ via `.limo`, not yours   | $0                                            | ❌ rpId becomes `id-<DOMAIN-with-dashes>.limo` — passkeys created at `id.<DOMAIN>` won't work | Useful as a degraded-mode fallback only.                                                                                                                                                                                               |
+| Cloudflare Pages + Storacha pinning                             | ✅ auto                     | $0                                            | △ reintroduces CF dependency the v2 architecture deliberately removes                         | Pick if you're already deeply CF-tied and don't care about decoupling.                                                                                                                                                                 |
 
-**A VPS is not part of the wallet's deploy story.** The relay VPS documented in [`docs/self-host-relay.md`](self-host-relay.md) hosts WebSocket + libp2p TCP processes and is completely separate from any static layer. `kon.xyz`, `id.kon.xyz`, `my.kon.xyz`, and every `<app>.kon.xyz` all live on IPFS in the default deployment.
+**Fleek is no longer a recommendation.** Their legacy static-hosting tier with the simple "drop CID + custom domain + free TLS" UX was sunset; the current "Fleek Functions" product is a different shape. 4everland fills the same niche as a managed alternative.
+
+**Why "same VPS as the relay" is the default**: the relay VPS already runs Caddy + a full Helia + libp2p stack with a blockstore. Adding three more Caddy vhosts (`id`, `my`, apex) that proxy fixed CIDs from the existing blockstore is a config change, not new infra. Total managed-deployment cost stays at $6/mo (one Vultr Tokyo droplet for everything KON-managed). Self-host operators get the same shape from `docker compose up -d`.
 
 ## Step-by-step deployment
 
@@ -89,33 +91,64 @@ VITE_PIMLICO_SPONSORSHIP_POLICY_ID=sp_xxxxxxxxxxxx
 ```bash
 # Build with the Pimlico env in scope
 bun --filter=@konxyz/account run build
-
-# Pin via your own relay-ipfs /api/pin (recommended if you also run the
-# relay stack):
-curl -X POST https://gateway.<DOMAIN>/api/pin \
-  -H 'content-type: application/octet-stream' \
-  --data-binary @apps/account/dist/index.html
-# → returns the index.html CID; repeat for the rest of dist/, or use the
-# directory-upload path below
-
-# OR use Fleek's dashboard / CLI directly:
-fleek storage add apps/account/dist
-# → CID for the dist/ directory root
-
-# OR use w3up for the entire directory in one go:
-w3 up apps/account/dist
+# → apps/account/dist/  (the static SPA bundle)
 ```
 
-For Fleek, the typical flow is: connect your GitHub repo → Fleek auto-builds on push → automatic CID + DNSLink update. After the first manual setup, deploys are git-push.
-
-### 4. Wire DNS + ENS
+Pick a pin target:
 
 ```bash
-# DNSLink — the IPFS gateway uses this to map id.<DOMAIN> to the CID
-_dnslink.id.<DOMAIN>  TXT   "dnslink=/ipfs/<CID>"
+# Path 1 (recommended) — pin to your own relay-ipfs blockstore via the
+# /api/pin endpoint. Then the Caddy vhost in the relay docker-compose
+# serves it. Same VPS, no extra hosting subscription.
+#
+# Use the ipfs CLI against your relay's HTTP gateway, or w3up-style
+# directory upload to the /api/pin endpoint (one POST per file in the
+# dist tree; a small wrapper script is on the roadmap):
+ipfs add -r --pin --cid-version 1 apps/account/dist
+# → root CID of the directory
+ipfs dag export <root-cid> > /tmp/account.car
+curl -X POST https://gateway.<DOMAIN>/api/pin \
+  -H 'content-type: application/vnd.ipld.car' \
+  --data-binary @/tmp/account.car
 
-# ENS contenthash for the .limo fallback + DNS-ENS resolvers (use viem
-# or the app.ens.domains UI)
+# Path 2 — managed alternative on 4everland (or Pinata Picnic).
+# Upload the dist directory via the platform's dashboard or CLI.
+# Configure custom domain id.<DOMAIN> in their UI → they handle TLS.
+4ever publish apps/account/dist
+# → records the CID + sets up DNSLink for the domain you configured
+```
+
+### 4. Wire DNS + the Caddy vhost (or DNSLink for managed hosts)
+
+**Path 1 (same VPS):**
+
+```
+# DNS A record for the static origin — same VPS as the relay
+id.<DOMAIN>  A  <vps-ipv4>
+```
+
+Set `KON_ACCOUNT_CID=<root-cid>` in the relay stack's `.env`, then redeploy:
+
+```bash
+ssh <vps>
+cd kon
+echo 'KON_ACCOUNT_CID=bafy...' >> .env   # or edit the existing line
+docker compose up -d caddy               # reload the Caddy config
+```
+
+Caddy will issue Let's Encrypt for `id.<DOMAIN>` automatically on first hit. The included vhost in `Caddyfile` proxies `id.<DOMAIN>/<path>` → `relay-ipfs:8080/ipfs/${KON_ACCOUNT_CID}/<path>` with SPA-aware routing (asset extensions resolve nested, everything else falls through to `index.html`).
+
+**Path 2 (4everland / Pinata):**
+
+```
+# DNS records the managed platform tells you to add — typically
+_dnslink.id.<DOMAIN>  TXT    "dnslink=/ipfs/<CID>"
+id.<DOMAIN>           CNAME  <managed-host>.4everland.app
+```
+
+Also set the ENS contenthash on `id.<DOMAIN>` (use viem or the app.ens.domains UI under your subname's records — this makes the `.limo` gateway resolve as a fallback):
+
+```
 id.<DOMAIN>  contenthash = ipfs://<CID>
 ```
 

@@ -62,32 +62,50 @@ bun --filter=@konxyz/dashboard run build
 
 The bundle is tiny because the dashboard delegates the heavy crypto to the wallet origin and the heavy storage to the relay. It's a shell with three forms.
 
-### 2. Pin to IPFS
+### 2. Pin + serve
+
+Two paths, same as the wallet runbook ([`docs/self-host-wallet.md`](self-host-wallet.md#hosting-same-vps-as-the-relay-recommended-or-a-managed-ipfs-host)):
+
+**Path 1 — same VPS as the relay** (recommended; no extra hosting cost):
 
 ```bash
-# Via your own relay (recommended):
-KON_PIN_SERVICE=helia bun --filter=@konxyz/dashboard run build
-# CID is logged at upload time. Or pin manually:
-ipfs add -r apps/dashboard/dist
+ipfs add -r --pin --cid-version 1 apps/dashboard/dist
+# → root CID, then push that CAR file to your relay's /api/pin
+
+ssh <vps>
+cd kon
+echo 'KON_DASHBOARD_CID=bafy...' >> .env
+docker compose up -d caddy
 ```
+
+The Caddyfile ships with a `my.<DOMAIN>` vhost that proxies the bundle CID through relay-ipfs. Caddy auto-issues Let's Encrypt for `my.<DOMAIN>` on first request.
+
+**Path 2 — 4everland or Pinata** (managed alternative):
+
+Upload `apps/dashboard/dist/` through the platform's dashboard or CLI. Configure custom domain `my.<DOMAIN>` in their UI; they handle TLS.
 
 ### 3. Wire DNS + ENS
 
+**Path 1 (same VPS):**
+
 ```
-# DNS A or CNAME for the IPFS gateway you chose:
-my.<DOMAIN>          A    <gateway-ipv4>
-                     or
-my.<DOMAIN>          CNAME <fleek-host>.fleek.co
+my.<DOMAIN>          A    <vps-ipv4>
+```
 
-# DNSLink for the IPFS gateways that use it:
-_dnslink.my.<DOMAIN> TXT  "dnslink=/ipfs/<CID>"
+That's it — the Caddy vhost handles everything else.
 
-# ENS contenthash on the my.<DOMAIN> subname (use viem or
-# app.ens.domains UI under your apex's subname records):
+**Path 2 (managed):**
+
+```
+my.<DOMAIN>          CNAME <managed-host>.4everland.app
+_dnslink.my.<DOMAIN> TXT   "dnslink=/ipfs/<CID>"
+```
+
+Either path: also set the ENS contenthash on `my.<DOMAIN>` so the `.limo` gateway works as a fallback (`my-<DOMAIN-with-dashes>.limo`):
+
+```
 my.<DOMAIN>          contenthash = ipfs://<CID>
 ```
-
-The dashboard load path is HTTPS to `my.<DOMAIN>`; the `.limo` fallback (`my-<DOMAIN-with-dashes>.limo`) works automatically once the ENS contenthash is set.
 
 ### 4. Verify the dashboard wires correctly
 

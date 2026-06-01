@@ -120,9 +120,14 @@ scripts/
 
 ### Hosting model
 
-All static layers (`apps/site`, `apps/account`, `apps/dashboard`, `apps/runtime`, every published `<app>.kon.xyz` entry) ship to **IPFS** — typically Fleek for the KON-managed deployment (free tier with custom-domain TLS). Self-host operators use Fleek, 4everland, or any IPFS host that issues TLS for a custom domain.
+Everything KON-managed runs on **one VPS** — a single Vultr Tokyo droplet (~$6/mo) hosting:
 
-The only **VPS** in the stack hosts `relay.kon.xyz` + `gateway.kon.xyz` (`apps/relay-gun` + `apps/relay-ipfs`), where the processes need persistent WebSocket / libp2p TCP sockets. See `docs/self-host-relay.md`. Default KON team infra cost: ~$6/mo (single Vultr Tokyo droplet). When suggesting deployment targets for the static layers, never default to a VPS — IPFS hosting is the architectural intent.
+- `relay-gun` (chat WebSockets) and `relay-ipfs` (libp2p + IPFS pin + `/api/pin`)
+- Caddy fronting both, plus **three more Caddy vhosts** that serve the static SPAs (`id.<DOMAIN>`, `my.<DOMAIN>`, `<DOMAIN>` apex) by proxying pinned bundle CIDs through `relay-ipfs`'s blockstore
+
+So when an agent is asked where a static SPA goes, the answer is "pin it to the relay-ipfs blockstore, set the `KON_*_CID` env, restart Caddy." Not Fleek (sunset in 2025), not "a separate IPFS host" by default. See `docs/self-host-wallet.md` for the deploy step-by-step.
+
+Managed-IPFS-host alternatives (4everland, Pinata Picnic plan) are documented as opt-in for operators who'd rather not maintain their own Caddy vhosts. The relay VPS is still required regardless of static-hosting choice (chat + IPFS pin can't live on a static host).
 
 ## Code Style Guidelines
 
