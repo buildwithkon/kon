@@ -4,142 +4,122 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-KON is a No-code On-chain App Framework for building Progressive Web Apps (PWAs) with blockchain integration. It enables users to deploy decentralized applications with built-in tokenomics and messaging capabilities via XMTP.
+KON is a No-code On-chain App Framework for building Progressive Web Apps that communities own. v2 architecture: client-first, served from IPFS via DNS-ENS, with a central wallet origin at `id.kon.xyz` and a central dashboard at `my.kon.xyz`. Every layer is self-hostable on a custom domain — `kon.xyz` is the default fast path, not a hard dependency.
 
 ## Development Commands
 
 ### Initial Setup
 
 ```bash
-# Install dependencies
 bun install
 
-# Copy environment files for each package before running
-cp templates/pwa/.dev.vars.example templates/pwa/.dev.vars
-cp packages/api/.dev.vars.example packages/api/.dev.vars
-cp packages/xmtp-agent/.env.example packages/xmtp-agent/.env
+# Optional: per-package env files (see each app's .env.example / .dev.vars.example)
 ```
 
 ### Running Services
 
 ```bash
-# Run PWA template
-bun @pwa run dev
-
-# Run API service
-bun @api run dev
-
-# Run XMTP agent
-bun @agent run dev
-
-# Run landing site
-bun @site run dev
+bun @runtime:dev      # http://127.0.0.1:5174 — Public Runtime SPA
+bun @wallet:dev       # http://127.0.0.1:5175 — id.kon.xyz wallet origin
+bun @site:dev         # http://127.0.0.1:5176 — kon.xyz marketing site
+bun @dashboard:dev    # http://127.0.0.1:5177 — my.kon.xyz organizer portal
+bun @relay:start      # local kon-relay (libp2p + Helia gateway)
 ```
+
+### Publish pipeline (CLI)
+
+```bash
+bun run publish:app --app ethtokyo [--upload | --publish]
+bun run publish:site            # apps/site → kon.xyz apex
+bun run publish:runtime         # apps/runtime → CID for entry.runtime
+bun run publish:plugin --plugin badge   # or --all
+```
+
+`--upload` requires `W3_PRINCIPAL` + `W3_PROOF` (web3.storage delegation). `--publish` additionally requires `KON_DEPLOY_KEY` (ENS contenthash update).
 
 ### Smart Contract Development
 
 ```bash
-# Run from packages/contracts directory
 cd packages/contracts
-
-# Install Foundry dependencies
 forge install
-
-# Build contracts
 forge build
-
-# Run tests
 forge test
-
-# Deploy contracts (requires .env configuration)
 forge script script/DeployFactory.s.sol --broadcast --verify
 ```
 
 ### Code Quality
 
 ```bash
-# Format code
-bun run format
-
-# Lint code
-bun run lint
-
-# Check formatting
-bun run format:check
+bun run lint          # oxlint
+bun run lint:fix      # oxlint --fix
+bun run lint:origins  # custom rule: no literal id.kon.xyz outside defaults.ts
+bun run format        # oxfmt --write
+bun run format:check  # oxfmt --check
+bun run typecheck:v2  # tsc --noEmit for runtime-core + schemas
 ```
+
+Plus per-package `bun --filter=@konxyz/<pkg> run typecheck`.
 
 ## Architecture
 
 ### Monorepo Structure
 
-- **`packages/api`**: Cloudflare Workers API using Hono framework for ENS operations
-- **`packages/contracts`**: Smart contracts (AppCoin.sol, AppCoinFactory.sol) using Foundry
-- **`packages/xmtp-agent`**: XMTP messaging bot with Coinbase AgentKit and LangChain integration
-- **`packages/shared`**: Shared TypeScript utilities for ENS, wallet operations, ABIs
-- **`packages/shared-react`**: Shared React components and hooks for Web3 integration
-- **`packages/site`**: Landing page using React Router on Cloudflare Workers
-- **`templates/pwa`**: PWA template with React Router v7, Wagmi, Viem, and XMTP
+```
+apps/
+  runtime/         Public Runtime SPA (Vite + Preact + signals). The browser host
+                   that resolves ENS contenthash, loads entry + manifest, renders
+                   pages and plugins, and exposes /admin per-app editor.
+  wallet/          id.kon.xyz central wallet origin (Vite + Preact). Safe v1.4.1 +
+                   passkey via viem WebAuthn + permissionless.js + Pimlico paymaster.
+  dashboard/       my.kon.xyz central dashboard (Vite + Preact). Sign in once, see
+                   apps owned, claim new <app>.kon.xyz subnames.
+  renderer/        Publish-time CLI (Hono JSX). Normalizes manifest source into the
+                   canonical KonManifestV1 + entry.template.json + index.html.
+  site/            kon.xyz marketing site (Vite + Preact, SSG).
+  ethtokyo/        ETHTokyo manifest source. The reference app shipped at Stage 1.
+  kon-relay/       libp2p + Helia daemon exposing local blockstore to public IPFS.
+
+packages/
+  runtime-core/    Types (KonEntryV1, KonManifestV1, KonPluginV1) + defaults +
+                   reserved-subnames + signature helpers.
+  schemas/         Zod schemas for entry + manifest + plugin.
+  wallet-sdk/      postMessage SDK for apps to talk to the wallet origin.
+  plugins/
+    badge/ build-with/ forum/ ical/ iframe/ markdown/ profile-card/
+  contracts/       AppCoin + AppCoinFactory (Base L2). Foundry.
+
+scripts/
+  publish.mjs                    Publish orchestrator (renderer → IPFS → ENS).
+  publish-{site,runtime,plugin}.mjs   Per-target shipping.
+  lib/{pin-service,w3up,helia,ens}.mjs   IPFS pin abstraction + ENS contenthash.
+  lint-no-hardcoded-origins.mjs  CI guard: only defaults.ts may embed `id.kon.xyz`.
+```
 
 ### Key Technologies
 
-- **Frontend**: React 19, React Router v7, TailwindCSS v4, Vite PWA
-- **Blockchain**: Base network (mainnet & sepolia), Viem, Wagmi
-- **Messaging**: XMTP protocol for decentralized messaging
-- **AI**: OpenAI, Coinbase AgentKit, LangChain for agent capabilities
-- **Infrastructure**: Cloudflare Workers with Wrangler
-
-### Smart Contract Architecture
-
-- **AppCoin.sol**: ERC20 token with admin controls, tipping mechanism, and reward redemption
-- **AppCoinFactory.sol**: Factory pattern for deploying new AppCoin instances
-- Uses OpenZeppelin v5.3 for security and standard implementations
+- **Runtime**: Vite 5 + Preact 10 + @preact/signals (no React)
+- **Toolchain**: Bun 1.3 (package manager + .ts script runtime), oxlint + oxfmt
+- **Blockchain**: Base mainnet / sepolia, Viem 2.51, Safe v1.4.1, permissionless 0.3, Pimlico bundler+paymaster
+- **Identity**: passkey via viem WebAuthn (rpId read from `window.location.hostname` at runtime)
+- **Realtime**: GUN.js + SEA for chat + draft workspace + verifiable identity-derived keys
+- **Storage**: IPFS via DNS-ENS (ENSIP-10 wildcard + DNSSEC) on `kon.xyz`. Helia or w3up via the PinService abstraction.
+- **Service worker**: workbox via vite-plugin-pwa (offline-first + stale-while-revalidate)
+- **Smart Contracts**: OpenZeppelin v5.3, Foundry
 
 ### Network Configuration
 
-- **Production**: kon.xyz (Base Mainnet)
-- **Staging**: kon.wtf (Base Sepolia)
-- ENS subdomains: Apps get `.kon.eth` subdomains
+- **kon.xyz**: Base Mainnet (production)
+- **kon.wtf**: Base Sepolia (staging)
+- App subnames: `<app>.kon.xyz` via DNS-ENS contenthash
 
-## Key Features Implementation
+### Self-Host Design
 
-### XMTP Agent Capabilities
-
-The agent handles:
-
-- App setup and configuration
-- ENS subdomain management
-- Coin deployment and management
-- Wallet interactions via messaging
-
-### PWA Template Features
-
-- Offline support via Vite PWA plugin
-- Web3 wallet connection with Wagmi
-- XMTP messaging integration
-- Cloudflare Workers deployment
-
-## Environment Variables
-
-### API Service (.dev.vars)
-
-- `ENSCHAIN`: Base chain ID for ENS operations
-- `RESOLVER_ADDRESS`: ENS resolver contract address
-
-### XMTP Agent (.env)
-
-- `OPENAI_API_KEY`: For AI capabilities
-- `XMTP_KEY`: XMTP private key
-- `CDP_API_KEY_NAME` & `CDP_API_KEY_PRIVATE_KEY`: Coinbase Developer Platform credentials
-- `NETWORK_ID`: Network configuration
-
-### PWA Template (.dev.vars)
-
-- `AUTH_DOMAIN` & `AUTH_CLIENT_ID`: Authentication configuration
-- Various API keys for Web3 services
+`kon.xyz` is convenience, not dependency. Every endpoint that points at a KON-managed origin (`id.kon.xyz`, `my.kon.xyz`, gateway URLs, GUN relay URLs) lives in `packages/runtime-core/src/defaults.ts`. The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.kon.xyz` outside that file, so self-host overrides via `manifest.deployment` cannot be bypassed.
 
 ## Code Style Guidelines
 
-- Uses Biome for formatting and linting
-- React hooks must have exhaustive dependencies
-- Avoid using array indices as keys in React
-- Follow existing patterns in each package
+- oxlint + oxfmt for lint + format
+- Preact (not React) — `@jsxImportSource preact` on every TSX file
+- No emojis in code unless explicitly requested
+- Don't add comments unless the WHY is non-obvious
+- Self-host policy: never embed `id.kon.xyz` literally; route through `resolveDeployment()` from runtime-core

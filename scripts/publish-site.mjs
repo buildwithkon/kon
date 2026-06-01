@@ -37,7 +37,7 @@ const SITE_DIST = join(REPO_ROOT, 'apps/site/dist')
 
 function buildSite() {
   return new Promise((resolve, reject) => {
-    const child = spawn('bun', ['--filter=@konxyz/site-v2', 'run', 'build'], {
+    const child = spawn('bun', ['--filter=@konxyz/site', 'run', 'build'], {
       cwd: REPO_ROOT,
       stdio: 'inherit'
     })

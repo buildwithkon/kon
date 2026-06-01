@@ -1,8 +1,8 @@
 {
-  "name": "@konxyz/site-v2",
+  "name": "@konxyz/site",
   "version": "0.0.0",
   "private": true,
-  "description": "KON v2 marketing site (kon.xyz apex). Vite + Preact SPA pre-rendered to static HTML at build time, published to IPFS via scripts/publish.mjs and pointed at by the kon.xyz DNS-ENS contenthash. Replaces the v1 Honox site under packages/site.",
+  "description": "KON v2 marketing site (kon.xyz apex). Vite + Preact SPA pre-rendered to static HTML at build time, published to IPFS via scripts/publish.mjs and pointed at by the kon.xyz DNS-ENS contenthash.",
   "type": "module",
   "scripts": {
     "dev": "vite",
