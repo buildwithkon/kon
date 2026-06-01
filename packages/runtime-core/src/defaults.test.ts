@@ -7,6 +7,7 @@ describe('KON_DEFAULTS', () => {
     expect(KON_DEFAULTS.ens_domain).toBe('kon.xyz')
     expect(KON_DEFAULTS.gun_peers.length).toBeGreaterThan(0)
     expect(KON_DEFAULTS.ipfs_gateways.length).toBeGreaterThan(0)
+    expect(KON_DEFAULTS.ipfs_pin_endpoint).toBe('https://gateway.kon.xyz/api/pin')
   })
 
   test('arrays are frozen-readonly via `as const`', () => {
@@ -24,6 +25,14 @@ describe('resolveDeployment', () => {
     expect(d.ens_domain).toBe(KON_DEFAULTS.ens_domain)
     expect(d.gun_peers).toEqual(KON_DEFAULTS.gun_peers)
     expect(d.ipfs_gateways).toEqual(KON_DEFAULTS.ipfs_gateways)
+    expect(d.ipfs_pin_endpoint).toBe(KON_DEFAULTS.ipfs_pin_endpoint)
+  })
+
+  test('overrides ipfs_pin_endpoint when provided', () => {
+    const d = resolveDeployment({ ipfs_pin_endpoint: 'https://gateway.myfestival.com/api/pin' })
+    expect(d.ipfs_pin_endpoint).toBe('https://gateway.myfestival.com/api/pin')
+    // Other fields fall through.
+    expect(d.wallet_origin).toBe(KON_DEFAULTS.wallet_origin)
   })
 
   test('returns defaults when override is empty object', () => {

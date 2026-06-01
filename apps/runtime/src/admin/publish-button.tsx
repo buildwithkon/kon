@@ -33,36 +33,46 @@ const statusStyle: import('preact').JSX.CSSProperties = {
 }
 
 /**
- * Phase 8 publish flow. End-to-end-real except for two stub points:
+ * Phase 8 publish flow — end-to-end-real except for the wallet popup's
+ * signTx response, which is stubbed inside apps/wallet/ until the Pimlico
+ * bundler + paymaster API key arrives (Week 1 open item). When that lands,
+ * this flow does not change — the wallet returns a real userOpHash and
+ * we wait on the bundler.
  *
- *   1. uploadManifestToIpfs(): returns a placeholder CID until the w3up
- *      delegation onboarding UI ships. The hook is documented so the swap
- *      is mechanical when the storage flow lands.
- *
- *   2. The wallet popup's signTx response is itself stubbed inside
- *      apps/wallet/ until the Pimlico bundler + paymaster API key arrives
- *      (Week 1 open item). When that lands, this flow does not change —
- *      the wallet returns a real userOpHash and we wait on the bundler.
- *
- * Everything else here is real: canonicalize is the canonical-JSON the
- * publisher signs, encodeSetContenthash produces the actual on-chain
- * calldata, and the wallet.signTx invocation is the path Phase 8
- * organizer-credentialed publishes will take in production.
+ * Everything else here is real:
+ *   - canonicalize produces the canonical JSON bytes the publisher signs
+ *   - uploadManifestToIpfs POSTs to the relay-ipfs /api/pin endpoint and
+ *     gets a real CID back (relay enforces per-IP rate-limit + quota)
+ *   - encodeSetContenthash produces the actual on-chain calldata, byte
+ *     identical to what the CLI publish pipeline produces
+ *   - wallet.signTx is the path Phase 8 organizer-credentialed publishes
+ *     take in production
  */
-async function uploadManifestToIpfs(canonical: string): Promise<string> {
-  // TODO Phase 8: w3up-client.uploadFile(new Blob([canonical], { type: 'application/json' }))
-  //   - Read delegation from IndexedDB (encrypted under a passkey-derived key
-  //     via wallet.requestKeyDerivation('w3up-delegation'))
-  //   - If no delegation present, prompt user to paste W3_PROOF
-  //   - On upload, store the returned CID + size + timestamp in IndexedDB
-  //     for the dashboard's "your apps" list
+async function uploadManifestToIpfs(canonical: string, pinEndpoint: string): Promise<string> {
+  // Default path: POST the canonical manifest to the relay-ipfs /api/pin
+  // endpoint. Stage 1 has no auth — the endpoint enforces per-IP rate
+  // limits + daily quota; Phase 9 hardening will add passkey-signed
+  // headers.
   //
-  // For now we synthesize a deterministic placeholder so the rest of the
-  // flow can be exercised end-to-end. The CID prefix `bafkreig` is the
-  // canonical CIDv1+raw-codec prefix, so it parses correctly downstream.
-  console.log('[publish] STUB upload:', canonical.length, 'bytes')
-  await new Promise((r) => setTimeout(r, 400))
-  return 'bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy'
+  // For organizers who outgrow the relay's free-tier quota: paste their
+  // own w3up delegation in onboarding → encrypted in IndexedDB under a
+  // passkey-derived key → uploadManifestToIpfs falls through to
+  // w3up-client. That code path lands when the first real organizer hits
+  // the cap; for ETHTokyo-scale events the relay quota is comfortable.
+  const res = await fetch(pinEndpoint, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: canonical
+  })
+  if (!res.ok) {
+    const body = await res.text()
+    throw new Error(`pin endpoint ${res.status}: ${body}`)
+  }
+  const json = (await res.json()) as { cid?: string; bytes?: number; error?: string }
+  if (!json.cid) {
+    throw new Error(`pin endpoint returned no CID: ${json.error ?? 'unknown'}`)
+  }
+  return json.cid
 }
 
 async function publish() {
@@ -75,10 +85,12 @@ async function publish() {
     const canonical = canonicalize(m)
     console.log('[publish] canonical manifest:', canonical.length, 'bytes')
 
-    // Step 2. Upload manifest to IPFS. Real call path; stub return value
-    // until w3up delegation onboarding ships.
+    // Step 2. Upload manifest to IPFS via relay-ipfs /api/pin. Real bytes,
+    // real CID, real Bitswap-announceable block. The endpoint URL flows
+    // through resolveDeployment so a self-host operator's manifest can
+    // point at gateway.<their-domain>/api/pin instead.
     publishState.value = { status: 'uploading' }
-    const manifestCid = await uploadManifestToIpfs(canonical)
+    const manifestCid = await uploadManifestToIpfs(canonical, d.ipfs_pin_endpoint)
     console.log('[publish] manifest CID:', manifestCid)
 
     // Step 3. Encode the ENS setContenthash calldata. The runtime-core
@@ -165,7 +177,7 @@ export function PublishButton() {
         {publishState.value.status !== 'idle' && <span>{statusMessage()}</span>}
       </div>
       <div style={{ marginLeft: 'auto', fontSize: '0.8rem', color: '#888' }}>
-        IPFS upload + bundler stubbed until W3_PROOF / Pimlico land.
+        Real IPFS upload via relay-ipfs. Bundler stub returns userOpHash until Pimlico lands.
       </div>
     </div>
   )

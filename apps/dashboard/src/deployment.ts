@@ -8,7 +8,8 @@
  *
  * Rules:
  *   1. If the page is loaded at `my.<root>`, the ens domain is `<root>`,
- *      the wallet origin is `https://id.<root>`.
+ *      the wallet origin is `https://id.<root>`, the pin endpoint is
+ *      `https://gateway.<root>/api/pin`.
  *   2. Otherwise (localhost / preview / odd hostname), fall back to the
  *      KON-managed defaults — this is the dev-loop path.
  *
@@ -18,15 +19,18 @@
 
 import { KON_DEFAULTS, type ResolvedDeployment } from '@konxyz/runtime-core'
 
-export function resolveDashboardDeployment(): ResolvedDeployment {
-  if (typeof window === 'undefined') {
-    return {
-      wallet_origin: KON_DEFAULTS.wallet_origin,
-      ens_domain: KON_DEFAULTS.ens_domain,
-      gun_peers: [...KON_DEFAULTS.gun_peers],
-      ipfs_gateways: [...KON_DEFAULTS.ipfs_gateways]
-    }
+function defaults(): ResolvedDeployment {
+  return {
+    wallet_origin: KON_DEFAULTS.wallet_origin,
+    ens_domain: KON_DEFAULTS.ens_domain,
+    gun_peers: [...KON_DEFAULTS.gun_peers],
+    ipfs_gateways: [...KON_DEFAULTS.ipfs_gateways],
+    ipfs_pin_endpoint: KON_DEFAULTS.ipfs_pin_endpoint
   }
+}
+
+export function resolveDashboardDeployment(): ResolvedDeployment {
+  if (typeof window === 'undefined') return defaults()
   const host = window.location.hostname
   // Strip a leading "my." label only if present; everything else is the
   // ens_domain. Hosts like "localhost" or "127.0.0.1" fail this regex and
@@ -38,13 +42,9 @@ export function resolveDashboardDeployment(): ResolvedDeployment {
       wallet_origin: `https://id.${root}`,
       ens_domain: root,
       gun_peers: [...KON_DEFAULTS.gun_peers],
-      ipfs_gateways: [...KON_DEFAULTS.ipfs_gateways]
+      ipfs_gateways: [...KON_DEFAULTS.ipfs_gateways],
+      ipfs_pin_endpoint: `https://gateway.${root}/api/pin`
     }
   }
-  return {
-    wallet_origin: KON_DEFAULTS.wallet_origin,
-    ens_domain: KON_DEFAULTS.ens_domain,
-    gun_peers: [...KON_DEFAULTS.gun_peers],
-    ipfs_gateways: [...KON_DEFAULTS.ipfs_gateways]
-  }
+  return defaults()
 }

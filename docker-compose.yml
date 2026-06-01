@@ -97,6 +97,11 @@ services:
       KON_RELAY_TCP_PORT: 4001
       KON_RELAY_HTTP_PORT: 8080
       KON_RELAY_ANNOUNCE: ${KON_RELAY_ANNOUNCE:-}
+      # /api/pin abuse controls — see apps/relay-ipfs/src/index.mjs.
+      # Defaults: 10 requests/min/IP, 100MB/day/IP, 10MB max body.
+      KON_PIN_RPM: ${KON_PIN_RPM:-10}
+      KON_PIN_BYTES_PER_DAY: ${KON_PIN_BYTES_PER_DAY:-104857600}
+      KON_PIN_MAX_BODY: ${KON_PIN_MAX_BODY:-10485760}
     volumes:
       - ipfs-blockstore:/blockstore
     networks: [internal]

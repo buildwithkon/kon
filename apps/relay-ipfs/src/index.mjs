@@ -110,12 +110,115 @@ async function startRelay() {
 
   if (HTTP_PORT !== null && !Number.isNaN(HTTP_PORT)) {
     const fs = unixfs(helia)
+
+    // Per-IP rate limiter for /api/pin. Naive token-bucket: each client gets
+    // PIN_REQUESTS_PER_MIN tokens that refill linearly. State is in-memory,
+    // process-local — fine for a single-relay deployment; swap for Redis if
+    // running multi-instance behind a load balancer (which we don't, today).
+    //
+    // Daily byte quota is a second gate so a single client can't refill
+    // tokens slowly and still fill the disk over a day.
+    const PIN_REQUESTS_PER_MIN = Number(process.env.KON_PIN_RPM ?? '10')
+    const PIN_BYTES_PER_DAY = Number(process.env.KON_PIN_BYTES_PER_DAY ?? String(100 * 1024 * 1024))
+    const PIN_MAX_BODY_BYTES = Number(process.env.KON_PIN_MAX_BODY ?? String(10 * 1024 * 1024))
+    const limiter = new Map()
+
+    function ipOf(req) {
+      const fwd = req.headers['x-forwarded-for']
+      if (typeof fwd === 'string') return fwd.split(',')[0].trim()
+      return req.socket?.remoteAddress ?? 'unknown'
+    }
+
+    function checkLimit(ip, bytes) {
+      const now = Date.now()
+      const entry = limiter.get(ip) ?? {
+        tokens: PIN_REQUESTS_PER_MIN,
+        lastRefill: now,
+        bytesToday: 0,
+        dayStart: now
+      }
+      // Refill tokens at PIN_REQUESTS_PER_MIN / 60s
+      const elapsed = (now - entry.lastRefill) / 1000
+      entry.tokens = Math.min(PIN_REQUESTS_PER_MIN, entry.tokens + (elapsed * PIN_REQUESTS_PER_MIN) / 60)
+      entry.lastRefill = now
+      // Roll daily byte counter
+      if (now - entry.dayStart > 86_400_000) {
+        entry.bytesToday = 0
+        entry.dayStart = now
+      }
+      if (entry.tokens < 1) return { ok: false, reason: 'rate limit (req/min)' }
+      if (entry.bytesToday + bytes > PIN_BYTES_PER_DAY) {
+        return { ok: false, reason: 'daily byte quota exceeded' }
+      }
+      entry.tokens -= 1
+      entry.bytesToday += bytes
+      limiter.set(ip, entry)
+      return { ok: true }
+    }
+
+    async function readBody(req) {
+      const chunks = []
+      let total = 0
+      for await (const chunk of req) {
+        total += chunk.length
+        if (total > PIN_MAX_BODY_BYTES) throw new Error('body too large')
+        chunks.push(chunk)
+      }
+      return Buffer.concat(chunks)
+    }
+
     const server = createServer(async (req, res) => {
       try {
         const url = req.url ?? '/'
+
+        // ----- POST /api/pin -----
+        // Accept raw body, write to Helia UnixFS, return { cid }.
+        //
+        // Stage 1 has no auth — relies on the rate-limiter to bound abuse.
+        // Phase 9 hardening: require a passkey-signed header containing
+        // (timestamp, body sha256, signer pubkey) and verify against the
+        // signer's claimed Safe address. The per-signer quota then layers
+        // on top of the per-IP one.
+        if (req.method === 'POST' && url === '/api/pin') {
+          const ip = ipOf(req)
+          const declared = Number(req.headers['content-length'] ?? '0')
+          if (!declared || declared > PIN_MAX_BODY_BYTES) {
+            res.writeHead(413, { 'content-type': 'application/json' })
+            res.end(JSON.stringify({ error: 'body too large or unspecified' }))
+            return
+          }
+          const verdict = checkLimit(ip, declared)
+          if (!verdict.ok) {
+            res.writeHead(429, { 'content-type': 'application/json' })
+            res.end(JSON.stringify({ error: verdict.reason }))
+            return
+          }
+          const body = await readBody(req)
+          const cid = await fs.addBytes(body)
+          console.log('[relay-ipfs] /api/pin ' + ip + ' ' + body.length + 'B → ' + cid.toString())
+          res.writeHead(200, {
+            'content-type': 'application/json',
+            'access-control-allow-origin': '*'
+          })
+          res.end(JSON.stringify({ cid: cid.toString(), bytes: body.length }))
+          return
+        }
+
+        // ----- OPTIONS /api/pin (CORS preflight) -----
+        if (req.method === 'OPTIONS' && url === '/api/pin') {
+          res.writeHead(204, {
+            'access-control-allow-origin': '*',
+            'access-control-allow-methods': 'POST, OPTIONS',
+            'access-control-allow-headers': 'content-type, x-kon-auth'
+          })
+          res.end()
+          return
+        }
+
+        // ----- GET /ipfs/<cid>[/<path>] -----
         if (!url.startsWith('/ipfs/')) {
           res.writeHead(404)
-          res.end('not found (only /ipfs/ supported in this PoC)')
+          res.end('not found (POST /api/pin or GET /ipfs/<cid> only)')
           return
         }
         const rest = url.slice('/ipfs/'.length).split('?')[0]
@@ -124,13 +227,12 @@ async function startRelay() {
         const subPath = parts.slice(1).join('/')
 
         const chunks = []
-        const target = subPath ? root : root
         // Walk into the subpath if any
         let currentCid = root
         if (subPath) {
-          for await (const _ of fs.ls(currentCid)) {
-            if (_.name === subPath || _.path?.endsWith('/' + subPath)) {
-              currentCid = _.cid
+          for await (const entry of fs.ls(currentCid)) {
+            if (entry.name === subPath || entry.path?.endsWith('/' + subPath)) {
+              currentCid = entry.cid
               break
             }
           }
@@ -148,6 +250,16 @@ async function startRelay() {
     })
     server.listen(HTTP_PORT, () => {
       console.log('[relay-ipfs] HTTP gateway on http://0.0.0.0:' + HTTP_PORT + '/ipfs/<cid>')
+      console.log('[relay-ipfs] pin endpoint on  http://0.0.0.0:' + HTTP_PORT + '/api/pin')
+      console.log(
+        '[relay-ipfs]   limit: ' +
+          PIN_REQUESTS_PER_MIN +
+          ' req/min/IP, ' +
+          (PIN_BYTES_PER_DAY / 1024 / 1024).toFixed(0) +
+          'MB/day/IP, ' +
+          (PIN_MAX_BODY_BYTES / 1024 / 1024).toFixed(0) +
+          'MB max body'
+      )
     })
   }
 

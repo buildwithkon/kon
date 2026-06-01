@@ -47,6 +47,12 @@ export interface KonDeploymentV1 {
   gun_peers?: string[]
   /** IPFS gateway URLs (priority order; the runtime tries them in sequence). */
   ipfs_gateways?: string[]
+  /**
+   * IPFS pin endpoint that accepts `POST /api/pin` from authenticated browsers
+   * (the dashboard's publish flow). Default = KON-managed `gateway.kon.xyz/api/pin`;
+   * self-host operators point this at their own relay-ipfs deployment.
+   */
+  ipfs_pin_endpoint?: string
   /** Apex ENS / DNS-ENS domain (e.g. 'kon.xyz' for KON-managed, or 'myfestival.com' for self-host). */
   ens_domain?: string
 }

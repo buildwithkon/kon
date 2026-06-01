@@ -16,7 +16,13 @@ export const KON_DEFAULTS = {
   wallet_origin: 'https://id.kon.xyz',
   ens_domain: 'kon.xyz',
   gun_peers: ['https://relay.kon.xyz/gun', 'https://relay.peer.ooo/gun'],
-  ipfs_gateways: ['https://kon.xyz', 'https://w3s.link', 'https://ipfs.io', 'https://cloudflare-ipfs.com']
+  ipfs_gateways: [
+    'https://gateway.kon.xyz',
+    'https://w3s.link',
+    'https://ipfs.io',
+    'https://cloudflare-ipfs.com'
+  ],
+  ipfs_pin_endpoint: 'https://gateway.kon.xyz/api/pin'
 } as const satisfies Required<KonDeploymentV1>
 
 export type ResolvedDeployment = {
@@ -24,6 +30,7 @@ export type ResolvedDeployment = {
   ens_domain: string
   gun_peers: string[]
   ipfs_gateways: string[]
+  ipfs_pin_endpoint: string
 }
 
 /**
@@ -36,6 +43,7 @@ export function resolveDeployment(override?: KonDeploymentV1): ResolvedDeploymen
     wallet_origin: override?.wallet_origin ?? KON_DEFAULTS.wallet_origin,
     ens_domain: override?.ens_domain ?? KON_DEFAULTS.ens_domain,
     gun_peers: override?.gun_peers ? [...override.gun_peers] : [...KON_DEFAULTS.gun_peers],
-    ipfs_gateways: override?.ipfs_gateways ? [...override.ipfs_gateways] : [...KON_DEFAULTS.ipfs_gateways]
+    ipfs_gateways: override?.ipfs_gateways ? [...override.ipfs_gateways] : [...KON_DEFAULTS.ipfs_gateways],
+    ipfs_pin_endpoint: override?.ipfs_pin_endpoint ?? KON_DEFAULTS.ipfs_pin_endpoint
   }
 }
