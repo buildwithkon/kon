@@ -1,5 +1,5 @@
 // Minimal local GUN relay for the spike.
-// Run via `pnpm relay`. Listens on http://localhost:8765/gun
+// Run via `bun run relay`. Listens on http://localhost:8765/gun
 // The dev server's app peers list points to this relay first.
 
 import { createServer } from 'node:http'

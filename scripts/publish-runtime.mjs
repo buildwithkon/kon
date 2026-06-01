@@ -2,8 +2,8 @@
 // Publish apps/runtime (shared KON v2 runtime bundle).
 //
 // Modes:
-//   pnpm publish:runtime           dry-run (build only)
-//   pnpm publish:runtime --upload  build + upload dist/ to IPFS
+//   bun run publish:runtime           dry-run (build only)
+//   bun run publish:runtime --upload  build + upload dist/ to IPFS
 //
 // There is no --publish step: the runtime is referenced by CID from
 // each app's entry.json (the `entry.runtime` field). Publishing the
@@ -34,7 +34,7 @@ const RUNTIME_DIST = join(REPO_ROOT, 'apps/runtime/dist')
 
 function buildRuntime() {
   return new Promise((resolve, reject) => {
-    const child = spawn('pnpm', ['--filter', '@konxyz/runtime', 'build'], {
+    const child = spawn('bun', ['--filter=@konxyz/runtime', 'run', 'build'], {
       cwd: REPO_ROOT,
       stdio: 'inherit'
     })

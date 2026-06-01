@@ -2,9 +2,9 @@
 // Publish apps/site (v2 marketing site at kon.xyz apex).
 //
 // Modes:
-//   pnpm publish:site             dry-run (build only)
-//   pnpm publish:site --upload    build + upload dist/ to IPFS
-//   pnpm publish:site --publish   above + update kon.xyz contenthash
+//   bun run publish:site             dry-run (build only)
+//   bun run publish:site --upload    build + upload dist/ to IPFS
+//   bun run publish:site --publish   above + update kon.xyz contenthash
 //
 // Env (only required for --upload / --publish):
 //   W3_PRINCIPAL / W3_PROOF     web3.storage delegation
@@ -37,7 +37,7 @@ const SITE_DIST = join(REPO_ROOT, 'apps/site/dist')
 
 function buildSite() {
   return new Promise((resolve, reject) => {
-    const child = spawn('pnpm', ['--filter', '@konxyz/site-v2', 'build'], {
+    const child = spawn('bun', ['--filter=@konxyz/site-v2', 'run', 'build'], {
       cwd: REPO_ROOT,
       stdio: 'inherit'
     })

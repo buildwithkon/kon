@@ -21,16 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 10
+          bun-version: latest
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
+      - run: bun install --frozen-lockfile
 
       - name: Resolve app name + mode
         id: resolve
@@ -46,7 +41,7 @@ jobs:
           fi
 
       - name: Build runtime + plugins
-        run: pnpm --filter @konxyz/runtime build
+        run: bun --filter=@konxyz/runtime run build
 
       - name: Publish (dry-run / upload / publish)
         env:
@@ -60,7 +55,7 @@ jobs:
             upload) MODE_FLAG="--upload" ;;
             publish) MODE_FLAG="--publish" ;;
           esac
-          pnpm publish:app --app "${{ steps.resolve.outputs.app }}" $MODE_FLAG
+          bun run publish:app --app "${{ steps.resolve.outputs.app }}" $MODE_FLAG
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

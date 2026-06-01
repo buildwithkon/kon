@@ -30,7 +30,7 @@ packages/
   api/  site/  shared-react/  subdomain-router/  xmtp-agent/
                  v1 packages. Deleted in Phase 6.
 experiments/
-  gun-spike/  Phase 0 GUN.js + SEA proof. Kept for reference + local relay (`pnpm relay`).
+  gun-spike/  Phase 0 GUN.js + SEA proof. Kept for reference + local relay (`bun relay`).
 scripts/
   publish.mjs                  Publish pipeline orchestrator.
   lib/w3up.mjs, lib/ens.mjs    web3.storage + ENS contenthash helpers.
@@ -40,21 +40,21 @@ scripts/
 ## Quick start (v2 dev)
 
 ```bash
-pnpm install
-pnpm --filter @konxyz/runtime dev    # http://127.0.0.1:5174 — runs with dev preset manifest
+bun install
+bun --filter '@konxyz/runtime' run dev    # http://127.0.0.1:5174 — runs with dev preset manifest
 ```
 
 The runtime boots with an inline dev-preset manifest exercising every built-in plugin. Open Chat to test GUN; the dev preset's `gun_peers` includes `http://localhost:8765/gun`, so optionally:
 
 ```bash
-cd experiments/gun-spike && pnpm install --ignore-workspace
-pnpm relay                           # local GUN relay on :8765
+cd experiments/gun-spike && bun install --ignore-workspace
+bun run relay                              # local GUN relay on :8765
 ```
 
 To exercise the wallet popup against the dev runtime, run `apps/wallet/` in parallel:
 
 ```bash
-pnpm --filter @konxyz/wallet dev     # http://127.0.0.1:5175
+bun --filter '@konxyz/wallet' run dev     # http://127.0.0.1:5175
 ```
 
 ## Publishing
@@ -64,10 +64,10 @@ Two paths:
 ### 1. CLI — ops / release automation (current)
 
 ```bash
-pnpm publish:app --app ethtokyo [--upload | --publish]
-pnpm publish:site                          # builds + ships apps/site to kon.xyz apex
-pnpm publish:runtime                       # builds + ships apps/runtime; prints CID for entry.runtime
-pnpm publish:plugin --plugin badge         # or --all for every plugin
+bun run publish:app --app ethtokyo [--upload | --publish]
+bun run publish:site                       # builds + ships apps/site to kon.xyz apex
+bun run publish:runtime                    # builds + ships apps/runtime; prints CID for entry.runtime
+bun run publish:plugin --plugin badge      # or --all for every plugin
 ```
 
 Uploads use `W3_PRINCIPAL` + `W3_PROOF` env (web3.storage delegation held by the operator). ENS contenthash writes use `KON_DEPLOY_KEY`. Dry-run mode (no flags) works without any credentials.
@@ -98,7 +98,7 @@ The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.k
 
 ## Toolchain
 
-- pnpm workspaces (Node 22+)
+- **Bun 1.3+** as package manager + JavaScript runtime for scripts (replaces pnpm + tsx as of the bun-migration commit). Cold install ~28s; lockfile is `bun.lock` at root.
 - Vite 5 + Preact 10 + @preact/signals
 - viem 2.51 + permissionless 0.3 (ERC-4337 + Safe v1.4.1 + Pimlico paymaster)
 - GUN.js + SEA for chat / realtime sync / identity-derived keys
@@ -111,15 +111,15 @@ The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.k
 ## Lint, format, typecheck
 
 ```bash
-pnpm run lint           # oxlint
-pnpm run lint:fix       # oxlint --fix
-pnpm run lint:origins   # custom rule: no literal id.kon.xyz outside defaults.ts
-pnpm run format         # oxfmt --write .
-pnpm run format:check   # oxfmt --check .
-pnpm run typecheck:v2   # tsc --noEmit for runtime-core + schemas
+bun run lint           # oxlint
+bun run lint:fix       # oxlint --fix
+bun run lint:origins   # custom rule: no literal id.kon.xyz outside defaults.ts
+bun run format         # oxfmt --write .
+bun run format:check   # oxfmt --check .
+bun run typecheck:v2   # tsc --noEmit for runtime-core + schemas
 ```
 
-Plus per-package `pnpm --filter <pkg> typecheck`.
+Plus per-package `bun --filter '<pkg>' run typecheck`.
 
 ## CI
 
