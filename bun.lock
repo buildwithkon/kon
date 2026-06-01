@@ -252,6 +252,10 @@
     "packages/runtime-core": {
       "name": "@konxyz/runtime-core",
       "version": "0.0.0",
+      "dependencies": {
+        "multiformats": "^14.0.0",
+        "viem": "^2.51.3",
+      },
       "devDependencies": {
         "typescript": "^5.6.3",
         "vite-plus": "catalog:",

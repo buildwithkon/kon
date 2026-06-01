@@ -1,6 +1,7 @@
 /** @jsxImportSource preact */
 import { signal } from '@preact/signals'
-import { validateSubname } from '@konxyz/runtime-core'
+import { encodeSetSubnodeOwner, ENS_REGISTRY_ADDRESS, validateSubname } from '@konxyz/runtime-core'
+import { WalletSdk } from '@konxyz/wallet-sdk'
 import { deployment, recordNewApp, signInState } from './state'
 
 const wrapStyle: import('preact').JSX.CSSProperties = {
@@ -69,23 +70,52 @@ const noteStyle: import('preact').JSX.CSSProperties = {
 }
 
 const subnameInput = signal('')
+const claimState = signal<
+  | { status: 'idle' }
+  | { status: 'signing' }
+  | { status: 'success'; txHash: `0x${string}` }
+  | { status: 'error'; message: string }
+>({ status: 'idle' })
 
-function onSubmit(address: `0x${string}`, ensDomain: string) {
+async function onSubmit(address: `0x${string}`, ensDomain: string, walletOrigin: string) {
   const raw = subnameInput.value.trim().toLowerCase()
   const v = validateSubname(raw)
-  if (!v.ok || !v.normalized) {
-    // Validation already surfaces inline below — no-op here so the
-    // computed error stays the source of truth.
-    return
+  if (!v.ok || !v.normalized) return
+  const label = v.normalized
+  const fullId = `${label}.${ensDomain}`
+
+  claimState.value = { status: 'signing' }
+  try {
+    // Build the on-chain claim: `ENS.setSubnodeOwner(namehash(ensDomain),
+    // keccak(label), userAddress)`. This is the same call the CLI publish
+    // pipeline would issue for KON-managed claims; the difference is the
+    // signer (here it's the organizer's Safe, there it's KON_DEPLOY_KEY).
+    //
+    // The kon.xyz parent node must be controlled by the registrar contract
+    // that authorizes the Safe to write. For Stage 1, organizers paying
+    // the KON-team registrar fee delegate to a contract that wraps this
+    // call. For self-host (where the organizer owns the parent node
+    // outright), this single tx is sufficient.
+    const calldata = encodeSetSubnodeOwner(ensDomain, label, address)
+    const sdk = new WalletSdk({ walletOrigin })
+    const { userOpHash } = await sdk.signTx({
+      chainId: 8453, // Base mainnet — ENS Registry lives at the same address on every L1/L2 that has ENS
+      to: ENS_REGISTRY_ADDRESS,
+      data: calldata,
+      description: `Claim ${fullId}`
+    })
+
+    recordNewApp(address, {
+      id: fullId,
+      name: label,
+      entryCid: null,
+      updatedAt: new Date().toISOString()
+    })
+    claimState.value = { status: 'success', txHash: userOpHash }
+    subnameInput.value = ''
+  } catch (e) {
+    claimState.value = { status: 'error', message: e instanceof Error ? e.message : String(e) }
   }
-  const fullId = `${v.normalized}.${ensDomain}`
-  recordNewApp(address, {
-    id: fullId,
-    name: v.normalized,
-    entryCid: null,
-    updatedAt: new Date().toISOString()
-  })
-  subnameInput.value = ''
 }
 
 export function CreateAppCard() {
@@ -94,7 +124,9 @@ export function CreateAppCard() {
   const d = deployment.value
   const raw = subnameInput.value.trim().toLowerCase()
   const validation = raw === '' ? null : validateSubname(raw)
-  const canSubmit = validation?.ok === true
+  const claim = claimState.value
+  const claiming = claim.status === 'signing'
+  const canSubmit = validation?.ok === true && !claiming
   return (
     <div style={wrapStyle}>
       <div style={headingStyle}>Create a new app</div>
@@ -104,6 +136,7 @@ export function CreateAppCard() {
           type="text"
           placeholder="ethtokyo"
           value={subnameInput.value}
+          disabled={claiming}
           onInput={(e) => {
             subnameInput.value = e.currentTarget.value
           }}
@@ -115,15 +148,26 @@ export function CreateAppCard() {
           type="button"
           style={buttonStyle(canSubmit)}
           disabled={!canSubmit}
-          onClick={() => onSubmit(state.address, d.ens_domain)}
+          onClick={() => void onSubmit(state.address, d.ens_domain, d.wallet_origin)}
         >
-          Claim
+          {claiming ? 'claiming…' : 'Claim'}
         </button>
       </div>
       {validation && !validation.ok && <div style={errorStyle}>{validation.reason}</div>}
+      {claim.status === 'error' && <div style={errorStyle}>{claim.message}</div>}
+      {claim.status === 'success' && (
+        <div
+          // oxlint-disable-next-line typescript/no-misused-spread -- spreading typed CSSProperties
+          style={{ ...noteStyle, color: '#0c7a3e' }}
+        >
+          ✓ Claimed. tx: <code>{claim.txHash.slice(0, 10)}…</code>
+        </div>
+      )}
       <div style={noteStyle}>
-        Claiming reserves the subname locally for now. ENS provisioning + on-chain write land in Phase 8
-        alongside Dashboard publish.
+        Claiming opens the wallet popup to sign{' '}
+        <code>setSubnodeOwner(namehash({d.ens_domain}), keccak(label), you)</code> on the ENS Registry. The
+        bundler returns a userOpHash; on-chain finality follows once the bundler submits — Pimlico integration
+        is the current open item.
       </div>
     </div>
   )
