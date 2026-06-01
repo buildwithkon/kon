@@ -48,6 +48,7 @@
         "typescript": "^5.6.3",
         "vite": "catalog:",
         "vite-plus": "catalog:",
+        "vitest": "catalog:",
       },
     },
     "apps/relay-gun": {
