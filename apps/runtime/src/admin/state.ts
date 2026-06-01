@@ -14,6 +14,7 @@
 
 import { signal, computed } from '@preact/signals'
 import type { KonManifestV1 } from '@konxyz/runtime-core'
+import { validateSubname } from '@konxyz/runtime-core'
 import { KonManifestV1Schema } from '@konxyz/schemas'
 import { manifest as loadedManifest } from '../state'
 
@@ -44,15 +45,32 @@ export const isDirty = computed(() => {
 
 export const validation = computed<ValidationResult>(() => {
   if (!draft.value) return { ok: true }
-  const result = KonManifestV1Schema.safeParse(draft.value)
-  if (result.success) return { ok: true }
-  return {
-    ok: false,
-    issues: result.error.issues.map((i) => ({
-      path: i.path.join('.') || '(root)',
-      message: i.message
-    }))
+  const issues: Array<{ path: string; message: string }> = []
+
+  const schemaResult = KonManifestV1Schema.safeParse(draft.value)
+  if (!schemaResult.success) {
+    for (const i of schemaResult.error.issues) {
+      issues.push({ path: i.path.join('.') || '(root)', message: i.message })
+    }
   }
+
+  // Additional check: the leftmost label of app.id (i.e. the ENS subname
+  // the organizer is claiming) must not be reserved. Skipping this when
+  // the schema already rejected the value avoids piling on redundant
+  // errors for an obviously-broken id.
+  const id = draft.value.app?.id
+  if (typeof id === 'string' && id.length > 0) {
+    const leftmost = id.split('.')[0]
+    if (leftmost) {
+      const sub = validateSubname(leftmost)
+      if (!sub.ok) {
+        issues.push({ path: 'app.id', message: sub.reason ?? 'invalid subname' })
+      }
+    }
+  }
+
+  if (issues.length === 0) return { ok: true }
+  return { ok: false, issues }
 })
 
 /**
