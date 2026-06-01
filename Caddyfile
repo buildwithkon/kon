@@ -1,0 +1,60 @@
+# Caddy configuration for the KON relay stack.
+#
+# Two virtual hosts, both TLS via Let's Encrypt:
+#   relay.<DOMAIN>     → relay-gun  (WebSocket upgrade)
+#   gateway.<DOMAIN>   → relay-ipfs  (HTTP gateway)
+#
+# Caddy auto-renews certificates on startup + every ~30 days.
+# Hostnames are templated from the KON_RELAY_DOMAIN env var so the
+# same Caddyfile works for relay.kon.xyz, relay.myfestival.com, etc.
+
+{
+	email {$ACME_EMAIL}
+	# Bind ACME challenges to standard ports; certs auto-issue.
+	# Remove the line below to use Let's Encrypt staging during testing.
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+# --------------------------------------------------------------------
+# relay.<DOMAIN> — GUN.js WebSocket relay
+# --------------------------------------------------------------------
+relay.{$KON_RELAY_DOMAIN} {
+	# GUN's WebSocket upgrade happens on /gun. We proxy the whole host
+	# to relay-gun:8765 — health endpoint on / works the same way.
+	reverse_proxy relay-gun:8765 {
+		# WebSocket upgrades are HTTP/1.1 only; Caddy auto-detects but
+		# being explicit avoids surprises behind certain CDNs.
+		header_up Connection {>Connection}
+		header_up Upgrade {>Upgrade}
+	}
+
+	# CORS so browsers from <app>.kon.xyz can connect even when the
+	# tab origin differs from the relay origin.
+	header {
+		Access-Control-Allow-Origin "*"
+		Access-Control-Allow-Methods "GET, POST, OPTIONS"
+		Access-Control-Allow-Headers "*"
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# --------------------------------------------------------------------
+# gateway.<DOMAIN> — IPFS HTTP gateway
+# --------------------------------------------------------------------
+gateway.{$KON_RELAY_DOMAIN} {
+	reverse_proxy relay-ipfs:8080
+
+	# IPFS blocks are immutable by CID, so cache aggressively.
+	header /ipfs/* {
+		Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
