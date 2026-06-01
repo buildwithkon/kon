@@ -5,9 +5,9 @@
   "description": "KON v2 central dashboard (my.kon.xyz). Organizers sign in via id.kon.xyz, see the apps they own, and create new <app>.kon.xyz subnames. Per-app editing lives at <app>.kon.xyz/admin (apps/runtime); this dashboard owns app provisioning + cross-app overview.",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@preact/preset-vite": "^2.9.1",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   }
 }

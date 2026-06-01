@@ -5,9 +5,9 @@
   "description": "KON v2 marketing site (kon.xyz apex). Vite + Preact SPA pre-rendered to static HTML at build time, published to IPFS via scripts/publish.mjs and pointed at by the kon.xyz DNS-ENS contenthash.",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && bun scripts/prerender.tsx",
-    "preview": "vite preview",
+    "dev": "vp dev",
+    "build": "vp build && bun scripts/prerender.tsx",
+    "preview": "vp preview",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -18,6 +18,7 @@
     "@preact/preset-vite": "^2.9.1",
     "preact-render-to-string": "^6.5.11",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   }
 }

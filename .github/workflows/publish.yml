@@ -25,7 +25,11 @@ jobs:
         with:
           bun-version: latest
 
-      - run: bun install --frozen-lockfile
+      - name: Install Vite+
+        run: curl -fsSL https://vite.plus | bash
+      - run: echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
+
+      - run: vp install --frozen-lockfile
 
       - name: Resolve app name + mode
         id: resolve

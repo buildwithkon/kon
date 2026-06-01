@@ -41,7 +41,7 @@ async function listPlugins() {
   return entries
     .filter((e) => e.isDirectory() && !e.name.startsWith('_'))
     .map((e) => e.name)
-    .sort()
+    .toSorted()
 }
 
 function buildPlugin(name) {

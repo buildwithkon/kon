@@ -53,7 +53,9 @@ export async function uploadDirectory(client, entries) {
 // other situation where the publish target is a static folder tree
 // rather than a single file.
 export async function uploadDirFromDisk(client, dirPath) {
+  // oxlint-disable-next-line typescript/unbound-method -- destructuring stateless node:* exports, not class methods
   const { readdir, readFile } = await import('node:fs/promises')
+  // oxlint-disable-next-line typescript/unbound-method -- destructuring stateless node:* exports, not class methods
   const { join, relative } = await import('node:path')
 
   async function* walk(dir) {

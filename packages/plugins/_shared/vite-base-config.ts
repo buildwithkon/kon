@@ -12,7 +12,7 @@
  * by scripts/publish-plugin.mjs.
  */
 
-import { defineConfig, type UserConfig } from 'vite'
+import { defineConfig, type UserConfig } from 'vite-plus'
 import preact from '@preact/preset-vite'
 
 export const PLUGIN_EXTERNALS = ['preact', 'preact/hooks', 'preact/jsx-runtime', '@preact/signals'] as const
