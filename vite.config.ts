@@ -6,7 +6,13 @@ export default defineConfig({
     // up *.test.ts files under node_modules/.bun/ and tries to run thousands
     // of dependency self-tests (vitest's own dogfood, etc.) at the project
     // root level.
-    include: ['apps/**/*.test.ts', 'apps/**/*.test.tsx', 'packages/**/*.test.ts', 'packages/**/*.test.tsx'],
+    include: [
+      'apps/**/*.test.ts',
+      'apps/**/*.test.tsx',
+      'apps/**/*.test.mjs',
+      'packages/**/*.test.ts',
+      'packages/**/*.test.tsx'
+    ],
     exclude: ['**/node_modules/**', '**/dist/**', 'packages/contracts/**']
   },
   staged: {

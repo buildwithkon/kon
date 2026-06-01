@@ -7,7 +7,8 @@
   "main": "src/index.mjs",
   "scripts": {
     "start": "node src/index.mjs",
-    "dev": "node --watch src/index.mjs"
+    "dev": "node --watch src/index.mjs",
+    "test": "vp test run"
   },
   "dependencies": {
     "@chainsafe/libp2p-noise": "^16.0.0",
@@ -22,5 +23,8 @@
     "helia": "^6.1.4",
     "libp2p": "^2.0.0",
     "multiformats": "^14.0.0"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
   }
 }

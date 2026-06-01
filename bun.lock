@@ -76,6 +76,9 @@
         "libp2p": "^2.0.0",
         "multiformats": "^14.0.0",
       },
+      "devDependencies": {
+        "vitest": "catalog:",
+      },
     },
     "apps/renderer": {
       "name": "@konxyz/renderer",

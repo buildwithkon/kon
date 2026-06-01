@@ -47,6 +47,7 @@ import { FsBlockstore } from 'blockstore-fs'
 import { unixfs } from '@helia/unixfs'
 import { CID } from 'multiformats/cid'
 import { createServer } from 'node:http'
+import { createRateLimiter, guessContentType, ipOf, parseIpfsUrl } from './lib.mjs'
 
 const BLOCKSTORE_PATH = process.env.HELIA_BLOCKSTORE_PATH || '.kon/blockstore'
 const TCP_PORT = Number(process.env.KON_RELAY_TCP_PORT || 4001)
@@ -65,16 +66,6 @@ const BOOTSTRAP_NODES = [
   '/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoCPnTcQu6CqQTGdMA3oXh4EFhVUVjP3eUcLwun',
   '/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt'
 ]
-
-function guessContentType(path) {
-  if (path.endsWith('.html')) return 'text/html; charset=utf-8'
-  if (path.endsWith('.json')) return 'application/json'
-  if (path.endsWith('.js') || path.endsWith('.mjs')) return 'application/javascript'
-  if (path.endsWith('.css')) return 'text/css'
-  if (path.endsWith('.png')) return 'image/png'
-  if (path.endsWith('.svg')) return 'image/svg+xml'
-  return 'application/octet-stream'
-}
 
 async function startRelay() {
   console.log('[relay-ipfs] starting...')
@@ -111,50 +102,17 @@ async function startRelay() {
   if (HTTP_PORT !== null && !Number.isNaN(HTTP_PORT)) {
     const fs = unixfs(helia)
 
-    // Per-IP rate limiter for /api/pin. Naive token-bucket: each client gets
-    // PIN_REQUESTS_PER_MIN tokens that refill linearly. State is in-memory,
-    // process-local — fine for a single-relay deployment; swap for Redis if
-    // running multi-instance behind a load balancer (which we don't, today).
-    //
-    // Daily byte quota is a second gate so a single client can't refill
-    // tokens slowly and still fill the disk over a day.
+    // Per-IP rate limiter for /api/pin. Naive token-bucket + daily byte
+    // quota (both in lib.mjs createRateLimiter so they're testable
+    // without spinning up libp2p). State is in-memory, process-local —
+    // swap for Redis if running multi-instance behind a load balancer.
     const PIN_REQUESTS_PER_MIN = Number(process.env.KON_PIN_RPM ?? '10')
     const PIN_BYTES_PER_DAY = Number(process.env.KON_PIN_BYTES_PER_DAY ?? String(100 * 1024 * 1024))
     const PIN_MAX_BODY_BYTES = Number(process.env.KON_PIN_MAX_BODY ?? String(10 * 1024 * 1024))
-    const limiter = new Map()
-
-    function ipOf(req) {
-      const fwd = req.headers['x-forwarded-for']
-      if (typeof fwd === 'string') return fwd.split(',')[0].trim()
-      return req.socket?.remoteAddress ?? 'unknown'
-    }
-
-    function checkLimit(ip, bytes) {
-      const now = Date.now()
-      const entry = limiter.get(ip) ?? {
-        tokens: PIN_REQUESTS_PER_MIN,
-        lastRefill: now,
-        bytesToday: 0,
-        dayStart: now
-      }
-      // Refill tokens at PIN_REQUESTS_PER_MIN / 60s
-      const elapsed = (now - entry.lastRefill) / 1000
-      entry.tokens = Math.min(PIN_REQUESTS_PER_MIN, entry.tokens + (elapsed * PIN_REQUESTS_PER_MIN) / 60)
-      entry.lastRefill = now
-      // Roll daily byte counter
-      if (now - entry.dayStart > 86_400_000) {
-        entry.bytesToday = 0
-        entry.dayStart = now
-      }
-      if (entry.tokens < 1) return { ok: false, reason: 'rate limit (req/min)' }
-      if (entry.bytesToday + bytes > PIN_BYTES_PER_DAY) {
-        return { ok: false, reason: 'daily byte quota exceeded' }
-      }
-      entry.tokens -= 1
-      entry.bytesToday += bytes
-      limiter.set(ip, entry)
-      return { ok: true }
-    }
+    const { check: checkLimit } = createRateLimiter({
+      requestsPerMin: PIN_REQUESTS_PER_MIN,
+      bytesPerDay: PIN_BYTES_PER_DAY
+    })
 
     async function readBody(req) {
       const chunks = []
@@ -226,10 +184,7 @@ async function startRelay() {
           res.end('not found (POST /api/pin or GET /ipfs/<cid>/<path> only)')
           return
         }
-        const rest = url.slice('/ipfs/'.length).split('?')[0]
-        const slash = rest.indexOf('/')
-        const cidStr = slash === -1 ? rest : rest.slice(0, slash)
-        const subPath = slash === -1 ? '' : rest.slice(slash) // includes leading '/'
+        const { cid: cidStr, subPath } = parseIpfsUrl(url)
         const root = CID.parse(cidStr)
 
         const chunks = []
@@ -238,7 +193,7 @@ async function startRelay() {
           for await (const chunk of fs.cat(root, catOpts)) {
             chunks.push(chunk)
           }
-        } catch (catErr) {
+        } catch {
           // If the path resolves to a directory (common for trailing slash or
           // SPA root), try the directory's index.html. This matches Kubo's
           // gateway behavior for UnixFS directory CIDs.
