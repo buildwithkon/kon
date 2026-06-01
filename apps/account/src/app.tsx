@@ -12,6 +12,7 @@ import { isAllowedAppOrigin } from './origin-allowlist'
 import { createPasskey, describePasskey, loadAccount, loadStoredCredential } from './passkey'
 import { safeAddressFromAccount, verifyAddressAcrossChains } from './safe'
 import { listChains, PIMLICO_CONFIGURED } from './chains'
+import { submitUserOp } from './submit-user-op'
 
 type PendingRequest =
   | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
@@ -125,35 +126,76 @@ async function approveSignIn() {
   setTimeout(() => window.close(), 100)
 }
 
-function approveSignTx() {
+async function approveSignTx() {
   const p = pending.value
   if (!p || p.kind !== 'signTx') return
-  // TODO: replace stub with real permissionless.js + Safe + Pimlico flow:
-  //   1. Build the UserOperation against the Safe smart-account client
-  //      derived from the passkey signer.
-  //   2. Sign the userOpHash with the passkey (WebAuthn assertion).
-  //   3. Submit via permissionless's bundlerClient.sendUserOperation()
-  //      against CHAINS[chainId].bundlerUrl, with paymasterClient
-  //      sponsoring per CHAINS[chainId].sponsorshipPolicyId.
-  //   4. Return the real userOpHash from the bundler.
-  //
-  // PIMLICO_CONFIGURED gates this — until VITE_PIMLICO_API_KEY is set in
-  // the build's .env, we return a deterministic stub so the dashboard
-  // publish flow can be exercised end-to-end except the on-chain step.
-  const stubHash: `0x${string}` = PIMLICO_CONFIGURED
-    ? // Real wiring lands when Pimlico key is in env (placeholder until
-      // permissionless + Safe code is written next commit).
-      '0xPIMLICO_KEY_PRESENT_BUT_PERMISSIONLESS_WIRING_PENDING'
-    : '0xSTUB_USEROPHASH_REPLACED_WHEN_PIMLICO_IS_WIRED'
-  postToOpener(
-    {
-      kind: 'kon.signTx.ok',
-      requestId: p.req.requestId,
-      userOpHash: stubHash
-    },
-    p.openerOrigin
-  )
-  setTimeout(() => window.close(), 100)
+
+  // Dev fallback: when neither bundler nor paymaster env is set in the
+  // build, we can't talk to a real ERC-4337 stack. Return a stub so the
+  // dashboard publish flow exercises every step except the on-chain
+  // submission. Production builds always have PIMLICO_CONFIGURED true.
+  if (!PIMLICO_CONFIGURED) {
+    postToOpener(
+      {
+        kind: 'kon.signTx.ok',
+        requestId: p.req.requestId,
+        userOpHash: '0xSTUB_USEROPHASH_REPLACED_WHEN_PIMLICO_IS_WIRED' as `0x${string}`
+      },
+      p.openerOrigin
+    )
+    setTimeout(() => window.close(), 100)
+    return
+  }
+
+  // Real submission. The viem WebAuthn account is loaded from the stored
+  // passkey credential (already created via the sign-in flow before any
+  // signTx popup can open), then submit-user-op.ts:
+  //   - builds the Safe smart-account client (same address as sign-in)
+  //   - asks the configured paymaster for `paymasterAndData`
+  //   - sends the UserOp through Pimlico's bundler
+  //   - returns the bundler's userOpHash
+  try {
+    const account = loadAccount()
+    const result = await submitUserOp(account, {
+      chainId: p.req.chainId,
+      to: p.req.to,
+      data: p.req.data,
+      value: p.req.value
+    })
+    console.log(`[account] signTx sent via ${result.paymasterVendor} paymaster:`, result.userOpHash)
+    postToOpener(
+      {
+        kind: 'kon.signTx.ok',
+        requestId: p.req.requestId,
+        userOpHash: result.userOpHash
+      },
+      p.openerOrigin
+    )
+    setTimeout(() => window.close(), 100)
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[account] signTx failed:', msg)
+    // Categorize common failure modes so the dashboard UI can render
+    // a more specific error than "internal_error".
+    const code: 'user_cancelled' | 'paymaster_rejected' | 'passkey_unavailable' | 'internal_error' =
+      /not allowed|cancelled|abort/i.test(msg)
+        ? 'user_cancelled'
+        : /paymaster|sponsor/i.test(msg)
+          ? 'paymaster_rejected'
+          : /passkey|webauthn|credential/i.test(msg)
+            ? 'passkey_unavailable'
+            : 'internal_error'
+    postToOpener(
+      {
+        kind: 'kon.error',
+        requestId: p.req.requestId,
+        code,
+        message: msg
+      },
+      p.openerOrigin
+    )
+    setTimeout(() => window.close(), 100)
+  }
 }
 
 function approveDeriveKey() {
