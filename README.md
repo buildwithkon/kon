@@ -99,6 +99,8 @@ The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.k
 
 ### Relay stack (one VPS, two protocols)
 
+Full runbook: [`docs/self-host-relay.md`](docs/self-host-relay.md).
+
 The root `docker-compose.yml` co-deploys both relays plus Caddy (TLS reverse proxy) on a single VPS. On any host that can run Docker (Vultr Tokyo $6/mo, Oracle Cloud Free, Hetzner, Fly.io, your homelab):
 
 ```bash
