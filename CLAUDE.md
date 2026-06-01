@@ -23,7 +23,8 @@ bun @runtime:dev      # http://127.0.0.1:5174 — Public Runtime SPA
 bun @wallet:dev       # http://127.0.0.1:5175 — id.kon.xyz wallet origin
 bun @site:dev         # http://127.0.0.1:5176 — kon.xyz marketing site
 bun @dashboard:dev    # http://127.0.0.1:5177 — my.kon.xyz organizer portal
-bun @relay:start      # local kon-relay (libp2p + Helia gateway)
+bun @relay-gun:start  # http://127.0.0.1:8765 — local GUN.js relay
+bun @relay-ipfs:start # local libp2p + Helia HTTP gateway (4001 + 8080)
 ```
 
 ### Publish pipeline (CLI)
@@ -77,7 +78,8 @@ apps/
                    canonical KonManifestV1 + entry.template.json + index.html.
   site/            kon.xyz marketing site (Vite + Preact, SSG).
   ethtokyo/        ETHTokyo manifest source. The reference app shipped at Stage 1.
-  kon-relay/       libp2p + Helia daemon exposing local blockstore to public IPFS.
+  relay-gun/       GUN.js WebSocket relay (chat + draft workspace gossip layer).
+  relay-ipfs/      libp2p + Helia daemon exposing local blockstore to public IPFS.
 
 packages/
   runtime-core/    Types (KonEntryV1, KonManifestV1, KonPluginV1) + defaults +

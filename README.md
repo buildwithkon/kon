@@ -18,7 +18,8 @@ apps/
   renderer/   Hono JSX CLI. Turns an app's manifest source into canonical release files.
   site/       Vite + Preact marketing site (kon.xyz apex, SSG).
   ethtokyo/   Reference app — manifest.source.json input for the publish pipeline.
-  kon-relay/  libp2p + Helia daemon exposing local blockstore to public IPFS.
+  relay-gun/  GUN.js relay daemon. WebSocket peer for chat + draft workspace.
+  relay-ipfs/ libp2p + Helia daemon exposing local blockstore to public IPFS.
 packages/
   runtime-core/  Types + defaults.ts (only place id.kon.xyz literal lives) + reserved-subnames + signature helpers.
   schemas/       Zod schemas for entry / manifest / plugin objects.
@@ -26,8 +27,6 @@ packages/
   plugins/
     badge/ build-with/ forum/ ical/ iframe/ markdown/ profile-card/
   contracts/     AppCoin / AppCoinFactory (Base L2). Foundry.
-experiments/
-  gun-spike/  Phase 0 GUN.js + SEA proof. Kept for reference + local relay (`bun run relay`).
 scripts/
   publish.mjs                  Publish pipeline orchestrator.
   publish-{site,runtime,plugin}.mjs   Per-target shipping.
@@ -45,8 +44,7 @@ bun @runtime:dev      # http://127.0.0.1:5174 — runs with dev preset manifest
 The runtime boots with an inline dev-preset manifest exercising every built-in plugin. Open Chat to test GUN; the dev preset's `gun_peers` includes `http://localhost:8765/gun`, so optionally:
 
 ```bash
-cd experiments/gun-spike && bun install --ignore-workspace
-bun run relay         # local GUN relay on :8765
+bun @relay-gun:start  # local GUN relay on :8765
 ```
 
 To exercise the wallet popup against the dev runtime, run `apps/wallet/` in parallel:
@@ -95,9 +93,47 @@ The CLI pipeline also runs in CI via `.github/workflows/publish.yml` (manual dis
 3. Build + publish `apps/wallet` to your own IPFS pin → set `_dnslink` + ENS `contenthash` on `id.yourdomain.com`.
 4. Same for `apps/dashboard` → `my.yourdomain.com`.
 5. Override `manifest.deployment.wallet_origin` to `https://id.yourdomain.com` in your app's manifest source.
-6. Optionally run your own GUN relay + kon-relay.
+6. Optionally run your own relays — `apps/relay-gun` (chat) + `apps/relay-ipfs` (IPFS pin) — via the root `docker-compose.yml`.
 
 The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.kon.xyz` outside `packages/runtime-core/src/defaults.ts` so self-host overrides cannot be bypassed.
+
+### Relay stack (one VPS, two protocols)
+
+The root `docker-compose.yml` co-deploys both relays plus Caddy (TLS reverse proxy) on a single VPS. On any host that can run Docker (Vultr Tokyo $6/mo, Oracle Cloud Free, Hetzner, Fly.io, your homelab):
+
+```bash
+git clone https://github.com/buildwithkon/kon.git
+cd kon
+cp .env.relay.example .env
+vim .env                    # set KON_RELAY_DOMAIN + ACME_EMAIL
+docker compose up -d
+```
+
+DNS records before bringing up (Let's Encrypt HTTP-01 needs live DNS):
+
+```
+relay.<DOMAIN>     A    <vps-ipv4>
+gateway.<DOMAIN>   A    <vps-ipv4>
+```
+
+Caddy auto-issues certs for both hostnames. `wss://relay.<DOMAIN>/gun` is the GUN endpoint; `https://gateway.<DOMAIN>/ipfs/<cid>` is the IPFS HTTP gateway. The libp2p TCP port (4001) is exposed directly (not behind Caddy — libp2p can't traverse an HTTP proxy).
+
+### Multi-region scaling (Stage 2+)
+
+For Stage 1 (ETHTokyo, single Tokyo VPS) the single-host docker-compose is sufficient. To scale geographically:
+
+1. **Stand up the same stack in each region** — Tokyo, Frankfurt, Virginia, etc. Each region has its own VPS, its own `.env`, its own Caddy cert.
+2. **GeoDNS at the edge** — point `relay.kon.xyz` (and `gateway.kon.xyz`) at multiple region IPs via a DNS provider that supports geographic answers: Cloudflare DNS, Route53 latency-based routing, NS1, or similar. Each client's DNS lookup returns the IP of the nearest region.
+3. **GUN gossip-sync between regions** — on each region's `.env`, set `KON_GUN_PEERS` to the public `/gun` URLs of the _other_ regions. GUN's CRDT will keep chat + draft graphs in sync across the mesh in ~100ms-1s without any application-level coordination.
+4. **IPFS needs no special config** — libp2p's kad-DHT handles global content discovery automatically. Each region holds its own blockstore; cross-region fetches resolve via Bitswap.
+
+Example for the Tokyo region of a three-region KON deployment:
+
+```bash
+KON_GUN_PEERS=https://fra.relay.kon.xyz/gun,https://iad.relay.kon.xyz/gun
+```
+
+No code changes between Stage 1 and Stage 2 — only env + DNS.
 
 ## Toolchain
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env tsx
 /**
- * kon-relay — Helia daemon that publishes the local KON blockstore to the
+ * relay-ipfs — Helia daemon that publishes the local KON blockstore to the
  * public IPFS network.
  *
  * Why this exists: publish:* writes UnixFS blocks to .kon/blockstore/
  * via ipfs-unixfs-importer. Those blocks live only on disk; public
  * gateways (w3s.link, ipfs.io, .limo) cannot fetch them without a
- * libp2p endpoint announcing they're available. kon-relay is that
+ * libp2p endpoint announcing they're available. relay-ipfs is that
  * endpoint.
  *
  * What it runs:
@@ -77,8 +77,8 @@ function guessContentType(path) {
 }
 
 async function startRelay() {
-  console.log('[kon-relay] starting...')
-  console.log('[kon-relay]   blockstore: ' + BLOCKSTORE_PATH)
+  console.log('[relay-ipfs] starting...')
+  console.log('[relay-ipfs]   blockstore: ' + BLOCKSTORE_PATH)
 
   const blockstore = new FsBlockstore(BLOCKSTORE_PATH)
   await blockstore.open()
@@ -101,11 +101,11 @@ async function startRelay() {
 
   const helia = await createHelia({ libp2p, blockstore })
 
-  console.log('[kon-relay] libp2p ready')
-  console.log('[kon-relay]   peerId: ' + libp2p.peerId.toString())
+  console.log('[relay-ipfs] libp2p ready')
+  console.log('[relay-ipfs]   peerId: ' + libp2p.peerId.toString())
   const addrs = libp2p.getMultiaddrs().map((ma) => ma.toString())
   for (const a of addrs) {
-    console.log('[kon-relay]   addr: ' + a)
+    console.log('[relay-ipfs]   addr: ' + a)
   }
 
   if (HTTP_PORT !== null && !Number.isNaN(HTTP_PORT)) {
@@ -147,7 +147,7 @@ async function startRelay() {
       }
     })
     server.listen(HTTP_PORT, () => {
-      console.log('[kon-relay] HTTP gateway on http://0.0.0.0:' + HTTP_PORT + '/ipfs/<cid>')
+      console.log('[relay-ipfs] HTTP gateway on http://0.0.0.0:' + HTTP_PORT + '/ipfs/<cid>')
     })
   }
 
@@ -156,7 +156,7 @@ async function startRelay() {
   const shutdown = async (sig) => {
     if (shuttingDown) return
     shuttingDown = true
-    console.log('\n[kon-relay] ' + sig + ' received, shutting down...')
+    console.log('\n[relay-ipfs] ' + sig + ' received, shutting down...')
     try {
       await helia.stop()
     } catch {}
@@ -171,10 +171,10 @@ async function startRelay() {
   process.on('SIGINT', () => shutdown('SIGINT'))
   process.on('SIGTERM', () => shutdown('SIGTERM'))
 
-  console.log('[kon-relay] ready. press Ctrl+C to stop.')
+  console.log('[relay-ipfs] ready. press Ctrl+C to stop.')
 }
 
 startRelay().catch((e) => {
-  console.error('[kon-relay] x', e instanceof Error ? e.stack || e.message : String(e))
+  console.error('[relay-ipfs] x', e instanceof Error ? e.stack || e.message : String(e))
   process.exit(1)
 })
