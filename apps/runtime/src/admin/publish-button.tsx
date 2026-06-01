@@ -177,7 +177,7 @@ export function PublishButton() {
         {publishState.value.status !== 'idle' && <span>{statusMessage()}</span>}
       </div>
       <div style={{ marginLeft: 'auto', fontSize: '0.8rem', color: '#888' }}>
-        Real IPFS upload via relay-ipfs. Bundler stub returns userOpHash until Pimlico lands.
+        Pimlico bundler + Coinbase paymaster · w3up upgrade path Phase 9.
       </div>
     </div>
   )

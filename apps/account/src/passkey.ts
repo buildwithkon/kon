@@ -9,7 +9,7 @@
  * - Uses viem 2.51+ `createWebAuthnCredential` / `toWebAuthnAccount` so we
  *   inherit their CBOR + COSE parsing instead of writing it ourselves.
  * - Returns viem's P256Credential shape which feeds directly into
- *   permissionless.js Safe smart-account creation in step 8b.
+ *   permissionless.js Safe smart-account creation in safe.ts.
  */
 
 import {

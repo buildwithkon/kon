@@ -16,8 +16,9 @@ matsuri.kon.xyz                      matsuri.myfestival.com
 id.kon.xyz                           id.myfestival.com
    passkey rpId="id.kon.xyz"            passkey rpId="id.myfestival.com"
    Safe v1.4.1 (Base)                   Safe v1.4.1 (Base)
-   Pimlico bundler + paymaster          Pimlico bundler + paymaster
-   (KON-managed sponsorship policy)     (your sponsorship policy + API key)
+   Pimlico bundler                      Pimlico bundler
+   Coinbase paymaster (CDP)             Coinbase paymaster (CDP)
+   (KON-managed keys + allowlist)       (your keys + allowlist)
 ```
 
 **Crucial consequence**: a user with a passkey on `id.kon.xyz` and a passkey on `id.myfestival.com` has **two different Safe smart accounts**. WebAuthn passkeys are bound to the Relying Party origin; there is no cross-RP credential. This is a deliberate trade-off — sovereignty over universal identity. Stage 3+ may bridge identities across self-hosted deployments via UCAN-style delegation, but at the wallet layer the two accounts are independent.
@@ -30,7 +31,8 @@ id.kon.xyz                           id.myfestival.com
 | ENS DNS-import done                       | ✅                   | One-time setup at app.ens.domains/dns/`yourdomain.com`.                                                                                                                                                |
 | A hosting target for `apps/account/dist/` | ✅                   | The relay VPS itself (recommended — Caddy vhost serving a pinned CID) or a managed IPFS host like 4everland. See "Hosting" section below.                                                              |
 | TLS cert for `id.<your-domain>`           | ✅                   | Required for WebAuthn to issue credentials. Self-signed certs don't work — browsers refuse passkey creation on untrusted origins. Caddy issues Let's Encrypt automatically; 4everland / Pinata do too. |
-| A Pimlico API key + sponsorship policy    | ✅                   | Free tier covers ~100K UserOps/mo at the time of writing. Sign up at dashboard.pimlico.io.                                                                                                             |
+| A Pimlico API key (bundler)               | ✅                   | Free tier ~100K UserOps/mo. Sign up at dashboard.pimlico.io.                                                                                                                                           |
+| A Coinbase CDP API key (paymaster)        | ✅                   | Coinbase subsidizes Base gas heavily. Sign up at portal.cdp.coinbase.com. Alternative: skip CDP and use Pimlico's paymaster + sponsorship policy.                                                      |
 | Backup owner UX understood                | Strongly recommended | Passkey loss is unrecoverable without a backup owner. See "Recovery model" below.                                                                                                                      |
 
 ## How the rpId is derived

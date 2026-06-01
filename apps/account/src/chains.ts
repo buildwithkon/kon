@@ -79,17 +79,22 @@ export interface ChainConfig {
   /** Generic HTTPS RPC endpoint (no auth). */
   rpcUrl: string
   /**
-   * ERC-4337 bundler endpoint. Empty until step 8d wires Pimlico.
-   * Each chain gets its own bundler URL because Pimlico namespaces
-   * by chain in the URL path.
+   * ERC-4337 bundler endpoint. Pimlico per-chain URL when
+   * VITE_PIMLICO_API_KEY is set; empty in dev builds without env, which
+   * makes submit-user-op.ts fall back to a stub response.
    */
   bundlerUrl: string
   /**
-   * Paymaster endpoint. Empty until step 8e wires sponsorship.
+   * Paymaster endpoint. Coinbase CDP URL when VITE_CDP_API_KEY is set
+   * (preferred on Base for the gas subsidy); Pimlico paymaster as
+   * fallback when only VITE_PIMLICO_API_KEY is set; empty disables
+   * sponsorship (Safe pays its own gas).
    */
   paymasterUrl: string
   /**
-   * Pimlico sponsorship policy id. Empty until step 8e.
+   * Pimlico sponsorship policy id. Only used when paymaster vendor is
+   * Pimlico; Coinbase's allowlist + spending caps live in the CDP
+   * dashboard instead.
    */
   sponsorshipPolicyId: string
   /**
