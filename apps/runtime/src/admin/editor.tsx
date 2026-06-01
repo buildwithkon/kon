@@ -95,7 +95,7 @@ export function ManifestEditor() {
             value={d.app.name}
             style={inputStyle}
             onInput={(e) => {
-              const next = (e.currentTarget as HTMLInputElement).value
+              const next = e.currentTarget.value
               updateDraft((m) => {
                 m.app.name = next
               })
@@ -107,9 +107,10 @@ export function ManifestEditor() {
           <textarea
             value={d.app.description ?? ''}
             rows={3}
+            // oxlint-disable-next-line typescript/no-misused-spread -- spreading typed CSSProperties object
             style={{ ...inputStyle, resize: 'vertical' }}
             onInput={(e) => {
-              const next = (e.currentTarget as HTMLTextAreaElement).value
+              const next = e.currentTarget.value
               updateDraft((m) => {
                 m.app.description = next || undefined
               })
@@ -124,7 +125,7 @@ export function ManifestEditor() {
             min={0}
             style={inputStyle}
             onInput={(e) => {
-              const next = Number((e.currentTarget as HTMLInputElement).value)
+              const next = Number(e.currentTarget.value)
               updateDraft((m) => {
                 m.app.version = Number.isFinite(next) ? next : m.app.version
               })
@@ -178,9 +179,10 @@ function PageRow({ page, index }: { page: KonPageV1; index: number }) {
       <input
         type="text"
         value={page.title}
+        // oxlint-disable-next-line typescript/no-misused-spread -- spreading typed CSSProperties object
         style={{ ...inputStyle, flex: 1 }}
         onInput={(e) => {
-          const next = (e.currentTarget as HTMLInputElement).value
+          const next = e.currentTarget.value
           updateDraft((m) => {
             const p = m.pages[index]
             if (p) p.title = next

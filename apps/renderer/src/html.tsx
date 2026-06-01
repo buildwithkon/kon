@@ -46,6 +46,7 @@ export function renderIndex(opts: RenderIndexOpts): string {
       </body>
     </html>
   )
+  // oxlint-disable-next-line typescript/no-base-to-string -- hono/jsx node toString renders to HTML, not the default Object stringification
   return `<!doctype html>\n${doc.toString()}\n`
 }
 

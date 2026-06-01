@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
-    "baseUrl": ".",
     "noEmit": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",

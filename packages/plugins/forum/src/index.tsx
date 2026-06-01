@@ -86,7 +86,7 @@ const Forum: KonPluginComponent<ForumPluginProps> = ({ props, context }) => {
     let cancelled = false
     let unsub: (() => void) | null = null
 
-    ;(async () => {
+    void (async () => {
       try {
         const { key } = await context.wallet.requestKeyDerivation('gun-sea')
         if (cancelled) return
@@ -167,7 +167,7 @@ const Forum: KonPluginComponent<ForumPluginProps> = ({ props, context }) => {
           disabled={!handle}
           placeholder={handle ? 'Type a message…' : 'Connecting…'}
           style={inputStyle}
-          onInput={(e) => setDraft((e.currentTarget as HTMLInputElement).value)}
+          onInput={(e) => setDraft(e.currentTarget.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && handle && draft.trim()) {
               void handle.send(draft.trim())
