@@ -1,6 +1,14 @@
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
+  test: {
+    // Limit test discovery to first-party source. Without this scope, vp picks
+    // up *.test.ts files under node_modules/.bun/ and tries to run thousands
+    // of dependency self-tests (vitest's own dogfood, etc.) at the project
+    // root level.
+    include: ['apps/**/*.test.ts', 'apps/**/*.test.tsx', 'packages/**/*.test.ts', 'packages/**/*.test.tsx'],
+    exclude: ['**/node_modules/**', '**/dist/**', 'packages/contracts/**']
+  },
   staged: {
     '*': 'vp check --fix'
   },

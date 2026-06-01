@@ -12,9 +12,13 @@
     "./signature": "./src/signature.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vp test run",
+    "test:watch": "vp test watch"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
   }
 }

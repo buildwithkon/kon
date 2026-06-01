@@ -48,8 +48,8 @@ async function main() {
   if (args.help || !args.input || !args.output) usage(args.help ? 0 : 1)
 
   const result = await build({
-    input: args.input!,
-    output: args.output!,
+    input: args.input,
+    output: args.output,
     runtimeCid: args.runtime as `ipfs://${string}` | undefined
   })
 

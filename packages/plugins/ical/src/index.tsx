@@ -221,7 +221,7 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
             placeholder="Search events"
             value={search}
             style={inputStyle}
-            onInput={(e) => setSearch((e.currentTarget as HTMLInputElement).value)}
+            onInput={(e) => setSearch(e.currentTarget.value)}
           />
           <button
             type="button"

@@ -105,7 +105,7 @@ export function CreateAppCard() {
           placeholder="ethtokyo"
           value={subnameInput.value}
           onInput={(e) => {
-            subnameInput.value = (e.currentTarget as HTMLInputElement).value
+            subnameInput.value = e.currentTarget.value
           }}
           autoComplete="off"
           spellcheck={false}

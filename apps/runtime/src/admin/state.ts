@@ -84,7 +84,7 @@ export function initDraft(): void {
     initialJson.value = null
     return
   }
-  const clone = structuredClone(m) as KonManifestV1
+  const clone = structuredClone(m)
   draft.value = clone
   initialJson.value = JSON.stringify(clone)
 }
@@ -95,7 +95,7 @@ export function initDraft(): void {
  */
 export function updateDraft(updater: (m: KonManifestV1) => void): void {
   if (!draft.value) return
-  const next = structuredClone(draft.value) as KonManifestV1
+  const next = structuredClone(draft.value)
   updater(next)
   draft.value = next
 }

@@ -27,3 +27,6 @@ jobs:
 
       - name: vp check (lint + format + typecheck)
         run: vp check
+
+      - name: vp test (vitest)
+        run: vp test run
