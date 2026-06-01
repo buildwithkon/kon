@@ -269,8 +269,8 @@ GUN gossip converges across regions in ~hundreds of ms via its CRDT layer — th
 
 **relay-ipfs fails to find a `node-datachannel` native binary at startup.**
 
-- This only happens on Apple Silicon hosts running the script directly (`bun @relay-ipfs:start`). The Docker image runs Linux x86 or ARM where node-datachannel either ships a prebuilt binary or isn't required (relay-ipfs uses TCP-only libp2p config).
-- Inside `docker compose` this error doesn't appear — verify by checking `docker compose logs relay-ipfs`.
+- Should not happen on a fresh `bun install` — `node-datachannel` is in the root `package.json` `trustedDependencies`, which lets bun run its install hook to fetch the prebuilt binary via `prebuild-install`. Most platforms (macOS arm64/x64, Linux glibc/musl x64/arm64, Windows x64) have a prebuilt available.
+- If it does happen, the most likely cause is a platform without a prebuilt — falling back to compiling from source requires `cmake-js`. Workaround: install cmake + a C++ compiler and run `bunx prebuild-install -r napi || cmake-js rebuild` inside `node_modules/.bun/node-datachannel@*/node_modules/node-datachannel/`. Or use the Docker image, which bakes the binary at build time.
 
 **Apps don't see chat messages.**
 
