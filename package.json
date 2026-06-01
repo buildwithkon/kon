@@ -31,6 +31,8 @@
     "publish:site": "bun scripts/publish-site.mjs",
     "publish:runtime": "bun scripts/publish-runtime.mjs",
     "publish:plugin": "bun scripts/publish-plugin.mjs",
+    "publish:account": "bun scripts/publish-account.mjs",
+    "publish:dashboard": "bun scripts/publish-dashboard.mjs",
     "typecheck:v2": "bun --filter=@konxyz/runtime-core run typecheck && bun --filter=@konxyz/schemas run typecheck",
     "test": "vp test run",
     "test:watch": "vp test watch",
