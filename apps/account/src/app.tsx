@@ -11,7 +11,7 @@ import type {
 import { isAllowedAppOrigin } from './origin-allowlist'
 import { createPasskey, describePasskey, loadAccount, loadStoredCredential } from './passkey'
 import { safeAddressFromAccount, verifyAddressAcrossChains } from './safe'
-import { listChains } from './chains'
+import { listChains, PIMLICO_CONFIGURED } from './chains'
 
 type PendingRequest =
   | { kind: 'signIn'; req: SignInRequest; openerOrigin: string }
@@ -128,11 +128,28 @@ async function approveSignIn() {
 function approveSignTx() {
   const p = pending.value
   if (!p || p.kind !== 'signTx') return
+  // TODO: replace stub with real permissionless.js + Safe + Pimlico flow:
+  //   1. Build the UserOperation against the Safe smart-account client
+  //      derived from the passkey signer.
+  //   2. Sign the userOpHash with the passkey (WebAuthn assertion).
+  //   3. Submit via permissionless's bundlerClient.sendUserOperation()
+  //      against CHAINS[chainId].bundlerUrl, with paymasterClient
+  //      sponsoring per CHAINS[chainId].sponsorshipPolicyId.
+  //   4. Return the real userOpHash from the bundler.
+  //
+  // PIMLICO_CONFIGURED gates this — until VITE_PIMLICO_API_KEY is set in
+  // the build's .env, we return a deterministic stub so the dashboard
+  // publish flow can be exercised end-to-end except the on-chain step.
+  const stubHash: `0x${string}` = PIMLICO_CONFIGURED
+    ? // Real wiring lands when Pimlico key is in env (placeholder until
+      // permissionless + Safe code is written next commit).
+      '0xPIMLICO_KEY_PRESENT_BUT_PERMISSIONLESS_WIRING_PENDING'
+    : '0xSTUB_USEROPHASH_REPLACED_WHEN_PIMLICO_IS_WIRED'
   postToOpener(
     {
       kind: 'kon.signTx.ok',
       requestId: p.req.requestId,
-      userOpHash: '0xSTUB_USEROPHASH_REPLACED_WHEN_PIMLICO_IS_WIRED' as `0x${string}`
+      userOpHash: stubHash
     },
     p.openerOrigin
   )

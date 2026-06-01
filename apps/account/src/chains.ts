@@ -7,13 +7,30 @@
  * address covers Base (primary, where AppCoin lives) plus future
  * expansion (Optimism, Arbitrum, Tempo, ...).
  *
- * Bundler / paymaster / RPC URLs are placeholders — step 8d wires in the
- * real Pimlico endpoints once the API key is available. Self-hosted
- * deployments override these by replacing this file (a future step will
- * move the override into manifest.deployment.chains).
+ * Bundler / paymaster endpoints are derived from VITE_PIMLICO_API_KEY
+ * at build time. Vite inlines the key into the bundle; the Pimlico
+ * dashboard restricts it to KON's allowed origins + sponsorship policy
+ * so extraction is harmless. See docs/self-host-wallet.md "Pimlico API
+ * key handling" for the threat model + dashboard setup walkthrough.
+ *
+ * If VITE_PIMLICO_API_KEY is unset (e.g. a dev build before dashboard
+ * setup is done), the bundler/paymaster URLs stay blank and signTx
+ * falls back to a stub userOpHash — every step except the real
+ * on-chain submission still exercises end-to-end.
  */
 
 import { base } from 'viem/chains'
+
+const PIMLICO_API_KEY = (import.meta.env.VITE_PIMLICO_API_KEY as string | undefined) ?? ''
+const SPONSORSHIP_POLICY_ID = (import.meta.env.VITE_PIMLICO_SPONSORSHIP_POLICY_ID as string | undefined) ?? ''
+
+function pimlicoUrl(chainId: number): string {
+  if (!PIMLICO_API_KEY) return ''
+  return `https://api.pimlico.io/v2/${chainId}/rpc?apikey=${PIMLICO_API_KEY}`
+}
+
+/** True if Pimlico env is wired. Callers gate real bundler calls on this. */
+export const PIMLICO_CONFIGURED = PIMLICO_API_KEY.length > 0
 
 export interface ChainConfig {
   chainId: number
@@ -49,9 +66,9 @@ export const CHAINS: Record<number, ChainConfig> = {
     chainId: base.id,
     name: 'Base',
     rpcUrl: 'https://mainnet.base.org',
-    bundlerUrl: '', // TODO 8d: `https://api.pimlico.io/v2/${base.id}/rpc?apikey=${PIMLICO_API_KEY}`
-    paymasterUrl: '', // TODO 8e: same URL, separate verb
-    sponsorshipPolicyId: '', // TODO 8e: Pimlico policy id
+    bundlerUrl: pimlicoUrl(base.id),
+    paymasterUrl: pimlicoUrl(base.id),
+    sponsorshipPolicyId: SPONSORSHIP_POLICY_ID,
     viemChain: base
   }
   // Optimism, Arbitrum, etc. added later. Adding a chain here makes the
