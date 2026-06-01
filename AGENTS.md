@@ -118,6 +118,12 @@ scripts/
 
 `kon.xyz` is convenience, not dependency. Every endpoint that points at a KON-managed origin (`id.kon.xyz`, `my.kon.xyz`, gateway URLs, GUN relay URLs) lives in `packages/runtime-core/src/defaults.ts`. The CI lint at `scripts/lint-no-hardcoded-origins.mjs` rejects any literal `id.kon.xyz` outside that file, so self-host overrides via `manifest.deployment` cannot be bypassed.
 
+### Hosting model
+
+All static layers (`apps/site`, `apps/account`, `apps/dashboard`, `apps/runtime`, every published `<app>.kon.xyz` entry) ship to **IPFS** — typically Fleek for the KON-managed deployment (free tier with custom-domain TLS). Self-host operators use Fleek, 4everland, or any IPFS host that issues TLS for a custom domain.
+
+The only **VPS** in the stack hosts `relay.kon.xyz` + `gateway.kon.xyz` (`apps/relay-gun` + `apps/relay-ipfs`), where the processes need persistent WebSocket / libp2p TCP sockets. See `docs/self-host-relay.md`. Default KON team infra cost: ~$6/mo (single Vultr Tokyo droplet). When suggesting deployment targets for the static layers, never default to a VPS — IPFS hosting is the architectural intent.
+
 ## Code Style Guidelines
 
 - oxlint + oxfmt for lint + format

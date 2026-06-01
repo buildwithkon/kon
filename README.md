@@ -84,7 +84,24 @@ Depends on real wallet `signTx` (Pimlico bundler+paymaster) and the dashboard's 
 
 The CLI pipeline also runs in CI via `.github/workflows/publish.yml` (manual dispatch or `publish/<app>` tag push).
 
-## Self-hosting (Phase 7, sketch)
+## Hosting model
+
+Every KON layer is one of two shapes, hosted accordingly. There is **one VPS** in the whole stack — for the relay processes that need persistent sockets. Every other layer is a static SPA on IPFS.
+
+| Layer                                       | Hostname                             | Bundle                                                       | Hosting target                                       |
+| ------------------------------------------- | ------------------------------------ | ------------------------------------------------------------ | ---------------------------------------------------- |
+| Marketing site                              | `kon.xyz`                            | `apps/site` (static SPA, SSG)                                | **IPFS** (Fleek / 4everland / w3up)                  |
+| Wallet origin                               | `id.kon.xyz`                         | `apps/account` (static SPA)                                  | **IPFS** (Fleek recommended for free TLS)            |
+| Organizer dashboard                         | `my.kon.xyz`                         | `apps/dashboard` (static SPA)                                | **IPFS** (same as above)                             |
+| Public runtime                              | served via `<app>.kon.xyz`           | `apps/runtime` (static SPA, version-pinned by CID)           | **IPFS** (any pin service)                           |
+| Per-app entry + manifest                    | `<app>.kon.xyz`                      | published artifact (entry.json + manifest.json + index.html) | **IPFS** (via `publish:app`)                         |
+| Plugins                                     | referenced by CID from each manifest | `packages/plugins/*` (static JS bundles)                     | **IPFS** (via `publish:plugin`)                      |
+| GUN relay (chat)                            | `relay.kon.xyz`                      | `apps/relay-gun` (Node.js process)                           | **VPS** — long-lived WebSocket peer                  |
+| IPFS pin + HTTP gateway + `/api/pin` upload | `gateway.kon.xyz`                    | `apps/relay-ipfs` (Node.js + libp2p)                         | **VPS** — direct TCP for libp2p, disk for blockstore |
+
+The default KON-managed deployment runs one $6/mo VPS (Vultr Tokyo) for the relay stack and pins every static layer to Fleek. Self-host operators follow the same split.
+
+## Self-hosting (Phase 7)
 
 `kon.xyz` is the default fast path, never a hard dependency. To run KON on your own domain:
 

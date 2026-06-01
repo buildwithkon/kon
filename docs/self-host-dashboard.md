@@ -35,7 +35,7 @@ The dashboard is intentionally thin. Heavy lifting (passkey, Safe, IPFS upload, 
 | Wallet origin already deployed          | ✅                   | [`docs/self-host-wallet.md`](self-host-wallet.md). The dashboard's sign-in flow needs `id.<DOMAIN>` to exist first.                                                                                   |
 | Domain with DNSSEC enabled              | ✅                   | Same domain you used for the wallet.                                                                                                                                                                  |
 | ENS DNS-import done                     | ✅                   | One-time setup at app.ens.domains/dns/`yourdomain.com`.                                                                                                                                               |
-| A static hosting target                 | ✅                   | Same options as the wallet: Fleek, 4everland, Caddy + Kubo on a VPS.                                                                                                                                  |
+| An IPFS hosting target                  | ✅                   | Same as the wallet — Fleek or 4everland strongly recommended. No VPS needed for the dashboard bundle; the relay VPS (`docs/self-host-relay.md`) is a separate concern.                                |
 | Optional: relay-ipfs `/api/pin` exposed | Strongly recommended | Without it, the dashboard's "Publish" flow falls back to KON-managed `gateway.kon.xyz/api/pin` — which works, but defeats the sovereignty story. See [`docs/self-host-relay.md`](self-host-relay.md). |
 
 ## How the dashboard derives its deployment context
