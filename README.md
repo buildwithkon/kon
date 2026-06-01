@@ -181,7 +181,7 @@ bun run lint:fix       # oxlint --fix
 bun run lint:origins   # custom rule: no literal id.kon.xyz outside defaults.ts
 bun run format         # oxfmt --write .
 bun run format:check   # oxfmt --check .
-bun run typecheck:v2   # tsc --noEmit for runtime-core + schemas
+bun run typecheck      # tsc --noEmit for runtime-core + schemas
 ```
 
 Plus per-package `bun --filter=@konxyz/<pkg> run typecheck`.

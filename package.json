@@ -33,7 +33,7 @@
     "publish:plugin": "bun scripts/publish-plugin.mjs",
     "publish:account": "bun scripts/publish-account.mjs",
     "publish:dashboard": "bun scripts/publish-dashboard.mjs",
-    "typecheck:v2": "bun --filter=@konxyz/runtime-core run typecheck && bun --filter=@konxyz/schemas run typecheck",
+    "typecheck": "bun --filter=@konxyz/runtime-core run typecheck && bun --filter=@konxyz/schemas run typecheck",
     "test": "vp test run",
     "test:watch": "vp test watch",
     "prepare": "vp config"

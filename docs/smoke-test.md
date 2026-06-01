@@ -33,7 +33,7 @@ For L2+:
 ```bash
 bun run lint               # oxlint via vp — 0 errors
 bun run format:check       # oxfmt via vp — clean
-bun run typecheck:v2       # runtime-core + schemas typecheck
+bun run typecheck          # runtime-core + schemas typecheck
 bun run test               # vp test run — should see 109 passing
 bun --filter=@konxyz/runtime run build
 bun --filter=@konxyz/account run build
