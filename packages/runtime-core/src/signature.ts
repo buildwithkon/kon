@@ -2,7 +2,7 @@
  * Manifest signing helpers (Phase 1 — types + canonicalization only).
  *
  * The actual signing implementation lands in Phase 5 (publish pipeline),
- * because it depends on the wallet-sdk + Safe + paymaster wiring from
+ * because it depends on the account-sdk + Safe + paymaster wiring from
  * Phase 2.6. For now we lock down the canonical-JSON shape so the manifest
  * format is stable from day one.
  */

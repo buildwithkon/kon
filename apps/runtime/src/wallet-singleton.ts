@@ -1,5 +1,5 @@
 /**
- * Singleton WalletSdk instance shared across all plugins on this app.
+ * Singleton AccountSDK instance shared across all plugins on this app.
  *
  * The runtime instantiates this once after the manifest resolves (because
  * the wallet origin comes from manifest.deployment.wallet_origin). Plugins
@@ -8,14 +8,14 @@
  * derivation prompts.
  */
 
-import { WalletSdk } from '@konxyz/wallet-sdk'
+import { AccountSDK } from '@konxyz/account-sdk'
 import type { KonPluginWallet } from '@konxyz/runtime-core'
 
-let instance: WalletSdk | null = null
+let instance: AccountSDK | null = null
 
 export function ensureWallet(walletOrigin: string): KonPluginWallet {
   if (!instance || instance.walletOrigin !== walletOrigin) {
-    instance = new WalletSdk({ walletOrigin })
+    instance = new AccountSDK({ walletOrigin })
   }
   // Adapt the public sdk surface to the narrower plugin handle.
   return {

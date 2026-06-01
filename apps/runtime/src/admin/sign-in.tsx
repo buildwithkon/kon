@@ -51,8 +51,8 @@ async function signIn() {
     // so we get signTx + the full SignInResponse fields. ensureWallet builds
     // both when called; we reach into the SDK via a fresh new instance
     // here intentionally to keep the plugin handle abstraction intact.
-    const { WalletSdk } = await import('@konxyz/wallet-sdk')
-    const sdk = new WalletSdk({ walletOrigin: d.wallet_origin })
+    const { AccountSDK } = await import('@konxyz/account-sdk')
+    const sdk = new AccountSDK({ walletOrigin: d.wallet_origin })
     const result = await sdk.openSignIn()
     signInState.value = {
       status: 'signed',

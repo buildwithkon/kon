@@ -35,7 +35,7 @@ id.kon.xyz                           id.myfestival.com
 
 ## How the rpId is derived
 
-`apps/wallet/` deliberately does **not** hardcode `id.kon.xyz` anywhere. The passkey RP id is read from `window.location.hostname` at runtime, so:
+`apps/account/` deliberately does **not** hardcode `id.kon.xyz` anywhere. The passkey RP id is read from `window.location.hostname` at runtime, so:
 
 | Deployed at          | `rpId` becomes         |
 | -------------------- | ---------------------- |
@@ -64,10 +64,10 @@ You don't fork the codebase — you just deploy the same bundle to your hostname
 
 ### 2. Configure the wallet bundle with your chain endpoints
 
-The wallet's `apps/wallet/src/chains.ts` declares the bundler + paymaster endpoints per chain. The default values are blank because they require a Pimlico API key that's deployment-specific. Edit your fork:
+The wallet's `apps/account/src/chains.ts` declares the bundler + paymaster endpoints per chain. The default values are blank because they require a Pimlico API key that's deployment-specific. Edit your fork:
 
 ```ts
-// apps/wallet/src/chains.ts
+// apps/account/src/chains.ts
 export const CHAINS = {
   base: {
     id: base.id,
@@ -87,15 +87,15 @@ If you don't want to commit the key, read it from `import.meta.env.VITE_PIMLICO_
 
 ```bash
 # From the KON repo root:
-bun --filter=@konxyz/wallet run build
+bun --filter=@konxyz/account run build
 
-# Pin apps/wallet/dist/ to your IPFS host of choice.
+# Pin apps/account/dist/ to your IPFS host of choice.
 # Fleek example:
-fleek storage upload apps/wallet/dist
+fleek storage upload apps/account/dist
 # → CID: bafy...
 
 # Or with w3up:
-w3 up apps/wallet/dist
+w3 up apps/account/dist
 # → CID: bafy...
 ```
 
@@ -134,7 +134,7 @@ In each KON app's `manifest.source.json`:
 }
 ```
 
-Republish the app (`bun run publish:app --app matsuri --publish`) and the new entry directs the wallet popup at your origin. The `@konxyz/wallet-sdk` consumer code reads `walletOrigin` from the resolved deployment — no app code changes.
+Republish the app (`bun run publish:app --app matsuri --publish`) and the new entry directs the wallet popup at your origin. The `@konxyz/account-sdk` consumer code reads `walletOrigin` from the resolved deployment — no app code changes.
 
 ## Recovery model (read carefully)
 
@@ -154,13 +154,13 @@ The wallet UI surfaces this in the onboarding flow and refuses to deploy a Safe 
 
 The Safe `{Core}` v1.4.1 deployment uses CREATE2 with a deterministic salt derived from the owner set + threshold, so the same passkey + backup pair yields **the same Safe address on every supported chain**. This is intentional — UX is much simpler when "my wallet address" is one thing across Base, Optimism, Arbitrum, etc.
 
-`apps/wallet/src/safe.ts` `predictSafeAddress()` is the implementation; verify against Safe's official `Safe{Core} SDK` if you fork.
+`apps/account/src/safe.ts` `predictSafeAddress()` is the implementation; verify against Safe's official `Safe{Core} SDK` if you fork.
 
 ## Cross-origin postMessage allowlist
 
 The wallet popup must only accept `kon.signIn` / `kon.signTx` requests from origins it trusts. Otherwise any third-party site could open the popup and trick the user into signing.
 
-Configured at `apps/wallet/src/origin-allowlist.ts`. The default allowlist is `*.kon.xyz` (KON-managed apps) plus `localhost:*` (dev). Self-host deployments override this with `*.your-domain.com` or an explicit list. **Do not leave the allowlist permissive**; an attacker who tricks a user into signing arbitrary calldata can drain the Safe.
+Configured at `apps/account/src/origin-allowlist.ts`. The default allowlist is `*.kon.xyz` (KON-managed apps) plus `localhost:*` (dev). Self-host deployments override this with `*.your-domain.com` or an explicit list. **Do not leave the allowlist permissive**; an attacker who tricks a user into signing arbitrary calldata can drain the Safe.
 
 ## Multi-region
 
@@ -194,7 +194,7 @@ If you absolutely need regional wallet PoPs, use anycast hosting (Fleek anycast 
 **Apps can't open the wallet popup ("popup blocked").**
 
 - Most browsers require popups to be opened in response to a user gesture (click, keypress). The wallet SDK's `openSignIn()` must be called from a click handler, not on page load.
-- The `@konxyz/wallet-sdk` already does this correctly when used from `SignInPanel.tsx` — verify your custom UI isn't calling it on mount.
+- The `@konxyz/account-sdk` already does this correctly when used from `SignInPanel.tsx` — verify your custom UI isn't calling it on mount.
 
 **Cross-origin postMessage is silently dropped.**
 

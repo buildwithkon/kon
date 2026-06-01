@@ -13,7 +13,7 @@ Every KON app is a static SPA. `ethtokyo.kon.xyz` resolves through ENS (via DNSS
 ```
 apps/
   runtime/    Vite + Preact Public Runtime. Boots from ENS → IPFS → manifest → plugins. Hosts /admin per-app editor.
-  wallet/     Vite + Preact wallet origin (id.kon.xyz). Passkey + Safe v1.4.1 + Pimlico.
+  account/    Vite + Preact wallet origin (id.kon.xyz). Passkey + Safe v1.4.1 + Pimlico.
   dashboard/  Vite + Preact organizer portal (my.kon.xyz). Sign in, claim subnames, see your apps.
   renderer/   Hono JSX CLI. Turns an app's manifest source into canonical release files.
   site/       Vite + Preact marketing site (kon.xyz apex, SSG).
@@ -23,7 +23,7 @@ apps/
 packages/
   runtime-core/  Types + defaults.ts (only place id.kon.xyz literal lives) + reserved-subnames + signature helpers.
   schemas/       Zod schemas for entry / manifest / plugin objects.
-  wallet-sdk/    postMessage SDK consumed by apps to talk to the wallet origin.
+  account-sdk/   postMessage SDK consumed by apps to talk to the wallet origin.
   plugins/
     badge/ build-with/ forum/ ical/ iframe/ markdown/ profile-card/
   contracts/     AppCoin / AppCoinFactory (Base L2). Foundry.
@@ -47,10 +47,10 @@ The runtime boots with an inline dev-preset manifest exercising every built-in p
 bun @relay-gun:start  # local GUN relay on :8765
 ```
 
-To exercise the wallet popup against the dev runtime, run `apps/wallet/` in parallel:
+To exercise the wallet popup against the dev runtime, run `apps/account/` in parallel:
 
 ```bash
-bun @wallet:dev       # http://127.0.0.1:5175
+bun @account:dev      # http://127.0.0.1:5175
 ```
 
 The organizer dashboard:
@@ -90,7 +90,7 @@ The CLI pipeline also runs in CI via `.github/workflows/publish.yml` (manual dis
 
 1. Acquire `yourdomain.com` and enable DNSSEC.
 2. Import the domain into ENS at app.ens.domains/dns/yourdomain.com.
-3. Build + publish `apps/wallet` to your own IPFS pin → set `_dnslink` + ENS `contenthash` on `id.yourdomain.com`. Full runbook: [`docs/self-host-wallet.md`](docs/self-host-wallet.md).
+3. Build + publish `apps/account` to your own IPFS pin → set `_dnslink` + ENS `contenthash` on `id.yourdomain.com`. Full runbook: [`docs/self-host-wallet.md`](docs/self-host-wallet.md).
 4. Same for `apps/dashboard` → `my.yourdomain.com`. Full runbook: [`docs/self-host-dashboard.md`](docs/self-host-dashboard.md).
 5. Optionally pin your own `apps/runtime` build and reference its CID from each app's `entry.runtime`. Full runbook: [`docs/self-host-runtime.md`](docs/self-host-runtime.md).
 6. Override `manifest.deployment` fields (`wallet_origin`, `ipfs_pin_endpoint`, etc.) to point at your origins.

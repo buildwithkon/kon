@@ -17,7 +17,7 @@
  *
  * The actual transaction submission happens elsewhere:
  *   - CLI: scripts/lib/ens.mjs (viem walletClient with KON_DEPLOY_KEY)
- *   - Browser: wallet.signTx({ to, data, ...}) via @konxyz/wallet-sdk
+ *   - Browser: wallet.signTx({ to, data, ...}) via @konxyz/account-sdk
  *
  * Note on IPFS contenthash: ENS stores contenthash as a multicodec-prefixed
  * varint+CID byte string per EIP-1577. The viem helper

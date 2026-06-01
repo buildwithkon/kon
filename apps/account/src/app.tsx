@@ -7,7 +7,7 @@ import type {
   SignTxRequest,
   WalletRequest,
   WalletResponse
-} from '@konxyz/wallet-sdk/protocol'
+} from '@konxyz/account-sdk/protocol'
 import { isAllowedAppOrigin } from './origin-allowlist'
 import { createPasskey, describePasskey, loadAccount, loadStoredCredential } from './passkey'
 import { safeAddressFromAccount, verifyAddressAcrossChains } from './safe'

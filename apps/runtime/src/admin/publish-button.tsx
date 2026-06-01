@@ -1,6 +1,6 @@
 /** @jsxImportSource preact */
 import { canonicalize, encodeSetContenthash, ENS_PUBLIC_RESOLVER_ADDRESS } from '@konxyz/runtime-core'
-import { WalletSdk } from '@konxyz/wallet-sdk'
+import { AccountSDK } from '@konxyz/account-sdk'
 import { deployment, manifest as loadedManifest } from '../state'
 import { draft, isDirty, publishState, signInState, validation } from './state'
 
@@ -34,7 +34,7 @@ const statusStyle: import('preact').JSX.CSSProperties = {
 
 /**
  * Phase 8 publish flow — end-to-end-real except for the wallet popup's
- * signTx response, which is stubbed inside apps/wallet/ until the Pimlico
+ * signTx response, which is stubbed inside apps/account/ until the Pimlico
  * bundler + paymaster API key arrives (Week 1 open item). When that lands,
  * this flow does not change — the wallet returns a real userOpHash and
  * we wait on the bundler.
@@ -110,7 +110,7 @@ async function publish() {
     //   - Pimlico bundler + paymaster sponsorship
     // From our side it's one call returning a userOpHash.
     publishState.value = { status: 'signing' }
-    const sdk = new WalletSdk({ walletOrigin: d.wallet_origin })
+    const sdk = new AccountSDK({ walletOrigin: d.wallet_origin })
     const { userOpHash } = await sdk.signTx({
       chainId: 8453, // Base mainnet — TODO read from deployment.chain when added
       to: ENS_PUBLIC_RESOLVER_ADDRESS,

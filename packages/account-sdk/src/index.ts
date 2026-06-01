@@ -3,7 +3,7 @@
  *
  * Usage:
  *
- *   const wallet = new WalletSdk({ walletOrigin: resolvedDeployment.wallet_origin })
+ *   const wallet = new AccountSDK({ walletOrigin: resolvedDeployment.wallet_origin })
  *   const { address, ens } = await wallet.openSignIn()
  *   const { userOpHash } = await wallet.signTx({ chainId, to, data, value })
  *
@@ -14,7 +14,7 @@
  *
  * Phase 1 implementation: the wallet origin responds with stub data so the
  * end-to-end postMessage flow can be exercised. Real passkey + Safe +
- * paymaster integration lands in the apps/wallet package as Phase 2.6
+ * paymaster integration lands in the apps/account package as Phase 2.6
  * progresses.
  */
 
@@ -31,7 +31,7 @@ import { generateRequestId } from './protocol'
 
 export * from './protocol'
 
-export interface WalletSdkOptions {
+export interface AccountSDKOptions {
   /**
    * URL of the wallet origin (the popup target). Read from
    * `manifest.deployment.wallet_origin` in production. There is no default —
@@ -50,16 +50,16 @@ type PendingResolve = {
   reject: (reason: Error) => void
 }
 
-export class WalletSdk {
+export class AccountSDK {
   readonly walletOrigin: string
   private readonly walletOriginUrl: URL
   private readonly popupFeatures: string
   private pending: Map<string, PendingResolve> = new Map()
   private listenerAttached = false
 
-  constructor(opts: WalletSdkOptions) {
+  constructor(opts: AccountSDKOptions) {
     if (!opts.walletOrigin) {
-      throw new Error('WalletSdk: walletOrigin is required (read from manifest.deployment.wallet_origin)')
+      throw new Error('AccountSDK: walletOrigin is required (read from manifest.deployment.wallet_origin)')
     }
     this.walletOrigin = opts.walletOrigin
     this.walletOriginUrl = new URL(opts.walletOrigin)
@@ -69,7 +69,7 @@ export class WalletSdk {
   async openSignIn(opts: { preferredChainId?: ChainId } = {}): Promise<SignInResponse> {
     const requestId = generateRequestId()
     const popup = this.openPopup(`${this.walletOrigin}/sign-in?req=${requestId}`)
-    if (!popup) throw new Error('WalletSdk: popup blocked by browser')
+    if (!popup) throw new Error('AccountSDK: popup blocked by browser')
 
     const res = await this.requestResponse<SignInResponse>(requestId, popup, {
       kind: 'kon.signIn',
@@ -82,7 +82,7 @@ export class WalletSdk {
   async signTx(tx: Omit<SignTxRequest, 'kind' | 'requestId'>): Promise<SignTxResponse> {
     const requestId = generateRequestId()
     const popup = this.openPopup(`${this.walletOrigin}/sign-tx?req=${requestId}`)
-    if (!popup) throw new Error('WalletSdk: popup blocked by browser')
+    if (!popup) throw new Error('AccountSDK: popup blocked by browser')
 
     const res = await this.requestResponse<SignTxResponse>(requestId, popup, {
       kind: 'kon.signTx',
@@ -95,7 +95,7 @@ export class WalletSdk {
   async requestKeyDerivation(label: string): Promise<KeyDerivationResponse> {
     const requestId = generateRequestId()
     const popup = this.openPopup(`${this.walletOrigin}/derive-key?req=${requestId}`)
-    if (!popup) throw new Error('WalletSdk: popup blocked by browser')
+    if (!popup) throw new Error('AccountSDK: popup blocked by browser')
 
     const res = await this.requestResponse<KeyDerivationResponse>(requestId, popup, {
       kind: 'kon.deriveKey',

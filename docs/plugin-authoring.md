@@ -27,7 +27,7 @@ export default MyPlugin
 
 - `deployment` — resolved runtime config (IPFS gateways, GUN peers, wallet origin, ENS domain). Always honor this over hardcoding.
 - `appId` — the app's manifest `app.id`.
-- `wallet` — handle to the central wallet via `@konxyz/wallet-sdk`. Use `wallet.requestKeyDerivation(label)` to obtain a deterministic 32-byte key for SEA / E2EE / etc.
+- `wallet` — handle to the central wallet via `@konxyz/account-sdk`. Use `wallet.requestKeyDerivation(label)` to obtain a deterministic 32-byte key for SEA / E2EE / etc.
 
 ## Built-in path
 

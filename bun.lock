@@ -15,13 +15,31 @@
         "wrangler": "^4.20.5",
       },
     },
+    "apps/account": {
+      "name": "@konxyz/account",
+      "version": "0.0.0",
+      "dependencies": {
+        "@konxyz/account-sdk": "workspace:*",
+        "@konxyz/runtime-core": "workspace:*",
+        "@preact/signals": "^1.3.0",
+        "permissionless": "^0.3.6",
+        "preact": "^10.24.0",
+        "viem": "^2.51.3",
+      },
+      "devDependencies": {
+        "@preact/preset-vite": "^2.9.1",
+        "typescript": "^5.6.3",
+        "vite": "catalog:",
+        "vite-plus": "catalog:",
+      },
+    },
     "apps/dashboard": {
       "name": "@konxyz/dashboard",
       "version": "0.0.0",
       "dependencies": {
+        "@konxyz/account-sdk": "workspace:*",
         "@konxyz/runtime-core": "workspace:*",
         "@konxyz/schemas": "workspace:*",
-        "@konxyz/wallet-sdk": "workspace:*",
         "@preact/signals": "^1.3.0",
         "preact": "^10.24.0",
       },
@@ -77,6 +95,7 @@
       "name": "@konxyz/runtime",
       "version": "0.0.0",
       "dependencies": {
+        "@konxyz/account-sdk": "workspace:*",
         "@konxyz/plugin-badge": "workspace:*",
         "@konxyz/plugin-build-with": "workspace:*",
         "@konxyz/plugin-forum": "workspace:*",
@@ -86,7 +105,6 @@
         "@konxyz/plugin-profile-card": "workspace:*",
         "@konxyz/runtime-core": "workspace:*",
         "@konxyz/schemas": "workspace:*",
-        "@konxyz/wallet-sdk": "workspace:*",
         "@preact/signals": "^1.3.0",
         "preact": "^10.24.0",
         "viem": "^2.30.5",
@@ -115,22 +133,14 @@
         "vite-plus": "catalog:",
       },
     },
-    "apps/wallet": {
-      "name": "@konxyz/wallet",
+    "packages/account-sdk": {
+      "name": "@konxyz/account-sdk",
       "version": "0.0.0",
       "dependencies": {
         "@konxyz/runtime-core": "workspace:*",
-        "@konxyz/wallet-sdk": "workspace:*",
-        "@preact/signals": "^1.3.0",
-        "permissionless": "^0.3.6",
-        "preact": "^10.24.0",
-        "viem": "^2.51.3",
       },
       "devDependencies": {
-        "@preact/preset-vite": "^2.9.1",
         "typescript": "^5.6.3",
-        "vite": "catalog:",
-        "vite-plus": "catalog:",
       },
     },
     "packages/plugins/_shared": {
@@ -268,16 +278,6 @@
       "dependencies": {
         "@konxyz/runtime-core": "workspace:*",
         "zod": "^3.23.8",
-      },
-      "devDependencies": {
-        "typescript": "^5.6.3",
-      },
-    },
-    "packages/wallet-sdk": {
-      "name": "@konxyz/wallet-sdk",
-      "version": "0.0.0",
-      "dependencies": {
-        "@konxyz/runtime-core": "workspace:*",
       },
       "devDependencies": {
         "typescript": "^5.6.3",
@@ -692,6 +692,10 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.9", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.0.3", "@jridgewell/sourcemap-codec": "^1.4.10" } }, "sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ=="],
 
+    "@konxyz/account": ["@konxyz/account@workspace:apps/account"],
+
+    "@konxyz/account-sdk": ["@konxyz/account-sdk@workspace:packages/account-sdk"],
+
     "@konxyz/dashboard": ["@konxyz/dashboard@workspace:apps/dashboard"],
 
     "@konxyz/plugin-badge": ["@konxyz/plugin-badge@workspace:packages/plugins/badge"],
@@ -723,10 +727,6 @@
     "@konxyz/schemas": ["@konxyz/schemas@workspace:packages/schemas"],
 
     "@konxyz/site": ["@konxyz/site@workspace:apps/site"],
-
-    "@konxyz/wallet": ["@konxyz/wallet@workspace:apps/wallet"],
-
-    "@konxyz/wallet-sdk": ["@konxyz/wallet-sdk@workspace:packages/wallet-sdk"],
 
     "@leichtgewicht/ip-codec": ["@leichtgewicht/ip-codec@2.0.5", "", {}, "sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw=="],
 

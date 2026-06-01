@@ -1,5 +1,5 @@
 {
-  "name": "@konxyz/wallet-sdk",
+  "name": "@konxyz/account-sdk",
   "version": "0.0.0",
   "private": true,
   "description": "Thin postMessage SDK for KON apps to talk to the central wallet origin (default: id.kon.xyz, self-host: id.<your-domain>). Apps never touch passkey or Safe directly — they openSignIn() / signTx() and the wallet popup handles the rest.",

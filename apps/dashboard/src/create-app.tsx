@@ -1,7 +1,7 @@
 /** @jsxImportSource preact */
 import { signal } from '@preact/signals'
 import { encodeSetSubnodeOwner, ENS_REGISTRY_ADDRESS, validateSubname } from '@konxyz/runtime-core'
-import { WalletSdk } from '@konxyz/wallet-sdk'
+import { AccountSDK } from '@konxyz/account-sdk'
 import { deployment, recordNewApp, signInState } from './state'
 
 const wrapStyle: import('preact').JSX.CSSProperties = {
@@ -97,7 +97,7 @@ async function onSubmit(address: `0x${string}`, ensDomain: string, walletOrigin:
     // call. For self-host (where the organizer owns the parent node
     // outright), this single tx is sufficient.
     const calldata = encodeSetSubnodeOwner(ensDomain, label, address)
-    const sdk = new WalletSdk({ walletOrigin })
+    const sdk = new AccountSDK({ walletOrigin })
     const { userOpHash } = await sdk.signTx({
       chainId: 8453, // Base mainnet — ENS Registry lives at the same address on every L1/L2 that has ENS
       to: ENS_REGISTRY_ADDRESS,

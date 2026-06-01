@@ -7,8 +7,8 @@
  * `event.origin` blindly.
  *
  * This file is the single source of truth for the wire format. The app
- * imports request/response types via @konxyz/wallet-sdk; the wallet origin
- * imports them via @konxyz/wallet-sdk/protocol directly.
+ * imports request/response types via @konxyz/account-sdk; the wallet origin
+ * imports them via @konxyz/account-sdk/protocol directly.
  */
 
 export type ChainId = number

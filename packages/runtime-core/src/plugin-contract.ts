@@ -17,11 +17,11 @@ import type { ResolvedDeployment } from './defaults'
 /**
  * Wallet handle exposed to plugins via context. Plugins call this to
  * request derived keys (for SEA, E2EE, etc) or sign transactions without
- * having to construct their own WalletSdk instance — the runtime keeps a
+ * having to construct their own AccountSDK instance — the runtime keeps a
  * singleton so popups are deduplicated across plugins.
  *
- * Typed as opaque here so runtime-core stays free of the wallet-sdk dep;
- * the runtime instantiates the real WalletSdk and assigns it.
+ * Typed as opaque here so runtime-core stays free of the account-sdk dep;
+ * the runtime instantiates the real AccountSDK and assigns it.
  */
 export interface KonPluginWallet {
   readonly walletOrigin: string

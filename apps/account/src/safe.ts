@@ -33,7 +33,7 @@ const transportCache = new Map<string, ReturnType<typeof http>>()
 
 function transportFor(chainId: number) {
   const cfg = getChain(chainId)
-  if (!cfg) throw new Error(`safe: chain ${chainId} not configured (see apps/wallet/src/chains.ts)`)
+  if (!cfg) throw new Error(`safe: chain ${chainId} not configured (see apps/account/src/chains.ts)`)
   const cached = transportCache.get(cfg.rpcUrl)
   if (cached) return cached
   const transport = http(cfg.rpcUrl)

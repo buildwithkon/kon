@@ -30,7 +30,7 @@ export function isAllowedAppOrigin(eventOrigin: string): boolean {
   if (url.hostname.endsWith('.limo')) return true
   if (url.hostname.endsWith('.eth.link')) return true
 
-  // Local dev for ad-hoc testing across apps/runtime + apps/wallet.
+  // Local dev for ad-hoc testing across apps/runtime + apps/account.
   if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') return true
 
   return false

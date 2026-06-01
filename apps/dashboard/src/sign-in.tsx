@@ -1,5 +1,5 @@
 /** @jsxImportSource preact */
-import { WalletSdk } from '@konxyz/wallet-sdk'
+import { AccountSDK } from '@konxyz/account-sdk'
 import { deployment, loadOwnedApps, signInState } from './state'
 
 const cardStyle: import('preact').JSX.CSSProperties = {
@@ -52,7 +52,7 @@ const footnoteStyle: import('preact').JSX.CSSProperties = {
 async function signIn() {
   signInState.value = { status: 'signing' }
   try {
-    const sdk = new WalletSdk({ walletOrigin: deployment.value.wallet_origin })
+    const sdk = new AccountSDK({ walletOrigin: deployment.value.wallet_origin })
     const result = await sdk.openSignIn()
     signInState.value = { status: 'signed', address: result.address, ens: result.ens }
     loadOwnedApps(result.address)
