@@ -39,6 +39,7 @@
     "prepare": "vp config"
   },
   "devDependencies": {
+    "@socketsecurity/bun-security-scanner": "1.1.2",
     "@web3-storage/upload-client": "^17.1.4",
     "@web3-storage/w3up-client": "^17.3.0",
     "blockstore-fs": "^4.0.1",
