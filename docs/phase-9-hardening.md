@@ -1,5 +1,25 @@
 # Phase 9 — Production Hardening
 
+> **Reprioritized 2026-06-02 (CEO review + office-hours).** KON has no validated
+> demand from any community outside a founder-run event, so most of Phase 9 is
+> premature: it hardens for a Stage-2 scale there's no evidence of yet. Until an
+> outside community pulls on KON, only two items ship before ETHTokyo, and both
+> are because they protect the discovery event itself, not future scale:
+>
+> - **#3 (slimmed) — paymaster sybil/credit cap.** Lower CDP global + per-user
+>   caps, move alerts to 25%/50%, add a claim-time speed-bump. Stops sybil
+>   passkeys draining the sponsored-gas budget mid-event.
+> - **`/api/pin` per-request body-size cap** (a gap not in the original list).
+>   Few lines; stops one oversized POST OOMing the relay at the venue.
+> - Plus a free UI guard: disable Publish on submit (no double-spend).
+>
+> Everything else here — including #1 signed `/api/pin` auth, which an earlier
+> review pulled toward the launch — is **deferred to Stage 2 / post-demand** and
+> tracked in `docs/TODOS.md` (items 6-9). The deferral reasoning and the demand
+> plan live in
+> `~/.gstack/projects/buildwithkon-kon/yujiym-v2-design-20260602-163305.md`.
+> The full roadmap below stands as the Stage-2 plan; read it through that lens.
+
 Phase 8 (commit `64393e8` and predecessors) closed the last critical-path stub in the publish pipeline: organizers can sign + publish from the dashboard with real on-chain effects via Pimlico bundler + Coinbase paymaster. Phase 9 is the security + operations work that turns "demo-quality" into "production-quality."
 
 **When to do this work.** Stage 1 (ETHTokyo, ~50 attendees, KON-managed deploy, single Tokyo VPS) probably ships without most of Phase 9 — the per-IP rate limiter on `/api/pin` and the Pimlico + Coinbase dashboard restrictions absorb the realistic abuse vectors for an event-scale launch. Phase 9 lands incrementally between Stage 1 and Stage 2, when the deployment widens to organizers KON doesn't personally know.

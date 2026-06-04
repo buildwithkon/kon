@@ -174,6 +174,127 @@ there's a community to gather.
 
 ---
 
+## P2/P3 — Phase 9 production hardening (deferred until demand)
+
+Deferred by the 2026-06-02 CEO review of `docs/phase-9-hardening.md`, then
+reprioritized by the same day's `/office-hours` session. The office-hours
+finding: KON has no validated demand from any community outside a founder-run
+event, so Stage-2 scale hardening is premature. Only two Phase 9 items ship
+before ETHTokyo (paymaster sybil cap + `/api/pin` body-size cap); they live in
+the active plan, not here. Everything below waits until an outside community
+pulls on KON. See design doc:
+`~/.gstack/projects/buildwithkon-kon/yujiym-v2-design-20260602-163305.md`.
+
+### 6. Signed `/api/pin` auth (full design)
+
+**What:** Phase 9 #1 — passkey-derived SEA signature on every `/api/pin` POST
+(`sig` over `sha256(timestamp‖pubkey‖sha256(body))`, 5-min replay window,
+per-pubkey quota). Server verify in `apps/relay-ipfs`, client sign in the
+dashboard's `uploadManifestToIpfs()`, shared `runtime-core/auth.ts`
+`signPinRequest()` helper.
+
+**Why:** At Stage 2 the deployment widens to organizers KON doesn't know, and an
+unauthenticated pin endpoint behind only a per-IP limit lets anyone write
+garbage to the operator's blockstore. Per-pubkey auth is also the foundation
+per-app rate limiting and UCAN cross-origin identity build on.
+
+**Pros:** Closes the disk-abuse vector at scale. Reuses the SEA key the dashboard
+already derives. Load-bearing for later identity work.
+
+**Cons:** Launch-critical-path risk if enforced day one (a verify bug breaks
+publish). Unsigned variant is spoofable (free keypair per request), so it must
+be the signed design, not a pubkey header.
+
+**Context:** CEO review chose 2A (signed) + 4B (enforce day one), then the
+office-hours reframe superseded it: the event is a 50-person managed discovery
+run where the realistic threats are paymaster griefing and OOM, not weeks-long
+disk abuse. Deferred to Stage 2 where it was originally scoped. If any pin
+gating ships earlier, keep a `KON_PIN_REQUIRE_AUTH` env flag so a bug is
+flippable without a redeploy.
+
+**Effort:** Human M (~1 day) / CC ~2-3 hours
+**Priority:** P2
+**Depends on:** Evidence that an outside community is pinning at volume.
+
+---
+
+### 7. Bundler/paymaster failover with UserOp idempotency
+
+**What:** Phase 9 #4 — fallback array in `apps/account/src/chains.ts`
+(`bundlerUrls`, `paymasterUrls`); `submit-user-op.ts` retries the second on
+network error / 5xx. Critical correctness detail the plan omits: the retry must
+resubmit the **identical signed UserOp** (same nonce) and treat `AA25 nonce
+already used` / "already known" from the second bundler as **success**. Never
+re-sign with a fresh nonce on retry, or a timed-out-but-landed op double-executes
+and double-charges the paymaster.
+
+**Why:** A Pimlico maintenance window mid-event would break publish with no
+fallback path today.
+
+**Pros:** Removes a single-bundler dependency. ~30 lines once idempotency is
+handled correctly.
+
+**Cons:** Naive implementation (re-sign on retry) silently double-spends. Needs a
+test for the double-submit path specifically.
+
+**Context:** Issue 5 of the 2026-06-02 CEO review. Deferred — single-bundler is
+fine for a managed event you're watching live.
+
+**Effort:** Human S (~half day) / CC ~1 hour
+**Priority:** P2
+**Depends on:** Phase 9 #4 being picked up at Stage 2.
+
+---
+
+### 8. Persistent peer-store corruption guard
+
+**What:** Phase 9 #6 — `@libp2p/persistent-peer-store` to skip the ~30s DHT
+warm-up on relay restart. Required guard the plan omits: wrap the restore in
+try/catch; on any failure delete the store and fall back to bootstrap. A corrupt
+store that throws during libp2p init crashes the relay on boot, which is strictly
+worse than the warm-up it eliminates. Needs a corruption-recovery test, not just
+the happy path.
+
+**Why:** Restart-for-upgrade every few weeks causes 504s during warm-up at
+Stage 2; the optimization is only safe with the guard.
+
+**Pros:** ~10 lines for the feature, a few for the guard. Clear ops win.
+
+**Cons:** Net-negative if shipped without the corruption guard.
+
+**Context:** Issue 6 of the 2026-06-02 CEO review. Deferred — item #6 isn't built
+for Stage 1.
+
+**Effort:** Human S (~1-2 hours) / CC ~30 min
+**Priority:** P3
+**Depends on:** Phase 9 #6 being picked up.
+
+---
+
+### 9. Programmatic budget alerter with dead-man's-switch
+
+**What:** Phase 9 #3 — hourly GHA cron polling Pimlico + CDP usage APIs,
+webhooking on overspend. Add a dead-man's-switch (alert if no heartbeat from the
+alerter in N hours) so a silently-dead cron doesn't create false confidence.
+
+**Why:** A buggy organizer app in a retry loop could burn the daily cap in an
+hour; native alerts are reactive at threshold, this is ahead-of-time.
+
+**Pros:** Predictive spend visibility. Cheap GHA workflow.
+
+**Cons:** A watcher with no watcher is a silent-failure trap — the dead-man's
+switch is mandatory, not optional.
+
+**Context:** Issue 7 of the 2026-06-02 CEO review. Deferred — the native
+CDP/Pimlico email alerts (tightened to 25%/50% as part of the launch-critical
+paymaster cap) are the backstop. The GHA alerter is supplementary, not primary.
+
+**Effort:** Human S (~half day) / CC ~1 hour
+**Priority:** P3
+**Depends on:** Native alerts proving insufficient.
+
+---
+
 ## Notes
 
 - **Anchor #2 search is NOT in this file** because it's IN scope for the
