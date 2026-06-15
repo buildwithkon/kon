@@ -29,4 +29,13 @@ describe('KonManifestV1Schema theme + icon', () => {
       KonManifestV1Schema.parse({ ...base, pages: [{ id: 'home', title: 'Home', icon: 'rocket' }] })
     ).toThrow()
   })
+
+  test('rejects an unknown theme font', () => {
+    expect(() =>
+      KonManifestV1Schema.parse({
+        ...base,
+        app: { ...base.app, theme: { main: '#fff', accent: '#000', font: 'comic-sans' } }
+      })
+    ).toThrow()
+  })
 })

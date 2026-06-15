@@ -46,3 +46,5 @@ export const KonManifestV1Schema = z.object({
 export type KonManifestV1Schema = z.infer<typeof KonManifestV1Schema>
 export type KonDeploymentV1Schema = z.infer<typeof KonDeploymentV1Schema>
 export type KonPageV1Schema = z.infer<typeof KonPageV1Schema>
+export type KonThemeV1Schema = z.infer<typeof KonThemeV1Schema>
+export type KonIconNameSchema = z.infer<typeof KonIconNameSchema>
