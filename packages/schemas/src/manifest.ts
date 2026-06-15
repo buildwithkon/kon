@@ -1,6 +1,14 @@
 import { z } from 'zod'
 import { KonPluginV1Schema, didSchema, ipfsUriSchema } from './plugin'
 
+export const KonThemeV1Schema = z.object({
+  main: z.string().min(1),
+  accent: z.string().min(1),
+  font: z.enum(['sans', 'serif', 'mono']).optional()
+})
+
+export const KonIconNameSchema = z.enum(['home', 'calendar', 'chat', 'info', 'list'])
+
 export const KonDeploymentV1Schema = z.object({
   wallet_origin: z.string().url().optional(),
   gun_peers: z.array(z.string().url()).optional(),
@@ -11,6 +19,7 @@ export const KonDeploymentV1Schema = z.object({
 export const KonPageV1Schema = z.object({
   id: z.string().min(1),
   title: z.string(),
+  icon: KonIconNameSchema.optional(),
   source: ipfsUriSchema.optional(),
   plugins: z.array(KonPluginV1Schema).optional()
 })
@@ -22,7 +31,8 @@ export const KonManifestV1Schema = z.object({
     name: z.string().min(1),
     version: z.number().int().nonnegative(),
     description: z.string().optional(),
-    icon: ipfsUriSchema.optional()
+    icon: ipfsUriSchema.optional(),
+    theme: KonThemeV1Schema.optional()
   }),
   deployment: KonDeploymentV1Schema.optional(),
   pages: z.array(KonPageV1Schema),
