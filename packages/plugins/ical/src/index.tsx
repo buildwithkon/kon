@@ -1,6 +1,7 @@
 /** @jsxImportSource preact */
 import { useMemo, useState } from 'preact/hooks'
 import type { KonPluginComponent } from '@konxyz/runtime-core'
+import { TAG_COLORS, parseEventTag } from './tags'
 
 export interface IcalEvent {
   /** Stable id for save/unsave + React key. */
@@ -21,6 +22,8 @@ export interface IcalPluginProps {
   toolsThreshold?: number
   /** Storage key for saved-event ids. Default 'kon.ical.savedIds'. */
   saveStorageKey?: string
+  /** IANA timezone for formatting + grouping (e.g. 'Asia/Tokyo'). Default: viewer locale. */
+  tz?: string
 }
 
 const containerStyle: import('preact').JSX.CSSProperties = {
@@ -123,24 +126,35 @@ function stripHtml(input?: string): string {
   return tmp.textContent ?? tmp.innerText ?? ''
 }
 
-function fmtTime(start: string, end: string | undefined, allDay: boolean | undefined): string {
+function fmtTime(start: string, end: string | undefined, allDay: boolean | undefined, tz?: string): string {
   if (allDay) return 'All day'
+  const opts: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: false, timeZone: tz }
   const startDate = new Date(start)
   if (Number.isNaN(startDate.getTime())) return ''
-  const startStr = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+  const startStr = startDate.toLocaleTimeString('en-GB', opts)
   if (!end) return startStr
   const endDate = new Date(end)
   if (Number.isNaN(endDate.getTime())) return startStr
-  const endStr = endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-  return `${startStr} – ${endStr}`
+  return `${startStr} – ${endDate.toLocaleTimeString('en-GB', opts)}`
 }
 
-function fmtDateHeader(d: Date): string {
-  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+function fmtDateHeader(d: Date, tz?: string): string {
+  return d.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: tz
+  })
 }
 
-function dateKey(d: Date): string {
-  return d.toISOString().slice(0, 10)
+function fmtDayPill(d: Date, tz?: string): string {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: tz })
+}
+
+function dateKey(d: Date, tz?: string): string {
+  // en-CA yields YYYY-MM-DD; with timeZone it is the tz-local calendar day.
+  return d.toLocaleDateString('en-CA', { timeZone: tz })
 }
 
 function readSaved(key: string): string[] {
@@ -163,10 +177,12 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
   const events = Array.isArray(props?.events) ? props.events : []
   const toolsThreshold = props?.toolsThreshold ?? 5
   const saveKey = props?.saveStorageKey ?? 'kon.ical.savedIds'
+  const tz = props?.tz
 
   const [search, setSearch] = useState('')
   const [showSavedOnly, setShowSavedOnly] = useState(false)
   const [savedIds, setSavedIds] = useState<string[]>(() => readSaved(saveKey))
+  const [selectedDay, setSelectedDay] = useState<string | null>(null)
 
   const showTools = events.length >= toolsThreshold
 
@@ -193,16 +209,22 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
     for (const e of sorted) {
       const start = new Date(e.start)
       if (Number.isNaN(start.getTime())) continue
-      const k = dateKey(start)
+      const k = dateKey(start, tz)
       let group = groups.at(-1)
       if (!group || group.key !== k) {
-        group = { key: k, label: fmtDateHeader(start), events: [] }
+        group = { key: k, label: fmtDateHeader(start, tz), events: [] }
         groups.push(group)
       }
       group.events.push(e)
     }
     return groups
-  }, [filtered])
+  }, [filtered, tz])
+
+  const dayPills = useMemo(
+    () => grouped.map((g) => ({ key: g.key, label: fmtDayPill(new Date(g.events[0].start), tz) })),
+    [grouped, tz]
+  )
+  const visibleGroups = selectedDay ? grouped.filter((g) => g.key === selectedDay) : grouped
 
   function toggleSave(id: string) {
     setSavedIds((prev) => {
@@ -214,6 +236,27 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
 
   return (
     <div style={containerStyle}>
+      {dayPills.length > 1 && (
+        <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', padding: '0.25rem 0' }}>
+          <button
+            type="button"
+            style={toggleStyle(selectedDay === null)}
+            onClick={() => setSelectedDay(null)}
+          >
+            All
+          </button>
+          {dayPills.map((p) => (
+            <button
+              key={p.key}
+              type="button"
+              style={toggleStyle(selectedDay === p.key)}
+              onClick={() => setSelectedDay(p.key)}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
       {showTools && (
         <div style={toolbarStyle}>
           <input
@@ -238,18 +281,37 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
           {showSavedOnly ? 'No saved events yet' : 'No events found'}
         </div>
       ) : (
-        grouped.map((g) => (
+        visibleGroups.map((g) => (
           <section key={g.key}>
             <div style={dateHeaderStyle}>{g.label}</div>
             {g.events.map((e) => {
               const saved = savedIds.includes(e.id)
+              const parsed = parseEventTag(e.title)
               return (
                 <article key={e.id} style={cardStyle}>
-                  <div style={titleStyle}>{e.title}</div>
+                  <div style={titleStyle}>
+                    {parsed.tag && (
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          marginRight: '0.4rem',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '6px',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          color: '#fff',
+                          background: TAG_COLORS[parsed.tag] ?? '#888'
+                        }}
+                      >
+                        {parsed.tag}
+                      </span>
+                    )}
+                    {parsed.title}
+                  </div>
                   {e.description && <div style={descStyle}>{stripHtml(e.description)}</div>}
                   <div style={metaStyle}>
                     {e.location && <span>📍 {e.location}</span>}
-                    <span>🕒 {fmtTime(e.start, e.end, e.allDay)}</span>
+                    <span>🕒 {fmtTime(e.start, e.end, e.allDay, tz)}</span>
                   </div>
                   {showTools && (
                     <button
