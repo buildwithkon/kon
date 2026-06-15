@@ -33,4 +33,11 @@ describe('Ical tags + tz', () => {
     expect(out).toContain('Sep 12')
     expect(out).toContain('Sep 13')
   })
+
+  test('an invalid tz falls back gracefully instead of throwing', () => {
+    // 'Invalid/Zone' makes Intl throw RangeError; safeTz must swallow it.
+    const out = html({ events, tz: 'Invalid/Zone' })
+    expect(out).toContain('Opening Talk')
+    expect(out).toContain('Entry')
+  })
 })

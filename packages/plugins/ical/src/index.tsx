@@ -173,11 +173,23 @@ function writeSaved(key: string, ids: string[]): void {
   localStorage.setItem(key, JSON.stringify(ids))
 }
 
+/** Return tz only if it is a valid IANA zone Intl accepts, else undefined. A bad
+ * zone (e.g. a legacy alias) would otherwise throw RangeError and blank the page. */
+function safeTz(tz: string | undefined): string | undefined {
+  if (!tz) return undefined
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: tz })
+    return tz
+  } catch {
+    return undefined
+  }
+}
+
 const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
   const events = Array.isArray(props?.events) ? props.events : []
   const toolsThreshold = props?.toolsThreshold ?? 5
   const saveKey = props?.saveStorageKey ?? 'kon.ical.savedIds'
-  const tz = props?.tz
+  const tz = safeTz(props?.tz)
 
   const [search, setSearch] = useState('')
   const [showSavedOnly, setShowSavedOnly] = useState(false)
@@ -276,7 +288,7 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
           </button>
         </div>
       )}
-      {grouped.length === 0 ? (
+      {visibleGroups.length === 0 ? (
         <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>
           {showSavedOnly ? 'No saved events yet' : 'No events found'}
         </div>

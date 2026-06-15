@@ -163,16 +163,21 @@ export function App() {
   const pages = m.pages
   const currentId = activePageId.value ?? pages[0]?.id
   const currentPage = pages.find((p) => p.id === currentId) ?? pages[0]
+  // Single-page apps get no nav (and so no nav-offset padding).
+  const showNav = pages.length > 1
 
   return (
-    <div style={Object.assign(themeVars(m.app.theme), { minHeight: '100vh' })} class="kon-shell">
+    <div
+      style={Object.assign(themeVars(m.app.theme), { minHeight: '100vh' })}
+      class={showNav ? 'kon-shell kon-has-nav' : 'kon-shell'}
+    >
       <style>{`
-        .kon-shell { padding-bottom: 4.5rem; }
         .kon-shell-main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
         .kon-header { background: var(--kon-main); color: #fff; padding: 1.25rem 1rem; }
         .kon-header h1 { font-size: 1.4rem; margin: 0; }
+        .kon-has-nav { padding-bottom: 4.5rem; }
         @media (min-width: 768px) {
-          .kon-shell { padding-bottom: 0; padding-left: 200px; }
+          .kon-has-nav { padding-bottom: 0; padding-left: 200px; }
         }
       `}</style>
 
@@ -190,13 +195,15 @@ export function App() {
 
       <main class="kon-shell-main">{currentPage && <PageView page={currentPage} />}</main>
 
-      <TabBar
-        pages={pages}
-        activeId={currentPage?.id ?? ''}
-        onSelect={(id) => {
-          activePageId.value = id
-        }}
-      />
+      {showNav && (
+        <TabBar
+          pages={pages}
+          activeId={currentPage?.id ?? ''}
+          onSelect={(id) => {
+            activePageId.value = id
+          }}
+        />
+      )}
 
       {import.meta.env.DEV && (
         <details style={{ margin: '2rem 1rem', color: '#888', fontSize: '0.85rem' }}>
