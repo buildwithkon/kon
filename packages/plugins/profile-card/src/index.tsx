@@ -12,6 +12,14 @@ export interface ProfileCardPluginProps {
   isSticky?: boolean
   /** Accent color override (CSS color). */
   accent?: string
+  /** Solid background (e.g. the app theme main color). */
+  bg?: string
+  /** Brand mark rendered top-right. */
+  logoUrl?: string
+  /** Static identity row. Live wallet/ENS threading is deferred. */
+  identity?: { label: string; avatarUrl?: string }
+  /** Render a QR affordance button in the identity row. */
+  showQr?: boolean
 }
 
 const containerStyle = (sticky: boolean): import('preact').JSX.CSSProperties => ({
@@ -62,21 +70,62 @@ const iconWrap: import('preact').JSX.CSSProperties = {
   background: '#fff2'
 }
 
+const identityRow: import('preact').JSX.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  marginTop: '0.75rem'
+}
+
+const avatarStyle: import('preact').JSX.CSSProperties = {
+  width: '2rem',
+  height: '2rem',
+  borderRadius: '999px',
+  objectFit: 'cover',
+  background: '#fff3'
+}
+
+const qrButtonStyle: import('preact').JSX.CSSProperties = {
+  marginLeft: 'auto',
+  width: '2rem',
+  height: '2rem',
+  borderRadius: '6px',
+  border: '1px solid #fff5',
+  background: 'transparent',
+  color: 'inherit',
+  cursor: 'pointer',
+  fontSize: '0.7rem'
+}
+
 const ProfileCard: KonPluginComponent<ProfileCardPluginProps> = ({ props, context }) => {
   const title = props?.title ?? context.appId
   const subtitle = props?.subtitle
-  const iconUrl = props?.iconUrl
+  const logoUrl = props?.logoUrl ?? props?.iconUrl
   const accent = props?.accent ?? '#1a73e8'
   const sticky = props?.isSticky === true
+  const identity = props?.identity
+
+  const card = props?.bg ? Object.assign({}, cardStyle(accent), { background: props.bg }) : cardStyle(accent)
 
   return (
     <div style={containerStyle(sticky)}>
-      <div style={cardStyle(accent)}>
+      <div style={card}>
         <div style={titleStyle}>{title}</div>
         {subtitle && <div style={subStyle}>{subtitle}</div>}
-        {iconUrl && (
+        {logoUrl && (
           <div style={iconWrap}>
-            <img src={iconUrl} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={logoUrl} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+        )}
+        {identity && (
+          <div style={identityRow}>
+            {identity.avatarUrl && <img src={identity.avatarUrl} alt={identity.label} style={avatarStyle} />}
+            <span style={{ fontWeight: 600 }}>{identity.label}</span>
+            {props?.showQr && (
+              <button type="button" style={qrButtonStyle} aria-label="Show QR code" title="Show QR code">
+                QR
+              </button>
+            )}
           </div>
         )}
       </div>
