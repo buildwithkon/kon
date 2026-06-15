@@ -96,9 +96,22 @@ export interface KonPluginV1 {
   props?: Record<string, unknown>
 }
 
+export type KonIconName = 'home' | 'calendar' | 'chat' | 'info' | 'list'
+
+export interface KonThemeV1 {
+  /** CSS color — header / sidebar background. */
+  main: string
+  /** CSS color — active nav item / highlights. */
+  accent: string
+  /** Font family preset. Defaults to 'sans'. */
+  font?: 'sans' | 'serif' | 'mono'
+}
+
 export interface KonPageV1 {
   id: string
   title: string
+  /** Bottom-tab / sidebar icon. */
+  icon?: KonIconName
   /** Optional content source (markdown / JSON) loaded by the runtime. */
   source?: IpfsUri
   /** Plugins specific to this page. Global plugins live on the manifest. */
@@ -113,6 +126,7 @@ export interface KonManifestV1 {
     version: number
     description?: string
     icon?: IpfsUri
+    theme?: KonThemeV1
   }
   /** Optional deployment overrides. Absent = use KON-managed defaults. */
   deployment?: KonDeploymentV1
