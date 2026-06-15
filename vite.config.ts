@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite-plus'
+import preact from '@preact/preset-vite'
 
 export default defineConfig({
+  plugins: [preact()],
   test: {
     // Limit test discovery to first-party source. Without this scope, vp picks
     // up *.test.ts files under node_modules/.bun/ and tries to run thousands

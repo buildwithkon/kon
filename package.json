@@ -39,10 +39,12 @@
     "prepare": "vp config"
   },
   "devDependencies": {
+    "@preact/preset-vite": "2.10.5",
     "@socketsecurity/bun-security-scanner": "1.1.2",
     "@web3-storage/upload-client": "^17.1.4",
     "@web3-storage/w3up-client": "^17.3.0",
     "blockstore-fs": "^4.0.1",
+    "happy-dom": "20.10.2",
     "ipfs-unixfs-importer": "^17.0.1",
     "viem": "^2.51.3",
     "vite-plus": "catalog:",
