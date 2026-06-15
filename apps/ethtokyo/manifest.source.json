@@ -2,9 +2,14 @@
   "schema": "kon-manifest-v1",
   "app": {
     "id": "ethtokyo.kon.xyz",
-    "name": "ETHTokyo 2026",
+    "name": "ETHTokyo'25",
     "version": 1,
-    "description": "ETHTokyo 2026 conference app — schedule, sponsors, chat. Built on KON v2."
+    "description": "ETHTokyo'25 — Emancipatory Tech for the Future of Humanity. Built on KON v2.",
+    "theme": {
+      "main": "#562266",
+      "accent": "#FF5545",
+      "font": "sans"
+    }
   },
   "deployment": {
     "gun_peers": ["https://relay.kon.xyz/gun", "https://relay.peer.ooo/gun"]
@@ -13,15 +18,21 @@
     {
       "id": "home",
       "title": "Home",
+      "icon": "home",
       "plugins": [
         {
           "id": "profile-card",
           "version": "1.0.0",
           "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
           "props": {
-            "title": "ETHTokyo 2026",
-            "subtitle": "September 2026 · Tokyo",
-            "accent": "#1a73e8"
+            "title": "ETHTokyo'25",
+            "subtitle": "Emancipatory Tech for Future of Humanity",
+            "bg": "#562266",
+            "logoUrl": "https://i.imgur.com/3G9N6sa.png",
+            "identity": {
+              "label": "caffein.base.eth"
+            },
+            "showQr": true
           }
         },
         {
@@ -29,36 +40,147 @@
           "version": "1.0.0",
           "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
           "props": {
-            "content": "## Welcome to ETHTokyo 2026\n\nAnnouncements, schedule, and chat in one place. Built on KON v2 (Preact + IPFS + ENS + GUN.js)."
+            "content": "# Welcome to ETHTokyo!\nETHTokyo'25 is a 4-day Ethereum conference and hackathon, dedicated to advance the development and adoption of Ethereum. If you are a developer, researcher, creative, professional, student, or anyone driven by a shared sense of cypherpunk ethos and optimism for the future, this event is for you.\n\n**2025 Theme: Emancipatory Tech for Future of Humanity**\n\nEmancipation begins in the mind; let us radically reimagine how we can harness technology to empower people, preserve culture, and build a sustainable future in ways not possible today. The goal is to innovate not for its own sake, but to envision new ways and better approaches to do things through reshaping and redefining the constraints of our own constructed reality.\n\n## 📢 Conference\n📅 September 12 (Fri.) 10:00-17:30 \\\n📍 [United Nations University / 5-53-70 Jingumae, Shibuya, Tokyo](https://maps.app.goo.gl/9z41vXGKVTzhFFLFA)\n🎤 [Session schedule](https://speak.ethtokyo.org/conference-2025/schedule/)\n\n## 👩🏻‍💻 Hackathon\n📅 September 13-15 (Sat. - Mon.) 10:00-17:30 \\\n📍 [Dragon Gate \"Pangaea\" / 15−1 Shibuya PARCO Bldg. 10th floor, Udagawacho, Shibuya, Tokyo](https://maps.app.goo.gl/Fboz99qPWxYERKo99)\n⚔️ [Hacaker registration](https://taikai.network/ethtokyo/hackathons/hackathon-2025)\n\n## 🤝 Sponsors\n#### Platinum Sponsors\n<div class=\"img-list\">\n<a href=\"https://japansmartchain.com/\">\n<img src=\"https://ethtokyo.org/2025/images/orglogos/platinumSponsors/JSC-Logo.svg\" alt=\"Japan Smart Chain\">\n</div>\n\n#### Gold Sponsors\n<div class=\"img-list\">\n<a href=\"https://ens.domains/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/goldSponsors/ens-logo-Blue.svg\" alt=\"ens\">\n</a>\n<a href=\"https://geodework.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/goldSponsors/Geodework-logo-black.png\" alt=\"Geodework\">\n</a>\n<a href=\"https://elizaos.ai/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/goldSponsors/ElizaOS_Logo_Black_RGB.png\" alt=\"Eliza OS\">\n</a>\n</div>\n\n#### Silver Sponsors\n<div class=\"img-list\">\n    <a href=\"https://www.mynawallet.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/Myna-logo.png\" alt=\"Myna Wallet\">\n</a>\n<a href=\"https://www.base.org/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/Base_lockup_2color.svg\" alt=\"Base\">\n</a>\n<a href=\"https://hashhub.tokyo/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/hashhub_logo_black.png\" alt=\"HashHub\">\n</a>\n<a href=\"https://quantum3labs.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/logo-q3-logomark.svg\" alt=\"Quantum3labs\">\n</a>\n<a href=\"https://chainforgood.org/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/Blockchain_For_Good_Alliance_Logo_Primary.png\" alt=\"Blockchain For Good Alliance\">\n</a>\n<a href=\"https://asksurf.ai/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/asksurf-logo.svg\" alt=\"Surf\">\n</a>\n<a href=\"https://molecule.xyz/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/moleculexyz.svg\" alt=\"Molecule.xyz\">\n</a>\n<a href=\"https://bio.xyz/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/bioxyz.svg\" alt=\"Bio Protocol\">\n</a>\n<a href=\"https://kushim.co.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/Kushim-logo.webp\" alt=\"Kushim\">\n</a>\n<a href=\"https://www.marketenterprise.co.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/silverSponsors/MarketEnterprise-logo.svg\" alt=\"Market Enterprise\">\n</a>\n</div>\n\n#### Community Sponsors\n<div class=\"img-list\">\n<a href=\"https://ethjkt.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/tulisan.png\" alt=\"ETHJKT\">\n</a>\n<a href=\"https://basejapan.notion.site/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/basejapan_blue_transparent.png\" alt=\"Base Japan\">\n</a>\n<a href=\"https://unchain.tech\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/UNCHAIN_logo.png\" alt=\"UNCHAIN\">\n</a>\n<a href=\"http://www.curvegrid.com\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/curvegrid-logo-horizontal-transparent.svg\" alt=\"Curvegrid Inc.\">\n</a>\n<a href=\"https://bgin-global.org/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/BGIN_logo.png\" alt=\"BGIN\">\n</a>\n<a href=\"https://www.galverse.art/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/large.png\" alt=\"Shinsei Galverse\">\n</a>\n<a href=\"https://thegraph.com/ja/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/TheGraph-Logo-Dark.png\" alt=\"TheGraph\">\n</a>\n<a href=\"https://akindo.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/akindo.svg\" alt=\"AKINDO\">\n</a>\n<a href=\"https://mindpalace.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/mindpalace.svg\" alt=\"mind palace\">\n</a>\n<a href=\"https://bytestreame.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/byteStreame.png\" alt=\"byteStreame\">\n</a>\n<a href=\"https://blockdev.id/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/BlockDev.id_logo.png\" alt=\"BlockDev.id\">\n</a>\n<a href=\"https://www.orbs.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/ORBS-JAPAN-horizontal-gradiant-logo.svg\" alt=\"Orbs Japan\">\n</a>\n<a href=\"https://oceanprotocol.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/oceanprotocol.svg\" alt=\"Ocean Protocol\">\n</a>\n<a href=\"https://x.com/vvinyll\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/PudgyPenguins.png\" alt=\"vinyl\">\n</a>\n<a href=\"https://hakflow.com\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/hakflow.jpg\" alt=\"HAKFLOW\">\n</a>\n<a href=\"https://fareastblockchain.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/fareastblockchain.png\" alt=\"Far East Blockchain\">\n</a>\n<a href=\"https://www.web3researchjapan.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/web3researchjapan.png\" alt=\"web3 Research JAPAN\">\n</a>\n<a href=\"https://x.com/taka4198aq\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/communitySponsors/TAAKE_logo.jpeg\" alt=\"TAAKE\">\n</a>\n</div>\n\n#### Event Partners\n<div class=\"img-list\">\n<a href=\"https://www.garage.co.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/Digital_Garage03_Basic_Logo_Blk_Yoko.png\" alt=\"Digital Garage\">\n</a>\n<a href=\"https://bitbank.cc/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/bitbank_logo_color.png\" alt=\"Bitbank\">\n</a>\n<a href=\"https://github.com/hackdays-io/toban/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/toban-logo-text.svg\" alt=\"Toban\">\n</a>\n<a href=\"https://kon.xyz/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/kon.png\" alt=\"KON\">\n</a>\n<a href=\"https://www.redbull.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/redbullcom-logo_double-with-text.svg\" alt=\"Red Bull\">\n</a>\n<a href=\"https://trezor.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/trezor-main-logo-black-rgb.svg\" alt=\"Trezor\">\n</a>\n<a href=\"https://kismetcasa.xyz/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/kismet_logo.png\" alt=\"Kismet Casa\">\n</a>\n<a href=\"https://taikai.network/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/taikai.svg\" alt=\"TAIKAI\">\n</a>\n<a href=\"https://dsrv.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/dsrv-logo-light-512w.webp\" alt=\"DSRV\">\n</a>\n<a href=\"https://rimo.app/about/voice\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/Rimo_Logo.png\" alt=\"Rimo\">\n</a>\n<a href=\"https://www.moongate.id/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/Moongate-Logo-Primary-B.png\" alt=\"Moongate\">\n</a>\n<a href=\"https://www.megaphone.xyz/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/Megaphone-logo-light.png\" alt=\"Megaphone\">\n</a>\n<a href=\"https://x.com/zk_tokyo\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/eventPartners/zktokyo.png\" alt=\"ZK Tokyo\">\n</a>\n\n</div>\n    \n#### Media Partners\n<div class=\"img-list\">\n<a href=\"https://www.neweconomy.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/neweconomy_bk.png\" alt=\"neweconomy\">\n</a>\n<a href=\"https://www.coindesk.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/coindesk_jp.png\" alt=\"CoinDesk\">\n</a>\n<a href=\"https://coinpost.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/coinpost_logo.png\" alt=\"CoinPost\">\n</a>\n<a href=\"https://www.coinrank.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/coinrank.svg\" alt=\"CoinRank\">\n</a>\n<a href=\"https://www.cryptotimes.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/cryptotimes.png\" alt=\"Crypto Times\">\n</a>\n<a href=\"https://www.bitcoin.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/bitcoin.com.png\" alt=\"Bitcoin.com\">\n</a>\n<a href=\"https://museigen.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/PNG-wht-v2-transparent-01.png\" alt=\"Museigen.io\">\n</a>\n<a href=\"https://allsparkresearch.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/BlackAllSpark00.png\" alt=\"AllSpark Research\">\n</a>\n<a href=\"https://www.coingabbar.com/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/mediaPartners/Gabbar-Logo-black.webp\" alt=\"CoinGabbar\">\n</a>\n</div>\n\n#### Endorsements\n<div class=\"img-list\">\n<a href=\"https://www.city.shibuya.tokyo.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/endorsements/shibuya-ku.png\" alt=\"Shibuya-ku\">\n</a>\n<a href=\"https://cryptocurrency-association.org/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/endorsements/JCBA-w.webp\" alt=\"JCBA\">\n</a>\n<a href=\"https://jba-web.jp/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/endorsements/JBA-logo.png\" alt=\"JBA\">\n</a>\n<a href=\"https://bccc.global/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/endorsements/BCCC-logo.webp\" alt=\"BCCC\">\n</a>\n</div>\n\n#### Organizers\n<div class=\"img-list\">\n<a href=\"https://ethereumjp.org/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/organizers/EJLogoFace_dark_horizontal.png\" alt=\"Ethereum Japan\">\n</a>\n<a href=\"https://centrum.studio/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/organizers/logo_black_transparent.png\" alt=\"Centrum\">\n</a>\n<a href=\"https://fracton.ventures/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/organizers/fracton-rec-white-clear.png\" alt=\"Fracton Ventures\">\n</a>\n<a href=\"https://intmax.io/\">\n  <img src=\"https://ethtokyo.org/2025/images/orglogos/organizers/intmax.png\" alt=\"INTMAX\">\n</a>\n</div>"
           }
         }
       ]
     },
     {
-      "id": "schedule",
-      "title": "Schedule",
+      "id": "agenda",
+      "title": "Agenda",
+      "icon": "calendar",
       "plugins": [
         {
           "id": "ical",
           "version": "1.0.0",
           "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
           "props": {
-            "events": []
+            "tz": "Asia/Tokyo",
+            "events": [
+              {
+                "id": "23188bhrnirgco5jrsvvtqgjm4",
+                "title": "[Conf] Opening Talk",
+                "description": "<b>This is DUMMY Schedule</b><br>Opening Talk",
+                "location": "国際連合大学, 日本、〒150-8925 東京都渋谷区神宮前５丁目５３−７０",
+                "start": "2025-09-12T01:00:00Z",
+                "end": "2025-09-12T02:00:00Z"
+              },
+              {
+                "id": "1ietmhja31ls9lq5rc52gqltds",
+                "title": "[Conf] Session1",
+                "description": "<b>This is DUMMY Schedule</b><br>Session 1",
+                "location": "国際連合大学, 日本、〒150-8925 東京都渋谷区神宮前５丁目５３−７０",
+                "start": "2025-09-12T02:15:00Z",
+                "end": "2025-09-12T03:30:00Z"
+              },
+              {
+                "id": "67ndvr8tkshktu46603tbn4vi3",
+                "title": "[Conf] Session2",
+                "location": "国際連合大学, 日本、〒150-8925 東京都渋谷区神宮前５丁目５３−７０",
+                "start": "2025-09-12T04:00:00Z",
+                "end": "2025-09-12T05:00:00Z"
+              },
+              {
+                "id": "0mfj56tim12rf27kcsarat75b2",
+                "title": "[Conf] Session #3",
+                "start": "2025-09-12T05:15:00Z",
+                "end": "2025-09-12T06:15:00Z"
+              },
+              {
+                "id": "3l3ntp39fj53mp5je6u66p0hcr",
+                "title": "[Hack] Entry",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-13T00:00:00Z",
+                "end": "2025-09-13T09:00:00Z"
+              },
+              {
+                "id": "1c0oc4pe15u50u35rjiqbgl6dm",
+                "title": "[Workshop] ZK Workshop",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-13T00:00:00Z",
+                "end": "2025-09-13T01:30:00Z"
+              },
+              {
+                "id": "0hu4ceoaqi0l86m1s9qpnmh20i",
+                "title": "[Workshop] SmartWallet",
+                "description": "<b>This is DUMMY Schedule</b><br>Workshop",
+                "start": "2025-09-13T01:45:00Z",
+                "end": "2025-09-13T03:15:00Z"
+              },
+              {
+                "id": "5pms74jortrhhhq5n9nhtdt32k",
+                "title": "[Hack] Start",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-13T09:00:00Z",
+                "end": "2025-09-13T10:15:00Z"
+              },
+              {
+                "id": "23bmjis5hikiou9rfm5fngols0",
+                "title": "[Hack] Bento",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-13T11:00:00Z",
+                "end": "2025-09-13T12:00:00Z"
+              },
+              {
+                "id": "765smtcft1c4hppbn16k20qfbh",
+                "title": "[Hack] 🚨 Submission deadline",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-14T00:00:00Z"
+              },
+              {
+                "id": "3o3sq37k4322eff8c6nrt4h8df",
+                "title": "[Hack] 👀 Project review",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-14T01:00:00Z",
+                "end": "2025-09-14T03:00:00Z"
+              },
+              {
+                "id": "06ajgjpdie1mpf3loqfrsf3v5r",
+                "title": "[Hack] 🏆 Finale",
+                "location": "Digital Garage “Pangaea”, 日本、〒150-0042 東京都渋谷区宇田川町１５−１",
+                "start": "2025-09-14T06:00:00Z",
+                "end": "2025-09-14T07:00:00Z"
+              },
+              {
+                "id": "7mik10rcst19o14nn4r14pbjuv",
+                "title": "[Side] Exhibition 1",
+                "description": "A nice side event",
+                "location": "東京タワー, 日本、〒105-0011 東京都港区芝公園４丁目２−８",
+                "start": "2025-09-15T10:00:00Z",
+                "end": "2025-09-15T12:00:00Z"
+              }
+            ]
           }
         }
       ]
     },
     {
-      "id": "chat",
-      "title": "Chat",
+      "id": "forum",
+      "title": "Forum",
+      "icon": "chat",
       "plugins": [
         {
           "id": "forum",
           "version": "1.0.0",
           "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
           "props": {
-            "gunPath": "ethtokyo-2026-main",
-            "title": "ETHTokyo 2026"
+            "gunPath": "ethtokyo-25-main",
+            "title": "ETHTokyo'25"
+          }
+        }
+      ]
+    },
+    {
+      "id": "info",
+      "title": "Information",
+      "icon": "info",
+      "plugins": [
+        {
+          "id": "markdown",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "content": "## 🔗 Official Links\n\n- __Official site:__ [ETHTokyo](https://ethtokyo.org/)\n- __Discord:__ [ETHTokyo](https://discord.com/invite/Tm5jU3DSCE)\n- __Telegram:__ [ETHTokyo](https://t.me/ethtokyo)\n- __Twitter:__ [@Ethereum_JP](https://x.com/Ethereum_JP)\n\n## 📅 Side Events\n"
           }
         }
       ]
