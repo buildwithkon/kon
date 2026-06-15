@@ -19,7 +19,12 @@ export const PLUGIN_EXTERNALS = ['preact', 'preact/hooks', 'preact/jsx-runtime',
 
 export function pluginConfig(): UserConfig {
   return defineConfig({
-    plugins: [preact()],
+    // devToolsEnabled:false drops the preset's transform-hook-names sub-plugin,
+    // which does `await import("zimmerframe")` at transform time. zimmerframe
+    // ships only an ESM "import" condition that vite-node (under Vitest) can't
+    // resolve, breaking tests of hook-bearing plugins. The hook-names devtools
+    // transform is dev-DX only and irrelevant to the library build.
+    plugins: [preact({ devToolsEnabled: false })],
     build: {
       lib: {
         entry: 'src/index.tsx',

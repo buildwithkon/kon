@@ -2,7 +2,11 @@ import { defineConfig } from 'vite-plus'
 import preact from '@preact/preset-vite'
 
 export default defineConfig({
-  plugins: [preact()],
+  // devToolsEnabled:false drops the preset's transform-hook-names sub-plugin
+  // (it dynamically imports zimmerframe, whose ESM-only export can't be resolved
+  // by vite-node under Vitest). Devtools hook names are dev-DX only; tests and
+  // the JSX transform don't need them.
+  plugins: [preact({ devToolsEnabled: false })],
   test: {
     // Limit test discovery to first-party source. Without this scope, vp picks
     // up *.test.ts files under node_modules/.bun/ and tries to run thousands
