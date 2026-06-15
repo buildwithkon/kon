@@ -6,6 +6,8 @@ import { deployment, entry, errorMessage, manifest, stage, stageDetail } from '.
 import { resolvePlugin } from './plugin-registry'
 import { ensureWallet } from './wallet-singleton'
 import { AdminApp } from './admin/admin-app'
+import { themeVars } from './ui/use-theme'
+import { TabBar } from './ui/tab-bar'
 
 function isAdminPath(): boolean {
   if (typeof window === 'undefined') return false
@@ -113,44 +115,6 @@ function PageView({ page }: { page: KonPageV1 }) {
   )
 }
 
-function Nav({ pages, activeId }: { pages: KonPageV1[]; activeId: string }) {
-  return (
-    <nav
-      style={{
-        display: 'flex',
-        gap: '0.5rem',
-        borderBottom: '1px solid #ddd',
-        marginBottom: '1rem',
-        paddingBottom: '0.5rem'
-      }}
-    >
-      {pages.map((p) => {
-        const active = p.id === activeId
-        return (
-          <button
-            key={p.id}
-            type="button"
-            onClick={() => {
-              activePageId.value = p.id
-            }}
-            style={{
-              padding: '0.4rem 0.8rem',
-              borderRadius: '6px',
-              border: active ? '1px solid #1a73e8' : '1px solid transparent',
-              background: active ? '#e8f0fe' : 'transparent',
-              color: active ? '#1a73e8' : 'inherit',
-              cursor: 'pointer',
-              font: 'inherit'
-            }}
-          >
-            {p.title}
-          </button>
-        )
-      })}
-    </nav>
-  )
-}
-
 export function App() {
   const s = stage.value
 
@@ -201,53 +165,56 @@ export function App() {
   const currentPage = pages.find((p) => p.id === currentId) ?? pages[0]
 
   return (
-    <div
-      style={{
-        fontFamily: 'system-ui, sans-serif',
-        maxWidth: '720px',
-        margin: '0 auto',
-        padding: '2rem 1rem'
-      }}
-    >
-      <header
-        style={{
-          marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'space-between',
-          gap: '1rem'
-        }}
-      >
-        <div>
-          <h1 style={{ fontSize: '1.5rem', margin: 0 }}>{m.app.name}</h1>
-          <div style={{ color: '#666', fontSize: '0.9rem' }}>
-            {m.app.id} · v{m.app.version}
-          </div>
-        </div>
-        <a href="/admin" style={{ color: '#888', fontSize: '0.85rem', textDecoration: 'none' }}>
-          ⚙ Admin
-        </a>
+    <div style={Object.assign(themeVars(m.app.theme), { minHeight: '100vh' })} class="kon-shell">
+      <style>{`
+        .kon-shell { padding-bottom: 4.5rem; }
+        .kon-shell-main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
+        .kon-header { background: var(--kon-main); color: #fff; padding: 1.25rem 1rem; }
+        .kon-header h1 { font-size: 1.4rem; margin: 0; }
+        @media (min-width: 768px) {
+          .kon-shell { padding-bottom: 0; padding-left: 200px; }
+        }
+      `}</style>
+
+      <header class="kon-header">
+        <h1>{m.app.name}</h1>
+        {import.meta.env.DEV && (
+          <a
+            href="/admin"
+            style={{ color: '#fff', opacity: 0.7, fontSize: '0.8rem', textDecoration: 'none' }}
+          >
+            ⚙ Admin
+          </a>
+        )}
       </header>
 
-      {pages.length > 1 && <Nav pages={pages} activeId={currentPage?.id ?? ''} />}
+      <main class="kon-shell-main">{currentPage && <PageView page={currentPage} />}</main>
 
-      {currentPage && <PageView page={currentPage} />}
+      <TabBar
+        pages={pages}
+        activeId={currentPage?.id ?? ''}
+        onSelect={(id) => {
+          activePageId.value = id
+        }}
+      />
 
-      <details style={{ marginTop: '3rem', color: '#888', fontSize: '0.85rem' }}>
-        <summary>runtime diagnostics</summary>
-        <dl style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem' }}>
-          <dt style={{ color: '#888' }}>wallet_origin</dt>
-          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.wallet_origin}</dd>
-          <dt style={{ color: '#888' }}>gun_peers</dt>
-          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.gun_peers.join(', ')}</dd>
-          <dt style={{ color: '#888' }}>ipfs_gateways</dt>
-          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.ipfs_gateways.join(', ')}</dd>
-          <dt style={{ color: '#888' }}>entry.runtime</dt>
-          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{fmtIpfs(e.runtime)}</dd>
-          <dt style={{ color: '#888' }}>entry.manifest</dt>
-          <dd style={{ margin: '0 0 0.5rem 1rem' }}>{fmtIpfs(e.manifest)}</dd>
-        </dl>
-      </details>
+      {import.meta.env.DEV && (
+        <details style={{ margin: '2rem 1rem', color: '#888', fontSize: '0.85rem' }}>
+          <summary>runtime diagnostics</summary>
+          <dl style={{ fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem' }}>
+            <dt>wallet_origin</dt>
+            <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.wallet_origin}</dd>
+            <dt>gun_peers</dt>
+            <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.gun_peers.join(', ')}</dd>
+            <dt>ipfs_gateways</dt>
+            <dd style={{ margin: '0 0 0.5rem 1rem' }}>{d.ipfs_gateways.join(', ')}</dd>
+            <dt>entry.runtime</dt>
+            <dd style={{ margin: '0 0 0.5rem 1rem' }}>{fmtIpfs(e.runtime)}</dd>
+            <dt>entry.manifest</dt>
+            <dd style={{ margin: '0 0 0.5rem 1rem' }}>{fmtIpfs(e.manifest)}</dd>
+          </dl>
+        </details>
+      )}
     </div>
   )
 }
