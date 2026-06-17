@@ -1,8 +1,10 @@
 import type { JSX } from 'preact'
 import type { KonThemeV1 } from '@konxyz/runtime-core'
 
+// 'sans' (the default) is the bundled Hanken Grotesk variable font loaded in
+// main.tsx; apps can override to serif/mono via manifest theme.font.
 const FONT_STACKS: Record<NonNullable<KonThemeV1['font']>, string> = {
-  sans: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+  sans: '"Hanken Grotesk Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
   serif: 'Georgia, "Times New Roman", serif',
   mono: 'ui-monospace, "SF Mono", "Cascadia Code", monospace'
 }

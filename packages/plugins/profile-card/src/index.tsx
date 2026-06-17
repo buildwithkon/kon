@@ -29,27 +29,29 @@ const containerStyle = (sticky: boolean): import('preact').JSX.CSSProperties => 
   marginBottom: '1rem'
 })
 
-const cardStyle = (accent: string): import('preact').JSX.CSSProperties => ({
+const cardStyle = (_accent: string): import('preact').JSX.CSSProperties => ({
   position: 'relative',
-  borderRadius: '14px',
-  padding: '1.5rem',
-  background: '#111',
+  borderRadius: '24px',
+  padding: '1.6rem 1.7rem',
+  backgroundColor: '#111',
+  // Subtle top-sheen / bottom-shade overlay for depth over the solid brand color.
+  backgroundImage: 'linear-gradient(158deg, rgba(255,255,255,0.13), rgba(0,0,0,0.18))',
   color: 'white',
-  boxShadow: '0 12px 32px -16px rgba(0,0,0,0.4)',
+  boxShadow: '0 22px 48px -24px rgba(20,18,30,0.55)',
   overflow: 'hidden',
-  border: `1px solid ${accent}`,
-  minHeight: '8rem',
+  minHeight: '9rem',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  gap: '0.5rem'
+  justifyContent: 'flex-end',
+  gap: '0.35rem'
 })
 
 const titleStyle: import('preact').JSX.CSSProperties = {
-  fontWeight: 700,
-  fontSize: '1.5rem',
-  lineHeight: 1.2,
-  maxWidth: '70%',
+  fontWeight: 800,
+  fontSize: '1.7rem',
+  lineHeight: 1.12,
+  letterSpacing: '-0.02em',
+  maxWidth: '72%',
   wordBreak: 'break-word'
 }
 
@@ -105,7 +107,9 @@ const ProfileCard: KonPluginComponent<ProfileCardPluginProps> = ({ props, contex
   const sticky = props?.isSticky === true
   const identity = props?.identity
 
-  const card = props?.bg ? Object.assign({}, cardStyle(accent), { background: props.bg }) : cardStyle(accent)
+  const card = props?.bg
+    ? Object.assign({}, cardStyle(accent), { backgroundColor: props.bg })
+    : cardStyle(accent)
 
   return (
     <div style={containerStyle(sticky)}>
@@ -114,7 +118,17 @@ const ProfileCard: KonPluginComponent<ProfileCardPluginProps> = ({ props, contex
         {subtitle && <div style={subStyle}>{subtitle}</div>}
         {logoUrl && (
           <div style={iconWrap}>
-            <img src={logoUrl} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img
+              src={logoUrl}
+              alt=""
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={(ev) => {
+                // Hide the whole badge if the brand mark fails to load, rather
+                // than leaving a broken-image glyph in the hero.
+                const wrap = ev.currentTarget.parentElement
+                if (wrap) wrap.style.display = 'none'
+              }}
+            />
           </div>
         )}
         {identity && (

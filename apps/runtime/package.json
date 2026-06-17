@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/hanken-grotesk": "5.2.8",
     "@konxyz/account-sdk": "workspace:*",
     "@konxyz/plugin-badge": "workspace:*",
     "@konxyz/plugin-build-with": "workspace:*",
@@ -31,6 +32,7 @@
     "vite": "catalog:",
     "vite-plugin-pwa": "^0.21.1",
     "vite-plus": "catalog:",
+    "vitest": "catalog:",
     "workbox-window": "^7.3.0"
   }
 }

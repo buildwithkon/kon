@@ -103,11 +103,25 @@ function PluginRenderer({ plugin }: { plugin: KonPluginV1 }) {
 
 function PageView({ page }: { page: KonPageV1 }) {
   const plugins = page.plugins ?? []
+  // A page led by a profile-card already has a branded hero, so the section
+  // title would be redundant — let the card stand as the heading.
+  const hasHero = plugins.some((p) => p.id === 'profile-card')
   return (
-    <section style={{ padding: '1.5rem 0' }}>
-      <h2 style={{ fontSize: '1.25rem', margin: '0 0 1rem 0' }}>{page.title}</h2>
+    <section style={{ padding: '0.25rem 0 1rem' }}>
+      {!hasHero && (
+        <h2
+          style={{
+            fontSize: '1.7rem',
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
+            margin: '0.4rem 0 1.1rem'
+          }}
+        >
+          {page.title}
+        </h2>
+      )}
       {plugins.length === 0 ? (
-        <div style={{ color: '#888', fontStyle: 'italic' }}>(no plugins on this page)</div>
+        <div style={{ color: 'var(--kon-muted, #888)', fontStyle: 'italic' }}>(no plugins on this page)</div>
       ) : (
         plugins.map((p) => <PluginRenderer key={`${p.id}-${p.version}`} plugin={p} />)
       )}
@@ -172,12 +186,23 @@ export function App() {
       class={showNav ? 'kon-shell kon-has-nav' : 'kon-shell'}
     >
       <style>{`
-        .kon-shell-main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem; }
-        .kon-header { background: var(--kon-main); color: #fff; padding: 1.25rem 1rem; }
-        .kon-header h1 { font-size: 1.4rem; margin: 0; }
-        .kon-has-nav { padding-bottom: 4.5rem; }
+        .kon-shell-main { max-width: 640px; margin: 0 auto; padding: 0.5rem 1.1rem 1.5rem; }
+        .kon-header {
+          position: sticky; top: 0; z-index: 15;
+          display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+          padding: 0.8rem 1.1rem;
+          background: color-mix(in srgb, var(--kon-canvas, #f4f3f0) 80%, transparent);
+          backdrop-filter: saturate(1.5) blur(12px);
+          -webkit-backdrop-filter: saturate(1.5) blur(12px);
+        }
+        .kon-header h1 {
+          font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; margin: 0;
+          color: var(--kon-main);
+        }
+        .kon-has-nav { padding-bottom: 6rem; }
         @media (min-width: 768px) {
-          .kon-has-nav { padding-bottom: 0; padding-left: 200px; }
+          .kon-has-nav { padding-bottom: 0; padding-left: 240px; }
+          .kon-header { padding-left: 240px; }
         }
       `}</style>
 
@@ -186,7 +211,12 @@ export function App() {
         {import.meta.env.DEV && (
           <a
             href="/admin"
-            style={{ color: '#fff', opacity: 0.7, fontSize: '0.8rem', textDecoration: 'none' }}
+            style={{
+              color: 'var(--kon-muted, #6b6975)',
+              opacity: 0.8,
+              fontSize: '0.8rem',
+              textDecoration: 'none'
+            }}
           >
             ⚙ Admin
           </a>

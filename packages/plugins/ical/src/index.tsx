@@ -26,69 +26,84 @@ export interface IcalPluginProps {
   tz?: string
 }
 
+const MUTED = 'var(--kon-muted, #6b6975)'
+const ACCENT = 'var(--kon-accent, #1a73e8)'
+
 const containerStyle: import('preact').JSX.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '0.75rem'
+  gap: '0.6rem'
+}
+
+const dayRowStyle: import('preact').JSX.CSSProperties = {
+  display: 'flex',
+  gap: '0.4rem',
+  overflowX: 'auto',
+  padding: '0.1rem 0 0.35rem',
+  scrollbarWidth: 'none'
 }
 
 const toolbarStyle: import('preact').JSX.CSSProperties = {
   display: 'flex',
   gap: '0.5rem',
   alignItems: 'center',
-  padding: '0.5rem 0'
+  padding: '0.1rem 0 0.35rem'
 }
 
 const inputStyle: import('preact').JSX.CSSProperties = {
   flex: 1,
-  padding: '0.5rem 0.75rem',
-  border: '1px solid #ddd',
-  borderRadius: '8px',
-  font: 'inherit'
+  padding: '0.6rem 0.95rem',
+  border: '1px solid rgba(20,18,30,0.10)',
+  borderRadius: '999px',
+  background: '#fff',
+  font: 'inherit',
+  fontSize: '0.9rem'
 }
 
 const toggleStyle = (active: boolean): import('preact').JSX.CSSProperties => ({
-  padding: '0.5rem 0.75rem',
-  border: `1px solid ${active ? '#1a73e8' : '#ddd'}`,
-  borderRadius: '8px',
-  background: active ? '#e8f0fe' : 'white',
-  color: active ? '#1a73e8' : 'inherit',
+  flexShrink: 0,
+  padding: '0.45rem 0.95rem',
+  border: '1px solid transparent',
+  borderRadius: '999px',
+  background: active ? ACCENT : '#fff',
+  color: active ? '#fff' : 'inherit',
+  boxShadow: active ? 'none' : '0 1px 2px rgba(20,18,30,0.06)',
   cursor: 'pointer',
   font: 'inherit',
-  fontSize: '0.9rem'
+  fontWeight: 600,
+  fontSize: '0.85rem',
+  transition: 'background-color .15s ease, color .15s ease'
 })
 
 const dateHeaderStyle: import('preact').JSX.CSSProperties = {
-  fontSize: '0.85rem',
+  fontSize: '0.72rem',
   fontWeight: 700,
-  color: '#666',
-  padding: '0.5rem 0',
+  color: MUTED,
+  padding: '0.7rem 0.25rem 0.4rem',
   textTransform: 'uppercase',
-  letterSpacing: '0.04em',
-  position: 'sticky',
-  top: 0,
-  background: 'rgba(255,255,255,0.92)',
-  backdropFilter: 'blur(6px)',
-  borderBottom: '1px solid #eee'
+  letterSpacing: '0.06em'
 }
 
 const cardStyle: import('preact').JSX.CSSProperties = {
   position: 'relative',
-  padding: '0.85rem 1rem',
-  borderRadius: '10px',
-  border: '1px solid #eee',
-  background: 'white',
-  marginBottom: '0.5rem'
+  padding: '1rem 1.1rem',
+  borderRadius: '18px',
+  background: '#fff',
+  boxShadow: '0 1px 2px rgba(20,18,30,0.05), 0 6px 18px -12px rgba(20,18,30,0.18)',
+  marginBottom: '0.6rem'
 }
 
 const titleStyle: import('preact').JSX.CSSProperties = {
-  fontWeight: 600,
+  fontWeight: 700,
+  fontSize: '1.02rem',
+  lineHeight: 1.25,
+  letterSpacing: '-0.01em',
   paddingRight: '2rem'
 }
 
 const descStyle: import('preact').JSX.CSSProperties = {
-  marginTop: '0.25rem',
-  color: '#666',
+  marginTop: '0.3rem',
+  color: MUTED,
   fontSize: '0.85rem',
   display: '-webkit-box',
   WebkitLineClamp: 2,
@@ -97,26 +112,30 @@ const descStyle: import('preact').JSX.CSSProperties = {
 }
 
 const metaStyle: import('preact').JSX.CSSProperties = {
-  marginTop: '0.4rem',
-  fontSize: '0.75rem',
-  color: '#888',
+  marginTop: '0.55rem',
+  fontSize: '0.8rem',
+  color: MUTED,
   display: 'flex',
-  flexDirection: 'column',
-  gap: '0.15rem'
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  gap: '0.1rem 0.5rem'
 }
+
+const metaDot: import('preact').JSX.CSSProperties = { opacity: 0.4 }
 
 const saveButtonStyle = (saved: boolean): import('preact').JSX.CSSProperties => ({
   position: 'absolute',
-  top: '0.5rem',
-  right: '0.5rem',
+  top: '0.85rem',
+  right: '0.85rem',
   width: '2rem',
   height: '2rem',
   borderRadius: '999px',
   border: 0,
   background: 'transparent',
   cursor: 'pointer',
-  fontSize: '1.1rem',
-  color: saved ? '#1a73e8' : '#bbb'
+  fontSize: '1.15rem',
+  lineHeight: 1,
+  color: saved ? ACCENT : 'rgba(20,18,30,0.28)'
 })
 
 function stripHtml(input?: string): string {
@@ -249,7 +268,7 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
   return (
     <div style={containerStyle}>
       {dayPills.length > 1 && (
-        <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', padding: '0.25rem 0' }}>
+        <div style={dayRowStyle}>
           <button
             type="button"
             style={toggleStyle(selectedDay === null)}
@@ -289,7 +308,7 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
         </div>
       )}
       {visibleGroups.length === 0 ? (
-        <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>
+        <div style={{ padding: '2rem', textAlign: 'center', color: MUTED }}>
           {showSavedOnly ? 'No saved events yet' : 'No events found'}
         </div>
       ) : (
@@ -301,29 +320,32 @@ const Ical: KonPluginComponent<IcalPluginProps> = ({ props }) => {
               const parsed = parseEventTag(e.title)
               return (
                 <article key={e.id} style={cardStyle}>
-                  <div style={titleStyle}>
-                    {parsed.tag && (
-                      <span
-                        style={{
-                          display: 'inline-block',
-                          marginRight: '0.4rem',
-                          padding: '0.1rem 0.4rem',
-                          borderRadius: '6px',
-                          fontSize: '0.7rem',
-                          fontWeight: 700,
-                          color: '#fff',
-                          background: TAG_COLORS[parsed.tag] ?? '#888'
-                        }}
-                      >
-                        {parsed.tag}
-                      </span>
-                    )}
-                    {parsed.title}
-                  </div>
+                  {parsed.tag && (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        marginBottom: '0.5rem',
+                        padding: '0.18rem 0.55rem',
+                        borderRadius: '999px',
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.02em',
+                        textTransform: 'uppercase',
+                        color: '#fff',
+                        background: TAG_COLORS[parsed.tag] ?? '#888'
+                      }}
+                    >
+                      {parsed.tag}
+                    </span>
+                  )}
+                  <div style={titleStyle}>{parsed.title}</div>
                   {e.description && <div style={descStyle}>{stripHtml(e.description)}</div>}
                   <div style={metaStyle}>
-                    {e.location && <span>📍 {e.location}</span>}
+                    <span>🗓 {fmtDayPill(new Date(e.start), tz)}</span>
+                    <span style={metaDot}>·</span>
                     <span>🕒 {fmtTime(e.start, e.end, e.allDay, tz)}</span>
+                    {e.location && <span style={metaDot}>·</span>}
+                    {e.location && <span>📍 {e.location}</span>}
                   </div>
                   {showTools && (
                     <button

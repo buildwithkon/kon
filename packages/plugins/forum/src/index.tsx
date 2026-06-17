@@ -55,19 +55,21 @@ const inputRowStyle = {
 
 const inputStyle = {
   flex: 1,
-  padding: '0.5rem 0.8rem',
-  borderRadius: '8px',
-  border: '1px solid #ddd',
+  padding: '0.6rem 0.95rem',
+  borderRadius: '999px',
+  border: '1px solid rgba(20,18,30,0.12)',
+  background: '#fff',
   font: 'inherit'
 }
 
 const buttonStyle = {
-  padding: '0.5rem 1rem',
-  borderRadius: '8px',
-  border: '1px solid #1a73e8',
-  background: '#1a73e8',
+  padding: '0.6rem 1.2rem',
+  borderRadius: '999px',
+  border: 0,
+  background: 'var(--kon-accent, #1a73e8)',
   color: 'white',
   cursor: 'pointer',
+  fontWeight: 600,
   font: 'inherit'
 }
 
