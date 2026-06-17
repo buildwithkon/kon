@@ -201,8 +201,8 @@ export function App() {
         }
         .kon-has-nav { padding-bottom: 6rem; }
         @media (min-width: 768px) {
-          .kon-has-nav { padding-bottom: 0; padding-left: 240px; }
-          .kon-header { padding-left: 240px; }
+          .kon-has-nav { padding-bottom: 0; padding-left: 76px; }
+          .kon-header { padding-left: calc(76px + 1.1rem); }
         }
       `}</style>
 
@@ -229,6 +229,7 @@ export function App() {
         <TabBar
           pages={pages}
           activeId={currentPage?.id ?? ''}
+          brand={m.app.name}
           onSelect={(id) => {
             activePageId.value = id
           }}
