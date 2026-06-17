@@ -12,7 +12,7 @@ const pages: KonPageV1[] = [
 function mount(activeId: string) {
   const host = document.createElement('div')
   const clicks: string[] = []
-  // biome-ignore lint/suspicious/noExplicitAny: vnode host render
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- vnode host render
   render(TabBar({ pages, activeId, onSelect: (id) => clicks.push(id) }) as any, host)
   return { host, clicks }
 }

@@ -14,7 +14,6 @@
 import Gun from 'gun'
 import 'gun/sea'
 
-// biome-ignore lint/suspicious/noExplicitAny: Gun does not ship types
 const SEA: {
   pair: (seed?: { pub: string; priv: string; epub: string; epriv: string }) => Promise<{
     pub: string
@@ -77,7 +76,6 @@ export function openGunChat(opts: { peers: string[]; path: string; pair: SeaPair
   const room = gun.get(`kon-forum-${opts.path}`)
   let handler: ((msg: VerifiedMessage) => void) | null = null
 
-  // biome-ignore lint/suspicious/noExplicitAny: Gun callback shape
   room.map().on(async (data: any, _key: string) => {
     if (!data || typeof data !== 'object') return
     if (typeof data.payload !== 'string' || typeof data.pub !== 'string') return
@@ -96,7 +94,7 @@ export function openGunChat(opts: { peers: string[]; path: string; pair: SeaPair
     async send(text) {
       const signed = await sign(text, opts.pair)
       const key = `${signed.pub.slice(0, 8)}-${signed.preview.ts}`
-      // biome-ignore lint/suspicious/noExplicitAny: Gun put accepts plain objects
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Gun put accepts plain objects
       ;(room as any).get(key).put({
         pub: signed.pub,
         payload: signed.payload,

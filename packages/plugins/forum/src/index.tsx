@@ -117,7 +117,6 @@ const Forum: KonPluginComponent<ForumPluginProps> = ({ props, context }) => {
       cancelled = true
       unsub?.()
     }
-    // biome-ignore lint/correctness/useExhaustiveDependencies: context object identity intentionally stable
   }, [props?.gunPath])
 
   if (error) {

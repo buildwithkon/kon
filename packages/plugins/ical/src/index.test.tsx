@@ -10,7 +10,7 @@ const events = [
 
 function html(props: Record<string, unknown>): string {
   const host = document.createElement('div')
-  // biome-ignore lint/suspicious/noExplicitAny: plugin contract
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- plugin contract
   render(h(Ical as any, { props, context: {} as any }), host)
   return host.innerHTML
 }

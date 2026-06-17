@@ -5,15 +5,15 @@ import ProfileCard from './index'
 
 const ctx = {
   appId: 'ethtokyo.kon.xyz',
-  // biome-ignore lint/suspicious/noExplicitAny: minimal context stub
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- minimal context stub
   deployment: {} as any,
-  // biome-ignore lint/suspicious/noExplicitAny: wallet not used by this plugin
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- wallet not used by this plugin
   wallet: {} as any
 }
 
 function html(props: Record<string, unknown>): string {
   const host = document.createElement('div')
-  // biome-ignore lint/suspicious/noExplicitAny: plugin contract
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- plugin contract
   render(ProfileCard({ props, context: ctx }) as any, host)
   return host.innerHTML
 }

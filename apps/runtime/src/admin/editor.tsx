@@ -240,7 +240,6 @@ function PageRow({ page, index }: { page: KonPageV1; index: number }) {
         onClick={() => setPicking(true)}
       >
         {custom ? (
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized by sanitizeSvg
           <span style={{ display: 'inline-flex' }} dangerouslySetInnerHTML={{ __html: custom }} />
         ) : typeof page.icon === 'string' ? (
           <span style={{ fontSize: '0.7rem', color: '#888' }}>{page.icon}</span>

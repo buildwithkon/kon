@@ -30,14 +30,14 @@ export async function resolveContenthash(name: string): Promise<string | null> {
   const c = ensureClient()
   // viem returns the contenthash decoded as a string when possible.
   // For IPFS contenthashes it emits `ipfs://...` directly.
-  // biome-ignore lint/suspicious/noExplicitAny: viem types contenthash as string but unions are loose
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- viem types contenthash as string but unions are loose
   const result = await (c as any).getEnsText({ name, key: 'contenthash' }).catch(() => null)
   if (result) return result
 
   // Fallback path: use getEnsAvatar's underlying contenthash machinery.
   // viem 2.x exposes a dedicated getEnsContentHash but the call shape varies;
   // we keep both paths so the runtime still resolves on older / newer viem.
-  // biome-ignore lint/suspicious/noExplicitAny: see above
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- see above
   const ch = await (c as any).getEnsContentHash?.({ name }).catch(() => null)
   return ch ?? null
 }

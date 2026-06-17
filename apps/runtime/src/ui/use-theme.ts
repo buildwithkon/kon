@@ -39,6 +39,6 @@ export function themeVars(theme: KonThemeV1 | undefined): JSX.CSSProperties {
     '--kon-on-main': readableOn(main),
     '--kon-on-accent': readableOn(accent),
     fontFamily: FONT_STACKS[theme?.font ?? 'sans']
-    // biome-ignore lint/suspicious/noExplicitAny: CSS custom properties aren't in JSX.CSSProperties
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- CSS custom properties aren't in JSX.CSSProperties
   } as any
 }

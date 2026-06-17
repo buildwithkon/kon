@@ -6,7 +6,7 @@ import { ICON_NAMES, Icon } from './icon'
 
 function html(node: ReturnType<typeof Icon>): string {
   const host = document.createElement('div')
-  // biome-ignore lint/suspicious/noExplicitAny: vnode host render
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- vnode host render
   render(node as any, host)
   return host.innerHTML
 }

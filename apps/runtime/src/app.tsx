@@ -92,12 +92,11 @@ function PluginRenderer({ plugin }: { plugin: KonPluginV1 }) {
   if (!Component) return null
 
   const wallet = ensureWallet(d.wallet_origin)
-  // biome-ignore lint/suspicious/noExplicitAny: plugin contract erases prop shape
   const rendered = Component({
     props: (plugin.props ?? {}) as any,
     context: { deployment: d, appId: m.app.id, wallet }
   })
-  // biome-ignore lint/suspicious/noExplicitAny: Preact h returns any-shaped vnode
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Preact h returns any-shaped vnode
   return rendered as any
 }
 

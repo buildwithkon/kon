@@ -24,7 +24,7 @@ type IconComp = ComponentType<{ size?: number }>
 /** Render a react-icons component to a sanitized inline SVG string. */
 export function iconToSvg(Comp: IconComp): string {
   const tmp = document.createElement('div')
-  // biome-ignore lint/suspicious/noExplicitAny: react-icons component under preact/compat
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- react-icons component under preact/compat
   render((<Comp />) as any, tmp)
   const svg = tmp.querySelector('svg')?.outerHTML ?? ''
   render(null, tmp)

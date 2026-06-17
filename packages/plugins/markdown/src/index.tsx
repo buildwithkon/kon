@@ -17,7 +17,6 @@ const Md: KonPluginComponent<MarkdownPluginProps> = ({ props }) => {
       options={{
         overrides: {
           a: {
-            // biome-ignore lint/suspicious/noExplicitAny: markdown-to-jsx props are dynamic
             component: ({ href, children, ...rest }: any) => {
               const isExternal = typeof href === 'string' && /^https?:\/\//.test(href)
               return (
@@ -33,7 +32,6 @@ const Md: KonPluginComponent<MarkdownPluginProps> = ({ props }) => {
             }
           },
           table: {
-            // biome-ignore lint/suspicious/noExplicitAny: same
             component: ({ children, ...rest }: any) => (
               <div style={{ overflowX: 'auto', margin: '1rem 0' }}>
                 <table {...rest}>{children}</table>
@@ -42,7 +40,7 @@ const Md: KonPluginComponent<MarkdownPluginProps> = ({ props }) => {
           }
         }
       }}
-      // biome-ignore lint/suspicious/noExplicitAny: markdown-to-jsx accepts className
+      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- markdown-to-jsx accepts className
       {...({ className: props.className } as any)}
     >
       {props.content}

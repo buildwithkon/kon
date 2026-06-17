@@ -8,14 +8,7 @@ function TabIcon({ icon, active }: { icon: KonPageIcon; active: boolean }) {
   if (typeof icon === 'string') return <Icon name={icon} size={22} filled={active} />
   const html = sanitizeSvg(icon.svg)
   if (!html) return null
-  return (
-    <span
-      class="kon-cicon"
-      aria-hidden="true"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: html is sanitized by sanitizeSvg
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  )
+  return <span class="kon-cicon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} />
 }
 
 // Primary navigation.
@@ -45,7 +38,7 @@ const CSS = `
 /* Mobile: floating bottom pill */
 .kon-nav {
   left: 50%; transform: translateX(-50%); bottom: 1rem;
-  flex-direction: row; align-items: center; gap: 0.2rem; padding: 0.35rem;
+  flex-direction: row; align-items: center; gap: 0.2rem; padding: 0.35rem 0.5rem;
   border-radius: 999px;
   box-shadow: 0 12px 34px -10px rgba(20,18,30,0.30), 0 2px 8px rgba(20,18,30,0.06);
 }

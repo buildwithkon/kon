@@ -51,12 +51,12 @@ describe('devDeploymentOverride', () => {
 describe('DEV_APP_MANIFESTS', () => {
   test('discovers the in-repo ethtokyo app manifest', () => {
     expect(DEV_APP_MANIFESTS.ethtokyo).toBeTruthy()
-    // biome-ignore lint/suspicious/noExplicitAny: test introspection of parsed JSON
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test introspection of parsed JSON
     expect((DEV_APP_MANIFESTS.ethtokyo as any).app.id).toBe('ethtokyo.kon.xyz')
   })
 
   test('ethtokyo manifest carries theme, 4 iconed pages, and 13 agenda events', () => {
-    // biome-ignore lint/suspicious/noExplicitAny: test introspection of parsed JSON
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- test introspection of parsed JSON
     const m = DEV_APP_MANIFESTS.ethtokyo as any
     expect(m.app.theme.main).toBe('#562266')
     expect(m.pages.map((p: any) => p.id)).toEqual(['home', 'agenda', 'forum', 'info'])
