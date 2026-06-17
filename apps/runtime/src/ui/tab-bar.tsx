@@ -9,16 +9,16 @@ import { Icon } from './icon'
 const CSS = `
 .kon-nav {
   position: fixed; z-index: 30; display: flex;
-  background: #fff;
+  background: var(--kon-main); color: var(--kon-on-main, #fff);
 }
 .kon-nav button {
   appearance: none; border: 0; background: transparent; cursor: pointer; font: inherit;
   display: flex; align-items: center; justify-content: center;
-  color: var(--kon-ink, #16151a); opacity: 0.5;
+  color: var(--kon-on-main, #fff); opacity: 0.62;
   transition: background-color .18s ease, color .18s ease, opacity .18s ease;
 }
-.kon-nav button:hover { opacity: 0.85; }
-.kon-nav button[aria-current="page"] { opacity: 1; color: #fff; background: var(--kon-accent); }
+.kon-nav button:hover { opacity: 0.9; }
+.kon-nav button[aria-current="page"] { opacity: 1; color: var(--kon-on-accent, #fff); background: var(--kon-accent); }
 .kon-nav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .kon-nav-brand { display: none; }
 
@@ -42,8 +42,10 @@ const CSS = `
   .kon-nav button { width: 2.9rem; height: 2.9rem; border-radius: 16px; }
   .kon-nav-brand {
     display: flex; align-items: center; justify-content: center;
-    width: 2.9rem; height: 2.9rem; margin-bottom: 0.4rem;
-    border-radius: 16px; background: var(--kon-main); color: #fff;
+    width: 2.9rem; height: 2.9rem; margin-bottom: 0.55rem;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--kon-on-main, #fff) 16%, transparent);
+    color: var(--kon-on-main, #fff);
     font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; user-select: none;
   }
 }
