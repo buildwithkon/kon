@@ -38,4 +38,18 @@ describe('KonManifestV1Schema theme + icon', () => {
       })
     ).toThrow()
   })
+
+  test('accepts a custom { svg } page icon', () => {
+    const out = KonManifestV1Schema.parse({
+      ...base,
+      pages: [{ id: 'home', title: 'Home', icon: { svg: '<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>' } }]
+    })
+    expect((out.pages[0].icon as { svg: string }).svg).toContain('<svg')
+  })
+
+  test('rejects a custom icon object without svg', () => {
+    expect(() =>
+      KonManifestV1Schema.parse({ ...base, pages: [{ id: 'home', title: 'Home', icon: {} }] })
+    ).toThrow()
+  })
 })

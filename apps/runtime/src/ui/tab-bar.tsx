@@ -1,6 +1,22 @@
 /** @jsxImportSource preact */
-import type { KonPageV1 } from '@konxyz/runtime-core'
+import type { KonPageIcon, KonPageV1 } from '@konxyz/runtime-core'
 import { Icon } from './icon'
+import { sanitizeSvg } from './sanitize-svg'
+
+/** Render a page icon: built-in name (with active fill swap) or a custom SVG. */
+function TabIcon({ icon, active }: { icon: KonPageIcon; active: boolean }) {
+  if (typeof icon === 'string') return <Icon name={icon} size={22} filled={active} />
+  const html = sanitizeSvg(icon.svg)
+  if (!html) return null
+  return (
+    <span
+      class="kon-cicon"
+      aria-hidden="true"
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: html is sanitized by sanitizeSvg
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
+}
 
 // Primary navigation.
 // Mobile  -> floating horizontal pill, bottom-centered, icon-only, active = accent disc.
@@ -23,6 +39,7 @@ const CSS = `
   background: color-mix(in srgb, var(--kon-on-main, #fff) 16%, transparent);
 }
 .kon-nav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.kon-nav .kon-cicon { display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
 .kon-nav-brand { display: none; }
 
 /* Mobile: floating bottom pill */
@@ -82,7 +99,7 @@ export function TabBar({
           aria-current={p.id === activeId ? 'page' : undefined}
           onClick={() => onSelect(p.id)}
         >
-          {p.icon && <Icon name={p.icon} size={22} filled={p.id === activeId} />}
+          {p.icon && <TabIcon icon={p.icon} active={p.id === activeId} />}
           <span class="kon-nav-label">{p.title}</span>
         </button>
       ))}

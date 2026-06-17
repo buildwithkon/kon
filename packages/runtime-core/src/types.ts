@@ -98,6 +98,17 @@ export interface KonPluginV1 {
 
 export type KonIconName = 'home' | 'calendar' | 'chat' | 'info' | 'list'
 
+/**
+ * Custom page icon baked to inline SVG markup at edit time (e.g. picked from
+ * react-icons in the editor). The runtime sanitizes `svg` before rendering.
+ */
+export interface KonCustomIconV1 {
+  svg: string
+}
+
+/** A built-in icon name, or a custom baked SVG icon. */
+export type KonPageIcon = KonIconName | KonCustomIconV1
+
 export interface KonThemeV1 {
   /** CSS color — header / sidebar background. */
   main: string
@@ -110,8 +121,8 @@ export interface KonThemeV1 {
 export interface KonPageV1 {
   id: string
   title: string
-  /** Bottom-tab / sidebar icon. */
-  icon?: KonIconName
+  /** Bottom-tab / sidebar icon: a built-in name or a custom baked SVG. */
+  icon?: KonPageIcon
   /** Optional content source (markdown / JSON) loaded by the runtime. */
   source?: IpfsUri
   /** Plugins specific to this page. Global plugins live on the manifest. */
