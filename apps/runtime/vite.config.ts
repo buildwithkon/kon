@@ -10,6 +10,10 @@ export default defineConfig({
       injectRegister: 'auto',
       strategies: 'generateSW',
       workbox: {
+        // react-icons libraries (admin icon picker) are large, lazily-imported,
+        // and only ever loaded inside /admin — keep them out of the end-user
+        // service-worker precache. They still load on demand over the network.
+        globIgnores: ['**/chunks/{hi2,fa6,md,bs,pi}-*.js'],
         // IPFS responses are CID-addressed, therefore immutable: cache forever.
         // ENS RPC reads are mutable: stale-while-revalidate.
         // Static assets fall back to a network-first policy with a small cache.

@@ -1,8 +1,46 @@
 /** @jsxImportSource preact */
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
+import type { ComponentType } from 'preact'
 import type { KonPageV1 } from '@konxyz/runtime-core'
 import { manifest as loadedManifest } from '../state'
+import { sanitizeSvg } from '../ui/sanitize-svg'
 import { draft, initDraft, isDirty, updateDraft, validation } from './state'
+
+type IconPickerProps = { onPick: (svg: string) => void; onReset: () => void; onClose: () => void }
+
+/** Lazy-load the react-icons picker so react-icons stays out of the main bundle. */
+function LazyIconPicker(props: IconPickerProps) {
+  const [Comp, setComp] = useState<ComponentType<IconPickerProps> | null>(null)
+  useEffect(() => {
+    let live = true
+    void import('./icon-picker').then((m) => {
+      if (live) setComp(() => m.IconPicker)
+    })
+    return () => {
+      live = false
+    }
+  }, [])
+  if (!Comp) {
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 100,
+          background: 'rgba(20,18,30,0.45)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff'
+        }}
+        onClick={props.onClose}
+      >
+        Loading picker…
+      </div>
+    )
+  }
+  return <Comp {...props} />
+}
 
 const sectionStyle: import('preact').JSX.CSSProperties = {
   padding: '1.25rem',
@@ -136,7 +174,7 @@ export function ManifestEditor() {
 
       <section style={sectionStyle}>
         <h2 style={sectionTitleStyle}>Pages ({d.pages.length})</h2>
-        {d.pages.map((page, i) => (
+        {d.pages.map((page: KonPageV1, i: number) => (
           <PageRow key={page.id} page={page} index={i} />
         ))}
         <div style={{ color: '#888', fontSize: '0.85rem', marginTop: '0.5rem' }}>
@@ -150,7 +188,7 @@ export function ManifestEditor() {
             {v.issues.length} validation issue{v.issues.length === 1 ? '' : 's'}
           </strong>
           <ul style={{ margin: '0.4rem 0 0', paddingLeft: '1.25rem' }}>
-            {v.issues.slice(0, 5).map((iss, idx) => (
+            {v.issues.slice(0, 5).map((iss: { path: string; message: string }, idx: number) => (
               <li key={`${iss.path}-${idx}`}>
                 <code>{iss.path}</code>: {iss.message}
               </li>
@@ -173,9 +211,43 @@ const pageRowStyle: import('preact').JSX.CSSProperties = {
   gap: '0.75rem'
 }
 
+const iconButtonStyle: import('preact').JSX.CSSProperties = {
+  width: '2.4rem',
+  height: '2.4rem',
+  flexShrink: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '20px',
+  border: '1px solid #ddd',
+  borderRadius: '10px',
+  background: '#fff',
+  cursor: 'pointer',
+  color: '#16151a'
+}
+
 function PageRow({ page, index }: { page: KonPageV1; index: number }) {
+  const [picking, setPicking] = useState(false)
+  const custom = page.icon && typeof page.icon === 'object' ? sanitizeSvg(page.icon.svg) : null
+
   return (
     <div style={pageRowStyle}>
+      <button
+        type="button"
+        style={iconButtonStyle}
+        title="Change icon"
+        aria-label="Change icon"
+        onClick={() => setPicking(true)}
+      >
+        {custom ? (
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized by sanitizeSvg
+          <span style={{ display: 'inline-flex' }} dangerouslySetInnerHTML={{ __html: custom }} />
+        ) : typeof page.icon === 'string' ? (
+          <span style={{ fontSize: '0.7rem', color: '#888' }}>{page.icon}</span>
+        ) : (
+          '+'
+        )}
+      </button>
       <input
         type="text"
         value={page.title}
@@ -193,6 +265,25 @@ function PageRow({ page, index }: { page: KonPageV1; index: number }) {
         id: <code>{page.id}</code> · {page.plugins?.length ?? 0} plugin
         {(page.plugins?.length ?? 0) === 1 ? '' : 's'}
       </span>
+      {picking && (
+        <LazyIconPicker
+          onPick={(svg) => {
+            updateDraft((m) => {
+              const p = m.pages[index]
+              if (p) p.icon = { svg }
+            })
+            setPicking(false)
+          }}
+          onReset={() => {
+            updateDraft((m) => {
+              const p = m.pages[index]
+              if (p) p.icon = undefined
+            })
+            setPicking(false)
+          }}
+          onClose={() => setPicking(false)}
+        />
+      )}
     </div>
   )
 }
