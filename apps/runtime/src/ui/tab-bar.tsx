@@ -18,7 +18,10 @@ const CSS = `
   transition: background-color .18s ease, color .18s ease, opacity .18s ease;
 }
 .kon-nav button:hover { opacity: 0.9; }
-.kon-nav button[aria-current="page"] { opacity: 1; color: var(--kon-on-accent, #fff); background: var(--kon-accent); }
+.kon-nav button[aria-current="page"] {
+  opacity: 1; color: var(--kon-on-main, #fff);
+  background: color-mix(in srgb, var(--kon-on-main, #fff) 16%, transparent);
+}
 .kon-nav-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .kon-nav-brand { display: none; }
 
@@ -79,7 +82,7 @@ export function TabBar({
           aria-current={p.id === activeId ? 'page' : undefined}
           onClick={() => onSelect(p.id)}
         >
-          {p.icon && <Icon name={p.icon} size={22} />}
+          {p.icon && <Icon name={p.icon} size={22} filled={p.id === activeId} />}
           <span class="kon-nav-label">{p.title}</span>
         </button>
       ))}

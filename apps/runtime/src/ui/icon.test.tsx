@@ -21,4 +21,13 @@ describe('Icon', () => {
   test('applies the given size to width/height', () => {
     expect(html(Icon({ name: 'home', size: 28 }))).toContain('width="28"')
   })
+
+  test('filled variant renders a solid (fill) icon; stroke variant does not', () => {
+    expect(html(Icon({ name: 'home', filled: true }))).toContain('fill="currentColor"')
+    expect(html(Icon({ name: 'home' }))).toContain('stroke="currentColor"')
+  })
+
+  test('falls back to the stroke icon when no filled variant exists (list)', () => {
+    expect(html(Icon({ name: 'list', filled: true }))).toContain('stroke="currentColor"')
+  })
 })

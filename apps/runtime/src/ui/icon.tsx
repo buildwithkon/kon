@@ -12,7 +12,33 @@ const PATHS: Record<KonIconName, string> = {
   list: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01'
 }
 
-export function Icon({ name, size = 24 }: { name: KonIconName; size?: number }) {
+// Solid (filled) variants for the active-tab state. Icons whose silhouette can't
+// be filled meaningfully (e.g. list) are omitted and fall back to the stroke icon.
+const FILLED_PATHS: Partial<Record<KonIconName, string>> = {
+  home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z',
+  calendar:
+    'M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2zM3 10v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9H3z',
+  chat: 'M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z',
+  info: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'
+}
+
+export function Icon({
+  name,
+  size = 24,
+  filled = false
+}: {
+  name: KonIconName
+  size?: number
+  filled?: boolean
+}) {
+  const solid = filled ? FILLED_PATHS[name] : undefined
+  if (solid) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d={solid} fill-rule="evenodd" />
+      </svg>
+    )
+  }
   return (
     <svg
       width={size}
