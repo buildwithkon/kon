@@ -4,7 +4,8 @@ import { KonPluginV1Schema, didSchema, ipfsUriSchema } from './plugin'
 export const KonThemeV1Schema = z.object({
   main: z.string().min(1),
   accent: z.string().min(1),
-  font: z.enum(['sans', 'serif', 'mono']).optional()
+  font: z.enum(['sans', 'serif', 'mono']).optional(),
+  icon: z.string().min(1).optional()
 })
 
 export const KonIconNameSchema = z.enum(['home', 'calendar', 'chat', 'info', 'list'])

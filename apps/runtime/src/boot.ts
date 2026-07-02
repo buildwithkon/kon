@@ -21,13 +21,22 @@ import devPresetManifest from './dev-preset-manifest.json'
 
 const DEV_PRESET_ENABLED = import.meta.env.DEV
 
-async function bootDevPreset() {
-  setStage('reading-entry-ref', 'using dev preset manifest (no IPFS fetch)')
-  const manifestParsed = KonManifestV1Schema.safeParse(devPresetManifest)
+async function bootDevPreset(url: URL) {
+  // Dynamic import keeps the in-repo manifest sources (import.meta.glob in
+  // dev-app.ts) out of production bundles — this branch is dead code there.
+  const { DEV_APP_MANIFESTS, devDeploymentOverride, pickDevAppName } = await import('./dev-app')
+
+  const appName = pickDevAppName(url.search, import.meta.env.VITE_DEV_APP)
+  const devApp = appName ? DEV_APP_MANIFESTS[appName] : undefined
+  const source = devApp ?? devPresetManifest
+  const label = devApp
+    ? `apps/${appName}/manifest.source.json`
+    : 'bundled demo preset (dev-preset-manifest.json)'
+
+  setStage('reading-entry-ref', `using ${label} — no IPFS fetch`)
+  const manifestParsed = KonManifestV1Schema.safeParse(source)
   if (!manifestParsed.success) {
-    throw new Error(
-      `dev preset manifest invalid: ${manifestParsed.error.issues.map((i) => i.message).join('; ')}`
-    )
+    throw new Error(`dev manifest invalid (${label}): ${formatIssues(manifestParsed.error.issues)}`)
   }
   manifest.value = manifestParsed.data as unknown as KonManifestV1
   entry.value = {
@@ -38,7 +47,12 @@ async function bootDevPreset() {
     version: manifestParsed.data.app.version,
     publishedAt: manifestParsed.data.publishedAt
   } as KonEntryV1
-  deployment.value = resolveDeployment(manifestParsed.data.deployment)
+  deployment.value = resolveDeployment(
+    devDeploymentOverride(manifestParsed.data.deployment, {
+      gunPeer: import.meta.env.VITE_DEV_GUN_PEER,
+      walletOrigin: import.meta.env.VITE_DEV_WALLET_ORIGIN
+    })
+  )
   setStage('ready')
 }
 
@@ -52,7 +66,7 @@ interface KonBootData {
   runtimeCid?: string
 }
 function readBootstrapData(): KonBootData | null {
-  // biome-ignore lint/suspicious/noExplicitAny: window augmentation by bootstrap
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- window augmentation by bootstrap
   const data = (window as any).__KON_BOOT__ as KonBootData | undefined
   if (!data || typeof data !== 'object') return null
   if (!data.entry || !data.manifest) return null
@@ -87,7 +101,7 @@ export async function boot() {
       const hasOverride = url.searchParams.has('entry')
       const usePreset = url.searchParams.get('dev') === '1' || !hasOverride
       if (usePreset) {
-        await bootDevPreset()
+        await bootDevPreset(url)
         return
       }
     }
@@ -137,7 +151,6 @@ export async function boot() {
   }
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: zod issue shape is well-known
 function formatIssues(issues: any[]): string {
   return issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
 }

@@ -604,3 +604,9 @@ $RECYCLE.BIN/
 # KON v2: Helia local blockstore for self-hosted pin service
 .kon/blockstore/
 
+# KON v2: relay-gun radisk data (local chat graph; recreated on `bun @relay-gun:start`)
+apps/relay-gun/gun-data/
+
+# Playwright MCP browser-test artifacts (snapshots, screenshots)
+.playwright-mcp/
+

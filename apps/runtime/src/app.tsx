@@ -185,50 +185,34 @@ export function App() {
       class={showNav ? 'kon-shell kon-has-nav' : 'kon-shell'}
     >
       <style>{`
-        .kon-shell-main { max-width: 640px; margin: 0 auto; padding: 0.5rem 1.1rem 1.5rem; }
-        .kon-header {
-          position: sticky; top: 0; z-index: 15;
-          display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-          padding: 0.8rem 1.1rem;
-          background: color-mix(in srgb, var(--kon-canvas, #f4f3f0) 80%, transparent);
-          backdrop-filter: saturate(1.5) blur(12px);
-          -webkit-backdrop-filter: saturate(1.5) blur(12px);
-        }
-        .kon-header h1 {
-          font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; margin: 0;
-          color: var(--kon-main);
+        .kon-shell-main { max-width: 640px; margin: 0 auto; padding: 1.25rem 1.1rem 1.5rem; }
+        .kon-admin-footer {
+          display: block; text-align: center; padding: 1.5rem 0 0.5rem;
+          color: var(--kon-muted, #6b6975); opacity: 0.65; font-size: 0.8rem;
+          text-decoration: none;
         }
         .kon-has-nav { padding-bottom: 6rem; }
         @media (min-width: 768px) {
           .kon-has-nav { padding-bottom: 0; padding-left: 76px; }
-          .kon-header { padding-left: calc(76px + 1.1rem); }
+          .kon-admin-footer { display: none; }
         }
       `}</style>
 
-      <header class="kon-header">
-        <h1>{m.app.name}</h1>
-        {import.meta.env.DEV && (
-          <a
-            href="/admin"
-            style={{
-              color: 'var(--kon-muted, #6b6975)',
-              opacity: 0.8,
-              fontSize: '0.8rem',
-              textDecoration: 'none'
-            }}
-          >
-            ⚙ Admin
-          </a>
-        )}
-      </header>
-
       <main class="kon-shell-main">{currentPage && <PageView page={currentPage} />}</main>
+
+      {import.meta.env.DEV && (
+        <a class="kon-admin-footer" href="/admin">
+          ⚙ Admin
+        </a>
+      )}
 
       {showNav && (
         <TabBar
           pages={pages}
           activeId={currentPage?.id ?? ''}
           brand={m.app.name}
+          brandIcon={m.app.theme?.icon}
+          adminHref={import.meta.env.DEV ? '/admin' : undefined}
           onSelect={(id) => {
             activePageId.value = id
           }}

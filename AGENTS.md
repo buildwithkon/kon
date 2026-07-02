@@ -27,6 +27,25 @@ bun @relay-gun:start  # http://127.0.0.1:8765 — local GUN.js relay
 bun @relay-ipfs:start # local libp2p + Helia HTTP gateway (4001 + 8080)
 ```
 
+#### Dogfooding an in-repo app in dev
+
+`@runtime:dev` boots the bundled all-plugins demo preset by default. To render an
+in-repo app instead, pass `?app=<name>` — it loads `apps/<name>/manifest.source.json`
+directly (no IPFS pin, no ENS write):
+
+```bash
+bun @relay-gun:start   # local chat relay on :8765 (needed for the Forum/Chat page)
+bun @runtime:dev
+open 'http://127.0.0.1:5174/?app=ethtokyo'
+```
+
+In dev the runtime derives chat identity keys in-process (no wallet popup — plugins
+request derivation on mount, which the browser would otherwise block) and rewrites
+`gun_peers` to the local relay so Forum chat works offline. Env overrides:
+`VITE_DEV_APP` (default app when no `?app=`), `VITE_DEV_GUN_PEER`,
+`VITE_DEV_WALLET_ORIGIN` (set to exercise the real `apps/account` popup flow against a
+locally-running wallet origin). All of this is dead-code-eliminated from production builds.
+
 ### Publish pipeline (CLI)
 
 ```bash

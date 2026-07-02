@@ -116,6 +116,8 @@ export interface KonThemeV1 {
   accent: string
   /** Font family preset. Defaults to 'sans'. */
   font?: 'sans' | 'serif' | 'mono'
+  /** Brand icon shown in the nav (image src / data URI). Falls back to a monogram. */
+  icon?: string
 }
 
 export interface KonPageV1 {

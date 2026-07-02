@@ -31,7 +31,7 @@ const containerStyle = (sticky: boolean): import('preact').JSX.CSSProperties => 
 
 const cardStyle = (_accent: string): import('preact').JSX.CSSProperties => ({
   position: 'relative',
-  borderRadius: '24px',
+  borderRadius: '12px',
   padding: '1.6rem 1.7rem',
   backgroundColor: '#111',
   // Subtle top-sheen / bottom-shade overlay for depth over the solid brand color.
@@ -39,7 +39,8 @@ const cardStyle = (_accent: string): import('preact').JSX.CSSProperties => ({
   color: 'white',
   boxShadow: '0 22px 48px -24px rgba(20,18,30,0.55)',
   overflow: 'hidden',
-  minHeight: '9rem',
+  // Golden-ratio membership card (matches main's --aspect-golden: 1.618 / 1).
+  aspectRatio: '1.618 / 1',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
