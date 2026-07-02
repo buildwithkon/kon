@@ -1,32 +1,68 @@
 {
-  "name": "@konxyz/v1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
+  "name": "@konxyz/monorepo",
+  "version": "2.0.0",
+  "private": true,
+  "description": "KON v2 — no-code on-chain app framework. Vite + Preact runtime, ENS + IPFS + GUN.js + Safe smart accounts.",
   "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/plugins/*"
+  ],
   "scripts": {
-    "@agent": "$npm_execpath --filter \"@konxyz/xmtp-agent\"",
-    "@api": "$npm_execpath --filter \"@konxyz/api\"",
-    "@api:dev": "$npm_execpath --filter \"@konxyz/api\" run dev",
-    "@dashboard": "$npm_execpath --filter \"@konxyz/dashboard\"",
-    "@dashboard:dev": "$npm_execpath --filter \"@konxyz/dashboard\" run dev",
-    "@pwa": "$npm_execpath --filter \"@konxyz/app-pwa\"",
-    "@pwa:dev": "$npm_execpath --filter \"@konxyz/app-pwa\" run dev",
-    "@site": "$npm_execpath --filter \"@konxyz/site\"",
-    "@site:dev": "$npm_execpath --filter \"@konxyz/site\" run dev",
-    "@sh": "$npm_execpath --filter \"@konxyz/shared\"",
-    "@shr": "$npm_execpath --filter \"@konxyz/shared-react\"",
-    "@router": "$npm_execpath --filter \"@konxyz/subdomain-router\"",
-    "dev": "concurrently \"$npm_execpath @api run dev\" \"$npm_execpath @pwa run dev\"",
-    "start": "concurrently \"$npm_execpath @api run dev --port=8786 \" \"wait-on tcp:8786 && $npm_execpath @pwa run start\""
+    "@dashboard": "bun --filter=@konxyz/dashboard",
+    "@dashboard:dev": "bun --filter=@konxyz/dashboard run dev",
+    "@runtime": "bun --filter=@konxyz/runtime",
+    "@runtime:dev": "bun --filter=@konxyz/runtime run dev",
+    "@account": "bun --filter=@konxyz/account",
+    "@account:dev": "bun --filter=@konxyz/account run dev",
+    "@site": "bun --filter=@konxyz/site",
+    "@site:dev": "bun --filter=@konxyz/site run dev",
+    "@relay-gun": "bun --filter=@konxyz/relay-gun",
+    "@relay-gun:start": "bun --filter=@konxyz/relay-gun run start",
+    "@relay-ipfs": "bun --filter=@konxyz/relay-ipfs",
+    "@relay-ipfs:start": "bun --filter=@konxyz/relay-ipfs run start",
+    "lint": "vp lint",
+    "lint:fix": "vp lint --fix",
+    "lint:origins": "bun scripts/lint-no-hardcoded-origins.mjs",
+    "format": "vp fmt --write .",
+    "format:check": "vp fmt --check .",
+    "publish:app": "bun scripts/publish.mjs",
+    "publish:site": "bun scripts/publish-site.mjs",
+    "publish:runtime": "bun scripts/publish-runtime.mjs",
+    "publish:plugin": "bun scripts/publish-plugin.mjs",
+    "publish:account": "bun scripts/publish-account.mjs",
+    "publish:dashboard": "bun scripts/publish-dashboard.mjs",
+    "typecheck": "bun --filter=@konxyz/runtime-core run typecheck && bun --filter=@konxyz/schemas run typecheck",
+    "test": "vp test run",
+    "test:watch": "vp test watch",
+    "prepare": "vp config"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "concurrently": "^9.1.2",
+    "@preact/preset-vite": "2.10.5",
+    "@socketsecurity/bun-security-scanner": "1.1.2",
+    "@web3-storage/upload-client": "^17.1.4",
+    "@web3-storage/w3up-client": "^17.3.0",
+    "blockstore-fs": "^4.0.1",
+    "happy-dom": "20.10.2",
+    "ipfs-unixfs-importer": "^17.0.1",
+    "viem": "^2.51.3",
+    "vite-plus": "catalog:",
     "wait-on": "^8.0.3",
     "wrangler": "^4.20.5"
   },
-  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+  "overrides": {
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "packageManager": "bun@1.3.14",
+  "catalog": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
+    "vite-plus": "latest"
+  },
+  "trustedDependencies": [
+    "node-datachannel",
+    "protobufjs"
+  ]
 }

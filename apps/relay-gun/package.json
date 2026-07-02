@@ -1,0 +1,15 @@
+{
+  "name": "@konxyz/relay-gun",
+  "version": "0.0.0",
+  "private": true,
+  "description": "KON v2 GUN.js relay — a tiny WebSocket peer that brokers chat + draft-workspace traffic between browsers. Default deployment lives at relay.kon.xyz; self-host operators run the same code at relay.<your-domain>.",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "start": "node src/index.mjs",
+    "dev": "node --watch src/index.mjs"
+  },
+  "dependencies": {
+    "gun": "^0.2020.1240"
+  }
+}

@@ -1,0 +1,130 @@
+# Caddy configuration for the KON relay stack.
+#
+# Five virtual hosts, all TLS via Let's Encrypt:
+#
+#   relay.<DOMAIN>     → relay-gun       (WebSocket — chat + draft workspace)
+#   gateway.<DOMAIN>   → relay-ipfs      (HTTP gateway + /api/pin upload)
+#   id.<DOMAIN>        → relay-ipfs/ipfs/${KON_ACCOUNT_CID}    (wallet SPA)
+#   my.<DOMAIN>        → relay-ipfs/ipfs/${KON_DASHBOARD_CID}  (dashboard SPA)
+#   <DOMAIN>           → relay-ipfs/ipfs/${KON_SITE_CID}       (marketing SPA, apex)
+#
+# The static-SPA vhosts (id / my / apex) reuse the relay-ipfs blockstore
+# as a single-host IPFS storage layer, so the same VPS that runs the
+# relay daemons also serves every KON-managed static origin. Total
+# managed-deployment infra: 1 VPS ($6/mo), no separate static-host
+# subscription. Self-host operators follow the same pattern.
+#
+# Caddy auto-renews certificates on startup + every ~30 days. Hostnames
+# are templated from KON_RELAY_DOMAIN so the same Caddyfile works for
+# *.kon.xyz, *.myfestival.com, etc. Bundle CIDs come from per-deployment
+# env vars (KON_ACCOUNT_CID / KON_DASHBOARD_CID / KON_SITE_CID).
+
+{
+	email {$ACME_EMAIL}
+	# Bind ACME challenges to standard ports; certs auto-issue.
+	# Remove the line below to use Let's Encrypt staging during testing.
+	# acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+# --------------------------------------------------------------------
+# relay.<DOMAIN> — GUN.js WebSocket relay
+# --------------------------------------------------------------------
+relay.{$KON_RELAY_DOMAIN} {
+	# GUN's WebSocket upgrade happens on /gun. We proxy the whole host
+	# to relay-gun:8765 — health endpoint on / works the same way.
+	reverse_proxy relay-gun:8765 {
+		# WebSocket upgrades are HTTP/1.1 only; Caddy auto-detects but
+		# being explicit avoids surprises behind certain CDNs.
+		header_up Connection {>Connection}
+		header_up Upgrade {>Upgrade}
+	}
+
+	# CORS so browsers from <app>.kon.xyz can connect even when the
+	# tab origin differs from the relay origin.
+	header {
+		Access-Control-Allow-Origin "*"
+		Access-Control-Allow-Methods "GET, POST, OPTIONS"
+		Access-Control-Allow-Headers "*"
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# --------------------------------------------------------------------
+# gateway.<DOMAIN> — IPFS HTTP gateway
+# --------------------------------------------------------------------
+gateway.{$KON_RELAY_DOMAIN} {
+	reverse_proxy relay-ipfs:8080
+
+	# IPFS blocks are immutable by CID, so cache aggressively.
+	header /ipfs/* {
+		Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	# /api/pin is a write endpoint — never cache, and surface CORS so
+	# the Dashboard at my.<DOMAIN> can POST cross-origin without a
+	# preflight failure.
+	header /api/* {
+		Cache-Control "no-store"
+		Access-Control-Allow-Origin "*"
+		Access-Control-Allow-Methods "POST, OPTIONS"
+		Access-Control-Allow-Headers "content-type, x-kon-auth"
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# --------------------------------------------------------------------
+# Static SPA vhosts — wallet origin, organizer dashboard, apex marketing
+# site. Each is a pinned IPFS bundle served via the relay-ipfs blockstore.
+# Asset paths (.js/.css/etc.) resolve to nested IPFS paths; everything
+# else falls through to index.html so client-side router handles the URL.
+# --------------------------------------------------------------------
+
+(spa_serve) {
+	# Args: {args.0} = bundle CID env var name (e.g. KON_ACCOUNT_CID)
+	# Matches known asset extensions and serves the nested IPFS path.
+	# Everything else falls through to the bundle root's index.html so
+	# Preact's client-side router can take over.
+	@asset path_regexp asset \.(js|mjs|css|svg|png|jpg|jpeg|gif|ico|webp|woff2?|map|json|wasm|html)$
+	handle @asset {
+		rewrite * /ipfs/{$args.0}{path}
+		reverse_proxy relay-ipfs:8080
+	}
+	handle {
+		rewrite * /ipfs/{$args.0}/index.html
+		reverse_proxy relay-ipfs:8080
+	}
+
+	header {
+		# Static SPA bundles are immutable per-CID; the CID changes when
+		# the bundle changes (new deploy). Cache hard.
+		Cache-Control "public, max-age=300, must-revalidate"
+		# Lock down typical web vulnerabilities at the edge.
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+id.{$KON_RELAY_DOMAIN} {
+	import spa_serve KON_ACCOUNT_CID
+}
+
+my.{$KON_RELAY_DOMAIN} {
+	import spa_serve KON_DASHBOARD_CID
+}
+
+{$KON_RELAY_DOMAIN} {
+	import spa_serve KON_SITE_CID
+}

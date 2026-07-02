@@ -1,0 +1,8 @@
+[install]
+minimumReleaseAge = 259200
+minimumReleaseAgeExcludes = ["typescript", "@types/bun"]
+exact = true
+linker = "isolated"
+
+[install.security]
+scanner = "@socketsecurity/bun-security-scanner"

@@ -1,0 +1,130 @@
+{
+  "schema": "kon-manifest-v1",
+  "app": {
+    "id": "demo.kon.xyz",
+    "name": "KON v2 demo",
+    "version": 2,
+    "description": "Dev preset exercising every built-in plugin (badge, build-with, forum, ical, iframe, markdown, profile-card)."
+  },
+  "deployment": {
+    "gun_peers": ["http://localhost:8765/gun", "https://relay.peer.ooo/gun"]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "title": "Home",
+      "plugins": [
+        {
+          "id": "profile-card",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "title": "KON v2 demo",
+            "subtitle": "Phase 1 + Phase 2 dogfood",
+            "accent": "#1a73e8"
+          }
+        },
+        {
+          "id": "badge",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "badges": ["🐵 Phase 1", "🤠 v2 spike", "🎌 KON"]
+          }
+        },
+        {
+          "id": "markdown",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "content": "## Welcome\n\nThis is a **dev preset** wired to all v2 plugins. Try the [chat](#) and [schedule](#) pages.\n\n| col A | col B |\n| --- | --- |\n| one | two |\n"
+          }
+        },
+        {
+          "id": "build-with",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy"
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "title": "Schedule",
+      "plugins": [
+        {
+          "id": "ical",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "events": [
+              {
+                "id": "evt-1",
+                "title": "Opening keynote",
+                "description": "Welcome to ETHTokyo 2026",
+                "location": "Main Hall",
+                "start": "2026-09-15T10:00:00+09:00",
+                "end": "2026-09-15T11:00:00+09:00"
+              },
+              {
+                "id": "evt-2",
+                "title": "Lunch",
+                "location": "Sponsor Foyer",
+                "start": "2026-09-15T12:00:00+09:00",
+                "end": "2026-09-15T13:30:00+09:00"
+              },
+              {
+                "id": "evt-3",
+                "title": "Workshop — Account Abstraction",
+                "description": "Hands-on Safe + Pimlico session.",
+                "location": "Room A",
+                "start": "2026-09-15T14:00:00+09:00",
+                "end": "2026-09-15T16:00:00+09:00"
+              },
+              {
+                "id": "evt-4",
+                "title": "Day 2 — Decentralized storage",
+                "description": "IPFS, Arweave, w3up panel.",
+                "location": "Main Hall",
+                "start": "2026-09-16T10:00:00+09:00",
+                "end": "2026-09-16T11:00:00+09:00"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "forum",
+      "title": "Chat",
+      "plugins": [
+        {
+          "id": "forum",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "gunPath": "demo-kon-xyz-main",
+            "title": "Demo room"
+          }
+        }
+      ]
+    },
+    {
+      "id": "embed",
+      "title": "Embed",
+      "plugins": [
+        {
+          "id": "iframe",
+          "version": "1.0.0",
+          "source": "ipfs://bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy",
+          "props": {
+            "url": "https://kon.xyz",
+            "title": "kon.xyz",
+            "height": "400px"
+          }
+        }
+      ]
+    }
+  ],
+  "publishedAt": "2026-05-31T00:00:00Z",
+  "publisher": "did:pkh:eip155:8453:0x0000000000000000000000000000000000000000"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@konxyz/plugin-profile-card",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KON v2 ProfileCard plugin — branded app header card with optional sticky behavior. Pure static-props build; wallet-address rendering will be reintroduced once the runtime threads signed-in state through KonPluginContext (after Phase 2.6 step 8d/8e).",
+  "type": "module",
+  "main": "src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "scripts": {
+    "build": "vp build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@konxyz/runtime-core": "workspace:*",
+    "preact": "^10.24.0"
+  },
+  "devDependencies": {
+    "@konxyz/plugin-shared": "workspace:*",
+    "@preact/preset-vite": "^2.9.1",
+    "typescript": "^5.6.3",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@konxyz/schemas",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Zod runtime schemas for KON v2 entry / manifest / plugin objects. Validates content fetched from IPFS before it's trusted by the runtime.",
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./entry": "./src/entry.ts",
+    "./manifest": "./src/manifest.ts",
+    "./plugin": "./src/plugin.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@konxyz/runtime-core": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "catalog:"
+  }
+}

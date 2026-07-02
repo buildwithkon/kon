@@ -1,0 +1,147 @@
+# KON v2 relay stack — one VPS, three processes.
+#
+# What this brings up:
+#
+#   relay-gun   :8765 (WebSocket, internal only) — GUN.js chat + draft
+#               workspace. Browsers connect via wss://relay.kon.xyz/gun
+#               (Caddy terminates TLS + proxies).
+#
+#   relay-ipfs   :4001 (TCP libp2p, public)        — Bitswap + DHT.
+#               Public IPFS gateways pull blocks here over libp2p.
+#               libp2p insists on direct TCP, not behind a proxy.
+#
+#   relay-ipfs   :8080 (HTTP gateway, internal)    — direct HTTP fetch
+#               of pinned CIDs. Exposed publicly via Caddy as
+#               https://gateway.kon.xyz/ipfs/<cid>.
+#
+#   caddy       :80 + :443                        — TLS via ACME, reverse
+#               proxy. Manages two virtual hosts: relay.<domain> and
+#               gateway.<domain>.
+#
+# Both relay processes survive the other crashing — chat and IPFS pin
+# are deliberately decoupled. See README in apps/{relay-gun,relay-ipfs}/
+# for the architectural reasoning.
+#
+# Required environment (.env file at repo root, see .env.relay.example):
+#   KON_RELAY_DOMAIN    e.g. kon.xyz — used for relay.<DOMAIN> +
+#                       gateway.<DOMAIN> in Caddyfile
+#   ACME_EMAIL          email Caddy registers with Let's Encrypt
+#   KON_RELAY_ANNOUNCE  optional — comma-separated multiaddrs to
+#                       announce libp2p externally when behind NAT.
+#                       Recommended: /dns4/<DOMAIN>/tcp/4001
+#   KON_GUN_PEERS       optional — comma-separated sibling /gun URLs
+#                       for multi-region gossip-sync. Leave empty for
+#                       a single-region deployment (Stage 1).
+#
+# Quick start (on the VPS):
+#   git clone https://github.com/buildwithkon/kon.git
+#   cd kon
+#   cp .env.relay.example .env
+#   vim .env                    # set KON_RELAY_DOMAIN + ACME_EMAIL
+#   docker compose up -d
+#
+# DNS:
+#   relay.<DOMAIN>     A   <vps-ipv4>
+#   gateway.<DOMAIN>   A   <vps-ipv4>
+#   <DOMAIN>           A   <vps-ipv4>   (optional — for libp2p multiaddr)
+#
+# Multi-region scaling (Stage 2+):
+#   To run KON in multiple regions (e.g. Tokyo + Frankfurt + Virginia),
+#   stand up this same compose stack in each region. Then:
+#
+#   1. Point relay.kon.xyz (and gateway.kon.xyz) at all regions via
+#      GeoDNS — Cloudflare DNS, Route53 latency-based routing, NS1,
+#      or any DNS provider that supports geographic answers. Each
+#      client's DNS lookup returns the IP of the nearest region.
+#
+#   2. On each region's .env, set KON_GUN_PEERS to the *other*
+#      regions' public /gun URLs. GUN's CRDT gossip sync will then
+#      converge chat + draft graphs across regions in ~100ms-1s.
+#      Example for Tokyo:
+#        KON_GUN_PEERS=https://fra.relay.kon.xyz/gun,https://iad.relay.kon.xyz/gun
+#
+#   3. relay-ipfs needs no special multi-region config — libp2p's
+#      kad-DHT already handles global content discovery. Each region
+#      holds its own blockstore; cross-region requests resolve via
+#      Bitswap with one-time latency.
+#
+#   Stage 1 (ETHTokyo, single Tokyo VPS) needs none of the above —
+#   KON_GUN_PEERS stays empty and GeoDNS resolves to one IP.
+
+name: kon-relays
+
+services:
+  relay-gun:
+    build:
+      context: ./apps/relay-gun
+      dockerfile: Dockerfile
+    container_name: kon-relay-gun
+    restart: unless-stopped
+    environment:
+      KON_GUN_PORT: 8765
+      KON_GUN_DATA_PATH: /data
+      KON_GUN_PEERS: ${KON_GUN_PEERS:-}
+    volumes:
+      - gun-data:/data
+    networks: [internal]
+    # No ports: section. Caddy reaches it on the internal network.
+
+  relay-ipfs:
+    build:
+      context: ./apps/relay-ipfs
+      dockerfile: Dockerfile
+    container_name: kon-relay-ipfs
+    restart: unless-stopped
+    environment:
+      HELIA_BLOCKSTORE_PATH: /blockstore
+      KON_RELAY_TCP_PORT: 4001
+      KON_RELAY_HTTP_PORT: 8080
+      KON_RELAY_ANNOUNCE: ${KON_RELAY_ANNOUNCE:-}
+      # /api/pin abuse controls — see apps/relay-ipfs/src/index.mjs.
+      # Defaults: 10 requests/min/IP, 100MB/day/IP, 10MB max body.
+      KON_PIN_RPM: ${KON_PIN_RPM:-10}
+      KON_PIN_BYTES_PER_DAY: ${KON_PIN_BYTES_PER_DAY:-104857600}
+      KON_PIN_MAX_BODY: ${KON_PIN_MAX_BODY:-10485760}
+    volumes:
+      - ipfs-blockstore:/blockstore
+    networks: [internal]
+    ports:
+      # libp2p TCP — must be reachable directly from the public Internet
+      # for kad-DHT discovery + Bitswap connections. Caddy cannot proxy
+      # a libp2p multiplex stream.
+      - '4001:4001'
+    # HTTP gateway (8080) is only reachable through Caddy, not exposed
+    # directly. Tighter blast radius if there's ever a gateway CVE.
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: kon-relay-caddy
+    restart: unless-stopped
+    depends_on: [relay-gun, relay-ipfs]
+    environment:
+      KON_RELAY_DOMAIN: ${KON_RELAY_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+      # Static SPA bundle CIDs — served via Caddy vhosts that proxy
+      # relay-ipfs's HTTP gateway. Update these when you re-publish a
+      # bundle and `docker compose up -d` to roll out.
+      KON_ACCOUNT_CID: ${KON_ACCOUNT_CID:-}
+      KON_DASHBOARD_CID: ${KON_DASHBOARD_CID:-}
+      KON_SITE_CID: ${KON_SITE_CID:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [internal]
+    ports:
+      - '80:80'
+      - '443:443'
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  gun-data:
+  ipfs-blockstore:
+  caddy-data:
+  caddy-config:

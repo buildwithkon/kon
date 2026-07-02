@@ -1,0 +1,27 @@
+{
+  "name": "@konxyz/plugin-ical",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KON v2 Ical plugin — date-grouped event list with search + save. Takes pre-parsed events JSON via props (the publish pipeline transforms an iCal URL into structured events at release time, so the runtime never hits a CORS proxy). Replaces v1 Ical which depended on @base-ui-components/react Toast, jotai atoms, and a server-side iCal proxy.",
+  "type": "module",
+  "main": "src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "scripts": {
+    "build": "vp build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@konxyz/runtime-core": "workspace:*",
+    "preact": "^10.24.0"
+  },
+  "devDependencies": {
+    "@konxyz/plugin-shared": "workspace:*",
+    "@preact/preset-vite": "^2.9.1",
+    "typescript": "^5.6.3",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

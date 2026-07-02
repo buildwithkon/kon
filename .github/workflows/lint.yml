@@ -1,0 +1,32 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, v2]
+  pull_request:
+    branches: [main, v2]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Vite+
+        run: curl -fsSL https://vite.plus | bash
+      - run: echo "$HOME/.vite-plus/bin" >> "$GITHUB_PATH"
+
+      - run: vp install --frozen-lockfile
+
+      - name: Guard against hardcoded KON-managed origins
+        run: bun run lint:origins
+
+      - name: vp check (lint + format + typecheck)
+        run: vp check
+
+      - name: vp test (vitest)
+        run: vp test run
